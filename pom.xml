@@ -329,6 +329,9 @@
           <excludes combine.children="append">
             <!-- version 0.8 of apache-rat-plugin does not exclude properly
                  some default development tools files (see RAT-126) -->
+            <exclude>tools/</exclude>
+            <exclude>evosuite-report/</exclude>
+            <exclude>evosuite-tests/</exclude>
             <exclude>.ekstazi/**</exclude>
             <exclude>**/site-content/**</exclude>
             <exclude>**/site-content.README</exclude>
