@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VertexListConvexPolygon3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed</a> &gt; <span class="el_source">VertexListConvexPolygon3D.java</span></div><h1>VertexListConvexPolygon3D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.euclidean.internal.EuclideanUtils;
+
+/** Internal {@link ConvexPolygon3D} implementation class that uses a list of vertices
+ * to represent the plane subset.
+ */
+final class VertexListConvexPolygon3D extends AbstractConvexPolygon3D {
+
+    /** Vertex loop defining the convex polygon. */
+    private final List&lt;Vector3D&gt; vertices;
+
+    /** Construct a new instance with the given plane and list of vertices. Callers are responsible
+     * for ensuring that the given vertices form a convex subset lying in {@code plane}. The list of
+     * vertices should not contain the duplicated first endpoint. No validation is performed.
+     * @param plane plane containing convex polygon
+     * @param vertices vertices defining the convex polygon
+     * @throws IllegalArgumentException if fewer than 3 vertices are given
+     */
+    VertexListConvexPolygon3D(final Plane plane, final List&lt;Vector3D&gt; vertices) {
+<span class="fc" id="L43">        super(plane);</span>
+
+        // sanity check
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (vertices.size() &lt; EuclideanUtils.TRIANGLE_VERTEX_COUNT) {</span>
+<span class="fc" id="L47">            throw new IllegalArgumentException(&quot;Convex polygon requires at least &quot; +</span>
+<span class="fc" id="L48">                    EuclideanUtils.TRIANGLE_VERTEX_COUNT + &quot; points; found &quot; + vertices.size());</span>
+        }
+
+<span class="fc" id="L51">        this.vertices = Collections.unmodifiableList(vertices);</span>
+<span class="fc" id="L52">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;Vector3D&gt; getVertices() {
+<span class="fc" id="L57">        return vertices;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;Triangle3D&gt; toTriangles() {
+<span class="fc" id="L63">        return Planes.convexPolygonToTriangleFan(getPlane(), vertices);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VertexListConvexPolygon3D transform(final Transform&lt;Vector3D&gt; transform) {
+<span class="fc" id="L69">        final Plane tPlane = getPlane().transform(transform);</span>
+<span class="fc" id="L70">        final List&lt;Vector3D&gt; tVertices = vertices.stream()</span>
+<span class="fc" id="L71">                .map(transform)</span>
+<span class="fc" id="L72">                .collect(Collectors.toList());</span>
+
+<span class="fc" id="L74">        return new VertexListConvexPolygon3D(tPlane, tVertices);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VertexListConvexPolygon3D reverse() {
+<span class="fc" id="L80">        final Plane rPlane = getPlane().reverse();</span>
+<span class="fc" id="L81">        final List&lt;Vector3D&gt; rVertices = new ArrayList&lt;&gt;(vertices);</span>
+<span class="fc" id="L82">        Collections.reverse(rVertices);</span>
+
+<span class="fc" id="L84">        return new VertexListConvexPolygon3D(rPlane, rVertices);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

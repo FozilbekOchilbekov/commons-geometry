@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LinecastPoint3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed.line</a> &gt; <span class="el_source">LinecastPoint3D.java</span></div><h1>LinecastPoint3D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed.line;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.ListIterator;
+
+import org.apache.commons.geometry.euclidean.AbstractLinecastPoint;
+import org.apache.commons.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing intersections resulting from linecast operations in Euclidean
+ * 3D space. This class contains the intersection point along with the boundary normal
+ * of the target at the point of intersection.
+ * @see Linecastable3D
+ */
+public class LinecastPoint3D extends AbstractLinecastPoint&lt;Vector3D, Vector3D.Unit, Line3D&gt;  {
+
+    /** Comparator that sorts intersection instances by increasing abscissa order. If two abscissa
+     * values are equal, the comparison uses {@link Vector3D#COORDINATE_ASCENDING_ORDER} with the
+     * intersection normals.
+     */
+<span class="fc" id="L39">    public static final Comparator&lt;LinecastPoint3D&gt; ABSCISSA_ORDER = (a, b) -&gt; {</span>
+<span class="fc" id="L40">        int cmp = Double.compare(a.getAbscissa(), b.getAbscissa());</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (cmp == 0) {</span>
+<span class="fc" id="L42">            cmp = Vector3D.COORDINATE_ASCENDING_ORDER.compare(a.getNormal(), b.getNormal());</span>
+        }
+<span class="fc" id="L44">        return cmp;</span>
+    };
+
+    /** Construct a new instance from its components. Callers are responsible for ensuring that
+     * {@code point} lies on the given line.
+     * @param point intersection point
+     * @param normal normal of the target boundary at the intersection point
+     * @param line intersecting line
+     */
+    public LinecastPoint3D(final Vector3D point, final Vector3D normal, final Line3D line) {
+<span class="fc" id="L54">        super(point, normal.normalize(), line);</span>
+<span class="fc" id="L55">    }</span>
+
+    /** Return true if this instance should be considered equivalent to the argument, using the
+     * given precision context for comparison. Instances are considered equivalent if they have
+     * equivalent points, normals, and lines.
+     * @param other other point to compare with
+     * @param precision context to use for the comparison
+     * @return true if this instance should be considered equivalent to the argument
+     */
+    public boolean eq(final LinecastPoint3D other, final Precision.DoubleEquivalence precision) {
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        return getLine().eq(other.getLine(), precision) &amp;&amp;</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">                getPoint().eq(other.getPoint(), precision) &amp;&amp;</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">                getNormal().eq(other.getNormal(), precision);</span>
+    }
+
+    /** Sort the given list of linecast points by increasing abscissa value and filter to remove
+     * duplicate entries (as determined by the {@link #eq(LinecastPoint3D, Precision.DoubleEquivalence)} method).
+     * The argument is modified.
+     * @param pts list of points to sort and filter
+     */
+    public static void sortAndFilter(final List&lt;LinecastPoint3D&gt; pts) {
+<span class="fc" id="L76">        pts.sort(ABSCISSA_ORDER);</span>
+
+<span class="fc" id="L78">        double currentAbscissa = Double.POSITIVE_INFINITY;</span>
+<span class="fc" id="L79">        final List&lt;LinecastPoint3D&gt; abscissaList = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L81">        final ListIterator&lt;LinecastPoint3D&gt; it = pts.listIterator();</span>
+        LinecastPoint3D pt;
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        while (it.hasNext()) {</span>
+<span class="fc" id="L84">            pt = it.next();</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">            if (!pt.getLine().getPrecision().eq(currentAbscissa, pt.getAbscissa())) {</span>
+                // new abscissa value
+<span class="fc" id="L87">                currentAbscissa = pt.getAbscissa();</span>
+<span class="fc" id="L88">                abscissaList.clear();</span>
+
+<span class="fc" id="L90">                abscissaList.add(pt);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            } else if (containsEq(pt, abscissaList)) {</span>
+                // duplicate found for this abscissa value
+<span class="fc" id="L93">                it.remove();</span>
+            } else {
+                // not a duplicate
+<span class="fc" id="L96">                abscissaList.add(pt);</span>
+            }
+        }
+<span class="fc" id="L99">    }</span>
+
+    /** Return true if the given linecast point is equivalent to any of those in the given list.
+     * @param pt point to test
+     * @param list list to test against
+     * @return true if the given linecast point is equivalent to any of those in the given list
+     */
+    private static boolean containsEq(final LinecastPoint3D pt, final List&lt;? extends LinecastPoint3D&gt; list) {
+<span class="fc" id="L107">        final Precision.DoubleEquivalence precision = pt.getLine().getPrecision();</span>
+
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        for (final LinecastPoint3D listPt : list) {</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">            if (listPt.eq(pt, precision)) {</span>
+<span class="fc" id="L111">                return true;</span>
+            }
+<span class="fc" id="L113">        }</span>
+
+<span class="fc" id="L115">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

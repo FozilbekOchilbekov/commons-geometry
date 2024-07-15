@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Lines.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.twod</a> &gt; <span class="el_source">Lines.java</span></div><h1>Lines.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.twod;
+
+import java.text.MessageFormat;
+
+import org.apache.commons.geometry.euclidean.oned.Interval;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class containing factory methods for constructing {@link Line} and {@link LineSubset} instances.
+ */
+public final class Lines {
+
+    /** Utility class; no instantiation. */
+    private Lines() {
+    }
+
+    /** Create a line from two points lying on the line. The line points in the direction
+     * from {@code p1} to {@code p2}.
+     * @param p1 first point
+     * @param p2 second point
+     * @param precision precision context used to compare floating point values
+     * @return new line containing {@code p1} and {@code p2} and pointing in the direction
+     *      from {@code p1} to {@code p2}
+     * @throws IllegalArgumentException If the vector between {@code p1} and {@code p2} has zero length,
+     *      as evaluated by the given precision context
+     */
+    public static Line fromPoints(final Vector2D p1, final Vector2D p2, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L43">        return fromPointAndDirection(p1, p1.vectorTo(p2), precision);</span>
+    }
+
+    /** Create a line from a point and direction.
+     * @param pt point belonging to the line
+     * @param dir the direction of the line
+     * @param precision precision context used to compare floating point values
+     * @return new line containing {@code pt} and pointing in direction {@code dir}
+     * @throws IllegalArgumentException If {@code dir} has zero length, as evaluated by the
+     *      given precision context
+     */
+    public static Line fromPointAndDirection(final Vector2D pt, final Vector2D dir,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (dir.isZero(precision)) {</span>
+<span class="fc" id="L57">            throw new IllegalArgumentException(&quot;Line direction cannot be zero&quot;);</span>
+        }
+
+<span class="fc" id="L60">        final Vector2D.Unit normalizedDir = dir.normalize();</span>
+<span class="fc" id="L61">        final double originOffset = normalizedDir.signedArea(pt);</span>
+
+<span class="fc" id="L63">        return new Line(normalizedDir, originOffset, precision);</span>
+    }
+
+    /** Create a line from a point lying on the line and an angle relative to the abscissa (x) axis. Note that the
+     * line does not need to intersect the x-axis; the given angle is simply relative to it.
+     * @param pt point belonging to the line
+     * @param angle angle of the line with respect to abscissa (x) axis, in radians
+     * @param precision precision context used to compare floating point values
+     * @return new line containing {@code pt} and forming the given angle with the
+     *      abscissa (x) axis.
+     */
+    public static Line fromPointAndAngle(final Vector2D pt, final double angle,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L76">        final Vector2D.Unit dir = Vector2D.Unit.from(Math.cos(angle), Math.sin(angle));</span>
+<span class="fc" id="L77">        return fromPointAndDirection(pt, dir, precision);</span>
+    }
+
+    /** Construct a ray from a start point and a direction.
+     * @param startPoint ray start point
+     * @param direction ray direction
+     * @param precision precision context used for floating point comparisons
+     * @return a new ray instance with the given start point and direction
+     * @throws IllegalArgumentException If {@code direction} has zero length, as evaluated by the
+     *      given precision context
+     * @see #fromPointAndDirection(Vector2D, Vector2D, Precision.DoubleEquivalence)
+     */
+    public static Ray rayFromPointAndDirection(final Vector2D startPoint, final Vector2D direction,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L91">        final Line line = Lines.fromPointAndDirection(startPoint, direction, precision);</span>
+
+<span class="fc" id="L93">        return new Ray(line, startPoint);</span>
+    }
+
+    /** Construct a ray starting at the given point and continuing to infinity in the direction
+     * of {@code line}. The given point is projected onto the line.
+     * @param line line for the ray
+     * @param startPoint start point for the ray
+     * @return a new ray instance starting at the given point and continuing in the direction of
+     *      {@code line}
+     * @throws IllegalArgumentException if any coordinate in {@code startPoint} is NaN or infinite
+     */
+    public static Ray rayFromPoint(final Line line, final Vector2D startPoint) {
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (!startPoint.isFinite()) {</span>
+<span class="fc" id="L106">            throw new IllegalArgumentException(&quot;Invalid ray start point: &quot; + startPoint);</span>
+        }
+<span class="fc" id="L108">        return new Ray(line, line.project(startPoint));</span>
+    }
+
+    /** Construct a ray starting at the given 1D location on {@code line} and continuing in the
+     * direction of the line to infinity.
+     * @param line line for the ray
+     * @param startLocation 1D location of the ray start point
+     * @return a new ray instance starting at the given 1D location and continuing to infinity
+     *      along {@code line}
+     * @throws IllegalArgumentException if {@code startLocation} is NaN or infinite
+     */
+    public static Ray rayFromLocation(final Line line, final double startLocation) {
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        if (!Double.isFinite(startLocation)) {</span>
+<span class="fc" id="L121">            throw new IllegalArgumentException(&quot;Invalid ray start location: &quot; + startLocation);</span>
+        }
+<span class="fc" id="L123">        return new Ray(line, line.toSpace(startLocation));</span>
+    }
+
+    /** Construct a reverse ray from an end point and a line direction.
+     * @param endPoint instance end point
+     * @param lineDirection line direction
+     * @param precision precision context used for floating point comparisons
+     * @return a new instance with the given end point and line direction
+     * @throws IllegalArgumentException If {@code lineDirection} has zero length, as evaluated by the
+     *      given precision context
+     * @see #fromPointAndDirection(Vector2D, Vector2D, Precision.DoubleEquivalence)
+     */
+    public static ReverseRay reverseRayFromPointAndDirection(final Vector2D endPoint, final Vector2D lineDirection,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L137">        final Line line = Lines.fromPointAndDirection(endPoint, lineDirection, precision);</span>
+
+<span class="fc" id="L139">        return new ReverseRay(line, endPoint);</span>
+    }
+
+    /** Construct a reverse ray starting at infinity and continuing in the direction of {@code line}
+     * to the given end point. The point is projected onto the line.
+     * @param line line for the instance
+     * @param endPoint end point for the instance
+     * @return a new instance starting at infinity and continuing along the line to {@code endPoint}
+     * @throws IllegalArgumentException if any coordinate in {@code endPoint} is NaN or infinite
+     */
+    public static ReverseRay reverseRayFromPoint(final Line line, final Vector2D endPoint) {
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        if (!endPoint.isFinite()) {</span>
+<span class="fc" id="L151">            throw new IllegalArgumentException(&quot;Invalid reverse ray end point: &quot; + endPoint);</span>
+        }
+<span class="fc" id="L153">        return new ReverseRay(line, line.project(endPoint));</span>
+    }
+
+    /** Construct a reverse ray starting at infinity and continuing in the direction of {@code line}
+     * to the given 1D end location.
+     * @param line line for the instance
+     * @param endLocation 1D location of the instance end point
+     * @return a new instance starting infinity and continuing in the direction of {@code line}
+     *      to the given 1D end location
+     * @throws IllegalArgumentException if {@code endLocation} is NaN or infinite
+     */
+    public static ReverseRay reverseRayFromLocation(final Line line, final double endLocation) {
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        if (!Double.isFinite(endLocation)) {</span>
+<span class="fc" id="L166">            throw new IllegalArgumentException(&quot;Invalid reverse ray end location: &quot; + endLocation);</span>
+        }
+
+<span class="fc" id="L169">        return new ReverseRay(line, line.toSpace(endLocation));</span>
+    }
+
+    /** Construct a new line segment from two points. A new line is created for the segment and points in the
+     * direction from {@code startPoint} to {@code endPoint}.
+     * @param startPoint segment start point
+     * @param endPoint segment end point
+     * @param precision precision context to use for floating point comparisons
+     * @return a new line segment instance with the given start and end points
+     * @throws IllegalArgumentException If the vector between {@code startPoint} and {@code endPoint} has zero length,
+     *      as evaluated by the given precision context
+     */
+    public static Segment segmentFromPoints(final Vector2D startPoint, final Vector2D endPoint,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L183">        final Line line = Lines.fromPoints(startPoint, endPoint, precision);</span>
+
+        // we know that the points lie on the line and are in increasing abscissa order
+        // since they were used to create the line
+<span class="fc" id="L187">        return new Segment(line, startPoint, endPoint);</span>
+    }
+
+    /** Construct a new line segment from a line and a pair of points. The returned segment represents
+     * all points on the line between the projected locations of {@code a} and {@code b}. The points may
+     * be given in any order.
+     * @param line line forming the base of the segment
+     * @param a first point
+     * @param b second point
+     * @return a new line segment representing the points between the projected locations of {@code a}
+     *      and {@code b} on the given line
+     * @throws IllegalArgumentException if either point contains NaN or infinite coordinate values
+     */
+    public static Segment segmentFromPoints(final Line line, final Vector2D a, final Vector2D b) {
+<span class="fc" id="L201">        return segmentFromLocations(line, line.abscissa(a), line.abscissa(b));</span>
+    }
+
+    /** Construct a new line segment from a pair of 1D locations on a line. The returned line
+     * segment consists of all points between the two locations, regardless of the order the
+     * arguments are given.
+     * @param line line forming the base of the segment
+     * @param a first 1D location on the line
+     * @param b second 1D location on the line
+     * @return a new line segment representing the points between {@code a} and {@code b} on
+     *      the given line
+     * @throws IllegalArgumentException if either of the locations is NaN or infinite
+     */
+    public static Segment segmentFromLocations(final Line line, final double a, final double b) {
+
+<span class="fc bfc" id="L216" title="All 4 branches covered.">        if (Double.isFinite(a) &amp;&amp; Double.isFinite(b)) {</span>
+<span class="fc" id="L217">            final double min = Math.min(a, b);</span>
+<span class="fc" id="L218">            final double max = Math.max(a, b);</span>
+
+<span class="fc" id="L220">            return new Segment(line, line.toSpace(min), line.toSpace(max));</span>
+        }
+
+<span class="fc" id="L223">        throw new IllegalArgumentException(</span>
+<span class="fc" id="L224">                MessageFormat.format(&quot;Invalid line segment locations: {0}, {1}&quot;,</span>
+<span class="fc" id="L225">                        Double.toString(a), Double.toString(b)));</span>
+    }
+
+    /** Create a {@link LineConvexSubset} spanning the entire line. In other words, the returned
+     * subset is infinite and contains all points on the given line.
+     * @param line the line to span
+     * @return a convex subset spanning the entire line
+     */
+    public static LineConvexSubset span(final Line line) {
+<span class="fc" id="L234">        return new LineSpanningSubset(line);</span>
+    }
+
+    /** Create a line subset from a line and a 1D interval on the line. The returned subset
+     * uses the precision context from the line and not any precision contexts referenced by the interval.
+     * @param line the line containing the subset
+     * @param interval 1D interval on the line
+     * @return a convex subset defined by the given line and interval
+     */
+    public static LineConvexSubset subsetFromInterval(final Line line, final Interval interval) {
+<span class="fc" id="L244">        return subsetFromInterval(line, interval.getMin(), interval.getMax());</span>
+    }
+
+    /** Create a line subset from a line and a 1D interval on the line. The double values may be given in any
+     * order and support the use of infinite values. For example, the call
+     * {@code Lines.subsetFromInterval(line, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY)} will return
+     * an instance representing the full span of the line.
+     * @param line the line containing the subset
+     * @param a first 1D location on the line
+     * @param b second 1D location on the line
+     * @return a line subset defined by the given line and interval
+     * @throws IllegalArgumentException if either double value is NaN or both are infinite with the same sign
+     *      (eg, both positive infinity or both negative infinity)
+     */
+    public static LineConvexSubset subsetFromInterval(final Line line, final double a, final double b) {
+<span class="fc" id="L259">        final double min = Math.min(a, b);</span>
+<span class="fc" id="L260">        final double max = Math.max(a, b);</span>
+
+<span class="fc" id="L262">        final boolean hasMin = Double.isFinite(min);</span>
+<span class="fc" id="L263">        final boolean hasMax = Double.isFinite(max);</span>
+
+<span class="fc bfc" id="L265" title="All 2 branches covered.">        if (hasMin) {</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">            if (hasMax) {</span>
+                // has both
+<span class="fc" id="L268">                return new Segment(line, line.toSpace(min), line.toSpace(max));</span>
+            }
+            // min only
+<span class="fc" id="L271">            return new Ray(line, line.toSpace(min));</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">        } else if (hasMax) {</span>
+            // max only
+<span class="fc" id="L274">            return new ReverseRay(line, line.toSpace(max));</span>
+<span class="pc bpc" id="L275" title="1 of 6 branches missed.">        } else if (Double.isInfinite(min) &amp;&amp; Double.isInfinite(max) &amp;&amp; Double.compare(min, max) &lt; 0) {</span>
+<span class="fc" id="L276">            return new LineSpanningSubset(line);</span>
+        }
+
+<span class="fc" id="L279">        throw new IllegalArgumentException(MessageFormat.format(</span>
+<span class="fc" id="L280">                &quot;Invalid line subset interval: {0}, {1}&quot;, Double.toString(a), Double.toString(b)));</span>
+    }
+
+    /** Validate that the actual line is equivalent to the expected line, throwing an exception if not.
+     * @param expected the expected line
+     * @param actual the actual line
+     * @throws IllegalArgumentException if the actual line is not equivalent to the expected line
+     */
+    static void validateLinesEquivalent(final Line expected, final Line actual) {
+<span class="fc bfc" id="L289" title="All 2 branches covered.">        if (!expected.eq(actual, expected.getPrecision())) {</span>
+<span class="fc" id="L290">            throw new IllegalArgumentException(&quot;Arguments do not represent the same line. Expected &quot; +</span>
+                    expected + &quot; but was &quot; + actual + &quot;.&quot;);
+        }
+<span class="fc" id="L293">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

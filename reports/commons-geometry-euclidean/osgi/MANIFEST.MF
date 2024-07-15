@@ -1,0 +1,40 @@
+Manifest-Version: 1.0
+Build-Jdk-Spec: 22
+Bundle-Description: Geometric primitives for euclidean space.
+Bundle-DocURL: https://commons.apache.org/proper/commons-geometry/common
+ s-geometry-euclidean/
+Bundle-License: https://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Commons Geometry Euclidean
+Bundle-SymbolicName: org.apache.commons.geometry.euclidean
+Bundle-Vendor: The Apache Software Foundation
+Bundle-Version: 1.1.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin 5.1.8
+Export-Package: org.apache.commons.geometry.euclidean;version="1.1.0",or
+ g.apache.commons.geometry.euclidean.internal;version="1.1.0",org.apache
+ .commons.geometry.euclidean.oned;version="1.1.0",org.apache.commons.geo
+ metry.euclidean.threed;version="1.1.0",org.apache.commons.geometry.eucl
+ idean.threed.line;version="1.1.0",org.apache.commons.geometry.euclidean
+ .threed.mesh;version="1.1.0",org.apache.commons.geometry.euclidean.thre
+ ed.rotation;version="1.1.0",org.apache.commons.geometry.euclidean.three
+ d.shape;version="1.1.0",org.apache.commons.geometry.euclidean.twod;vers
+ ion="1.1.0",org.apache.commons.geometry.euclidean.twod.hull;version="1.
+ 1.0",org.apache.commons.geometry.euclidean.twod.path;version="1.1.0",or
+ g.apache.commons.geometry.euclidean.twod.rotation;version="1.1.0",org.a
+ pache.commons.geometry.euclidean.twod.shape;version="1.1.0"
+Import-Package: org.apache.commons.geometry.core,org.apache.commons.geom
+ etry.core.collection,org.apache.commons.geometry.core.internal,org.apac
+ he.commons.geometry.core.partitioning,org.apache.commons.geometry.core.
+ partitioning.bsp,org.apache.commons.geometry.euclidean,org.apache.commo
+ ns.geometry.euclidean.internal,org.apache.commons.geometry.euclidean.on
+ ed,org.apache.commons.geometry.euclidean.threed,org.apache.commons.geom
+ etry.euclidean.threed.line,org.apache.commons.geometry.euclidean.threed
+ .mesh,org.apache.commons.geometry.euclidean.threed.rotation,org.apache.
+ commons.geometry.euclidean.threed.shape,org.apache.commons.geometry.euc
+ lidean.twod,org.apache.commons.geometry.euclidean.twod.path,org.apache.
+ commons.geometry.euclidean.twod.rotation,org.apache.commons.geometry.eu
+ clidean.twod.shape,org.apache.commons.numbers.angle,org.apache.commons.
+ numbers.core,org.apache.commons.numbers.quaternion
+Include-Resource: META-INF/LICENSE=LICENSE,META-INF/NOTICE=NOTICE
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Tool: Bnd-6.4.1.202306080939

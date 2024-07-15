@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractLinecastPoint.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean</a> &gt; <span class="el_source">AbstractLinecastPoint.java</span></div><h1>AbstractLinecastPoint.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean;
+
+import java.util.Objects;
+
+import org.apache.commons.geometry.core.Embedding;
+import org.apache.commons.geometry.euclidean.oned.Vector1D;
+
+/** Base class for intersections discovered during linecast operations. This class contains
+ * the intersection point and the normal of the target boundary at the point of intersection
+ * along with the intersecting line and abscissa.
+ * @param &lt;P&gt; Euclidean point/vector implementation type
+ * @param &lt;U&gt; Unit-length Euclidean vector implementation type
+ * @param &lt;L&gt; Line implementation type
+ */
+public abstract class AbstractLinecastPoint&lt;
+    P extends EuclideanVector&lt;P&gt;,
+    U extends P,
+    L extends Embedding&lt;P, Vector1D&gt;&gt; {
+
+    /** Line intersection point. */
+    private final P point;
+
+    /** Normal of the target boundary at the intersection point. */
+    private final U normal;
+
+    /** The intersecting line. */
+    private final L line;
+
+    /** Abscissa of the intersection point along the intersecting line. */
+    private final double abscissa;
+
+    /** Construct a new instance from its components.
+     * @param point intersection point
+     * @param normal surface normal
+     * @param line line that the intersection point belongs to
+     */
+<span class="fc" id="L53">    protected AbstractLinecastPoint(final P point, final U normal, final L line) {</span>
+<span class="fc" id="L54">        this.point = point;</span>
+<span class="fc" id="L55">        this.normal = normal;</span>
+<span class="fc" id="L56">        this.line = line;</span>
+
+<span class="fc" id="L58">        this.abscissa = line.toSubspace(point).getX();</span>
+<span class="fc" id="L59">    }</span>
+
+    /** Get the line intersection point.
+     * @return the line intersection point
+     */
+    public P getPoint() {
+<span class="fc" id="L65">        return point;</span>
+    }
+
+    /** Get the normal of the target boundary at the intersection point.
+     * @return the normal of the target boundary at the intersection point
+     */
+    public U getNormal() {
+<span class="fc" id="L72">        return normal;</span>
+    }
+
+    /** Get the intersecting line.
+     * @return the intersecting line
+     */
+    public L getLine() {
+<span class="fc" id="L79">        return line;</span>
+    }
+
+    /** Get the abscissa (1D position) of the intersection point
+     * along the linecast line.
+     * @return the abscissa of the intersection point.
+     */
+    public double getAbscissa() {
+<span class="fc" id="L87">        return abscissa;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L93">        return Objects.hash(point, normal, line);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L100">            return true;</span>
+        }
+<span class="fc bfc" id="L102" title="All 4 branches covered.">        if (obj == null || !getClass().equals(obj.getClass())) {</span>
+<span class="fc" id="L103">            return false;</span>
+        }
+
+<span class="fc" id="L106">        final AbstractLinecastPoint&lt;?, ?, ?&gt; other = (AbstractLinecastPoint&lt;?, ?, ?&gt;) obj;</span>
+
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        return Objects.equals(point, other.point) &amp;&amp;</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">                Objects.equals(normal, other.normal) &amp;&amp;</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">                Objects.equals(line, other.line);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L116">        final StringBuilder sb = new StringBuilder(50);</span>
+<span class="fc" id="L117">        sb.append(getClass().getSimpleName())</span>
+<span class="fc" id="L118">            .append(&quot;[point= &quot;)</span>
+<span class="fc" id="L119">            .append(getPoint())</span>
+<span class="fc" id="L120">            .append(&quot;, normal= &quot;)</span>
+<span class="fc" id="L121">            .append(getNormal())</span>
+<span class="fc" id="L122">            .append(&quot;, abscissa= &quot;)</span>
+<span class="fc" id="L123">            .append(getAbscissa())</span>
+<span class="fc" id="L124">            .append(&quot;, line= &quot;)</span>
+<span class="fc" id="L125">            .append(getLine())</span>
+<span class="fc" id="L126">            .append(']');</span>
+
+<span class="fc" id="L128">        return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

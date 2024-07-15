@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConvexArea.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.twod</a> &gt; <span class="el_source">ConvexArea.java</span></div><h1>ConvexArea.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.twod;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
+
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.AbstractConvexHyperplaneBoundedRegion;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.HyperplaneConvexSubset;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.geometry.euclidean.twod.path.InteriorAngleLinePathConnector;
+import org.apache.commons.geometry.euclidean.twod.path.LinePath;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing a finite or infinite convex area in Euclidean 2D space.
+ * The boundaries of this area, if any, are composed of convex line subsets.
+ */
+public class ConvexArea extends AbstractConvexHyperplaneBoundedRegion&lt;Vector2D, LineConvexSubset&gt;
+    implements BoundarySource2D {
+
+    /** Error message used when attempting to construct a convex polygon from a non-convex line path. */
+    private static final String NON_CONVEX_PATH_ERROR = &quot;Cannot construct convex polygon from non-convex path: &quot;;
+
+    /** Instance representing the full 2D plane. */
+<span class="fc" id="L44">    private static final ConvexArea FULL = new ConvexArea(Collections.emptyList());</span>
+
+    /** Simple constructor. Callers are responsible for ensuring that the given path
+     * represents the boundary of a convex area. No validation is performed.
+     * @param boundaries the boundaries of the convex area
+     */
+    protected ConvexArea(final List&lt;LineConvexSubset&gt; boundaries) {
+<span class="fc" id="L51">        super(boundaries);</span>
+<span class="fc" id="L52">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public Stream&lt;LineConvexSubset&gt; boundaryStream() {
+<span class="fc" id="L57">        return getBoundaries().stream();</span>
+    }
+
+    /** Get the connected line subset paths comprising the boundary of the area. The
+     * line subsets are oriented so that their minus sides point toward the interior of the
+     * region. The size of the returned list is
+     * &lt;ul&gt;
+     *      &lt;li&gt;&lt;strong&gt;0&lt;/strong&gt; if the convex area is full,&lt;/li&gt;
+     *      &lt;li&gt;&lt;strong&gt;1&lt;/strong&gt; if at least one boundary is present and
+     *          a single path can connect all line subsets (this will be the case
+     *          for most instances), and&lt;/li&gt;
+     *      &lt;li&gt;&lt;strong&gt;2&lt;/strong&gt; if only two boundaries exist and they are
+     *          parallel to each other (in which case they cannot be connected
+     *          as a single path).&lt;/li&gt;
+     * &lt;/ul&gt;
+     * @return the line subset paths comprising the boundary of the area.
+     */
+    public List&lt;LinePath&gt; getBoundaryPaths() {
+        // use connectMaximized() here since that will prevent us from skipping vertices
+        // when there are multiple equivalent vertices to choose from for a given endpoint
+<span class="fc" id="L77">        return InteriorAngleLinePathConnector.connectMaximized(getBoundaries());</span>
+    }
+
+    /** Get the vertices for the area in a counter-clockwise order. Each vertex in the
+     * returned list is unique. If the boundary of the area is closed, the start vertex is
+     * &lt;em&gt;not&lt;/em&gt; repeated at the end of the list.
+     *
+     * &lt;p&gt;It is important to note that, in general, the list of vertices returned by this method
+     * is not sufficient to completely characterize the area. For example, a simple triangle
+     * has 3 vertices, but an infinite area constructed from two parallel lines and two lines that
+     * intersect between them will also have 3 vertices. It is also possible for non-empty areas to
+     * contain no vertices at all. For example, an area with no boundaries (representing the full
+     * space), an area with a single boundary, or an area with two parallel boundaries will not
+     * contain any vertices.&lt;/p&gt;
+     * @return the list of vertices for the area in a counter-clockwise order
+     */
+    public List&lt;Vector2D&gt; getVertices() {
+<span class="fc" id="L94">        final List&lt;LinePath&gt; paths = getBoundaryPaths();</span>
+
+        // we will only have vertices if we have a single path; otherwise, we have a full
+        // area or two non-intersecting infinite line subsets
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (paths.size() == 1) {</span>
+<span class="fc" id="L99">            final LinePath path = paths.get(0);</span>
+<span class="fc" id="L100">            final List&lt;Vector2D&gt; vertices = path.getVertexSequence();</span>
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">            if (path.isClosed()) {</span>
+                // do not include the repeated start point
+<span class="fc" id="L104">                return vertices.subList(0, vertices.size() - 1);</span>
+            }
+<span class="fc" id="L106">            return vertices;</span>
+        }
+
+<span class="fc" id="L109">        return Collections.emptyList();</span>
+    }
+
+    /** Return a new instance transformed by the argument.
+     * @param transform transform to apply
+     * @return a new instance transformed by the argument
+     */
+    public ConvexArea transform(final Transform&lt;Vector2D&gt; transform) {
+<span class="fc" id="L117">        return transformInternal(transform, this, LineConvexSubset.class, ConvexArea::new);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LineConvexSubset trim(final HyperplaneConvexSubset&lt;Vector2D&gt; convexSubset) {
+<span class="fc" id="L123">        return (LineConvexSubset) super.trim(convexSubset);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getSize() {
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        if (isFull()) {</span>
+<span class="fc" id="L130">            return Double.POSITIVE_INFINITY;</span>
+        }
+
+<span class="fc" id="L133">        double quadrilateralAreaSum = 0.0;</span>
+
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        for (final LineConvexSubset boundary : getBoundaries()) {</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">            if (boundary.isInfinite()) {</span>
+<span class="fc" id="L137">                return Double.POSITIVE_INFINITY;</span>
+            }
+
+<span class="fc" id="L140">            quadrilateralAreaSum += boundary.getStartPoint().signedArea(boundary.getEndPoint());</span>
+<span class="fc" id="L141">        }</span>
+
+<span class="fc" id="L143">        return 0.5 * quadrilateralAreaSum;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector2D getCentroid() {
+<span class="fc" id="L149">        final List&lt;LineConvexSubset&gt; boundaries = getBoundaries();</span>
+
+<span class="fc" id="L151">        double quadrilateralAreaSum = 0.0;</span>
+<span class="fc" id="L152">        double scaledSumX = 0.0;</span>
+<span class="fc" id="L153">        double scaledSumY = 0.0;</span>
+
+        double signedArea;
+        Vector2D startPoint;
+        Vector2D endPoint;
+
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        for (final LineConvexSubset seg : boundaries) {</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">            if (seg.isInfinite()) {</span>
+                // infinite =&gt; no centroid
+<span class="fc" id="L162">                return null;</span>
+            }
+
+<span class="fc" id="L165">            startPoint = seg.getStartPoint();</span>
+<span class="fc" id="L166">            endPoint = seg.getEndPoint();</span>
+
+<span class="fc" id="L168">            signedArea = startPoint.signedArea(endPoint);</span>
+
+<span class="fc" id="L170">            quadrilateralAreaSum += signedArea;</span>
+
+<span class="fc" id="L172">            scaledSumX += signedArea * (startPoint.getX() + endPoint.getX());</span>
+<span class="fc" id="L173">            scaledSumY += signedArea * (startPoint.getY() + endPoint.getY());</span>
+<span class="fc" id="L174">        }</span>
+
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        if (quadrilateralAreaSum &gt; 0) {</span>
+<span class="fc" id="L177">            return Vector2D.of(scaledSumX, scaledSumY).multiply(1.0 / (3.0 * quadrilateralAreaSum));</span>
+        }
+
+<span class="fc" id="L180">        return null;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Split&lt;ConvexArea&gt; split(final Hyperplane&lt;Vector2D&gt; splitter) {
+<span class="fc" id="L186">        return splitInternal(splitter, this, LineConvexSubset.class, ConvexArea::new);</span>
+    }
+
+    /** Return a BSP tree representing the same region as this instance.
+     */
+    @Override
+    public RegionBSPTree2D toTree() {
+<span class="fc" id="L193">        return RegionBSPTree2D.from(getBoundaries(), true);</span>
+    }
+
+    /** Return an instance representing the full 2D area.
+     * @return an instance representing the full 2D area.
+     */
+    public static ConvexArea full() {
+<span class="fc" id="L200">        return FULL;</span>
+    }
+
+    /** Construct a convex polygon from the given vertices.
+     * @param vertices vertices to use to construct the polygon
+     * @param precision precision context used for floating point comparisons
+     * @return a convex polygon constructed using the given vertices
+     * @throws IllegalStateException if {@code vertices} contains only a single unique vertex
+     * @throws IllegalArgumentException if the constructed path does not define a closed, convex polygon
+     * @see LinePath#fromVertexLoop(Collection, Precision.DoubleEquivalence)
+     */
+    public static ConvexArea convexPolygonFromVertices(final Collection&lt;Vector2D&gt; vertices,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L213">        return convexPolygonFromPath(LinePath.fromVertexLoop(vertices, precision));</span>
+    }
+
+    /** Construct a convex polygon from a line path.
+     * @param path path to construct the polygon from
+     * @return a convex polygon constructed from the given line path
+     * @throws IllegalArgumentException if the path does not define a closed, convex polygon
+     */
+    public static ConvexArea convexPolygonFromPath(final LinePath path) {
+        // ensure that the path is closed; this also ensures that we do not have any infinite elements
+<span class="fc bfc" id="L223" title="All 2 branches covered.">        if (!path.isClosed()) {</span>
+<span class="fc" id="L224">            throw new IllegalArgumentException(&quot;Cannot construct convex polygon from unclosed path: &quot; + path);</span>
+        }
+
+<span class="fc" id="L227">        final List&lt;LineConvexSubset&gt; elements = path.getElements();</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">        if (elements.size() &lt; 3) {</span>
+<span class="fc" id="L229">            throw new IllegalArgumentException(</span>
+                    &quot;Cannot construct convex polygon from path with less than 3 elements: &quot; + path);
+        }
+
+        // go through the elements and validate that the produced area is convex and finite
+        // using the precision context from the first path element
+<span class="fc" id="L235">        final LineConvexSubset startElement = elements.get(0);</span>
+<span class="fc" id="L236">        final Vector2D startVertex = startElement.getStartPoint();</span>
+<span class="fc" id="L237">        final Precision.DoubleEquivalence precision = startElement.getPrecision();</span>
+
+        Vector2D curVector;
+<span class="fc" id="L240">        Vector2D prevVector = null;</span>
+
+        double signedArea;
+<span class="fc" id="L243">        double totalSignedArea = 0.0;</span>
+
+        LineConvexSubset element;
+
+        // we can skip the last element since the we know that the path is closed, meaning that the
+        // last element's end point is equal to our start point
+<span class="fc bfc" id="L249" title="All 2 branches covered.">        for (int i = 0; i &lt; elements.size() - 1; ++i) {</span>
+<span class="fc" id="L250">            element = elements.get(i);</span>
+
+<span class="fc" id="L252">            curVector = startVertex.vectorTo(element.getEndPoint());</span>
+
+<span class="fc bfc" id="L254" title="All 2 branches covered.">            if (prevVector != null) {</span>
+<span class="fc" id="L255">                signedArea = prevVector.signedArea(curVector);</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">                if (precision.lt(signedArea, 0.0)) {</span>
+<span class="fc" id="L257">                    throw new IllegalArgumentException(NON_CONVEX_PATH_ERROR + path);</span>
+                }
+
+<span class="fc" id="L260">                totalSignedArea += signedArea;</span>
+            }
+
+<span class="fc" id="L263">            prevVector = curVector;</span>
+        }
+
+<span class="fc bfc" id="L266" title="All 2 branches covered.">        if (precision.lte(totalSignedArea, 0.0)) {</span>
+<span class="fc" id="L267">            throw new IllegalArgumentException(NON_CONVEX_PATH_ERROR + path);</span>
+        }
+
+<span class="fc" id="L270">        return new ConvexArea(elements);</span>
+    }
+
+    /** Create a convex area formed by the intersection of the negative half-spaces of the
+     * given bounding lines. The returned instance represents the area that is on the
+     * minus side of all of the given lines. Note that this method does not support areas
+     * of zero size (ie, infinitely thin areas or points.)
+     * @param bounds lines used to define the convex area
+     * @return a new convex area instance representing the area on the minus side of all
+     *      of the bounding lines or an instance representing the full area if no lines are
+     *      given
+     * @throws IllegalArgumentException if the given set of bounding lines do not form a convex area,
+     *      meaning that there is no region that is on the minus side of all of the bounding lines.
+     */
+    public static ConvexArea fromBounds(final Line... bounds) {
+<span class="fc" id="L285">        return fromBounds(Arrays.asList(bounds));</span>
+    }
+
+    /** Create a convex area formed by the intersection of the negative half-spaces of the
+     * given bounding lines. The returned instance represents the area that is on the
+     * minus side of all of the given lines. Note that this method does not support areas
+     * of zero size (ie, infinitely thin areas or points.)
+     * @param bounds lines used to define the convex area
+     * @return a new convex area instance representing the area on the minus side of all
+     *      of the bounding lines or an instance representing the full area if the collection
+     *      is empty
+     * @throws IllegalArgumentException if the given set of bounding lines do not form a convex area,
+     *      meaning that there is no region that is on the minus side of all of the bounding lines.
+     */
+    public static ConvexArea fromBounds(final Iterable&lt;Line&gt; bounds) {
+<span class="fc" id="L300">        final List&lt;LineConvexSubset&gt; subsets =</span>
+<span class="fc" id="L301">                new ConvexRegionBoundaryBuilder&lt;&gt;(LineConvexSubset.class).build(bounds);</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">        return subsets.isEmpty() ? full() : new ConvexArea(subsets);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

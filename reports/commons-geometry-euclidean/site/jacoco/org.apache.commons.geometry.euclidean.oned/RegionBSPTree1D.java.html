@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RegionBSPTree1D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.oned</a> &gt; <span class="el_source">RegionBSPTree1D.java</span></div><h1>RegionBSPTree1D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.oned;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.BiConsumer;
+
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTree;
+import org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTree;
+import org.apache.commons.geometry.core.partitioning.bsp.RegionCutRule;
+
+/** Binary space partitioning (BSP) tree representing a region in one dimensional
+ * Euclidean space.
+ */
+public final class RegionBSPTree1D extends AbstractRegionBSPTree&lt;Vector1D, RegionBSPTree1D.RegionNode1D&gt; {
+    /** Comparator used to sort BoundaryPairs by ascending location.  */
+<span class="fc" id="L38">    private static final Comparator&lt;BoundaryPair&gt; BOUNDARY_PAIR_COMPARATOR =</span>
+<span class="fc" id="L39">            Comparator.comparingDouble(BoundaryPair::getMinValue);</span>
+
+    /** Create a new, empty region.
+     */
+    public RegionBSPTree1D() {
+<span class="fc" id="L44">        this(false);</span>
+<span class="fc" id="L45">    }</span>
+
+    /** Create a new region. If {@code full} is true, then the region will
+     * represent the entire number line. Otherwise, it will be empty.
+     * @param full whether or not the region should contain the entire
+     *      number line or be empty
+     */
+    public RegionBSPTree1D(final boolean full) {
+<span class="fc" id="L53">        super(full);</span>
+<span class="fc" id="L54">    }</span>
+
+    /** Return a deep copy of this instance.
+     * @return a deep copy of this instance.
+     * @see #copy(org.apache.commons.geometry.core.partitioning.bsp.BSPTree)
+     */
+    public RegionBSPTree1D copy() {
+<span class="fc" id="L61">        final RegionBSPTree1D result = RegionBSPTree1D.empty();</span>
+<span class="fc" id="L62">        result.copy(this);</span>
+
+<span class="fc" id="L64">        return result;</span>
+    }
+
+    /** Add an interval to this region. The resulting region will be the
+     * union of the interval and the region represented by this instance.
+     * @param interval the interval to add
+     */
+    public void add(final Interval interval) {
+<span class="fc" id="L72">        union(intervalToTree(interval));</span>
+<span class="fc" id="L73">    }</span>
+
+    /** Classify a point location with respect to the region.
+     * @param x the point to classify
+     * @return the location of the point with respect to the region
+     * @see AbstractRegionBSPTree#classify(org.apache.commons.geometry.core.Point)
+     */
+    public RegionLocation classify(final double x) {
+<span class="fc" id="L81">        return classify(Vector1D.of(x));</span>
+    }
+
+    /** Return true if the given point location is on the inside or boundary
+     * of the region.
+     * @param x the location to test
+     * @return true if the location is on the inside or boundary of the region
+     * @see #contains(org.apache.commons.geometry.core.Point)
+     */
+    public boolean contains(final double x) {
+<span class="fc" id="L91">        return contains(Vector1D.of(x));</span>
+    }
+
+    /** {@inheritDoc}
+    *
+    *  &lt;p&gt;This method simply returns 0 because boundaries in one dimension do not
+    *  have any size.&lt;/p&gt;
+    */
+    @Override
+    public double getBoundarySize() {
+<span class="fc" id="L101">        return 0;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D project(final Vector1D pt) {
+        // use our custom projector so that we can disambiguate points that are
+        // actually equidistant from the target point
+<span class="fc" id="L109">        final BoundaryProjector1D projector = new BoundaryProjector1D(pt);</span>
+<span class="fc" id="L110">        accept(projector);</span>
+
+<span class="fc" id="L112">        return projector.getProjected();</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;When splitting trees representing single points with a splitter lying directly
+     * on the point, the result point is placed on one side of the splitter based on its
+     * orientation: if the splitter is positive-facing, the point is placed on the plus
+     * side of the split; if the splitter is negative-facing, the point is placed on the
+     * minus side of the split.&lt;/p&gt;
+     */
+    @Override
+    public Split&lt;RegionBSPTree1D&gt; split(final Hyperplane&lt;Vector1D&gt; splitter) {
+<span class="fc" id="L125">        return split(splitter, RegionBSPTree1D.empty(), RegionBSPTree1D.empty());</span>
+    }
+
+    /** Get the minimum value on the inside of the region; returns {@link Double#NEGATIVE_INFINITY}
+     * if the region does not have a minimum value and {@link Double#POSITIVE_INFINITY} if
+     * the region is empty.
+     * @return the minimum value on the inside of the region
+     */
+    public double getMin() {
+<span class="fc" id="L134">        double min = Double.POSITIVE_INFINITY;</span>
+
+<span class="fc" id="L136">        RegionNode1D node = getRoot();</span>
+        OrientedPoint pt;
+
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        while (!node.isLeaf()) {</span>
+<span class="fc" id="L140">            pt = (OrientedPoint) node.getCutHyperplane();</span>
+
+<span class="fc" id="L142">            min = pt.getLocation();</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">            node = pt.isPositiveFacing() ? node.getMinus() : node.getPlus();</span>
+        }
+
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        return node.isInside() ? Double.NEGATIVE_INFINITY : min;</span>
+    }
+
+    /** Get the maximum value on the inside of the region; returns {@link Double#POSITIVE_INFINITY}
+     * if the region does not have a maximum value and {@link Double#NEGATIVE_INFINITY} if
+     * the region is empty.
+     * @return the maximum value on the inside of the region
+     */
+    public double getMax() {
+<span class="fc" id="L155">        double max = Double.NEGATIVE_INFINITY;</span>
+
+<span class="fc" id="L157">        RegionNode1D node = getRoot();</span>
+        OrientedPoint pt;
+
+<span class="fc bfc" id="L160" title="All 2 branches covered.">        while (!node.isLeaf()) {</span>
+<span class="fc" id="L161">            pt = (OrientedPoint) node.getCutHyperplane();</span>
+
+<span class="fc" id="L163">            max = pt.getLocation();</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">            node = pt.isPositiveFacing() ? node.getPlus() : node.getMinus();</span>
+        }
+
+<span class="fc bfc" id="L167" title="All 2 branches covered.">        return node.isInside() ? Double.POSITIVE_INFINITY : max;</span>
+    }
+
+    /** Convert the region represented by this tree into a list of separate
+     * {@link Interval}s, arranged in order of ascending min value.
+     * @return list of {@link Interval}s representing this region in order of
+     *      ascending min value
+     */
+    public List&lt;Interval&gt; toIntervals() {
+
+<span class="fc" id="L177">        final List&lt;BoundaryPair&gt; boundaryPairs = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L179">        visitInsideIntervals((min, max) -&gt; boundaryPairs.add(new BoundaryPair(min, max)));</span>
+<span class="fc" id="L180">        boundaryPairs.sort(BOUNDARY_PAIR_COMPARATOR);</span>
+
+<span class="fc" id="L182">        final List&lt;Interval&gt; intervals = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L184">        BoundaryPair start = null;</span>
+<span class="fc" id="L185">        BoundaryPair end = null;</span>
+
+<span class="fc bfc" id="L187" title="All 2 branches covered.">        for (final BoundaryPair current : boundaryPairs) {</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">            if (start == null) {</span>
+<span class="fc" id="L189">                start = current;</span>
+<span class="fc" id="L190">                end = current;</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">            } else if (Objects.equals(end.getMax(), current.getMin())) {</span>
+                // these intervals should be merged
+<span class="fc" id="L193">                end = current;</span>
+            } else {
+                // these intervals should not be merged
+<span class="fc" id="L196">                intervals.add(createInterval(start, end));</span>
+
+                // queue up the next pair
+<span class="fc" id="L199">                start = current;</span>
+<span class="fc" id="L200">                end = current;</span>
+            }
+<span class="fc" id="L202">        }</span>
+
+<span class="fc bfc" id="L204" title="All 2 branches covered.">        if (start != null) {</span>
+<span class="fc" id="L205">            intervals.add(createInterval(start, end));</span>
+        }
+
+<span class="fc" id="L208">        return intervals;</span>
+    }
+
+    /** Create an interval instance from the min boundary from the start boundary pair and
+     * the max boundary from the end boundary pair. The hyperplane directions are adjusted
+     * as needed.
+     * @param start starting boundary pair
+     * @param end ending boundary pair
+     * @return an interval created from the min boundary of the given start pair and the
+     *      max boundary from the given end pair
+     */
+    private Interval createInterval(final BoundaryPair start, final BoundaryPair end) {
+<span class="fc" id="L220">        OrientedPoint min = start.getMin();</span>
+<span class="fc" id="L221">        OrientedPoint max = end.getMax();</span>
+
+        // flip the hyperplanes if needed since there's no
+        // guarantee that the inside will be on the minus side
+        // of the hyperplane (for example, if the region is complemented)
+
+<span class="fc bfc" id="L227" title="All 4 branches covered.">        if (min != null &amp;&amp; min.isPositiveFacing()) {</span>
+<span class="fc" id="L228">            min = min.reverse();</span>
+        }
+<span class="fc bfc" id="L230" title="All 4 branches covered.">        if (max != null &amp;&amp; !max.isPositiveFacing()) {</span>
+<span class="fc" id="L231">            max = max.reverse();</span>
+        }
+
+<span class="fc" id="L234">        return Interval.of(min, max);</span>
+    }
+
+    /** Compute the min/max intervals for all interior convex regions in the tree and
+     * pass the values to the given visitor function.
+     * @param visitor the object that will receive the calculated min and max boundary for each
+     *      insides node's convex region
+     */
+    private void visitInsideIntervals(final BiConsumer&lt;OrientedPoint, OrientedPoint&gt; visitor) {
+<span class="fc bfc" id="L243" title="All 2 branches covered.">        for (final RegionNode1D node : nodes()) {</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">            if (node.isInside()) {</span>
+<span class="fc" id="L245">                node.visitNodeInterval(visitor);</span>
+            }
+<span class="fc" id="L247">        }</span>
+<span class="fc" id="L248">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    protected RegionNode1D createNode() {
+<span class="fc" id="L253">        return new RegionNode1D(this);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected RegionSizeProperties&lt;Vector1D&gt; computeRegionSizeProperties() {
+<span class="fc" id="L259">        final RegionSizePropertiesVisitor visitor = new RegionSizePropertiesVisitor();</span>
+
+<span class="fc" id="L261">        visitInsideIntervals(visitor);</span>
+
+<span class="fc" id="L263">        return visitor.getRegionSizeProperties();</span>
+    }
+
+    /** Returns true if the given transform would result in a swapping of the interior
+     * and exterior of the region if applied.
+     *
+     * &lt;p&gt;This method always returns false since no swapping of this kind occurs in
+     * 1D.&lt;/p&gt;
+     */
+    @Override
+    protected boolean swapsInsideOutside(final Transform&lt;Vector1D&gt; transform) {
+<span class="fc" id="L274">        return false;</span>
+    }
+
+    /** Return a new {@link RegionBSPTree1D} instance containing the entire space.
+     * @return a new {@link RegionBSPTree1D} instance containing the entire space
+     */
+    public static RegionBSPTree1D full() {
+<span class="fc" id="L281">        return new RegionBSPTree1D(true);</span>
+    }
+
+    /** Return a new, empty {@link RegionBSPTree1D} instance.
+     * @return a new, empty {@link RegionBSPTree1D} instance
+     */
+    public static RegionBSPTree1D empty() {
+<span class="fc" id="L288">        return new RegionBSPTree1D(false);</span>
+    }
+
+    /** Construct a new instance from one or more intervals. The returned tree
+     * represents the same region as the union of all of the input intervals.
+     * @param interval the input interval
+     * @param more additional intervals to add to the region
+     * @return a new instance representing the same region as the union
+     *      of all of the given intervals
+     */
+    public static RegionBSPTree1D from(final Interval interval, final Interval... more) {
+<span class="fc" id="L299">        final RegionBSPTree1D tree = intervalToTree(interval);</span>
+
+<span class="fc bfc" id="L301" title="All 2 branches covered.">        for (final Interval additional : more) {</span>
+<span class="fc" id="L302">            tree.add(additional);</span>
+        }
+
+<span class="fc" id="L305">        return tree;</span>
+    }
+
+    /** Construct a new instance from the given collection of intervals.
+     * @param intervals the intervals to populate the region with
+     * @return a new instance constructed from the given collection of intervals
+     */
+    public static RegionBSPTree1D from(final Iterable&lt;Interval&gt; intervals) {
+<span class="fc" id="L313">        final RegionBSPTree1D tree = new RegionBSPTree1D(false);</span>
+
+<span class="fc bfc" id="L315" title="All 2 branches covered.">        for (final Interval interval : intervals) {</span>
+<span class="fc" id="L316">            tree.add(interval);</span>
+<span class="fc" id="L317">        }</span>
+
+<span class="fc" id="L319">        return tree;</span>
+    }
+
+    /** Return a tree representing the same region as the given interval.
+     * @param interval interval to create a tree from
+     * @return a tree representing the same region as the given interval
+     */
+    private static RegionBSPTree1D intervalToTree(final Interval interval) {
+<span class="fc" id="L327">        final OrientedPoint minBoundary = interval.getMinBoundary();</span>
+<span class="fc" id="L328">        final OrientedPoint maxBoundary = interval.getMaxBoundary();</span>
+
+<span class="fc" id="L330">        final RegionBSPTree1D tree = full();</span>
+
+<span class="fc" id="L332">        RegionNode1D node = tree.getRoot();</span>
+
+<span class="fc bfc" id="L334" title="All 2 branches covered.">        if (minBoundary != null) {</span>
+<span class="fc" id="L335">            tree.setNodeCut(node, minBoundary.span(), tree.getSubtreeInitializer(RegionCutRule.MINUS_INSIDE));</span>
+
+<span class="fc" id="L337">            node = node.getMinus();</span>
+        }
+
+<span class="fc bfc" id="L340" title="All 2 branches covered.">        if (maxBoundary != null) {</span>
+<span class="fc" id="L341">            tree.setNodeCut(node, maxBoundary.span(), tree.getSubtreeInitializer(RegionCutRule.MINUS_INSIDE));</span>
+        }
+
+<span class="fc" id="L344">        return tree;</span>
+    }
+
+    /** BSP tree node for one dimensional Euclidean space.
+     */
+    public static final class RegionNode1D extends AbstractRegionBSPTree.AbstractRegionNode&lt;Vector1D, RegionNode1D&gt; {
+        /** Simple constructor.
+         * @param tree the owning tree instance
+         */
+        private RegionNode1D(final AbstractBSPTree&lt;Vector1D, RegionNode1D&gt; tree) {
+<span class="fc" id="L354">            super(tree);</span>
+<span class="fc" id="L355">        }</span>
+
+        /** Get the region represented by this node. The returned region contains
+         * the entire area contained in this node, regardless of the attributes of
+         * any child nodes.
+         * @return the region represented by this node
+         */
+        public Interval getNodeRegion() {
+<span class="fc" id="L363">            final NodeRegionVisitor visitor = new NodeRegionVisitor();</span>
+<span class="fc" id="L364">            visitNodeInterval(visitor);</span>
+
+<span class="fc" id="L366">            return visitor.getInterval();</span>
+        }
+
+        /** Determine the min/max boundaries for the convex region represented by this node and pass
+         * the values to the visitor function.
+         * @param visitor the object that will receive the min and max boundaries for the node's
+         *      convex region
+         */
+        private void visitNodeInterval(final BiConsumer&lt;? super OrientedPoint, ? super OrientedPoint&gt; visitor) {
+<span class="fc" id="L375">            OrientedPoint min = null;</span>
+<span class="fc" id="L376">            OrientedPoint max = null;</span>
+
+            OrientedPoint pt;
+<span class="fc" id="L379">            RegionNode1D child = this;</span>
+            RegionNode1D parent;
+
+<span class="fc bfc" id="L382" title="All 6 branches covered.">            while ((min == null || max == null) &amp;&amp; (parent = child.getParent()) != null) {</span>
+<span class="fc" id="L383">                pt = (OrientedPoint) parent.getCutHyperplane();</span>
+
+<span class="fc bfc" id="L385" title="All 4 branches covered.">                if ((pt.isPositiveFacing() &amp;&amp; child.isMinus()) ||</span>
+<span class="fc bfc" id="L386" title="All 4 branches covered.">                        (!pt.isPositiveFacing() &amp;&amp; child.isPlus())) {</span>
+
+<span class="fc bfc" id="L388" title="All 2 branches covered.">                    if (max == null) {</span>
+<span class="fc" id="L389">                        max = pt;</span>
+                    }
+<span class="fc bfc" id="L391" title="All 2 branches covered.">                } else if (min == null) {</span>
+<span class="fc" id="L392">                    min = pt;</span>
+                }
+
+<span class="fc" id="L395">                child = parent;</span>
+            }
+
+<span class="fc" id="L398">            visitor.accept(min, max);</span>
+<span class="fc" id="L399">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        protected RegionNode1D getSelf() {
+<span class="fc" id="L404">            return this;</span>
+        }
+    }
+
+    /** Internal class containing pairs of interval boundaries.
+     */
+    private static final class BoundaryPair {
+
+        /** The min boundary. */
+        private final OrientedPoint min;
+
+        /** The max boundary. */
+        private final OrientedPoint max;
+
+        /** Simple constructor.
+         * @param min min boundary hyperplane
+         * @param max max boundary hyperplane
+         */
+<span class="fc" id="L422">        BoundaryPair(final OrientedPoint min, final OrientedPoint max) {</span>
+<span class="fc" id="L423">            this.min = min;</span>
+<span class="fc" id="L424">            this.max = max;</span>
+<span class="fc" id="L425">        }</span>
+
+        /** Get the minimum boundary hyperplane.
+         * @return the minimum boundary hyperplane.
+         */
+        public OrientedPoint getMin() {
+<span class="fc" id="L431">            return min;</span>
+        }
+
+        /** Get the maximum boundary hyperplane.
+         * @return the maximum boundary hyperplane.
+         */
+        public OrientedPoint getMax() {
+<span class="fc" id="L438">            return max;</span>
+        }
+
+        /** Get the minimum value of the interval or {@link Double#NEGATIVE_INFINITY}
+         * if no minimum value exists.
+         * @return the minimum value of the interval or {@link Double#NEGATIVE_INFINITY}
+         *      if no minimum value exists.
+         */
+        public double getMinValue() {
+<span class="fc bfc" id="L447" title="All 2 branches covered.">            return (min != null) ? min.getLocation() : Double.NEGATIVE_INFINITY;</span>
+        }
+    }
+
+    /** Class used to project points onto the region boundary.
+     */
+    private static final class BoundaryProjector1D extends BoundaryProjector&lt;Vector1D, RegionNode1D&gt; {
+        /** Simple constructor.
+         * @param point the point to project onto the region's boundary
+         */
+        BoundaryProjector1D(final Vector1D point) {
+<span class="fc" id="L458">            super(point);</span>
+<span class="fc" id="L459">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        protected Vector1D disambiguateClosestPoint(final Vector1D target, final Vector1D a, final Vector1D b) {
+<span class="fc" id="L464">            final int cmp = Vector1D.COORDINATE_ASCENDING_ORDER.compare(a, b);</span>
+
+<span class="fc bfc" id="L466" title="All 4 branches covered.">            if (target.isInfinite() &amp;&amp; target.getX() &gt; 0) {</span>
+                // return the largest value (closest to +Infinity)
+<span class="pc bpc" id="L468" title="1 of 2 branches missed.">                return cmp &lt; 0 ? b : a;</span>
+            }
+
+            // return the smallest value
+<span class="fc bfc" id="L472" title="All 2 branches covered.">            return cmp &lt; 0 ? a : b;</span>
+        }
+    }
+
+    /** Internal class for calculating the region of a single tree node.
+     */
+    private static final class NodeRegionVisitor implements BiConsumer&lt;OrientedPoint, OrientedPoint&gt; {
+
+        /** The min boundary for the region. */
+        private OrientedPoint min;
+
+        /** The max boundary for the region. */
+        private OrientedPoint max;
+
+        /** {@inheritDoc} */
+        @Override
+        public void accept(final OrientedPoint minBoundary, final OrientedPoint maxBoundary) {
+            // reverse the oriented point directions if needed
+<span class="fc bfc" id="L490" title="All 4 branches covered.">            this.min = (minBoundary != null &amp;&amp; minBoundary.isPositiveFacing()) ? minBoundary.reverse() : minBoundary;</span>
+<span class="fc bfc" id="L491" title="All 4 branches covered.">            this.max = (maxBoundary != null &amp;&amp; !maxBoundary.isPositiveFacing()) ? maxBoundary.reverse() : maxBoundary;</span>
+<span class="fc" id="L492">        }</span>
+
+        /** Return the computed interval.
+         * @return the computed interval.
+         */
+        public Interval getInterval() {
+<span class="fc" id="L498">            return Interval.of(min, max);</span>
+        }
+    }
+
+    /** Internal class for calculating size-related properties for a {@link RegionBSPTree1D}.
+     */
+    private static final class RegionSizePropertiesVisitor implements BiConsumer&lt;OrientedPoint, OrientedPoint&gt; {
+        /** Number of inside intervals visited. */
+        private int count;
+
+        /** Total computed size of all inside regions. */
+        private double size;
+
+        /** Raw sum of the centroids of each inside interval. */
+        private double rawCentroidSum;
+
+        /** The sum of the centroids of each inside interval, scaled by the size of the interval. */
+        private double scaledCentroidSum;
+
+        /** {@inheritDoc} */
+        @Override
+        public void accept(final OrientedPoint min, final OrientedPoint max) {
+<span class="fc" id="L520">            ++count;</span>
+
+<span class="fc bfc" id="L522" title="All 2 branches covered.">            final double minLoc = (min != null) ? min.getLocation() : Double.NEGATIVE_INFINITY;</span>
+<span class="fc bfc" id="L523" title="All 2 branches covered.">            final double maxLoc = (max != null) ? max.getLocation() : Double.POSITIVE_INFINITY;</span>
+
+<span class="fc" id="L525">            final double intervalSize = maxLoc - minLoc;</span>
+<span class="fc" id="L526">            final double intervalCentroid = 0.5 * (maxLoc + minLoc);</span>
+
+<span class="fc" id="L528">            size += intervalSize;</span>
+<span class="fc" id="L529">            rawCentroidSum += intervalCentroid;</span>
+<span class="fc" id="L530">            scaledCentroidSum += intervalSize * intervalCentroid;</span>
+<span class="fc" id="L531">        }</span>
+
+        /** Get the computed properties for the region. This must only be called after
+         * every inside interval has been visited.
+         * @return properties for the region
+         */
+        public RegionSizeProperties&lt;Vector1D&gt; getRegionSizeProperties() {
+<span class="fc" id="L538">            Vector1D centroid = null;</span>
+
+<span class="fc bfc" id="L540" title="All 4 branches covered.">            if (count &gt; 0 &amp;&amp; Double.isFinite(size)) {</span>
+<span class="fc bfc" id="L541" title="All 2 branches covered.">                if (size &gt; 0) {</span>
+                    // use the scaled sum if we have a non-zero size
+<span class="fc" id="L543">                    centroid = Vector1D.of(scaledCentroidSum / size);</span>
+                } else {
+                    // use the raw sum if we don't have a size; this will be
+                    // the case if the region only contains points with zero size
+<span class="fc" id="L547">                    centroid = Vector1D.of(rawCentroidSum / count);</span>
+                }
+            }
+
+<span class="fc" id="L551">            return new RegionSizeProperties&lt;&gt;(size, centroid);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

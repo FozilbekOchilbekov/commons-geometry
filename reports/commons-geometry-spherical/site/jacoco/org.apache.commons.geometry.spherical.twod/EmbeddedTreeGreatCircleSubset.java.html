@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmbeddedTreeGreatCircleSubset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Spherical</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.spherical.twod</a> &gt; <span class="el_source">EmbeddedTreeGreatCircleSubset.java</span></div><h1>EmbeddedTreeGreatCircleSubset.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.spherical.twod;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.geometry.core.partitioning.SplitLocation;
+import org.apache.commons.geometry.spherical.oned.CutAngle;
+import org.apache.commons.geometry.spherical.oned.CutAngles;
+import org.apache.commons.geometry.spherical.oned.RegionBSPTree1S;
+
+/** Class representing an arbitrary subset of the points on a great circle using a
+ * {@link RegionBSPTree1S}. This class can represent convex, non-convex, and empty regions.
+ *
+ * &lt;p&gt;This class is mutable and &lt;em&gt;not&lt;/em&gt; thread safe.&lt;/p&gt;
+ */
+public final class EmbeddedTreeGreatCircleSubset extends GreatCircleSubset {
+    /** The 1D region on the great circle. */
+    private final RegionBSPTree1S region;
+
+    /** Construct a new, empty hyperplane subset for the given great circle.
+     * @param greatCircle great circle defining this instance
+     */
+    public EmbeddedTreeGreatCircleSubset(final GreatCircle greatCircle) {
+<span class="fc" id="L43">        this(greatCircle, false);</span>
+<span class="fc" id="L44">    }</span>
+
+    /** Construct a new sub-region for the given great circle. If {@code full}
+     * is true, then the region will cover the entire circle; otherwise,
+     * it will be empty.
+     * @param circle great circle that the sub-region will belong to
+     * @param full if true, the sub-region will cover the entire circle;
+     *      otherwise it will be empty
+     */
+    public EmbeddedTreeGreatCircleSubset(final GreatCircle circle, final boolean full) {
+<span class="fc" id="L54">        this(circle, new RegionBSPTree1S(full));</span>
+<span class="fc" id="L55">    }</span>
+
+    /** Construct a new instance from its defining great circle and subspace region.
+     * @param circle great circle that the sub-region will belong to
+     * @param region subspace region
+     */
+    public EmbeddedTreeGreatCircleSubset(final GreatCircle circle, final RegionBSPTree1S region) {
+<span class="fc" id="L62">        super(circle);</span>
+
+<span class="fc" id="L64">        this.region = region;</span>
+<span class="fc" id="L65">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionBSPTree1S getSubspaceRegion() {
+<span class="fc" id="L70">        return region;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EmbeddedTreeGreatCircleSubset transform(final Transform&lt;Point2S&gt; transform) {
+<span class="fc" id="L76">        final GreatCircle circle = getCircle().transform(transform);</span>
+
+<span class="fc" id="L78">        return new EmbeddedTreeGreatCircleSubset(circle, region.copy());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;GreatArc&gt; toConvex() {
+<span class="fc" id="L84">        return region.toIntervals().stream()</span>
+<span class="fc" id="L85">                .flatMap(i -&gt; i.toConvex().stream())</span>
+<span class="fc" id="L86">                .map(i -&gt; GreatCircles.arcFromInterval(getCircle(), i))</span>
+<span class="fc" id="L87">                .collect(Collectors.toList());</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;In all cases, the current instance is not modified. However, In order to avoid
+     * unnecessary copying, this method will use the current instance as the split value when
+     * the instance lies entirely on the plus or minus side of the splitter. For example, if
+     * this instance lies entirely on the minus side of the splitter, the sub great circle
+     * returned by {@link Split#getMinus()} will be this instance. Similarly, {@link Split#getPlus()}
+     * will return the current instance if it lies entirely on the plus side. Callers need to make
+     * special note of this, since this class is mutable.&lt;/p&gt;
+     */
+    @Override
+    public Split&lt;EmbeddedTreeGreatCircleSubset&gt; split(final Hyperplane&lt;Point2S&gt; splitter) {
+
+<span class="fc" id="L103">        final GreatCircle splitterCircle = (GreatCircle) splitter;</span>
+<span class="fc" id="L104">        final GreatCircle thisCircle = getCircle();</span>
+
+<span class="fc" id="L106">        final Point2S intersection = splitterCircle.intersection(thisCircle);</span>
+
+<span class="fc" id="L108">        EmbeddedTreeGreatCircleSubset minus = null;</span>
+<span class="fc" id="L109">        EmbeddedTreeGreatCircleSubset plus = null;</span>
+
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (intersection != null) {</span>
+<span class="fc" id="L112">            final CutAngle subSplitter = CutAngles.createPositiveFacing(</span>
+<span class="fc" id="L113">                    thisCircle.toSubspace(intersection), splitterCircle.getPrecision());</span>
+
+<span class="fc" id="L115">            final Split&lt;RegionBSPTree1S&gt; subSplit = region.splitDiameter(subSplitter);</span>
+<span class="fc" id="L116">            final SplitLocation subLoc = subSplit.getLocation();</span>
+
+<span class="fc bfc" id="L118" title="All 2 branches covered.">            if (subLoc == SplitLocation.MINUS) {</span>
+<span class="fc" id="L119">                minus = this;</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">            } else if (subLoc == SplitLocation.PLUS) {</span>
+<span class="fc" id="L121">                plus = this;</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">            } else if (subLoc == SplitLocation.BOTH) {</span>
+<span class="fc" id="L123">                minus = new EmbeddedTreeGreatCircleSubset(thisCircle, subSplit.getMinus());</span>
+<span class="fc" id="L124">                plus =  new EmbeddedTreeGreatCircleSubset(thisCircle, subSplit.getPlus());</span>
+            }
+        }
+
+<span class="fc" id="L128">        return new Split&lt;&gt;(minus, plus);</span>
+    }
+
+    /** Add an arc to this instance.
+     * @param arc arc to add
+     * @throws IllegalArgumentException if the given arc is not from
+     *      a great circle equivalent to this instance
+     */
+    public void add(final GreatArc arc) {
+<span class="fc" id="L137">        GreatCircles.validateGreatCirclesEquivalent(getCircle(), arc.getCircle());</span>
+
+<span class="fc" id="L139">        region.add(arc.getSubspaceRegion());</span>
+<span class="fc" id="L140">    }</span>
+
+    /** Add the region represented by the given subcircle to this instance.
+     * The argument is not modified.
+     * @param subcircle subcircle to add
+     * @throws IllegalArgumentException if the given subcircle is not from
+     *      a great circle equivalent to this instance
+     */
+    public void add(final EmbeddedTreeGreatCircleSubset subcircle) {
+<span class="fc" id="L149">        GreatCircles.validateGreatCirclesEquivalent(getCircle(), subcircle.getCircle());</span>
+
+<span class="fc" id="L151">        region.union(subcircle.getSubspaceRegion());</span>
+<span class="fc" id="L152">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L157">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L158">        sb.append(this.getClass().getSimpleName())</span>
+<span class="fc" id="L159">            .append('[')</span>
+<span class="fc" id="L160">            .append(&quot;circle= &quot;)</span>
+<span class="fc" id="L161">            .append(getCircle())</span>
+<span class="fc" id="L162">            .append(&quot;, region= &quot;)</span>
+<span class="fc" id="L163">            .append(region)</span>
+<span class="fc" id="L164">            .append(']');</span>
+
+<span class="fc" id="L166">        return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

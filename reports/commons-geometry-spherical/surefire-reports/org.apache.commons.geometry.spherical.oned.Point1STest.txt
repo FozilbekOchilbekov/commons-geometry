@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.apache.commons.geometry.spherical.oned.Point1STest
+-------------------------------------------------------------------------------
+Tests run: 25, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.277 s - in org.apache.commons.geometry.spherical.oned.Point1STest

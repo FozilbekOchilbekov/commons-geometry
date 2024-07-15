@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractLinePathConnector.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.twod.path</a> &gt; <span class="el_source">AbstractLinePathConnector.java</span></div><h1>AbstractLinePathConnector.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.twod.path;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import org.apache.commons.geometry.core.internal.GeometryInternalUtils;
+import org.apache.commons.geometry.euclidean.internal.AbstractPathConnector;
+import org.apache.commons.geometry.euclidean.twod.LineConvexSubset;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.numbers.angle.Angle;
+
+/** Abstract class for joining collections of line subsets into connected
+ * paths. This class is not thread-safe.
+ */
+<span class="fc" id="L32">public abstract class AbstractLinePathConnector</span>
+    extends AbstractPathConnector&lt;AbstractLinePathConnector.ConnectableLineSubset&gt; {
+    /** Add a line subset to the connector, leaving it unconnected until a later call to
+     * to {@link #connect(Iterable)} or {@link #connectAll()}.
+     * @param subset line subset to add
+     * @see #connect(Iterable)
+     * @see #connectAll()
+     */
+    public void add(final LineConvexSubset subset) {
+<span class="fc" id="L41">        addPathElement(new ConnectableLineSubset(subset));</span>
+<span class="fc" id="L42">    }</span>
+
+    /** Add a collection of line subsets to the connector, leaving them unconnected
+     * until a later call to {@link #connect(Iterable)} or
+     * {@link #connectAll()}.
+     * @param subsets line subsets to add
+     * @see #connect(Iterable)
+     * @see #connectAll()
+     * @see #add(LineConvexSubset)
+     */
+    public void add(final Iterable&lt;? extends LineConvexSubset&gt; subsets) {
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (final LineConvexSubset subset : subsets) {</span>
+<span class="fc" id="L54">            add(subset);</span>
+<span class="fc" id="L55">        }</span>
+<span class="fc" id="L56">    }</span>
+
+    /** Add a collection of line subsets to the connector and attempt to connect each new
+     * line subset with existing subsets. Connections made at this time will not be
+     * overwritten by subsequent calls to this or other connection methods.
+     * (eg, {@link #connectAll()}).
+     *
+     * &lt;p&gt;The connector is not reset by this call. Additional line subsets can still be added
+     * to the current set of paths.&lt;/p&gt;
+     * @param subsets line subsets to connect
+     * @see #connectAll()
+     */
+    public void connect(final Iterable&lt;? extends LineConvexSubset&gt; subsets) {
+<span class="fc" id="L69">        final List&lt;ConnectableLineSubset&gt; newEntries = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        for (final LineConvexSubset subset : subsets) {</span>
+<span class="fc" id="L72">            newEntries.add(new ConnectableLineSubset(subset));</span>
+<span class="fc" id="L73">        }</span>
+
+<span class="fc" id="L75">        connectPathElements(newEntries);</span>
+<span class="fc" id="L76">    }</span>
+
+    /** Add the given line subsets to this instance and connect all current
+     * subsets into connected paths. This call is equivalent to
+     * &lt;pre&gt;
+     *      connector.add(subsets);
+     *      List&amp;lt;LinePath&amp;gt; result = connector.connectAll();
+     * &lt;/pre&gt;
+     *
+     * &lt;p&gt;The connector is reset after this call. Further calls to
+     * add or connect line subsets will result in new paths being generated.&lt;/p&gt;
+     * @param subsets line subsets to add
+     * @return the connected 2D paths
+     * @see #add(Iterable)
+     * @see #connectAll()
+     */
+    public List&lt;LinePath&gt; connectAll(final Iterable&lt;LineConvexSubset&gt; subsets) {
+<span class="fc" id="L93">        add(subsets);</span>
+<span class="fc" id="L94">        return connectAll();</span>
+    }
+
+    /** Connect all current line subsets into connected paths, returning the result as a
+     * list of line paths.
+     *
+     * &lt;p&gt;The connector is reset after this call. Further calls to
+     * add or connect line subsets will result in new paths being generated.&lt;/p&gt;
+     * @return the connected 2D paths
+     */
+    public List&lt;LinePath&gt; connectAll() {
+<span class="fc" id="L105">        final List&lt;ConnectableLineSubset&gt; roots = computePathRoots();</span>
+<span class="fc" id="L106">        final List&lt;LinePath&gt; paths = new ArrayList&lt;&gt;(roots.size());</span>
+
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        for (final ConnectableLineSubset root : roots) {</span>
+<span class="fc" id="L109">            paths.add(toPath(root));</span>
+<span class="fc" id="L110">        }</span>
+
+<span class="fc" id="L112">        return paths;</span>
+    }
+
+    /** Convert the linked list of path elements starting at the argument
+     * into a {@link LinePath}.
+     * @param root root of a connected path linked list
+     * @return a line path representing the linked list path
+     */
+    private LinePath toPath(final ConnectableLineSubset root) {
+<span class="fc" id="L121">        final LinePath.Builder builder = LinePath.builder(null);</span>
+
+<span class="fc" id="L123">        builder.append(root.getLineSubset());</span>
+
+<span class="fc" id="L125">        ConnectableLineSubset current = root.getNext();</span>
+
+<span class="fc bfc" id="L127" title="All 4 branches covered.">        while (current != null &amp;&amp; !GeometryInternalUtils.sameInstance(current, root)) {</span>
+<span class="fc" id="L128">            builder.append(current.getLineSubset());</span>
+<span class="fc" id="L129">            current = current.getNext();</span>
+        }
+
+<span class="fc" id="L132">        return builder.build();</span>
+    }
+
+    /** Internal class used to connect line subsets together.
+     */
+    protected static class ConnectableLineSubset
+        extends AbstractPathConnector.ConnectableElement&lt;ConnectableLineSubset&gt; {
+        /** Line subset start point. This will be used to connect to other path elements. */
+        private final Vector2D start;
+
+        /** Line subset for the entry. */
+        private final LineConvexSubset subset;
+
+        /** Create a new instance with the given start point. This constructor is
+         * intended only for performing searches for other path elements.
+         * @param start start point
+         */
+        public ConnectableLineSubset(final Vector2D start) {
+<span class="fc" id="L150">            this(start, null);</span>
+<span class="fc" id="L151">        }</span>
+
+        /** Create a new instance from the given line subset.
+         * @param subset subset instance
+         */
+        public ConnectableLineSubset(final LineConvexSubset subset) {
+<span class="fc" id="L157">            this(subset.getStartPoint(), subset);</span>
+<span class="fc" id="L158">        }</span>
+
+        /** Create a new instance with the given start point and line subset.
+         * @param start start point
+         * @param subset line subset instance
+         */
+<span class="fc" id="L164">        private ConnectableLineSubset(final Vector2D start, final LineConvexSubset subset) {</span>
+<span class="fc" id="L165">            this.start = start;</span>
+<span class="fc" id="L166">            this.subset = subset;</span>
+<span class="fc" id="L167">        }</span>
+
+        /** Get the line subset for this instance.
+         * @return the line subset for this instance
+         */
+        public LineConvexSubset getLineSubset() {
+<span class="fc" id="L173">            return subset;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean hasStart() {
+<span class="fc bfc" id="L179" title="All 2 branches covered.">            return start != null;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean hasEnd() {
+<span class="pc bpc" id="L185" title="1 of 4 branches missed.">            return subset != null &amp;&amp; subset.getEndPoint() != null;</span>
+        }
+
+        /** Return true if this instance has a size equivalent to zero.
+         * @return true if this instance has a size equivalent to zero.
+         */
+        public boolean hasZeroSize() {
+<span class="pc bpc" id="L192" title="1 of 4 branches missed.">            return subset != null &amp;&amp; subset.getPrecision().eqZero(subset.getSize());</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean endPointsEq(final ConnectableLineSubset other) {
+<span class="pc bpc" id="L198" title="1 of 4 branches missed.">            if (hasEnd() &amp;&amp; other.hasEnd()) {</span>
+<span class="fc" id="L199">                return subset.getEndPoint()</span>
+<span class="fc" id="L200">                        .eq(other.subset.getEndPoint(), subset.getPrecision());</span>
+            }
+
+<span class="fc" id="L203">            return false;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean canConnectTo(final ConnectableLineSubset next) {
+<span class="fc" id="L209">            final Vector2D end = subset.getEndPoint();</span>
+<span class="fc" id="L210">            final Vector2D nextStart = next.start;</span>
+
+<span class="pc bpc" id="L212" title="2 of 4 branches missed.">            return end != null &amp;&amp; nextStart != null &amp;&amp;</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">                    end.eq(nextStart, subset.getPrecision());</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public double getRelativeAngle(final ConnectableLineSubset next) {
+<span class="fc" id="L219">            return subset.getLine().angle(next.getLineSubset().getLine());</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public ConnectableLineSubset getConnectionSearchKey() {
+<span class="fc" id="L225">            return new ConnectableLineSubset(subset.getEndPoint());</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean shouldContinueConnectionSearch(final ConnectableLineSubset candidate, final boolean ascending) {
+
+<span class="fc bfc" id="L232" title="All 2 branches covered.">            if (candidate.hasStart()) {</span>
+<span class="fc" id="L233">                final double candidateX = candidate.getLineSubset().getStartPoint().getX();</span>
+<span class="fc" id="L234">                final double thisX = subset.getEndPoint().getX();</span>
+<span class="fc" id="L235">                final int cmp = subset.getPrecision().compare(candidateX, thisX);</span>
+
+<span class="fc bfc" id="L237" title="All 6 branches covered.">                return ascending ? cmp &lt;= 0 : cmp &gt;= 0;</span>
+            }
+
+<span class="fc" id="L240">            return true;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public int compareTo(final ConnectableLineSubset other) {
+            // sort by coordinates
+<span class="fc" id="L247">            int cmp = Vector2D.COORDINATE_ASCENDING_ORDER.compare(start, other.start);</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">            if (cmp == 0) {</span>
+                // sort entries without line subsets before ones with
+<span class="fc bfc" id="L250" title="All 2 branches covered.">                final boolean thisHasSubset = subset != null;</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">                final boolean otherHasSubset = other.subset != null;</span>
+
+<span class="fc" id="L253">                cmp = Boolean.compare(thisHasSubset, otherHasSubset);</span>
+
+<span class="fc bfc" id="L255" title="All 4 branches covered.">                if (cmp == 0 &amp;&amp; thisHasSubset) {</span>
+                    // place point-like line subsets before ones with non-zero length
+<span class="fc" id="L257">                    cmp = Boolean.compare(this.hasZeroSize(), other.hasZeroSize());</span>
+
+<span class="fc bfc" id="L259" title="All 2 branches covered.">                    if (cmp == 0) {</span>
+                        // sort by line angle
+<span class="fc" id="L261">                        final double aAngle = Angle.Rad.WITHIN_MINUS_PI_AND_PI.applyAsDouble(</span>
+<span class="fc" id="L262">                                this.getLineSubset().getLine().getAngle());</span>
+<span class="fc" id="L263">                        final double bAngle = Angle.Rad.WITHIN_MINUS_PI_AND_PI.applyAsDouble(</span>
+<span class="fc" id="L264">                                other.getLineSubset().getLine().getAngle());</span>
+
+<span class="fc" id="L266">                        cmp = Double.compare(aAngle, bAngle);</span>
+                    }
+                }
+            }
+<span class="fc" id="L270">            return cmp;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public int hashCode() {
+<span class="fc" id="L276">            return Objects.hash(start, subset);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean equals(final Object obj) {
+<span class="fc bfc" id="L282" title="All 2 branches covered.">            if (this == obj) {</span>
+<span class="fc" id="L283">                return true;</span>
+            }
+<span class="fc bfc" id="L285" title="All 4 branches covered.">            if (obj == null || !this.getClass().equals(obj.getClass())) {</span>
+<span class="fc" id="L286">                return false;</span>
+            }
+
+<span class="fc" id="L289">            final ConnectableLineSubset other = (ConnectableLineSubset) obj;</span>
+<span class="fc bfc" id="L290" title="All 2 branches covered.">            return Objects.equals(this.start, other.start) &amp;&amp;</span>
+<span class="pc bpc" id="L291" title="1 of 2 branches missed.">                    Objects.equals(this.subset, other.subset);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected ConnectableLineSubset getSelf() {
+<span class="fc" id="L297">            return this;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

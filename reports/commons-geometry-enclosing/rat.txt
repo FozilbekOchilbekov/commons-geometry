@@ -1,0 +1,49 @@
+
+*****************************************************
+Summary
+-------
+Generated at: 2024-07-13T15:25:28+02:00
+
+Notes: 2
+Binaries: 0
+Archives: 0
+Standards: 21
+
+Apache Licensed: 21
+Generated Documents: 0
+
+JavaDocs are generated, thus a license header is optional.
+Generated files do not require license headers.
+
+0 Unknown Licenses
+
+*****************************************************
+  Files with Apache License headers will be marked AL
+  Binary files (which do not require any license headers) will be marked B
+  Compressed archives will be marked A
+  Notices, licenses etc. will be marked N
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/CONTRIBUTING.md
+  N     C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/LICENSE
+  N     C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/NOTICE
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/pom.xml
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/README.md
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/main/java/org/apache/commons/geometry/enclosing/Encloser.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/main/java/org/apache/commons/geometry/enclosing/EnclosingBall.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/main/java/org/apache/commons/geometry/enclosing/euclidean/threed/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/main/java/org/apache/commons/geometry/enclosing/euclidean/threed/SphereGenerator.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/main/java/org/apache/commons/geometry/enclosing/euclidean/threed/WelzlEncloser3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/main/java/org/apache/commons/geometry/enclosing/euclidean/twod/DiskGenerator.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/main/java/org/apache/commons/geometry/enclosing/euclidean/twod/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/main/java/org/apache/commons/geometry/enclosing/euclidean/twod/WelzlEncloser2D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/main/java/org/apache/commons/geometry/enclosing/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/main/java/org/apache/commons/geometry/enclosing/SupportBallGenerator.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/main/java/org/apache/commons/geometry/enclosing/WelzlEncloser.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/site/site.xml
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/test/java/org/apache/commons/geometry/enclosing/DocumentationExamplesTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/test/java/org/apache/commons/geometry/enclosing/EnclosingBallTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/test/java/org/apache/commons/geometry/enclosing/euclidean/threed/SphereGeneratorTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/test/java/org/apache/commons/geometry/enclosing/euclidean/threed/WelzlEncloser3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/test/java/org/apache/commons/geometry/enclosing/euclidean/twod/DiskGeneratorTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-enclosing/src/test/java/org/apache/commons/geometry/enclosing/euclidean/twod/WelzlEncloser2DTest.java
+ 
+*****************************************************

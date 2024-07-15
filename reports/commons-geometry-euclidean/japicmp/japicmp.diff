@@ -1,0 +1,101 @@
+Comparing source compatibility of commons-geometry-euclidean-1.1-SNAPSHOT.jar against commons-geometry-euclidean-1.0.jar
++++  NEW CLASS: PROTECTED(+) ABSTRACT(+) org.apache.commons.geometry.euclidean.AbstractBounds$BoundsLinecaster  (not serializable)
+	+++  CLASS FILE FORMAT VERSION: 52.0 <- n.a.
+	GENERIC TEMPLATES: +++ I:java.lang.Object, +++ S:java.lang.Object
+	+++  NEW SUPERCLASS: java.lang.Object
+	+++  NEW CONSTRUCTOR: PROTECTED(+) AbstractBounds$BoundsLinecaster(org.apache.commons.geometry.euclidean.AbstractBounds, org.apache.commons.numbers.core.Precision$DoubleEquivalence)
+	+++  NEW METHOD: PROTECTED(+) void addBoundaryIntersectionIfPresent(org.apache.commons.geometry.euclidean.EuclideanVector, org.apache.commons.geometry.euclidean.EuclideanVector, org.apache.commons.geometry.euclidean.EuclideanVector, java.util.function.ToDoubleFunction<P>, java.util.List<I>)
+	+++  NEW METHOD: PROTECTED(+) ABSTRACT(+) void addBoundaryIntersections(double, java.util.List<I>)
+	+++  NEW METHOD: PROTECTED(+) ABSTRACT(+) boolean computeNearFar()
+	+++  NEW METHOD: PROTECTED(+) ABSTRACT(+) java.lang.Object createBoundaryIntersection(org.apache.commons.geometry.euclidean.EuclideanVector, org.apache.commons.geometry.euclidean.EuclideanVector)
+	+++  NEW METHOD: PROTECTED(+) ABSTRACT(+) java.lang.Object createSegment(double, double)
+	+++  NEW METHOD: PROTECTED(+) ABSTRACT(+) java.util.Comparator<I> getBoundaryIntersectionComparator()
+	+++  NEW METHOD: PUBLIC(+) java.util.List<I> getBoundaryIntersections()
+	+++  NEW METHOD: PUBLIC(+) java.lang.Object getFirstBoundaryIntersection()
+	+++  NEW METHOD: PROTECTED(+) ABSTRACT(+) org.apache.commons.geometry.euclidean.EuclideanVector getLineDir()
+	+++  NEW METHOD: PROTECTED(+) ABSTRACT(+) org.apache.commons.geometry.euclidean.EuclideanVector getLineOrigin()
+	+++  NEW METHOD: PUBLIC(+) java.lang.Object getRegionIntersection()
+	+++  NEW METHOD: PROTECTED(+) ABSTRACT(+) double getSubspaceEnd()
+	+++  NEW METHOD: PROTECTED(+) ABSTRACT(+) double getSubspaceStart()
+	+++  NEW METHOD: PUBLIC(+) boolean intersectsRegion()
+	+++  NEW METHOD: PROTECTED(+) boolean updateNearFar(java.util.function.ToDoubleFunction<P>)
++++* NEW CLASS: PUBLIC(+) FINAL(+) org.apache.commons.geometry.euclidean.EuclideanCollections  (not serializable)
+	+++  CLASS FILE FORMAT VERSION: 52.0 <- n.a.
+	+++  NEW SUPERCLASS: java.lang.Object
+	+++* NEW METHOD: PUBLIC(+) STATIC(+) org.apache.commons.geometry.core.collection.PointMap<org.apache.commons.geometry.euclidean.oned.Vector1D,V> pointMap1D(org.apache.commons.numbers.core.Precision$DoubleEquivalence)
+		GENERIC TEMPLATES: +++ V:java.lang.Object
+	+++* NEW METHOD: PUBLIC(+) STATIC(+) org.apache.commons.geometry.core.collection.PointMap<org.apache.commons.geometry.euclidean.twod.Vector2D,V> pointMap2D(org.apache.commons.numbers.core.Precision$DoubleEquivalence)
+		GENERIC TEMPLATES: +++ V:java.lang.Object
+	+++* NEW METHOD: PUBLIC(+) STATIC(+) org.apache.commons.geometry.core.collection.PointMap<org.apache.commons.geometry.euclidean.threed.Vector3D,V> pointMap3D(org.apache.commons.numbers.core.Precision$DoubleEquivalence)
+		GENERIC TEMPLATES: +++ V:java.lang.Object
+	+++  NEW METHOD: PUBLIC(+) STATIC(+) org.apache.commons.geometry.core.collection.PointSet<org.apache.commons.geometry.euclidean.oned.Vector1D> pointSet1D(org.apache.commons.numbers.core.Precision$DoubleEquivalence)
+	+++  NEW METHOD: PUBLIC(+) STATIC(+) org.apache.commons.geometry.core.collection.PointSet<org.apache.commons.geometry.euclidean.twod.Vector2D> pointSet2D(org.apache.commons.numbers.core.Precision$DoubleEquivalence)
+	+++  NEW METHOD: PUBLIC(+) STATIC(+) org.apache.commons.geometry.core.collection.PointSet<org.apache.commons.geometry.euclidean.threed.Vector3D> pointSet3D(org.apache.commons.numbers.core.Precision$DoubleEquivalence)
+***  MODIFIED CLASS: PUBLIC FINAL org.apache.commons.geometry.euclidean.threed.Bounds3D  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+	+++  NEW INTERFACE: org.apache.commons.geometry.euclidean.threed.line.Linecastable3D
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.euclidean.threed.line.Segment3D intersection(org.apache.commons.geometry.euclidean.threed.line.Line3D)
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.euclidean.threed.line.Segment3D intersection(org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D)
+	+++  NEW METHOD: PUBLIC(+) boolean intersects(org.apache.commons.geometry.euclidean.threed.line.Line3D)
+	+++  NEW METHOD: PUBLIC(+) boolean intersects(org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D)
+	+++  NEW METHOD: PUBLIC(+) java.util.List<org.apache.commons.geometry.euclidean.threed.line.LinecastPoint3D> linecast(org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D)
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.euclidean.threed.line.LinecastPoint3D linecastFirst(org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D)
+***  MODIFIED CLASS: PUBLIC FINAL org.apache.commons.geometry.euclidean.threed.line.EmbeddedTreeLineSubset3D  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.core.RegionLocation classifyAbscissa(double)
+===* UNCHANGED CLASS: PUBLIC ABSTRACT org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+**** MODIFIED CLASS: PUBLIC ABSTRACT org.apache.commons.geometry.euclidean.threed.line.LineSubset3D  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+	+++* NEW METHOD: PUBLIC(+) ABSTRACT(+) org.apache.commons.geometry.core.RegionLocation classifyAbscissa(double)
+***  MODIFIED CLASS: PUBLIC FINAL org.apache.commons.geometry.euclidean.threed.line.Ray3D  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.core.RegionLocation classifyAbscissa(double)
+***  MODIFIED CLASS: PUBLIC FINAL org.apache.commons.geometry.euclidean.threed.line.ReverseRay3D  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.core.RegionLocation classifyAbscissa(double)
+***  MODIFIED CLASS: PUBLIC FINAL org.apache.commons.geometry.euclidean.threed.line.Segment3D  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.core.RegionLocation classifyAbscissa(double)
+***  MODIFIED CLASS: PUBLIC FINAL org.apache.commons.geometry.euclidean.twod.Bounds2D  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+	+++  NEW INTERFACE: org.apache.commons.geometry.euclidean.twod.Linecastable2D
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.euclidean.twod.Segment intersection(org.apache.commons.geometry.euclidean.twod.Line)
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.euclidean.twod.Segment intersection(org.apache.commons.geometry.euclidean.twod.LineConvexSubset)
+	+++  NEW METHOD: PUBLIC(+) boolean intersects(org.apache.commons.geometry.euclidean.twod.Line)
+	+++  NEW METHOD: PUBLIC(+) boolean intersects(org.apache.commons.geometry.euclidean.twod.LineConvexSubset)
+	+++  NEW METHOD: PUBLIC(+) java.util.List<org.apache.commons.geometry.euclidean.twod.LinecastPoint2D> linecast(org.apache.commons.geometry.euclidean.twod.LineConvexSubset)
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.euclidean.twod.LinecastPoint2D linecastFirst(org.apache.commons.geometry.euclidean.twod.LineConvexSubset)
+***  MODIFIED CLASS: PUBLIC FINAL org.apache.commons.geometry.euclidean.twod.EmbeddedTreeLineSubset  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+	***  MODIFIED METHOD: PUBLIC (<- PACKAGE_PROTECTED) org.apache.commons.geometry.core.RegionLocation classifyAbscissa(double)
++++  NEW CLASS: PUBLIC(+) FINAL(+) org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D  (not serializable)
+	+++  CLASS FILE FORMAT VERSION: 52.0 <- n.a.
+	+++  NEW INTERFACE: org.apache.commons.geometry.core.ConvexHull
+	+++  NEW SUPERCLASS: java.lang.Object
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.euclidean.twod.path.LinePath getPath()
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.euclidean.twod.ConvexArea getRegion()
+	+++  NEW METHOD: PUBLIC(+) java.util.List<org.apache.commons.geometry.euclidean.twod.Vector2D> getVertices()
+	+++  NEW METHOD: PUBLIC(+) java.lang.String toString()
++++  NEW CLASS: PUBLIC(+) STATIC(+) FINAL(+) org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D$Builder  (not serializable)
+	+++  CLASS FILE FORMAT VERSION: 52.0 <- n.a.
+	+++  NEW SUPERCLASS: java.lang.Object
+	+++  NEW CONSTRUCTOR: PUBLIC(+) ConvexHull2D$Builder(boolean, org.apache.commons.numbers.core.Precision$DoubleEquivalence)
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D$Builder append(org.apache.commons.geometry.euclidean.twod.Vector2D)
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D$Builder append(java.util.Collection<org.apache.commons.geometry.euclidean.twod.Vector2D>)
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D build()
+***  MODIFIED CLASS: PUBLIC ABSTRACT org.apache.commons.geometry.euclidean.twod.LineConvexSubset  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+	+++  NEW METHOD: PUBLIC(+) org.apache.commons.geometry.core.RegionLocation classifyAbscissa(double)
+***  MODIFIED CLASS: PUBLIC ABSTRACT org.apache.commons.geometry.euclidean.twod.LineSubset  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+	***  MODIFIED METHOD: PUBLIC (<- PACKAGE_PROTECTED) ABSTRACT org.apache.commons.geometry.core.RegionLocation classifyAbscissa(double)
+***  MODIFIED CLASS: PUBLIC FINAL org.apache.commons.geometry.euclidean.twod.Ray  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+	***  MODIFIED METHOD: PUBLIC (<- PACKAGE_PROTECTED) org.apache.commons.geometry.core.RegionLocation classifyAbscissa(double)
+***  MODIFIED CLASS: PUBLIC FINAL org.apache.commons.geometry.euclidean.twod.ReverseRay  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+	***  MODIFIED METHOD: PUBLIC (<- PACKAGE_PROTECTED) org.apache.commons.geometry.core.RegionLocation classifyAbscissa(double)
+***  MODIFIED CLASS: PUBLIC FINAL org.apache.commons.geometry.euclidean.twod.Segment  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+	***  MODIFIED METHOD: PUBLIC (<- PACKAGE_PROTECTED) org.apache.commons.geometry.core.RegionLocation classifyAbscissa(double)

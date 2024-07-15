@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Build-Jdk-Spec: 22
+Bundle-Description: Algorithms for computing enclosing balls.
+Bundle-DocURL: https://commons.apache.org/proper/commons-geometry/common
+ s-geometry-enclosing/
+Bundle-License: https://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Commons Geometry Enclosing
+Bundle-SymbolicName: org.apache.commons.geometry.enclosing
+Bundle-Vendor: The Apache Software Foundation
+Bundle-Version: 1.1.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin 5.1.8
+Export-Package: org.apache.commons.geometry.enclosing;version="1.1.0",or
+ g.apache.commons.geometry.enclosing.euclidean.threed;version="1.1.0",or
+ g.apache.commons.geometry.enclosing.euclidean.twod;version="1.1.0"
+Import-Package: org.apache.commons.geometry.core,org.apache.commons.geom
+ etry.core.internal,org.apache.commons.geometry.enclosing,org.apache.com
+ mons.geometry.enclosing.euclidean.twod,org.apache.commons.geometry.eucl
+ idean.threed,org.apache.commons.geometry.euclidean.twod,org.apache.comm
+ ons.numbers.core,org.apache.commons.numbers.fraction
+Include-Resource: META-INF/LICENSE=LICENSE,META-INF/NOTICE=NOTICE
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Tool: Bnd-6.4.1.202306080939

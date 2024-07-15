@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Rotation2D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.twod.rotation</a> &gt; <span class="el_source">Rotation2D.java</span></div><h1>Rotation2D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.twod.rotation;
+
+import org.apache.commons.geometry.euclidean.EuclideanTransform;
+import org.apache.commons.geometry.euclidean.internal.Vectors;
+import org.apache.commons.geometry.euclidean.twod.AffineTransformMatrix2D;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+
+/** Class representing a rotation in 2 dimensional Euclidean space. Positive
+ * rotations are in a &lt;em&gt;counter-clockwise&lt;/em&gt; direction.
+ */
+public final class Rotation2D implements EuclideanTransform&lt;Vector2D&gt; {
+
+    /** Instance representing a rotation of zero radians. */
+<span class="fc" id="L30">    private static final Rotation2D IDENTITY = new Rotation2D(0);</span>
+
+    /** The angle of the rotation in radians. */
+    private final double angle;
+
+    /** The cosine of the angle of rotation, cached to avoid repeated computation. */
+    private final double cosAngle;
+
+    /** The sine of the angle of rotation, cached to avoid repeated computation. */
+    private final double sinAngle;
+
+    /** Create a new instance representing the given angle.
+     * @param angle the angle of rotation, in radians
+     */
+<span class="fc" id="L44">    private Rotation2D(final double angle) {</span>
+<span class="fc" id="L45">        this.angle = angle;</span>
+<span class="fc" id="L46">        this.cosAngle = Math.cos(angle);</span>
+<span class="fc" id="L47">        this.sinAngle = Math.sin(angle);</span>
+<span class="fc" id="L48">    }</span>
+
+    /** Get the angle of rotation in radians.
+     * @return the angle of rotation in radians
+     */
+    public double getAngle() {
+<span class="fc" id="L54">        return angle;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Rotation2D inverse() {
+<span class="fc" id="L60">        return new Rotation2D(-angle);</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;This method simply returns true since rotations always preserve the orientation
+     * of the space.&lt;/p&gt;
+     */
+    @Override
+    public boolean preservesOrientation() {
+<span class="fc" id="L70">        return true;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector2D apply(final Vector2D pt) {
+<span class="fc" id="L76">        final double x = pt.getX();</span>
+<span class="fc" id="L77">        final double y = pt.getY();</span>
+
+<span class="fc" id="L79">        return Vector2D.of(</span>
+                    (x * cosAngle) - (y * sinAngle),
+                    (x * sinAngle) + (y * cosAngle)
+                );
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;This method simply calls {@code apply(vec)} since rotations treat
+     * points and vectors similarly.&lt;/p&gt;
+     * */
+    @Override
+    public Vector2D applyVector(final Vector2D vec) {
+<span class="fc" id="L92">        return apply(vec);</span>
+    }
+
+    /** Return an {@link AffineTransformMatrix2D} representing the same rotation
+     * as this instance.
+     * @return a transform matrix representing the same rotation
+     */
+    public AffineTransformMatrix2D toMatrix() {
+<span class="fc" id="L100">        return AffineTransformMatrix2D.of(</span>
+                    cosAngle, -sinAngle, 0.0,
+                    sinAngle, cosAngle, 0.0
+                );
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L109">        return Double.hashCode(angle);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L116">            return true;</span>
+        }
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (!(obj instanceof Rotation2D)) {</span>
+<span class="fc" id="L119">            return false;</span>
+        }
+
+<span class="fc" id="L122">        final Rotation2D other = (Rotation2D) obj;</span>
+
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        return Double.compare(this.angle, other.angle) == 0;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L130">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L131">        sb.append(this.getClass().getSimpleName())</span>
+<span class="fc" id="L132">            .append(&quot;[angle=&quot;)</span>
+<span class="fc" id="L133">            .append(angle)</span>
+<span class="fc" id="L134">            .append(']');</span>
+
+<span class="fc" id="L136">        return sb.toString();</span>
+    }
+
+    /** Create a new instance with the given angle of rotation.
+     * @param angle the angle of rotation in radians
+     * @return a new instance with the given angle of rotation
+     */
+    public static Rotation2D of(final double angle) {
+<span class="fc" id="L144">        return new Rotation2D(angle);</span>
+    }
+
+    /** Return an instance representing the identity rotation, ie a rotation
+     * of zero radians.
+     * @return an instance representing a rotation of zero radians
+     */
+    public static Rotation2D identity() {
+<span class="fc" id="L152">        return IDENTITY;</span>
+    }
+
+    /** Create a rotation instance that rotates the vector {@code u} to point in the direction of
+     * vector {@code v}.
+     * @param u input vector
+     * @param v target vector
+     * @return a rotation instance that rotates {@code u} to point in the direction of {@code v}
+     * @throws IllegalArgumentException if either vector cannot be normalized
+     */
+    public static Rotation2D createVectorRotation(final Vector2D u, final Vector2D v) {
+        // make sure that the vectors are real-valued and of non-zero length; we don't
+        // actually need to use the norm value; we just need to check its properties
+<span class="fc" id="L165">        Vectors.checkedNorm(u);</span>
+<span class="fc" id="L166">        Vectors.checkedNorm(v);</span>
+
+<span class="fc" id="L168">        final double uAzimuth = Math.atan2(u.getY(), u.getX());</span>
+<span class="fc" id="L169">        final double vAzimuth = Math.atan2(v.getY(), v.getX());</span>
+
+<span class="fc" id="L171">        return of(vAzimuth - uAzimuth);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RegionBSPTree1S.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Spherical</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.spherical.oned</a> &gt; <span class="el_source">RegionBSPTree1S.java</span></div><h1>RegionBSPTree1S.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.spherical.oned;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.HyperplaneLocation;
+import org.apache.commons.geometry.core.partitioning.HyperplaneSubset;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTree;
+import org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTree;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.numbers.angle.Angle;
+import org.apache.commons.numbers.core.Precision;
+
+/** BSP tree representing regions in 1D spherical space.
+ */
+public class RegionBSPTree1S extends AbstractRegionBSPTree&lt;Point1S, RegionBSPTree1S.RegionNode1S&gt; {
+    /** Comparator used to sort BoundaryPairs by ascending azimuth.  */
+<span class="fc" id="L40">    private static final Comparator&lt;BoundaryPair&gt; BOUNDARY_PAIR_COMPARATOR =</span>
+<span class="fc" id="L41">            Comparator.comparingDouble(BoundaryPair::getMinValue);</span>
+
+    /** Create a new, empty instance.
+     */
+    public RegionBSPTree1S() {
+<span class="fc" id="L46">        this(false);</span>
+<span class="fc" id="L47">    }</span>
+
+    /** Create a new region. If {@code full} is true, then the region will
+     * represent the entire circle. Otherwise, it will be empty.
+     * @param full whether or not the region should contain the entire
+     *      circle or be empty
+     */
+    public RegionBSPTree1S(final boolean full) {
+<span class="fc" id="L55">        super(full);</span>
+<span class="fc" id="L56">    }</span>
+
+    /** Return a deep copy of this instance.
+     * @return a deep copy of this instance.
+     * @see #copy(org.apache.commons.geometry.core.partitioning.bsp.BSPTree)
+     */
+    public RegionBSPTree1S copy() {
+<span class="fc" id="L63">        final RegionBSPTree1S result = RegionBSPTree1S.empty();</span>
+<span class="fc" id="L64">        result.copy(this);</span>
+
+<span class="fc" id="L66">        return result;</span>
+    }
+
+    /** Add an interval to this region. The resulting region will be the
+     * union of the interval and the region represented by this instance.
+     * @param interval the interval to add
+     */
+    public void add(final AngularInterval interval) {
+<span class="fc" id="L74">        union(fromInterval(interval));</span>
+<span class="fc" id="L75">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public Point1S project(final Point1S pt) {
+<span class="fc" id="L80">        final BoundaryProjector1S projector = new BoundaryProjector1S(pt);</span>
+<span class="fc" id="L81">        accept(projector);</span>
+
+<span class="fc" id="L83">        return projector.getProjected();</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;Each interval of the region is transformed individually and the
+     * results are unioned. If the size of any transformed interval is greater
+     * than or equal to 2pi, then the region is set to the full space.&lt;/p&gt;
+     */
+    @Override
+    public void transform(final Transform&lt;Point1S&gt; transform) {
+<span class="fc bfc" id="L94" title="All 4 branches covered.">        if (!isFull() &amp;&amp; !isEmpty()) {</span>
+            // transform each interval individually to handle wrap-around
+<span class="fc" id="L96">            final List&lt;AngularInterval&gt; intervals = toIntervals();</span>
+
+<span class="fc" id="L98">            setEmpty();</span>
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">            for (final AngularInterval interval : intervals) {</span>
+<span class="fc" id="L101">                union(interval.transform(transform).toTree());</span>
+<span class="fc" id="L102">            }</span>
+        }
+<span class="fc" id="L104">    }</span>
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;It is important to note that split operations occur according to the rules of the
+     * {@link CutAngle} hyperplane class. In this class, the continuous circle is viewed
+     * as a non-circular segment of the number line in the range {@code [0, 2pi)}. Hyperplanes
+     * are placed along this line and partition it into the segments {@code [0, x]}
+     * and {@code [x, 2pi)}, where {@code x} is the location of the hyperplane. For example,
+     * a positive-facing {@link CutAngle} instance with an azimuth of {@code 0.5pi} has
+     * a minus side consisting of the angles {@code [0, 0.5pi]} and a plus side consisting of
+     * the angles {@code [0.5pi, 2pi)}. Similarly, a positive-facing {@link CutAngle} with
+     * an azimuth of {@code 0pi} has a plus side of {@code [0, 2pi)} (the full space) and
+     * a minus side that is completely empty (since no points exist in our domain that are
+     * less than zero). These rules can result in somewhat non-intuitive behavior at times.
+     * For example, splitting a non-empty region with a hyperplane at {@code 0pi} is
+     * essentially a no-op, since the region will either lie entirely on the plus or minus
+     * side of the hyperplane (depending on the hyperplane's orientation) regardless of the actual
+     * content of the region. In these situations, a copy of the tree is returned on the
+     * appropriate side of the split.&lt;/p&gt;
+     *
+     * @see CutAngle
+     * @see #splitDiameter(CutAngle)
+     */
+    @Override
+    public Split&lt;RegionBSPTree1S&gt; split(final Hyperplane&lt;Point1S&gt; splitter) {
+        // Handle the special case where the cut is on the azimuth equivalent to zero.
+        // In this case, it is not possible for any points to lie between it and zero.
+<span class="fc bfc" id="L132" title="All 4 branches covered.">        if (!isEmpty() &amp;&amp; splitter.classify(Point1S.ZERO) == HyperplaneLocation.ON) {</span>
+<span class="fc" id="L133">            final CutAngle cut = (CutAngle) splitter;</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">            if (cut.isPositiveFacing()) {</span>
+<span class="fc" id="L135">                return new Split&lt;&gt;(null, copy());</span>
+            } else {
+<span class="fc" id="L137">                return new Split&lt;&gt;(copy(), null);</span>
+            }
+        }
+
+<span class="fc" id="L141">        return split(splitter, RegionBSPTree1S.empty(), RegionBSPTree1S.empty());</span>
+    }
+
+    /** Split the instance along a circle diameter.The diameter is defined by the given
+     * split point and its reversed antipodal point.
+     * @param splitter split point defining one side of the split diameter
+     * @return result of the split operation
+     */
+    public Split&lt;RegionBSPTree1S&gt; splitDiameter(final CutAngle splitter) {
+
+<span class="fc" id="L151">        final CutAngle opposite = CutAngles.fromPointAndDirection(</span>
+<span class="fc" id="L152">                splitter.getPoint().antipodal(),</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">                !splitter.isPositiveFacing(),</span>
+<span class="fc" id="L154">                splitter.getPrecision());</span>
+
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        final double plusPoleOffset = splitter.isPositiveFacing() ?</span>
+<span class="fc" id="L157">                +Angle.PI_OVER_TWO :</span>
+<span class="fc" id="L158">                -Angle.PI_OVER_TWO;</span>
+<span class="fc" id="L159">        final Point1S plusPole = Point1S.of(splitter.getAzimuth() + plusPoleOffset);</span>
+
+<span class="fc" id="L161">        final boolean zeroOnPlusSide = splitter.getPrecision()</span>
+<span class="fc" id="L162">                .lte(plusPole.distance(Point1S.ZERO), Angle.PI_OVER_TWO);</span>
+
+<span class="fc" id="L164">        final Split&lt;RegionBSPTree1S&gt; firstSplit = split(splitter);</span>
+<span class="fc" id="L165">        final Split&lt;RegionBSPTree1S&gt; secondSplit = split(opposite);</span>
+
+<span class="fc" id="L167">        RegionBSPTree1S minus = RegionBSPTree1S.empty();</span>
+<span class="fc" id="L168">        RegionBSPTree1S plus = RegionBSPTree1S.empty();</span>
+
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (zeroOnPlusSide) {</span>
+            // zero wrap-around needs to be handled on the plus side of the split
+<span class="fc" id="L172">            safeUnion(plus, firstSplit.getPlus());</span>
+<span class="fc" id="L173">            safeUnion(plus, secondSplit.getPlus());</span>
+
+<span class="fc" id="L175">            minus = firstSplit.getMinus();</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">            if (minus != null) {</span>
+<span class="fc" id="L177">                minus = minus.split(opposite).getMinus();</span>
+            }
+        } else {
+            // zero wrap-around needs to be handled on the minus side of the split
+<span class="fc" id="L181">            safeUnion(minus, firstSplit.getMinus());</span>
+<span class="fc" id="L182">            safeUnion(minus, secondSplit.getMinus());</span>
+
+<span class="fc" id="L184">            plus = firstSplit.getPlus();</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">            if (plus != null) {</span>
+<span class="fc" id="L186">                plus = plus.split(opposite).getPlus();</span>
+            }
+        }
+
+<span class="fc" id="L190">        return new Split&lt;&gt;(</span>
+<span class="fc bfc" id="L191" title="All 4 branches covered.">                (minus != null &amp;&amp; !minus.isEmpty()) ? minus : null,</span>
+<span class="fc bfc" id="L192" title="All 4 branches covered.">                (plus != null &amp;&amp; !plus.isEmpty()) ? plus : null);</span>
+    }
+
+
+    /** Convert the region represented by this tree into a list of separate
+     * {@link AngularInterval}s, arranged in order of ascending min value.
+     * @return list of {@link AngularInterval}s representing this region in order of
+     *      ascending min value
+     */
+    public List&lt;AngularInterval&gt; toIntervals() {
+<span class="fc bfc" id="L202" title="All 2 branches covered.">        if (isFull()) {</span>
+<span class="fc" id="L203">            return Collections.singletonList(AngularInterval.full());</span>
+        }
+
+<span class="fc" id="L206">        final List&lt;BoundaryPair&gt; insideBoundaryPairs = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        for (final RegionNode1S node : nodes()) {</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">            if (node.isInside()) {</span>
+<span class="fc" id="L209">                insideBoundaryPairs.add(getNodeBoundaryPair(node));</span>
+            }
+<span class="fc" id="L211">        }</span>
+
+<span class="fc" id="L213">        insideBoundaryPairs.sort(BOUNDARY_PAIR_COMPARATOR);</span>
+
+<span class="fc" id="L215">        final int boundaryPairCount = insideBoundaryPairs.size();</span>
+
+        // Get the start point for merging intervals together.
+<span class="fc" id="L218">        final int startOffset = getIntervalStartIndex(insideBoundaryPairs);</span>
+
+        // Go through the pairs starting at the start offset and create intervals
+        // for each set of adjacent pairs.
+<span class="fc" id="L222">        final List&lt;AngularInterval&gt; intervals = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L224">        BoundaryPair start = null;</span>
+<span class="fc" id="L225">        BoundaryPair end = null;</span>
+        BoundaryPair current;
+
+<span class="fc bfc" id="L228" title="All 2 branches covered.">        for (int i = 0; i &lt; boundaryPairCount; ++i) {</span>
+<span class="fc" id="L229">            current = insideBoundaryPairs.get((i + startOffset) % boundaryPairCount);</span>
+
+<span class="fc bfc" id="L231" title="All 2 branches covered.">            if (start == null) {</span>
+<span class="fc" id="L232">                start = current;</span>
+<span class="fc" id="L233">                end = current;</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">            } else if (Objects.equals(end.getMax(), current.getMin())) {</span>
+                // these intervals should be merged
+<span class="fc" id="L236">                end = current;</span>
+            } else {
+                // these intervals should be separate
+<span class="fc" id="L239">                intervals.add(createInterval(start, end));</span>
+
+                // queue up the next pair
+<span class="fc" id="L242">                start = current;</span>
+<span class="fc" id="L243">                end = current;</span>
+            }
+        }
+
+<span class="fc bfc" id="L247" title="All 2 branches covered.">        if (start != null) {</span>
+<span class="fc" id="L248">            intervals.add(createInterval(start, end));</span>
+        }
+
+<span class="fc" id="L251">        return intervals;</span>
+    }
+
+    /** Get the index that should be used as the starting point for combining adjacent boundary pairs
+     * into contiguous intervals. This is computed as the first boundary pair found that is not connected
+     * to the pair before it, or {@code 0} if no such entry exists.
+     * @param boundaryPairs list of boundary pairs to search; must be ordered by increasing azimuth
+     * @return the index to use as a starting place for combining adjacent boundary pairs
+     *      into contiguous intervals
+     */
+    private int getIntervalStartIndex(final List&lt;BoundaryPair&gt; boundaryPairs) {
+<span class="fc" id="L262">        final int size = boundaryPairs.size();</span>
+
+<span class="fc bfc" id="L264" title="All 2 branches covered.">        if (size &gt; 0) {</span>
+            BoundaryPair current;
+<span class="fc" id="L266">            BoundaryPair previous = boundaryPairs.get(size - 1);</span>
+
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">            for (int i = 0; i &lt; size; ++i, previous = current) {</span>
+<span class="fc" id="L269">                current = boundaryPairs.get(i);</span>
+
+<span class="fc bfc" id="L271" title="All 2 branches covered.">                if (!Objects.equals(current.getMin(), previous.getMax())) {</span>
+<span class="fc" id="L272">                    return i;</span>
+                }
+            }
+        }
+
+<span class="fc" id="L277">        return 0;</span>
+    }
+
+    /** Create an interval instance from the min boundary from the start boundary pair and
+     * the max boundary from the end boundary pair. The hyperplane directions are adjusted
+     * as needed.
+     * @param start starting boundary pair
+     * @param end ending boundary pair
+     * @return an interval created from the min boundary of the given start pair and the
+     *      max boundary from the given end pair
+     */
+    private AngularInterval createInterval(final BoundaryPair start, final BoundaryPair end) {
+<span class="fc" id="L289">        CutAngle min = start.getMin();</span>
+<span class="fc" id="L290">        CutAngle max = end.getMax();</span>
+
+<span class="fc bfc" id="L292" title="All 2 branches covered.">        final Precision.DoubleEquivalence precision = (min != null) ? min.getPrecision() : max.getPrecision();</span>
+
+        // flip the hyperplanes if needed since there's no
+        // guarantee that the inside will be on the minus side
+        // of the hyperplane (for example, if the region is complemented)
+
+<span class="fc bfc" id="L298" title="All 2 branches covered.">        if (min != null) {</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">            if (min.isPositiveFacing()) {</span>
+<span class="fc" id="L300">                min = min.reverse();</span>
+            }
+        } else {
+<span class="fc" id="L303">            min = CutAngles.createNegativeFacing(0.0, precision);</span>
+        }
+
+<span class="fc bfc" id="L306" title="All 2 branches covered.">        if (max != null) {</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">            if (!max.isPositiveFacing()) {</span>
+<span class="fc" id="L308">                max = max.reverse();</span>
+            }
+        } else {
+<span class="fc" id="L311">            max = CutAngles.createPositiveFacing(Angle.TWO_PI, precision);</span>
+        }
+
+<span class="fc" id="L314">        return AngularInterval.of(min, max);</span>
+    }
+
+    /** Return the min/max boundary pair for the convex region represented by the given node.
+     * @param node the node to compute the interval for
+     * @return the min/max boundary pair for the convex region represented by the given node
+     */
+    private BoundaryPair getNodeBoundaryPair(final RegionNode1S node) {
+<span class="fc" id="L322">        CutAngle min = null;</span>
+<span class="fc" id="L323">        CutAngle max = null;</span>
+
+        CutAngle pt;
+<span class="fc" id="L326">        RegionNode1S child = node;</span>
+        RegionNode1S parent;
+
+<span class="fc bfc" id="L329" title="All 6 branches covered.">        while ((min == null || max == null) &amp;&amp; (parent = child.getParent()) != null) {</span>
+<span class="fc" id="L330">            pt = (CutAngle) parent.getCutHyperplane();</span>
+
+<span class="fc bfc" id="L332" title="All 4 branches covered.">            if ((pt.isPositiveFacing() &amp;&amp; child.isMinus()) ||</span>
+<span class="fc bfc" id="L333" title="All 4 branches covered.">                    (!pt.isPositiveFacing() &amp;&amp; child.isPlus())) {</span>
+
+<span class="fc bfc" id="L335" title="All 2 branches covered.">                if (max == null) {</span>
+<span class="fc" id="L336">                    max = pt;</span>
+                }
+<span class="fc bfc" id="L338" title="All 2 branches covered.">            } else if (min == null) {</span>
+<span class="fc" id="L339">                min = pt;</span>
+            }
+
+<span class="fc" id="L342">            child = parent;</span>
+        }
+
+<span class="fc" id="L345">        return new BoundaryPair(min, max);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected RegionSizeProperties&lt;Point1S&gt; computeRegionSizeProperties() {
+<span class="fc bfc" id="L351" title="All 2 branches covered.">        if (isFull()) {</span>
+<span class="fc" id="L352">            return new RegionSizeProperties&lt;&gt;(Angle.TWO_PI, null);</span>
+<span class="fc bfc" id="L353" title="All 2 branches covered.">        } else if (isEmpty()) {</span>
+<span class="fc" id="L354">            return new RegionSizeProperties&lt;&gt;(0, null);</span>
+        }
+
+<span class="fc" id="L357">        double size = 0;</span>
+<span class="fc" id="L358">        Vector2D scaledCentroidSum = Vector2D.ZERO;</span>
+
+        double intervalSize;
+
+<span class="fc bfc" id="L362" title="All 2 branches covered.">        for (final AngularInterval interval : toIntervals()) {</span>
+<span class="fc" id="L363">            intervalSize = interval.getSize();</span>
+
+<span class="fc" id="L365">            size += intervalSize;</span>
+<span class="fc" id="L366">            scaledCentroidSum = scaledCentroidSum.add(interval.getCentroid().getVector().withNorm(intervalSize));</span>
+<span class="fc" id="L367">        }</span>
+
+<span class="fc" id="L369">        final Precision.DoubleEquivalence precision = ((CutAngle) getRoot().getCutHyperplane()).getPrecision();</span>
+
+<span class="fc bfc" id="L371" title="All 2 branches covered.">        final Point1S centroid = scaledCentroidSum.eq(Vector2D.ZERO, precision) ?</span>
+<span class="fc" id="L372">                 null :</span>
+<span class="fc" id="L373">                 Point1S.from(scaledCentroidSum);</span>
+
+<span class="fc" id="L375">        return new RegionSizeProperties&lt;&gt;(size, centroid);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected RegionNode1S createNode() {
+<span class="fc" id="L381">        return new RegionNode1S(this);</span>
+    }
+
+    /** Return a new, empty BSP tree.
+     * @return a new, empty BSP tree.
+     */
+    public static RegionBSPTree1S empty() {
+<span class="fc" id="L388">        return new RegionBSPTree1S(false);</span>
+    }
+
+    /** Return a new, full BSP tree. The returned tree represents the
+     * full space.
+     * @return a new, full BSP tree.
+     */
+    public static RegionBSPTree1S full() {
+<span class="fc" id="L396">        return new RegionBSPTree1S(true);</span>
+    }
+
+    /** Return a new BSP tree representing the same region as the given angular interval.
+     * @param interval the input interval
+     * @return a new BSP tree representing the same region as the given angular interval
+     */
+    public static RegionBSPTree1S fromInterval(final AngularInterval interval) {
+<span class="fc" id="L404">        final CutAngle minBoundary = interval.getMinBoundary();</span>
+<span class="fc" id="L405">        final CutAngle maxBoundary = interval.getMaxBoundary();</span>
+
+<span class="fc" id="L407">        final RegionBSPTree1S tree = full();</span>
+
+<span class="fc bfc" id="L409" title="All 2 branches covered.">        if (minBoundary != null) {</span>
+<span class="fc" id="L410">            tree.insert(minBoundary.span());</span>
+        }
+
+<span class="fc bfc" id="L413" title="All 2 branches covered.">        if (maxBoundary != null) {</span>
+<span class="fc" id="L414">            tree.insert(maxBoundary.span());</span>
+        }
+
+<span class="fc" id="L417">        return tree;</span>
+    }
+
+    /** Perform a union operation with {@code target} and {@code input}, storing the result
+     * in {@code target}; does nothing if {@code input} is null.
+     * @param target target tree
+     * @param input input tree
+     */
+    private static void safeUnion(final RegionBSPTree1S target, final RegionBSPTree1S input) {
+<span class="fc bfc" id="L426" title="All 2 branches covered.">        if (input != null) {</span>
+<span class="fc" id="L427">            target.union(input);</span>
+        }
+<span class="fc" id="L429">    }</span>
+
+    /** BSP tree node for one dimensional spherical space.
+     */
+    public static final class RegionNode1S extends AbstractRegionBSPTree.AbstractRegionNode&lt;Point1S, RegionNode1S&gt; {
+        /** Simple constructor.
+         * @param tree the owning tree instance
+         */
+        private RegionNode1S(final AbstractBSPTree&lt;Point1S, RegionNode1S&gt; tree) {
+<span class="fc" id="L438">            super(tree);</span>
+<span class="fc" id="L439">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        protected RegionNode1S getSelf() {
+<span class="fc" id="L444">            return this;</span>
+        }
+    }
+
+    /** Internal class containing pairs of interval boundaries.
+     */
+    private static final class BoundaryPair {
+
+        /** The min boundary. */
+        private final CutAngle min;
+
+        /** The max boundary. */
+        private final CutAngle max;
+
+        /** Simple constructor.
+         * @param min min boundary hyperplane
+         * @param max max boundary hyperplane
+         */
+<span class="fc" id="L462">        BoundaryPair(final CutAngle min, final CutAngle max) {</span>
+<span class="fc" id="L463">            this.min = min;</span>
+<span class="fc" id="L464">            this.max = max;</span>
+<span class="fc" id="L465">        }</span>
+
+        /** Get the minimum boundary hyperplane.
+         * @return the minimum boundary hyperplane.
+         */
+        public CutAngle getMin() {
+<span class="fc" id="L471">            return min;</span>
+        }
+
+        /** Get the maximum boundary hyperplane.
+         * @return the maximum boundary hyperplane.
+         */
+        public CutAngle getMax() {
+<span class="fc" id="L478">            return max;</span>
+        }
+
+        /** Get the minimum value of the interval or zero if no minimum value exists.
+         * @return the minimum value of the interval or zero
+         *      if no minimum value exists.
+         */
+        public double getMinValue() {
+<span class="fc bfc" id="L486" title="All 2 branches covered.">            return (min != null) ? min.getNormalizedAzimuth() : 0;</span>
+        }
+    }
+
+    /** Class used to project points onto the region boundary.
+     */
+    private static final class BoundaryProjector1S extends BoundaryProjector&lt;Point1S, RegionNode1S&gt; {
+        /** Simple constructor.
+         * @param point the point to project onto the region's boundary
+         */
+        BoundaryProjector1S(final Point1S point) {
+<span class="fc" id="L497">            super(point);</span>
+<span class="fc" id="L498">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        protected boolean isPossibleClosestCut(final HyperplaneSubset&lt;Point1S&gt; cut, final Point1S target,
+                final double minDist) {
+            // since the space wraps around, consider any cut as possibly being the closest
+<span class="fc" id="L505">            return true;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected Point1S disambiguateClosestPoint(final Point1S target, final Point1S a, final Point1S b) {
+            // prefer the point with the smaller normalize azimuth value
+<span class="fc bfc" id="L512" title="All 2 branches covered.">            return a.getNormalizedAzimuth() &lt; b.getNormalizedAzimuth() ? a : b;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

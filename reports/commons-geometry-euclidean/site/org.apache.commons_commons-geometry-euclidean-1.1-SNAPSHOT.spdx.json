@@ -1,0 +1,4120 @@
+{
+  "SPDXID" : "SPDXRef-DOCUMENT",
+  "spdxVersion" : "SPDX-2.3",
+  "creationInfo" : {
+    "created" : "2024-07-13T15:24:54Z",
+    "creators" : [ "Tool: spdx-maven-plugin" ],
+    "licenseListVersion" : "3.24.0"
+  },
+  "name" : "Apache Commons Geometry Euclidean",
+  "dataLicense" : "CC0-1.0",
+  "documentNamespace" : "http://spdx.org/spdxpackages/org.apache.commons_commons-geometry-euclidean-1.1-SNAPSHOT",
+  "packages" : [ {
+    "SPDXID" : "SPDXRef-gnrtd8",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Pure Java implementations of random numbers generator algorithms.\n  Code in this module should not be used directly by applications; please use\n  the client interface defined in module \"commons-rng-client-api\" and the factory\n  methods defined in module \"commons-rng-simple\". In a future release, modularization\n  may be enforced through JPMS access restrictions.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-rng/commons-rng-core/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons RNG Core",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Pure Java implementations of random numbers generator algorithms.\n  Code in this module should not be used directly by applications; please use\n  the client interface defined in module \"commons-rng-client-api\" and the factory\n  methods defined in module \"commons-rng-simple\". In a future release, modularization\n  may be enforced through JPMS access restrictions.",
+    "versionInfo" : "1.5"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd9",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "The Apache Commons RNG Sampling module provides samplers\n    for various distributions.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-rng/commons-rng-sampling/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons RNG Sampling",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "The Apache Commons RNG Sampling module provides samplers\n    for various distributions.",
+    "versionInfo" : "1.5"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd0",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Core interfaces and classes for Apache Commons Geometry.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-geometry/commons-geometry-core/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Geometry Core",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Core interfaces and classes for Apache Commons Geometry.",
+    "versionInfo" : "1.1-SNAPSHOT"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd1",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Basic utilities.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "http://commons.apache.org/proper/commons-numbers/commons-numbers-core/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Numbers Core",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Basic utilities.",
+    "versionInfo" : "1.1"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd2",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Array utilities.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "http://commons.apache.org/proper/commons-numbers/commons-numbers-arrays/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Numbers Arrays",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Array utilities.",
+    "versionInfo" : "1.1"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd3",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Utilities related to the concept of angle.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "http://commons.apache.org/proper/commons-numbers/commons-numbers-angle/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Numbers Angle",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Utilities related to the concept of angle.",
+    "versionInfo" : "1.1"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd4",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Quaternion numbers.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "http://commons.apache.org/proper/commons-numbers/commons-numbers-quaternion/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Numbers Quaternion",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Quaternion numbers.",
+    "versionInfo" : "1.1"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd5",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Core interfaces and classes for Apache Commons Geometry.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-geometry/commons-geometry-core/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Geometry Core",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Core interfaces and classes for Apache Commons Geometry.",
+    "versionInfo" : "1.1-SNAPSHOT"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd6",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "API for client code that uses random numbers generators.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-rng/commons-rng-client-api/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons RNG Client API",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "API for client code that uses random numbers generators.",
+    "versionInfo" : "1.5"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd7",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Simple API for instantiating random numbers generators.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-rng/commons-rng-simple/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons RNG Simple",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Simple API for instantiating random numbers generators.",
+    "versionInfo" : "1.5"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd10",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-jupiter\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Jupiter (Aggregator)",
+    "summary" : "Module \"junit-jupiter\" of JUnit 5.",
+    "versionInfo" : "5.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd13",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-platform-commons\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Platform Commons",
+    "summary" : "Module \"junit-platform-commons\" of JUnit 5.",
+    "versionInfo" : "1.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd14",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "@API Guardian",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://github.com/apiguardian-team/apiguardian",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "org.apiguardian:apiguardian-api",
+    "summary" : "@API Guardian",
+    "versionInfo" : "1.1.2"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd11",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-jupiter-api\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Jupiter API",
+    "summary" : "Module \"junit-jupiter-api\" of JUnit 5.",
+    "versionInfo" : "5.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd12",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Open Test Alliance for the JVM",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://github.com/ota4j-team/opentest4j",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "org.opentest4j:opentest4j",
+    "summary" : "Open Test Alliance for the JVM",
+    "versionInfo" : "1.2.0"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd17",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-platform-engine\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Platform Engine API",
+    "summary" : "Module \"junit-platform-engine\" of JUnit 5.",
+    "versionInfo" : "1.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd18",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "02f5c1275b664e4b3385959cbb3ba43678fb5ea5"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "description" : "Geometric primitives for euclidean space.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : true,
+    "homepage" : "https://commons.apache.org/proper/commons-geometry/commons-geometry-euclidean/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "licenseInfoFromFiles" : [ "NOASSERTION" ],
+    "name" : "Apache Commons Geometry Euclidean",
+    "originator" : "Organization:The Apache Software Foundation",
+    "packageFileName" : "commons-geometry-euclidean-1.1-SNAPSHOT.jar",
+    "packageVerificationCode" : {
+      "packageVerificationCodeValue" : "7d016fc9e8c4656fd28132fb306341674b06da6e"
+    },
+    "primaryPackagePurpose" : "LIBRARY",
+    "summary" : "Geometric primitives for euclidean space.",
+    "supplier" : "Organization: The Apache Software Foundation",
+    "versionInfo" : "1.1-SNAPSHOT"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd15",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-jupiter-params\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Jupiter Params",
+    "summary" : "Module \"junit-jupiter-params\" of JUnit 5.",
+    "versionInfo" : "5.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd16",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-jupiter-engine\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Jupiter Engine",
+    "summary" : "Module \"junit-jupiter-engine\" of JUnit 5.",
+    "versionInfo" : "5.9.3"
+  } ],
+  "files" : [ {
+    "SPDXID" : "SPDXRef-gnrtd60",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "e8dc69718a56449c325feec129a887096854d55f"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/line/Linecastable3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd61",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "a603c1db0fe3ed5c8c0969d40e323f8bb22fd47b"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/line/LinecastPoint3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd64",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "67d95f6c6040b93058be7e617b1a9533f37289dc"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/line/LineSpanningSubset3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd65",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "2c3c8d6bb33fc28e3ba825430a64e6a0e01f6126"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/line/LineSubset3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd62",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "5cef164645dfcafaa59da64c5ec307051a67af2a"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/line/LineConvexSubset3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd63",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "8ad4d590ba543203295dd00f9b43b07eaa9619e3"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/line/Lines3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd68",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "fd10e52cc512cf68ee40a1d1bbd01c71137fa6ae"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/line/ReverseRay3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd69",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "f03a2e6029b4206be28be2dc34801462427a4295"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/line/Segment3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd66",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "7b3898c2cb5206c9f894cf6f5d9105ea1d4d1fb4"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/line/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd67",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "5ca3a617f8624b5441cf46b73ec159642d56b639"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/line/Ray3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd71",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "927f73a0212231cfc92e7b562dcc3ffa36537e8f"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/mesh/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd72",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "80710c2e16f3d8bb82dead82fa354671c3d88a8f"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/mesh/SimpleTriangleMesh.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd70",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "89dfe0336008c77f6a03753ffc06d387ee424426"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/mesh/Mesh.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd75",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "f9724b0b589b74e09f2e1898647f1fe7b4d45304"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/Plane.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd76",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "2029833398e893a8d4f1c2170a8227a062aeca77"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/PlaneConvexSubset.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd73",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "91d71aaf923c4c468fe54af132beaf03cae95310"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/mesh/TriangleMesh.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd74",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "667a601b7ff16d631313da651a275ec126a422ab"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd79",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "5800117022d46440c654a57e4c4319699e3ccdd6"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/RegionBSPTree3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd77",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "b5bc1e2a25603d142366ed0e39f1f6fd5a1723d9"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/Planes.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd78",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "99b4b3c6d913cded24e951b2b654afd653cf1da6"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/PlaneSubset.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd82",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "69801bd95b1784d4d71ad9479ab549a06c05e91c"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/rotation/AxisSequence.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd83",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "763df652cf6dc3e7680dcaeef56644d8e7a27353"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/rotation/AxisSequenceType.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd80",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "02a682ce3cbf590684df88ec63931cb7ac3826d5"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/rotation/AxisAngleSequence.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd81",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "c029ceff6105f08f57752b8dbc94e2e75104155a"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/rotation/AxisReferenceFrame.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd86",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "bcd1d523ce3fe6e11c2e611930fc9d1a3b86f167"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/rotation/Rotation3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd87",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "874d4d384ad659cd22e4b492379ce83131c85d26"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/shape/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd84",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "31c426aec3144900127eff94f9fdfc5921d64a18"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/rotation/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd85",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "5805c05e749f0741ec217a9b3c5fbb7b17c5f7d8"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/rotation/QuaternionRotation.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd88",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "1c8579adfec881c71158abca6ee363fffa1ec4a9"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/shape/Parallelepiped.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd89",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "39dc5071d57a64f6a5c5d3a2f4fe02a58953088b"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/shape/Sphere.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd93",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "856a123880a2c90bdb9303d532542b59d3473cd8"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/Vector3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd94",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "089e4f0243a9fe8fc427d65a9a0b0d357f2c3efa"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/VertexListConvexPolygon3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd91",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "aa3e35eb98d2b4a42506151912624b3eccffc6bd"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/SphericalCoordinates.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd92",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "f315f541f5762ec4112af016910f8a9a51cc54d4"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/Triangle3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd97",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "ec17b1ac74ef2d7e7b2e31db20e95f6dbcc72410"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/BoundarySource2D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd98",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "93aefcda0fef2771c688f6d6cefcc05e853a09f8"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/BoundarySourceBoundsBuilder2D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd95",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "eaa0bc9231af88b17d6a7a34319aee73f4448656"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/AffineTransformMatrix2D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd96",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "200d8578a82dde0a3088ea065fb121974e766c2c"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/BoundaryList2D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd90",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "4456983cf91268bc696ac870f0666f137ec5bde3"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/SimpleTriangle3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd99",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "782fb37322d83de3bb5cacc1a68de3a2d1abdb7c"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/BoundarySourceLinecaster2D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd20",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "682918f76b5ac14af498fdd7b6d4c13f3adb0bd0"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/AbstractBounds.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd21",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "28d2b8b4b565108becd1813ca9df7da8c77fc7d9"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/AbstractLinecastPoint.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd24",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "d6140844db960013a5fe2081b2e7d1d899b8dfb0"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/EuclideanTransform.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd25",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "66e4811896392e598757a195d93487140d1653ec"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/EuclideanVector.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd22",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "2eac6124b5692b0b5d3e83c4e58e275573246e46"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/AbstractNSphere.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd23",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "7be69618268d4c2e2aec3538ec5aedb5ccfb125f"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/EuclideanCollections.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd28",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "9316b01f03170197c01fc73b19a1a413e5d45ee6"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/internal/EuclideanUtils.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd29",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "33dc9235aaafd6bd30b91f5a8c1a933476f3f68e"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/internal/Matrices.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd26",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "f7f44852416f4e87d6537ea63f608e2820d0bafc"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/EuclideanVectorSum.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd27",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "9ab417a4946f7d31ec1fe5a2e014e6beaa13debc"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/internal/AbstractPathConnector.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd31",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "e5e7de378bafbe06202f62cb7034b3ba8c6857da"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/internal/Vectors.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd32",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "87b0d9bd805cbd92968bb35f88e371c3fc6ebe6d"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/MultiDimensionalEuclideanVector.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd30",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "2d97d318ed476227a36d6ba19cc45798b1753823"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/internal/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd35",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "e926a4d7dd53143df75a187fe5abc23ea3247eb4"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/oned/OrientedPoint.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd36",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "50d1c2d0771dfab2187cccba62243ed00c09894b"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/oned/OrientedPoints.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd33",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "a9395a77d343d1c7418088a4df71eb0f7f89a1b8"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/oned/AffineTransformMatrix1D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd34",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "0fb09316cce2ec6d253509e528f339cfe36a705a"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/oned/Interval.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd39",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "20615862f32d25db8c4c8925be377411ef6a97ca"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/oned/Vector1D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd37",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "ab0b1f76f4d2046964bdfe1f03127916768bab17"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/oned/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd38",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "5dc8baea2d0ac2aad7fc9b2b47a92f95e0c8db08"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/oned/RegionBSPTree1D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd42",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "11c5a20375baf9ed8f94ef8d32e1054d420262dd"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/PointMap2DImpl.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd43",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "47bd2149ccefe7b31bcb1706f66398ffada4f2d6"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/PointMap3DImpl.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd40",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "56d1c7318515bb48f5b9218827853c2e4a1fd7b1"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd41",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "8d00f212bc1a6f8020bbca3204fce857085fca5c"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/PointMap1DImpl.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd46",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "0243d9c4e9ea366e01741163abfe9e014d825bdb"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/AbstractPlaneSubset.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd47",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "4ecbff0bf9e66dd97e116766ae8280280c7ad61b"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/AffineTransformMatrix3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd44",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "af0a693257d5b68b0b31e7b5856eeca91a73c88e"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/AbstractConvexPolygon3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd45",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "7eb59b5fe08fb62935a3648d57ee7606d4718fe6"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/AbstractEmbeddedRegionPlaneSubset.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd48",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "ec5be4fb0b9aed19ac22ee831cdb925cacde6202"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/BoundaryList3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd49",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "cf0519a16fb136ca2b14371eb300a0c5b05a9d9d"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/BoundarySource3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd50",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "635aac031d3d0179610d727a4b2b6fa15f69d3a8"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/BoundarySourceBoundsBuilder3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd53",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "96526fe28acfe1fdd6696e72bf4b59ed3bc4c106"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/ConvexPolygon3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd54",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "0b9f0648d607d84e8880a3675ddc92ed36678c08"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/ConvexVolume.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd51",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "01f3864a3df2e71aa316f3f04094ee7da81e6317"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/BoundarySourceLinecaster3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd52",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "227b1ed998ae059d55841620e0a69e1a56af5de9"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/Bounds3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd57",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "85e0f2b04352931ea2393482054de6c877ff7f9e"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/EmbeddingPlane.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd58",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "f1f1fcbdc9a5bdcda3a9e35c077fd0da82ee1443"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/line/EmbeddedTreeLineSubset3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd55",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "f509b94c2c43cfdb11cd7f8b41bf1dcf0744896c"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/EmbeddedAreaPlaneConvexSubset.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd56",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "da87854798767bddc66ece48cc5e84e14614c254"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/EmbeddedTreePlaneSubset.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd59",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "7c414321ddd82aac2d82eeddbb7a109c60561f84"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/threed/line/Line3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd201",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "fdd8ae984728312ef1c01e80613883852d5fb1f0"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/SegmentTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd200",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "6283a182806ea596cc9112fd8ed86b1a175de4d5"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/rotation/Rotation2DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd205",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "b314c7ebb7d599944981908b7f3ed33a30e78f3a"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./LICENSE",
+    "fileTypes" : [ "OTHER" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd204",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "705deee83c32c8c6533e62c8cb23aa011231612f"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/Vector2DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd203",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "10d8f45db97584f85ab9d6e3fd28e7e0ade7b816"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/shape/ParallelogramTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd202",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "af05ff4ab6c911cb7900f26ddcbc76f73d05c633"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/shape/CircleTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd206",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "f6d5a62a83b8410c7b9d9886cc0588498cbe2aa9"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./NOTICE",
+    "fileTypes" : [ "OTHER" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd160",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "4903cc3f1c8627007f516664fe78d6418d7f6fe1"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/PlanesTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd164",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "f32732a89429a40b139f936195a4ea401baa5640"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/RegionBSPTree3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd163",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "ffe7db3bbdcaaee06a593f8b6898ee20f9b96182"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/PointSet3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd162",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "908ad31626cf2f3a9264cef11300b942edb4221f"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/PointMap3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd161",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "324613dd0c70a3b3336550b8fead42249965c862"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/PlaneTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd157",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "4f923848bb45a844bf997abdc91122628ef6e50a"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/LinecastChecker3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd156",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "b45852f5d7ab66b930843346992d1c6b6e7fdd44"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/line/Segment3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd155",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "7f2a4cd3b77379b576e6916a46cf8ec4d6ab8764"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/line/ReverseRay3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd154",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "203a4a724dc249a339152e9dcd40d49731f31b07"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/line/Ray3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd159",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "d7150f20010b3e130e204b7c90b41d654e17cd1a"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/PlaneConvexSubsetTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd158",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "84d35bdfe1ac11be867f4da2f4a6bea20e8b62a9"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/mesh/SimpleTriangleMeshTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd171",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "93b2a9a17a9236723599b5d63145c52d9e6af987"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/SimpleTriangle3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd170",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "a135485addfdd40d21dd02b0e3fed5ef3a72b0ca"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/shape/SphereTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd175",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "5a201756e1eb5fc5621fa1061ef3eb99989ed562"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/AffineTransformMatrix2DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd174",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "065dc4cc39a5e13f6d388f2b176505f2048c8803"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/VertexListConvexPolygon3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd173",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "dd8f604685bd36ae2442e166083101f522eb19b8"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/Vector3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd172",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "8e43323f0ab54b2e71daf5a8bf288b219f050713"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/SphericalCoordinatesTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd168",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "d9a53737e8a6179b719b4df7362b19f8e87a5623"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/rotation/StandardRotations.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd167",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "dad76807197135f28aead99104f3a215f5ad8324"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/rotation/QuaternionRotationTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd166",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "2ea68674dcfe317b1c16ebaa2feb0455c0f50860"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/rotation/AxisSequenceTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd165",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "7b215a72fd6a067f9a8c7a5c1d9dd3fe586b46ea"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/rotation/AxisAngleSequenceTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd169",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "05a385099ebfebd07767f58a82c54fcff51b5de6"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/shape/ParallelepipedTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd142",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "3cf77cffc4c2a206dbe6b4cd0ed6ad48db2e427b"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/BoundarySource3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd141",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "786500a0449d29d07eba7ac7b62c1d6def5eb224"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/BoundaryList3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd140",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "2a3f6bc4bd0dd548511cb72458f22857f17960fe"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/AffineTransformMatrix3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd135",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "6cba2c837193e6ea8d4b9248232b5759daa09631"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/oned/OrientedPointTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd134",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "d80228d4e04c14de4843819bb2e127cbe1e8fc68"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/oned/IntervalTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd133",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "5666cfdb78997657d0b71bc1cb8916d875b0e4f7"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/oned/AffineTransformMatrix1DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd132",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "16137630b42d69077c1ddff41c4a2dd12c088cf8"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/internal/VectorsTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd139",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "dbd0159c91c34ecd905b04ed05acb2d472cc0f06"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/oned/Vector1DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd138",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "7bf1a3866d4becd75aa24de95fdea003606e8e6b"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/oned/RegionBSPTree1DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd137",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "bce54d142312685558e7fa6160e573e354244666"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/oned/PointSet1DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd136",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "e2b2969c160900bce1f11aa6c27746714f443ef5"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/oned/PointMap1DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd153",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "1eecf096368d9e82332fa90a18f075ab58fc1c46"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/line/LineConvexSubset3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd152",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "6c41b9615ebe345d64861acde340084eff0e9aad"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/line/LinecastPoint3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd151",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "ac2078af7452a607cf1a4c397853e20dd0081b40"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/line/Line3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd150",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "a0468a820f4017371782ed7b0bd171f576e67b48"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/line/EmbeddedTreeLineSubset3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd146",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "7c7991ea2823d3a71ee98317a990557b9acb3ade"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/ConvexVolumeTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd145",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "3ca3b34755e36a566626dc32ea434e9832b02cdb"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/Bounds3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd144",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "97a58f7c781e0b1d7519c2871de6d86d1de0544b"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/BoundarySourceLinecaster3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd143",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "8aa33a031c70f529bceea486c119e2ef1fab8f88"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/BoundarySourceBoundsBuilder3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd149",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "754d6bb334fe9012aa88eea976b7b8de7bfcf157"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/EmbeddingPlaneTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd148",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "3cea9f1f2ed2b3017a56dbd5f16b6b58793eb347"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/EmbeddedTreePlaneSubsetTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd147",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "c2da53306e1953ba6b2c56ec3e236701c90d01c1"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/threed/EmbeddedAreaPlaneConvexSubsetTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd120",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "70f98ccf67d82cf89ac0dca613d42572a8d7f1e5"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/ReverseRay.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd113",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "4755b98f7d68987c5062b6336f8ade7a5e6fa340"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/path/AbstractLinePathConnector.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd112",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "cf208ecbe2a6467a4b9d13246bde4d0ef9dccd48"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd111",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "b59b45648159662bf57195fbf6c0e3b6c51255a0"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/LineSubset.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd110",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "8bd509941c79f6107f368501e6e7dc1555052293"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/LineSpanningSubset.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd117",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "7c0573c652fceb416f9c3f63dfd61fc825cdb4f9"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/PolarCoordinates.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd116",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "fb3d451b5077d8e8d575ae9e10bd3018574bbddd"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/path/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd115",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "a18e9642c9a43f8f8326cfa12dffb81260fbb2b8"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/path/LinePath.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd114",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "fdb243d8f51695d1872f65b043fe42c33cc49210"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/path/InteriorAngleLinePathConnector.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd119",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "49ec63461b39f86a429c99b95e223aa4326cb776"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/RegionBSPTree2D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd118",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "3985080db9a59c4003fb1439fcf4e39373adf44e"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/Ray.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd131",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "4250db431bf49cbbe77b3e71ef3c95dec154e07c"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/internal/MatricesTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd130",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "797488fa860b0cdf5c64979723b59aafc0eba41d"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/internal/EuclideanUtilsTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd124",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "b8b5e62d1a3548529b1b14c82da4a16f05f3806d"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/shape/Circle.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd123",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "25cba7cb836f8c4500168a3d2bb1dc6368eb77ed"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/Segment.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd122",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "ae1d3be624373b3e8d6f728ef3015d644bb9e63a"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/rotation/Rotation2D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd121",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "059573dadca79546877892a91073a2c770883200"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/rotation/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd128",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "2be2d0b88407c25726f251beb69e1fb38cc8262f"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/DocumentationExamplesTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd127",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "1467b8272c0eb43d729267a01d96e89469af6052"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/Vector2D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd126",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "3cda3963bb5a565b6f3a224b49c7db74b07199bc"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/shape/Parallelogram.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd125",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "d66b818a03f6f6fe915e20909e8ef2f1efdf4fa2"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/shape/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd129",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "718bf4032fdd0adfb0587bec2d9190132b5d33e6"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/EuclideanTestUtils.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd102",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "2e3eae628376b4c4ba821cc1aa6c97f8976e21fb"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/EmbeddedTreeLineSubset.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd101",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "98fad4c84a27e1bbfdd4f9d4e4d19e041171770c"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/ConvexArea.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd100",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "b3de83241eb65b2e3429ed2e3e95754150c77af9"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/Bounds2D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd106",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "8d6e22819e84efd1ba3588c7a39307ae1556a5be"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/Linecastable2D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd105",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "11760da2d4623770f4bc84327b515acc983a17f5"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/Line.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd104",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "9e998e5f4754fb88ad5ca33811528232297d5379"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/hull/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd103",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "098a31587b16953cfcf1cc66dfcbd655ff8ee4b6"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/hull/ConvexHull2D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd109",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "e49b5b93bfc99476538098b9a2f96423653146c5"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/Lines.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd108",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "00592472375b98e9826be905d003b87b40db385d"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/LineConvexSubset.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd107",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "1e52a97dfa49ea05552ae4e2d54d17d4a1d7b9fb"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/twod/LinecastPoint2D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd19",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "be4176d19ff553e626d630d2e47439da7b9dff2a"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/euclidean/AbstractAffineTransformMatrix.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd199",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "a77efa2a1fabe6869bdaa1513a9666c8d31bfbd9"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/ReverseRayTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd198",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "d9f0c798830b80c78b3e9d148d8d7d4071253015"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/RegionBSPTree2DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd182",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "32c221926f8732324a75469d3b1528ea53b03a06"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/EmbeddedTreeLineSubsetTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd181",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "e3226bae68cf9f9b3908504c6d67c81319c9d782"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/ConvexAreaTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd180",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "9452bf44e943b151cd07ffb6c396dd74310d105e"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/Bounds2DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd186",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "6d30a7b96f583b9039c34b608e3c0f03ff59fe05"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/LinecastPoint2DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd185",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "2db7c929dc2f86cb61df9b2e6ce64629b5995393"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/LinecastChecker2D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd184",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "8d1445af840a32342a74e0d5ee47596af6d2e6d4"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/hull/ConvexHullBuilderTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd183",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "111c7c807e8b52e4e98c5d518690355daadb6a68"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/hull/ConvexHull2DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd179",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "7663c4faceb673a8726e6ba68d78549647342edb"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/BoundarySourceLinecaster2DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd178",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "d7a63996946550b76ee26d2bb7c336b07b457594"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/BoundarySourceBoundsBuilder2DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd177",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "6fa29a660d9fa5bea9b2b3c9d293766dda1f5e27"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/BoundarySource2DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd176",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "707b8a4e839056e1077e9fab21ac77c85f8a4bc3"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/BoundaryList2DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd193",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "7436045f8993fa8797ec5460827661308519d86f"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/path/LinePathTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd192",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "06419ffb981b78c82baa339f73db69aef3112a1e"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/path/InteriorAngleLinePathConnectorTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd191",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "aae3fbee04c8058604a327770d3ba1e9a05e3e5e"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/path/AbstractLinePathConnectorTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd190",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "51989827330eafc0878e05bcac65dd7f776e4c7a"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/LineTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd197",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "5b287d58f1783175760fd647ed236812b29cd908"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/RayTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd196",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "045bd4e943df943be2d88f965dfe6beb4992f742"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/PolarCoordinatesTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd195",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "de8af30d13289b62399ca976bb448b243e87f620"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/PointSet2DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd194",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "899ffdc24a34ab523b39403187c430ff72755caf"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/PointMap2DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd189",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "1274d6422595511950783a9be0c1634643e33ca9"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/LineSubsetTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd188",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "b2d262c9ba16b2676b9299fcdce706416f1e5c88"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/LineSpanningSubsetTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd187",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "9325a66d20785b15be5f6e877c2f873c770bcd9b"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/euclidean/twod/LineConvexSubsetTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  } ],
+  "relationships" : [ {
+    "spdxElementId" : "SPDXRef-DOCUMENT",
+    "relationshipType" : "DESCRIBES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd8",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd9",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd5",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd6",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd7",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd10",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd13",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd14",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd11",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd12",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd17",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd108"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd133"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd34"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd82"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd148"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd167"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd109"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd59"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd113"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd174"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd71"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd95"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd37"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd199"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd106"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd144"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd179"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd153"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd155"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd152"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd151"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd200"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd53"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd33"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd88"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd186"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd145"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd27"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd146"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd205"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd83"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd91"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd194"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd66"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd177"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd206"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd102"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd147"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd122"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd81"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd28"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd158"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd64"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd68"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd162"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd120"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd204"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd123"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd163"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd125"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd140"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd47"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd40"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd159"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd126"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd192"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd185"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd20"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd67"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd164"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd172"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd114"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd94"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd78"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd89"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd69"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd116"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd58"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd157"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd182"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd101"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd92"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd46"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd138"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd75"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd197"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd41"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd193"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd136"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd84"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd99"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd150"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd56"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd160"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd44"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd50"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd188"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd191"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd181"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd23"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd72"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd87"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd189"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd127"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd161"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd24"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd49"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd96"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd90"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd203"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd139"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd93"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd32"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd128"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd80"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd105"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd129"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd73"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd39"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd62"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd43"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd86"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd35"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd97"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd110"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd63"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd117"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd156"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd135"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd166"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd134"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd70"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd51"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd115"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd104"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd42"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd30"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd52"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd121"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd184"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd171"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd124"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd170"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd107"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd165"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd201"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd112"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd143"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd76"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd142"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd183"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd175"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd141"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd29"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd55"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd100"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd137"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd176"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd196"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd54"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd25"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd169"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd60"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd180"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd130"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd190"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd98"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd31"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd173"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd48"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd26"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd178"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd202"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd149"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd74"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd61"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd36"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd1",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd0",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd4",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd3",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd2",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd38"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd103"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd22"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd79"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd168"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd45"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd198"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd132"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd131"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd77"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd195"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd85"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd118"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd19"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd154"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd111"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd119"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd65"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd187"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd57"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd15",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd16",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd60",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd61",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd64",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd65",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd62",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd63",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd68",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd69",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd66",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd67",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd71",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd72",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd70",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd75",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd76",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd73",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd74",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd79",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd77",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd78",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd82",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd83",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd80",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd81",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd86",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd87",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd84",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd85",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd88",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd89",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd93",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd94",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd91",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd92",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd97",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd98",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd95",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd96",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd90",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd99",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd20",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd24",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd25",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd22",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd23",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd28",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd29",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd26",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd27",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd31",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd32",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd30",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd35",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd36",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd33",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd34",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd39",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd37",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd38",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd42",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd43",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd40",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd41",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd46",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd47",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd44",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd45",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd48",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd49",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd50",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd53",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd54",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd51",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd52",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd57",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd58",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd55",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd56",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd59",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd201",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd200",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd205",
+    "relationshipType" : "CONTAINED_BY",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd204",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd203",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd202",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd206",
+    "relationshipType" : "CONTAINED_BY",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd160",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd164",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd163",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd162",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd161",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd157",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd156",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd155",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd154",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd159",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd158",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd171",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd170",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd175",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd174",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd173",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd172",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd168",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd167",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd166",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd165",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd169",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd142",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd141",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd140",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd135",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd134",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd133",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd132",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd139",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd138",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd137",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd136",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd153",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd152",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd151",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd150",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd146",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd145",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd144",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd143",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd149",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd148",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd147",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd120",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd113",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd112",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd111",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd110",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd117",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd116",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd115",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd114",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd119",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd118",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd131",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd130",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd124",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd123",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd122",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd121",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd128",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd127",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd126",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd125",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd129",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd102",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd101",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd100",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd106",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd105",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd104",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd103",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd109",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd108",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd107",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd19",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd199",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd198",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd182",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd181",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd180",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd186",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd185",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd184",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd183",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd179",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd178",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd177",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd176",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd193",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd192",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd191",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd190",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd197",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd196",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd195",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd194",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd189",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd188",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd187",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd18",
+    "comment" : ""
+  } ]
+}

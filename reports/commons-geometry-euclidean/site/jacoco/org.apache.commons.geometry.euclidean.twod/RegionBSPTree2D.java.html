@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RegionBSPTree2D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.twod</a> &gt; <span class="el_source">RegionBSPTree2D.java</span></div><h1>RegionBSPTree2D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.twod;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTree;
+import org.apache.commons.geometry.core.partitioning.bsp.AbstractPartitionedRegionBuilder;
+import org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTree;
+import org.apache.commons.geometry.core.partitioning.bsp.BSPTreeVisitor;
+import org.apache.commons.geometry.core.partitioning.bsp.RegionCutBoundary;
+import org.apache.commons.geometry.euclidean.twod.path.InteriorAngleLinePathConnector;
+import org.apache.commons.geometry.euclidean.twod.path.LinePath;
+import org.apache.commons.numbers.core.Precision;
+
+/** Binary space partitioning (BSP) tree representing a region in two dimensional
+ * Euclidean space.
+ */
+public final class RegionBSPTree2D extends AbstractRegionBSPTree&lt;Vector2D, RegionBSPTree2D.RegionNode2D&gt;
+    implements BoundarySource2D {
+
+    /** List of line subset paths comprising the region boundary. */
+    private List&lt;LinePath&gt; boundaryPaths;
+
+    /** Create a new, empty region.
+     */
+    public RegionBSPTree2D() {
+<span class="fc" id="L49">        this(false);</span>
+<span class="fc" id="L50">    }</span>
+
+    /** Create a new region. If {@code full} is true, then the region will
+     * represent the entire 2D space. Otherwise, it will be empty.
+     * @param full whether or not the region should contain the entire
+     *      2D space or be empty
+     */
+    public RegionBSPTree2D(final boolean full) {
+<span class="fc" id="L58">        super(full);</span>
+<span class="fc" id="L59">    }</span>
+
+    /** Return a deep copy of this instance.
+     * @return a deep copy of this instance.
+     * @see #copy(org.apache.commons.geometry.core.partitioning.bsp.BSPTree)
+     */
+    public RegionBSPTree2D copy() {
+<span class="fc" id="L66">        final RegionBSPTree2D result = RegionBSPTree2D.empty();</span>
+<span class="fc" id="L67">        result.copy(this);</span>
+
+<span class="fc" id="L69">        return result;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Iterable&lt;LineConvexSubset&gt; boundaries() {
+<span class="fc" id="L75">        return createBoundaryIterable(LineConvexSubset.class::cast);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Stream&lt;LineConvexSubset&gt; boundaryStream() {
+<span class="fc" id="L81">        return StreamSupport.stream(boundaries().spliterator(), false);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;LineConvexSubset&gt; getBoundaries() {
+<span class="fc" id="L87">        return createBoundaryList(LineConvexSubset.class::cast);</span>
+    }
+
+    /** Get the boundary of the region as a list of connected line subset paths.
+     * The line subset are oriented such that their minus (left) side lies on the
+     * interior of the region.
+     * @return line subset paths representing the region boundary
+     */
+    public List&lt;LinePath&gt; getBoundaryPaths() {
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (boundaryPaths == null) {</span>
+<span class="fc" id="L97">            boundaryPaths = Collections.unmodifiableList(computeBoundaryPaths());</span>
+        }
+<span class="fc" id="L99">        return boundaryPaths;</span>
+    }
+
+    /** Add a convex area to this region. The resulting region will be the
+     * union of the convex area and the region represented by this instance.
+     * @param area the convex area to add
+     */
+    public void add(final ConvexArea area) {
+<span class="fc" id="L107">        union(area.toTree());</span>
+<span class="fc" id="L108">    }</span>
+
+    /** Return a list of {@link ConvexArea}s representing the same region
+     * as this instance. One convex area is returned for each interior leaf
+     * node in the tree.
+     * @return a list of convex areas representing the same region as this
+     *      instance
+     */
+    public List&lt;ConvexArea&gt; toConvex() {
+<span class="fc" id="L117">        final List&lt;ConvexArea&gt; result = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L119">        toConvexRecursive(getRoot(), ConvexArea.full(), result);</span>
+
+<span class="fc" id="L121">        return result;</span>
+    }
+
+    /** Recursive method to compute the convex areas of all inside leaf nodes in the subtree rooted at the given
+     * node. The computed convex areas are added to the given list.
+     * @param node root of the subtree to compute the convex areas for
+     * @param nodeArea the convex area for the current node; this will be split by the node's cut hyperplane to
+     *      form the convex areas for any child nodes
+     * @param result list containing the results of the computation
+     */
+    private void toConvexRecursive(final RegionNode2D node, final ConvexArea nodeArea,
+            final List&lt;? super ConvexArea&gt; result) {
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        if (node.isLeaf()) {</span>
+            // base case; only add to the result list if the node is inside
+<span class="fc bfc" id="L135" title="All 2 branches covered.">            if (node.isInside()) {</span>
+<span class="fc" id="L136">                result.add(nodeArea);</span>
+            }
+        } else {
+            // recurse
+<span class="fc" id="L140">            final Split&lt;ConvexArea&gt; split = nodeArea.split(node.getCutHyperplane());</span>
+
+<span class="fc" id="L142">            toConvexRecursive(node.getMinus(), split.getMinus(), result);</span>
+<span class="fc" id="L143">            toConvexRecursive(node.getPlus(), split.getPlus(), result);</span>
+        }
+<span class="fc" id="L145">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public Split&lt;RegionBSPTree2D&gt; split(final Hyperplane&lt;Vector2D&gt; splitter) {
+<span class="fc" id="L150">        return split(splitter, RegionBSPTree2D.empty(), RegionBSPTree2D.empty());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector2D project(final Vector2D pt) {
+        // use our custom projector so that we can disambiguate points that are
+        // actually equidistant from the target point
+<span class="fc" id="L158">        final BoundaryProjector2D projector = new BoundaryProjector2D(pt);</span>
+<span class="fc" id="L159">        accept(projector);</span>
+
+<span class="fc" id="L161">        return projector.getProjected();</span>
+    }
+
+    /** Return the current instance.
+     */
+    @Override
+    public RegionBSPTree2D toTree() {
+<span class="fc" id="L168">        return this;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;LinecastPoint2D&gt; linecast(final LineConvexSubset subset) {
+<span class="fc" id="L174">        final LinecastVisitor visitor = new LinecastVisitor(subset, false);</span>
+<span class="fc" id="L175">        accept(visitor);</span>
+
+<span class="fc" id="L177">        return visitor.getResults();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinecastPoint2D linecastFirst(final LineConvexSubset subset) {
+<span class="fc" id="L183">        final LinecastVisitor visitor = new LinecastVisitor(subset, true);</span>
+<span class="fc" id="L184">        accept(visitor);</span>
+
+<span class="fc" id="L186">        return visitor.getFirstResult();</span>
+    }
+
+    /** Compute the line subset paths comprising the region boundary.
+     * @return the line subset paths comprising the region boundary
+     */
+    private List&lt;LinePath&gt; computeBoundaryPaths() {
+<span class="fc" id="L193">        final InteriorAngleLinePathConnector connector = new InteriorAngleLinePathConnector.Minimize();</span>
+<span class="fc" id="L194">        connector.connect(boundaries());</span>
+
+<span class="fc" id="L196">        return connector.connectAll().stream()</span>
+<span class="fc" id="L197">                .map(LinePath::simplify).collect(Collectors.toList());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected RegionSizeProperties&lt;Vector2D&gt; computeRegionSizeProperties() {
+        // handle simple cases
+<span class="fc bfc" id="L204" title="All 2 branches covered.">        if (isFull()) {</span>
+<span class="fc" id="L205">            return new RegionSizeProperties&lt;&gt;(Double.POSITIVE_INFINITY, null);</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        } else if (isEmpty()) {</span>
+<span class="fc" id="L207">            return new RegionSizeProperties&lt;&gt;(0, null);</span>
+        }
+
+        // compute the size based on the boundary line subsets
+<span class="fc" id="L211">        double quadrilateralAreaSum = 0.0;</span>
+
+<span class="fc" id="L213">        double scaledSumX = 0.0;</span>
+<span class="fc" id="L214">        double scaledSumY = 0.0;</span>
+
+        Vector2D startPoint;
+        Vector2D endPoint;
+        double signedArea;
+
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        for (final LineConvexSubset boundary : boundaries()) {</span>
+
+<span class="fc bfc" id="L222" title="All 2 branches covered.">            if (boundary.isInfinite()) {</span>
+                // at least on boundary is infinite, meaning that
+                // the size is also infinite
+<span class="fc" id="L225">                quadrilateralAreaSum = Double.POSITIVE_INFINITY;</span>
+
+<span class="fc" id="L227">                break;</span>
+            }
+
+<span class="fc" id="L230">            startPoint = boundary.getStartPoint();</span>
+<span class="fc" id="L231">            endPoint = boundary.getEndPoint();</span>
+
+            // compute the area
+<span class="fc" id="L234">            signedArea = startPoint.signedArea(endPoint);</span>
+
+<span class="fc" id="L236">            quadrilateralAreaSum += signedArea;</span>
+
+            // compute scaled coordinate values for the centroid
+<span class="fc" id="L239">            scaledSumX += signedArea * (startPoint.getX() + endPoint.getX());</span>
+<span class="fc" id="L240">            scaledSumY += signedArea * (startPoint.getY() + endPoint.getY());</span>
+<span class="fc" id="L241">        }</span>
+
+<span class="fc" id="L243">        double size = Double.POSITIVE_INFINITY;</span>
+<span class="fc" id="L244">        Vector2D centroid = null;</span>
+
+        // The area is finite only if the computed quadrilateral area is finite and non-negative.
+        // Negative areas indicate that the region is inside-out, with a finite outside surrounded
+        // by an infinite inside.
+<span class="fc bfc" id="L249" title="All 4 branches covered.">        if (quadrilateralAreaSum &gt;= 0 &amp;&amp; Double.isFinite(quadrilateralAreaSum)) {</span>
+<span class="fc" id="L250">            size = 0.5 * quadrilateralAreaSum;</span>
+
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">            if (quadrilateralAreaSum &gt; 0) {</span>
+<span class="fc" id="L253">                centroid = Vector2D.of(scaledSumX, scaledSumY).multiply(1.0 / (3.0 * quadrilateralAreaSum));</span>
+            }
+        }
+
+<span class="fc" id="L257">        return new RegionSizeProperties&lt;&gt;(size, centroid);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void invalidate() {
+<span class="fc" id="L263">        super.invalidate();</span>
+
+<span class="fc" id="L265">        boundaryPaths = null;</span>
+<span class="fc" id="L266">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    protected RegionNode2D createNode() {
+<span class="fc" id="L271">        return new RegionNode2D(this);</span>
+    }
+
+    /** Return a new {@link RegionBSPTree2D} instance containing the entire space.
+     * @return a new {@link RegionBSPTree2D} instance containing the entire space
+     */
+    public static RegionBSPTree2D full() {
+<span class="fc" id="L278">        return new RegionBSPTree2D(true);</span>
+    }
+
+    /** Return a new, empty {@link RegionBSPTree2D} instance.
+     * @return a new, empty {@link RegionBSPTree2D} instance
+     */
+    public static RegionBSPTree2D empty() {
+<span class="fc" id="L285">        return new RegionBSPTree2D(false);</span>
+    }
+
+    /** Construct a new tree from the given boundaries. If no boundaries
+     * are present, the returned tree is empty.
+     * @param boundaries boundaries to construct the tree from
+     * @return a new tree instance constructed from the given boundaries
+     * @see #from(Iterable, boolean)
+     */
+    public static RegionBSPTree2D from(final Iterable&lt;? extends LineConvexSubset&gt; boundaries) {
+<span class="fc" id="L295">        return from(boundaries, false);</span>
+    }
+
+    /** Construct a new tree from the given boundaries. If {@code full} is true, then
+     * the initial tree before boundary insertion contains the entire space. Otherwise,
+     * it is empty.
+     * @param boundaries boundaries to construct the tree from
+     * @param full if true, the initial tree will contain the entire space
+     * @return a new tree instance constructed from the given boundaries
+     */
+    public static RegionBSPTree2D from(final Iterable&lt;? extends LineConvexSubset&gt; boundaries, final boolean full) {
+<span class="fc" id="L306">        final RegionBSPTree2D tree = new RegionBSPTree2D(full);</span>
+<span class="fc" id="L307">        tree.insert(boundaries);</span>
+
+<span class="fc" id="L309">        return tree;</span>
+    }
+
+    /** Create a new {@link PartitionedRegionBuilder2D} instance which can be used to build balanced
+     * BSP trees from region boundaries.
+     * @return a new {@link PartitionedRegionBuilder2D} instance
+     */
+    public static PartitionedRegionBuilder2D partitionedRegionBuilder() {
+<span class="fc" id="L317">        return new PartitionedRegionBuilder2D();</span>
+    }
+
+    /** BSP tree node for two dimensional Euclidean space.
+     */
+    public static final class RegionNode2D extends AbstractRegionBSPTree.AbstractRegionNode&lt;Vector2D, RegionNode2D&gt; {
+        /** Simple constructor.
+         * @param tree the owning tree instance
+         */
+        private RegionNode2D(final AbstractBSPTree&lt;Vector2D, RegionNode2D&gt; tree) {
+<span class="fc" id="L327">            super(tree);</span>
+<span class="fc" id="L328">        }</span>
+
+        /** Get the region represented by this node. The returned region contains
+         * the entire area contained in this node, regardless of the attributes of
+         * any child nodes.
+         * @return the region represented by this node
+         */
+        public ConvexArea getNodeRegion() {
+<span class="fc" id="L336">            ConvexArea area = ConvexArea.full();</span>
+
+<span class="fc" id="L338">            RegionNode2D child = this;</span>
+            RegionNode2D parent;
+
+<span class="fc bfc" id="L341" title="All 2 branches covered.">            while ((parent = child.getParent()) != null) {</span>
+<span class="fc" id="L342">                final Split&lt;ConvexArea&gt; split = area.split(parent.getCutHyperplane());</span>
+
+<span class="fc bfc" id="L344" title="All 2 branches covered.">                area = child.isMinus() ? split.getMinus() : split.getPlus();</span>
+
+<span class="fc" id="L346">                child = parent;</span>
+<span class="fc" id="L347">            }</span>
+
+<span class="fc" id="L349">            return area;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected RegionNode2D getSelf() {
+<span class="fc" id="L355">            return this;</span>
+        }
+    }
+
+    /** Class used to build regions in Euclidean 2D space by inserting boundaries into a BSP
+     * tree containing &quot;partitions&quot;, i.e. structural cuts where both sides of the cut have the same region location.
+     * When partitions are chosen that effectively divide the region boundaries at each partition level, the
+     * constructed tree is shallower and more balanced than one constructed from the region boundaries alone,
+     * resulting in improved performance. For example, consider a line segment approximation of a circle. The region is
+     * convex so each boundary has all of the other boundaries on its minus side; the plus sides are all empty.
+     * When these boundaries are inserted directly into a tree, the tree degenerates into a simple linked list of
+     * nodes with a height directly proportional to the number of boundaries. This means that many operations on the
+     * tree, such as inside/outside testing of points, involve iterating through each and every region boundary. In
+     * contrast, if a partition is first inserted that passes through the circle center, the first BSP tree node
+     * contains region nodes on its plus &lt;em&gt;and&lt;/em&gt; minus sides, cutting the height of the tree in half. Operations
+     * such as inside/outside testing are then able to skip half of the tree nodes with a single test on the
+     * root node, resulting in drastically improved performance. Insertion of additional partitions (using a grid
+     * layout, for example) can produce even shallower trees, although there is a point unique to each boundary set at
+     * which the addition of more partitions begins to decrease instead of increase performance.
+     *
+     * &lt;h2&gt;Usage&lt;/h2&gt;
+     * &lt;p&gt;Usage of this class consists of two phases: (1) &lt;em&gt;partition insertion&lt;/em&gt; and (2) &lt;em&gt;boundary
+     * insertion&lt;/em&gt;. Instances begin in the &lt;em&gt;partition insertion&lt;/em&gt; phase. Here, partitions can be inserted
+     * into the empty tree using {@link PartitionedRegionBuilder2D#insertPartition(LineConvexSubset) insertPartition}
+     * or similar methods. The {@link org.apache.commons.geometry.core.partitioning.bsp.RegionCutRule#INHERIT INHERIT}
+     * cut rule is used internally to insert the cut so the represented region remains empty even as partitions are
+     * inserted.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;The instance moves into the &lt;em&gt;boundary insertion&lt;/em&gt; phase when the caller inserts the first region
+     * boundary, using {@link PartitionedRegionBuilder2D#insertBoundary(LineConvexSubset) insertBoundary} or
+     * similar methods. Attempting to insert a partition after this point results in an {@code IllegalStateException}.
+     * This ensures that partitioning cuts are always located higher up the tree than boundary cuts.&lt;/p&gt;
+     *
+     * &lt;p&gt;After all boundaries are inserted, the {@link PartitionedRegionBuilder2D#build() build} method is used
+     * to perform final processing and return the computed tree.&lt;/p&gt;
+     */
+    public static final class PartitionedRegionBuilder2D
+        extends AbstractPartitionedRegionBuilder&lt;Vector2D, RegionNode2D&gt; {
+
+        /** Construct a new builder instance.
+         */
+        private PartitionedRegionBuilder2D() {
+<span class="fc" id="L398">            super(RegionBSPTree2D.empty());</span>
+<span class="fc" id="L399">        }</span>
+
+        /** Insert a partition line.
+         * @param partition partition to insert
+         * @return this instance
+         * @throws IllegalStateException if a boundary has previously been inserted
+         */
+        public PartitionedRegionBuilder2D insertPartition(final Line partition) {
+<span class="fc" id="L407">            return insertPartition(partition.span());</span>
+        }
+
+        /** Insert a line convex subset as a partition.
+         * @param partition partition to insert
+         * @return this instance
+         * @throws IllegalStateException if a boundary has previously been inserted
+         */
+        public PartitionedRegionBuilder2D insertPartition(final LineConvexSubset partition) {
+<span class="fc" id="L416">            insertPartitionInternal(partition);</span>
+
+<span class="fc" id="L418">            return this;</span>
+        }
+
+        /** Insert two axis aligned lines intersecting at the given point as partitions.
+         * The lines each contain the {@code center} point and have the directions {@code +x} and {@code +y}
+         * in that order. If inserted into an empty tree, this will partition the space
+         * into 4 sections.
+         * @param center center point for the partitions; the inserted lines intersect at this point
+         * @param precision precision context used to construct the lines
+         * @return this instance
+         * @throws IllegalStateException if a boundary has previously been inserted
+         */
+        public PartitionedRegionBuilder2D insertAxisAlignedPartitions(final Vector2D center,
+                final Precision.DoubleEquivalence precision) {
+
+<span class="fc" id="L433">            insertPartition(Lines.fromPointAndDirection(center, Vector2D.Unit.PLUS_X, precision));</span>
+<span class="fc" id="L434">            insertPartition(Lines.fromPointAndDirection(center, Vector2D.Unit.PLUS_Y, precision));</span>
+
+<span class="fc" id="L436">            return this;</span>
+        }
+
+        /** Insert a grid of partitions. The partitions are constructed recursively: at each level two axis-aligned
+         * partitioning lines are inserted using
+         * {@link #insertAxisAlignedPartitions(Vector2D, Precision.DoubleEquivalence) insertAxisAlignedPartitions}.
+         * The algorithm then recurses using bounding boxes from the min point to the center and from the center
+         * point to the max. Note that this means no partitions are ever inserted directly on the boundaries of
+         * the given bounding box. This is intentional and done to allow this method to be called directly with the
+         * bounding box from a set of boundaries to be inserted without unnecessarily adding partitions that will
+         * never have region boundaries on both sides.
+         * @param bounds bounding box for the grid
+         * @param level recursion level for the grid; each level subdivides each grid cube into 4 sections, making the
+         *      total number of grid cubes equal to {@code 4 ^ level}
+         * @param precision precision context used to construct the partition lines
+         * @return this instance
+         * @throws IllegalStateException if a boundary has previously been inserted
+         */
+        public PartitionedRegionBuilder2D insertAxisAlignedGrid(final Bounds2D bounds, final int level,
+                final Precision.DoubleEquivalence precision) {
+
+<span class="fc" id="L457">            insertAxisAlignedGridRecursive(bounds.getMin(), bounds.getMax(), level, precision);</span>
+
+<span class="fc" id="L459">            return this;</span>
+        }
+
+        /** Recursively insert axis-aligned grid partitions.
+         * @param min min point for the grid square to partition
+         * @param max max point for the grid square to partition
+         * @param level current recursion level
+         * @param precision precision context used to construct the partition planes
+         */
+        private void insertAxisAlignedGridRecursive(final Vector2D min, final Vector2D max, final int level,
+                final Precision.DoubleEquivalence precision) {
+<span class="fc bfc" id="L470" title="All 2 branches covered.">            if (level &gt; 0) {</span>
+<span class="fc" id="L471">                final Vector2D center = min.lerp(max, 0.5);</span>
+
+<span class="fc" id="L473">                insertAxisAlignedPartitions(center, precision);</span>
+
+<span class="fc" id="L475">                final int nextLevel = level - 1;</span>
+<span class="fc" id="L476">                insertAxisAlignedGridRecursive(min, center, nextLevel, precision);</span>
+<span class="fc" id="L477">                insertAxisAlignedGridRecursive(center, max, nextLevel, precision);</span>
+            }
+<span class="fc" id="L479">        }</span>
+
+        /** Insert a region boundary.
+         * @param boundary region boundary to insert
+         * @return this instance
+         */
+        public PartitionedRegionBuilder2D insertBoundary(final LineConvexSubset boundary) {
+<span class="fc" id="L486">            insertBoundaryInternal(boundary);</span>
+
+<span class="fc" id="L488">            return this;</span>
+        }
+
+        /** Insert a collection of region boundaries.
+         * @param boundaries boundaries to insert
+         * @return this instance
+         */
+        public PartitionedRegionBuilder2D insertBoundaries(final Iterable&lt;? extends LineConvexSubset&gt; boundaries) {
+<span class="fc bfc" id="L496" title="All 2 branches covered.">            for (final LineConvexSubset boundary : boundaries) {</span>
+<span class="fc" id="L497">                insertBoundaryInternal(boundary);</span>
+<span class="fc" id="L498">            }</span>
+
+<span class="fc" id="L500">            return this;</span>
+        }
+
+        /** Insert all boundaries from the given source.
+         * @param boundarySrc source of boundaries to insert
+         * @return this instance
+         */
+        public PartitionedRegionBuilder2D insertBoundaries(final BoundarySource2D boundarySrc) {
+<span class="fc" id="L508">            try (Stream&lt;LineConvexSubset&gt; stream = boundarySrc.boundaryStream()) {</span>
+<span class="fc" id="L509">                stream.forEach(this::insertBoundaryInternal);</span>
+            }
+
+<span class="fc" id="L512">            return this;</span>
+        }
+
+        /** Build and return the region BSP tree.
+         * @return the region BSP tree
+         */
+        public RegionBSPTree2D build() {
+<span class="fc" id="L519">            return (RegionBSPTree2D) buildInternal();</span>
+        }
+    }
+
+    /** Class used to project points onto the 2D region boundary.
+     */
+    private static final class BoundaryProjector2D extends BoundaryProjector&lt;Vector2D, RegionNode2D&gt; {
+        /** Simple constructor.
+         * @param point the point to project onto the region's boundary
+         */
+        BoundaryProjector2D(final Vector2D point) {
+<span class="fc" id="L530">            super(point);</span>
+<span class="fc" id="L531">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        protected Vector2D disambiguateClosestPoint(final Vector2D target, final Vector2D a, final Vector2D b) {
+            // return the point with the smallest coordinate values
+<span class="fc" id="L537">            final int cmp = Vector2D.COORDINATE_ASCENDING_ORDER.compare(a, b);</span>
+<span class="fc bfc" id="L538" title="All 2 branches covered.">            return cmp &lt; 0 ? a : b;</span>
+        }
+    }
+
+    /** BSP tree visitor that performs a linecast operation against the boundaries of the visited tree.
+     */
+    private static final class LinecastVisitor implements BSPTreeVisitor&lt;Vector2D, RegionNode2D&gt; {
+
+        /** The line subset to intersect with the boundaries of the BSP tree. */
+        private final LineConvexSubset linecastSubset;
+
+        /** If true, the visitor will stop visiting the tree once the first linecast
+         * point is determined.
+         */
+        private final boolean firstOnly;
+
+        /** The minimum abscissa found during the search. */
+<span class="fc" id="L555">        private double minAbscissa = Double.POSITIVE_INFINITY;</span>
+
+        /** List of results from the linecast operation. */
+<span class="fc" id="L558">        private final List&lt;LinecastPoint2D&gt; results = new ArrayList&lt;&gt;();</span>
+
+        /** Create a new instance with the given intersecting line subset.
+         * @param linecastSubset line subset to intersect with the BSP tree region boundary
+         * @param firstOnly if true, the visitor will stop visiting the tree once the first
+         *      linecast point is determined
+         */
+<span class="fc" id="L565">        LinecastVisitor(final LineConvexSubset linecastSubset, final boolean firstOnly) {</span>
+<span class="fc" id="L566">            this.linecastSubset = linecastSubset;</span>
+<span class="fc" id="L567">            this.firstOnly = firstOnly;</span>
+<span class="fc" id="L568">        }</span>
+
+        /** Get the first {@link LinecastPoint2D} resulting from the linecast operation.
+         * @return the first linecast result point
+         */
+        public LinecastPoint2D getFirstResult() {
+<span class="fc" id="L574">            final List&lt;LinecastPoint2D&gt; sortedResults = getResults();</span>
+
+<span class="fc bfc" id="L576" title="All 2 branches covered.">            return sortedResults.isEmpty() ?</span>
+<span class="fc" id="L577">                    null :</span>
+<span class="fc" id="L578">                    sortedResults.get(0);</span>
+        }
+
+        /** Get a list containing the results of the linecast operation. The list is
+         * sorted and filtered.
+         * @return list of sorted and filtered results from the linecast operation
+         */
+        public List&lt;LinecastPoint2D&gt; getResults() {
+<span class="fc" id="L586">            LinecastPoint2D.sortAndFilter(results);</span>
+
+<span class="fc" id="L588">            return results;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Order visitOrder(final RegionNode2D internalNode) {
+<span class="fc" id="L594">            final Line cut = (Line) internalNode.getCutHyperplane();</span>
+<span class="fc" id="L595">            final Line line = linecastSubset.getLine();</span>
+
+<span class="fc bfc" id="L597" title="All 2 branches covered.">            final boolean plusIsNear = line.getDirection().dot(cut.getOffsetDirection()) &lt; 0;</span>
+
+<span class="fc bfc" id="L599" title="All 2 branches covered.">            return plusIsNear ?</span>
+<span class="fc" id="L600">                    Order.PLUS_NODE_MINUS :</span>
+<span class="fc" id="L601">                    Order.MINUS_NODE_PLUS;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Result visit(final RegionNode2D node) {
+<span class="fc bfc" id="L607" title="All 2 branches covered.">            if (node.isInternal()) {</span>
+                // check if the line subset intersects the node cut
+<span class="fc" id="L609">                final Line line = linecastSubset.getLine();</span>
+<span class="fc" id="L610">                final Vector2D pt = ((Line) node.getCutHyperplane()).intersection(line);</span>
+
+<span class="pc bpc" id="L612" title="1 of 2 branches missed.">                if (pt != null) {</span>
+<span class="fc bfc" id="L613" title="All 4 branches covered.">                    if (firstOnly &amp;&amp; !results.isEmpty() &amp;&amp;</span>
+<span class="fc bfc" id="L614" title="All 2 branches covered.">                            line.getPrecision().compare(minAbscissa, line.abscissa(pt)) &lt; 0) {</span>
+                        // we have results and we are now sure that no other intersection points will be
+                        // found that are closer or at the same position on the intersecting line.
+<span class="fc" id="L617">                        return Result.TERMINATE;</span>
+<span class="fc bfc" id="L618" title="All 2 branches covered.">                    } else if (linecastSubset.contains(pt)) {</span>
+                        // we've potentially found a new linecast point; add it to the list of potential
+                        // results
+<span class="fc" id="L621">                        final LinecastPoint2D potentialResult = computeLinecastPoint(pt, node);</span>
+<span class="fc bfc" id="L622" title="All 2 branches covered.">                        if (potentialResult != null) {</span>
+<span class="fc" id="L623">                            results.add(potentialResult);</span>
+
+                            // update the min abscissa
+<span class="fc" id="L626">                            minAbscissa = Math.min(minAbscissa, potentialResult.getAbscissa());</span>
+                        }
+                    }
+                }
+            }
+
+<span class="fc" id="L632">            return Result.CONTINUE;</span>
+        }
+
+        /** Compute the linecast point for the given intersection point and tree node, returning null
+         * if the point does not actually lie on the region boundary.
+         * @param pt intersection point
+         * @param node node containing the cut that the linecast line intersected with
+         * @return a new linecast point instance or null if the intersection point does not lie
+         *      on the region boundary
+         */
+        private LinecastPoint2D computeLinecastPoint(final Vector2D pt, final RegionNode2D node) {
+<span class="fc" id="L643">            final Line cut = (Line) node.getCutHyperplane();</span>
+<span class="fc" id="L644">            final RegionCutBoundary&lt;Vector2D&gt; boundary = node.getCutBoundary();</span>
+
+<span class="fc" id="L646">            boolean onBoundary = false;</span>
+<span class="fc" id="L647">            boolean negateNormal = false;</span>
+
+<span class="fc bfc" id="L649" title="All 2 branches covered.">            if (boundary.containsInsideFacing(pt)) {</span>
+                // on inside-facing boundary
+<span class="fc" id="L651">                onBoundary = true;</span>
+<span class="fc" id="L652">                negateNormal = true;</span>
+<span class="fc bfc" id="L653" title="All 2 branches covered.">            } else  if (boundary.containsOutsideFacing(pt)) {</span>
+                // on outside-facing boundary
+<span class="fc" id="L655">                onBoundary = true;</span>
+            }
+
+<span class="fc bfc" id="L658" title="All 2 branches covered.">            if (onBoundary) {</span>
+<span class="fc" id="L659">                Vector2D normal = cut.getOffsetDirection();</span>
+<span class="fc bfc" id="L660" title="All 2 branches covered.">                if (negateNormal) {</span>
+<span class="fc" id="L661">                    normal = normal.negate();</span>
+                }
+
+<span class="fc" id="L664">                return new LinecastPoint2D(pt, normal, linecastSubset.getLine());</span>
+            }
+
+<span class="fc" id="L667">            return null;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

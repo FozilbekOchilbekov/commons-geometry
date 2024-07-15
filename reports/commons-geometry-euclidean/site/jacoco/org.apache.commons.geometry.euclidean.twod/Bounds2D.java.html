@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Bounds2D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.twod</a> &gt; <span class="el_source">Bounds2D.java</span></div><h1>Bounds2D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.twod;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.euclidean.AbstractBounds;
+import org.apache.commons.geometry.euclidean.twod.shape.Parallelogram;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class containing minimum and maximum points defining a 2D axis-aligned bounding box. Unless otherwise
+ * noted, floating point comparisons used in this class are strict, meaning that values are considered equal
+ * if and only if they match exactly.
+ *
+ * &lt;p&gt;Instances of this class are guaranteed to be immutable.&lt;/p&gt;
+ */
+public final class Bounds2D extends AbstractBounds&lt;Vector2D, Bounds2D&gt;
+    implements Linecastable2D {
+
+    /** Simple constructor. Callers are responsible for ensuring the min is not greater than max.
+     * @param min minimum point
+     * @param max maximum point
+     */
+    private Bounds2D(final Vector2D min, final Vector2D max) {
+<span class="fc" id="L43">        super(min, max);</span>
+<span class="fc" id="L44">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean hasSize(final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L49">        final Vector2D diag = getDiagonal();</span>
+
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        return !precision.eqZero(diag.getX()) &amp;&amp;</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">                !precision.eqZero(diag.getY());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean contains(final Vector2D pt) {
+<span class="fc" id="L58">        final double x = pt.getX();</span>
+<span class="fc" id="L59">        final double y = pt.getY();</span>
+
+<span class="fc" id="L61">        final Vector2D min = getMin();</span>
+<span class="fc" id="L62">        final Vector2D max = getMax();</span>
+
+<span class="fc bfc" id="L64" title="All 4 branches covered.">        return x &gt;= min.getX() &amp;&amp; x &lt;= max.getX() &amp;&amp;</span>
+<span class="fc bfc" id="L65" title="All 4 branches covered.">                y &gt;= min.getY() &amp;&amp; y &lt;= max.getY();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean contains(final Vector2D pt, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L71">        final double x = pt.getX();</span>
+<span class="fc" id="L72">        final double y = pt.getY();</span>
+
+<span class="fc" id="L74">        final Vector2D min = getMin();</span>
+<span class="fc" id="L75">        final Vector2D max = getMax();</span>
+
+<span class="fc bfc" id="L77" title="All 4 branches covered.">        return precision.gte(x, min.getX()) &amp;&amp; precision.lte(x, max.getX()) &amp;&amp;</span>
+<span class="fc bfc" id="L78" title="All 4 branches covered.">                precision.gte(y, min.getY()) &amp;&amp; precision.lte(y, max.getY());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean intersects(final Bounds2D other) {
+<span class="fc" id="L84">        final Vector2D aMin = getMin();</span>
+<span class="fc" id="L85">        final Vector2D aMax = getMax();</span>
+
+<span class="fc" id="L87">        final Vector2D bMin = other.getMin();</span>
+<span class="fc" id="L88">        final Vector2D bMax = other.getMax();</span>
+
+<span class="fc bfc" id="L90" title="All 4 branches covered.">        return aMin.getX() &lt;= bMax.getX() &amp;&amp; aMax.getX() &gt;= bMin.getX() &amp;&amp;</span>
+<span class="fc bfc" id="L91" title="All 4 branches covered.">                aMin.getY() &lt;= bMax.getY() &amp;&amp; aMax.getY() &gt;= bMin.getY();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Bounds2D intersection(final Bounds2D other) {
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (intersects(other)) {</span>
+<span class="fc" id="L98">            final Vector2D aMin = getMin();</span>
+<span class="fc" id="L99">            final Vector2D aMax = getMax();</span>
+
+<span class="fc" id="L101">            final Vector2D bMin = other.getMin();</span>
+<span class="fc" id="L102">            final Vector2D bMax = other.getMax();</span>
+
+            // get the max of the mins and the mins of the maxes
+<span class="fc" id="L105">            final double minX = Math.max(aMin.getX(), bMin.getX());</span>
+<span class="fc" id="L106">            final double minY = Math.max(aMin.getY(), bMin.getY());</span>
+
+<span class="fc" id="L108">            final double maxX = Math.min(aMax.getX(), bMax.getX());</span>
+<span class="fc" id="L109">            final double maxY = Math.min(aMax.getY(), bMax.getY());</span>
+
+<span class="fc" id="L111">            return new Bounds2D(</span>
+<span class="fc" id="L112">                    Vector2D.of(minX, minY),</span>
+<span class="fc" id="L113">                    Vector2D.of(maxX, maxY));</span>
+        }
+
+<span class="fc" id="L116">        return null; // no intersection</span>
+    }
+
+    /** Return {@code true} if the region represented by this instance shares any points with
+     * the given line. Floating point comparisons are made using the
+     * {@link Line#getPrecision() precision} of the line.
+     * @param line line to determine intersection with
+     * @return {@code true} if the region represented by this instance intersects
+     *      the given line
+     */
+    public boolean intersects(final Line line) {
+<span class="fc" id="L127">        return intersects(line.span());</span>
+    }
+
+    /** Return {@code true} if the region represented by this instance shares any points with
+     * the given line convex subset. Floating point comparisons are made using the
+     * {@link Line#getPrecision() precision} of the subset's line.
+     * @param subset line convex subset to determine intersection with
+     * @return {@code true} if the region represented by this instance intersects
+     *      the given line convex subset
+     */
+    public boolean intersects(final LineConvexSubset subset) {
+<span class="fc" id="L138">        return new BoundsLinecaster2D(subset).intersectsRegion();</span>
+    }
+
+    /** Return a {@link Segment} representing the intersection of the region
+     * represented by this instance with the given line or {@code null} if no such
+     * intersection exists. Floating point comparisons are made using the
+     * {@link Line#getPrecision() precision} of the line.
+     * @param line line to intersect with
+     * @return {@link Segment} representing the intersection of the region
+     *      represented by this instance with the given line or {@code null}
+     *      if no such intersection exists
+     */
+    public Segment intersection(final Line line) {
+<span class="fc" id="L151">        return intersection(line.span());</span>
+    }
+
+    /** Return a {@link Segment} representing the intersection of the region
+     * represented by this instance with the given line convex subset or {@code null}
+     * if no such intersection exists. Floating point comparisons are made using the
+     * {@link Line#getPrecision() precision} of the subset's line.
+     * @param subset line convex subset to intersect with
+     * @return {@link Segment} representing the intersection of the region
+     *      represented by this instance with the given line convex subset or {@code null}
+     *      if no such intersection exists
+     */
+    public Segment intersection(final LineConvexSubset subset) {
+<span class="fc" id="L164">        return new BoundsLinecaster2D(subset).getRegionIntersection();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;LinecastPoint2D&gt; linecast(final LineConvexSubset subset) {
+<span class="fc" id="L170">        return new BoundsLinecaster2D(subset).getBoundaryIntersections();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinecastPoint2D linecastFirst(final LineConvexSubset subset) {
+<span class="fc" id="L176">        return new BoundsLinecaster2D(subset).getFirstBoundaryIntersection();</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * @throws IllegalArgumentException if any dimension of the bounding box is zero
+     *      as evaluated by the given precision context
+     */
+    @Override
+    public Parallelogram toRegion(final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L186">        return Parallelogram.axisAligned(getMin(), getMax(), precision);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L192">        return Objects.hash(getMin(), getMax());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L198" title="All 2 branches covered.">        if (obj == this) {</span>
+<span class="fc" id="L199">            return true;</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        } else if (!(obj instanceof Bounds2D)) {</span>
+<span class="fc" id="L201">            return false;</span>
+        }
+
+<span class="fc" id="L204">        final Bounds2D other = (Bounds2D) obj;</span>
+
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        return getMin().equals(other.getMin()) &amp;&amp;</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">                getMax().equals(other.getMax());</span>
+    }
+
+    /** Construct a new instance from the given points.
+     * @param first first point
+     * @param more additional points
+     * @return a new instance containing the min and max coordinates values from the input points
+     */
+    public static Bounds2D from(final Vector2D first, final Vector2D... more) {
+<span class="fc" id="L216">        final Builder builder = builder();</span>
+
+<span class="fc" id="L218">        builder.add(first);</span>
+<span class="fc" id="L219">        builder.addAll(Arrays.asList(more));</span>
+
+<span class="fc" id="L221">        return builder.build();</span>
+    }
+
+    /** Construct a new instance from the given points.
+     * @param points input points
+     * @return a new instance containing the min and max coordinates values from the input points
+     */
+    public static Bounds2D from(final Iterable&lt;Vector2D&gt; points) {
+<span class="fc" id="L229">        final Builder builder = builder();</span>
+
+<span class="fc" id="L231">        builder.addAll(points);</span>
+
+<span class="fc" id="L233">        return builder.build();</span>
+    }
+
+    /** Construct a new {@link Builder} instance for creating bounds.
+     * @return a new builder instance for creating bounds
+     */
+    public static Builder builder() {
+<span class="fc" id="L240">        return new Builder();</span>
+    }
+
+    /** Class used to construct {@link Bounds2D} instances.
+     */
+    public static final class Builder {
+
+        /** Minimum x coordinate. */
+<span class="fc" id="L248">        private double minX = Double.POSITIVE_INFINITY;</span>
+
+        /** Minimum y coordinate. */
+<span class="fc" id="L251">        private double minY = Double.POSITIVE_INFINITY;</span>
+
+        /** Maximum x coordinate. */
+<span class="fc" id="L254">        private double maxX = Double.NEGATIVE_INFINITY;</span>
+
+        /** Maximum y coordinate. */
+<span class="fc" id="L257">        private double maxY = Double.NEGATIVE_INFINITY;</span>
+
+        /** Private constructor; instantiate through factory method. */
+<span class="fc" id="L260">        private Builder() { }</span>
+
+        /** Add a point to this instance.
+         * @param pt point to add
+         * @return this instance
+         */
+        public Builder add(final Vector2D pt) {
+<span class="fc" id="L267">            final double x = pt.getX();</span>
+<span class="fc" id="L268">            final double y = pt.getY();</span>
+
+<span class="fc" id="L270">            minX = Math.min(x, minX);</span>
+<span class="fc" id="L271">            minY = Math.min(y, minY);</span>
+
+<span class="fc" id="L273">            maxX = Math.max(x, maxX);</span>
+<span class="fc" id="L274">            maxY = Math.max(y, maxY);</span>
+
+<span class="fc" id="L276">            return this;</span>
+        }
+
+        /** Add a collection of points to this instance.
+         * @param pts points to add
+         * @return this instance
+         */
+        public Builder addAll(final Iterable&lt;? extends Vector2D&gt; pts) {
+<span class="fc bfc" id="L284" title="All 2 branches covered.">            for (final Vector2D pt : pts) {</span>
+<span class="fc" id="L285">                add(pt);</span>
+<span class="fc" id="L286">            }</span>
+
+<span class="fc" id="L288">            return this;</span>
+        }
+
+        /** Add the min and max points from the given bounds to this instance.
+         * @param bounds bounds containing the min and max points to add
+         * @return this instance
+         */
+        public Builder add(final Bounds2D bounds) {
+<span class="fc" id="L296">            add(bounds.getMin());</span>
+<span class="fc" id="L297">            add(bounds.getMax());</span>
+
+<span class="fc" id="L299">            return this;</span>
+        }
+
+        /** Return true if this builder contains valid min and max coordinate values.
+         * @return true if this builder contains valid min and max coordinate values
+         */
+        public boolean hasBounds() {
+<span class="fc bfc" id="L306" title="All 2 branches covered.">            return Double.isFinite(minX) &amp;&amp;</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">                    Double.isFinite(minY) &amp;&amp;</span>
+<span class="pc bpc" id="L308" title="1 of 2 branches missed.">                    Double.isFinite(maxX) &amp;&amp;</span>
+<span class="fc bfc" id="L309" title="All 2 branches covered.">                    Double.isFinite(maxY);</span>
+        }
+
+        /** Create a new {@link Bounds2D} instance from the values in this builder.
+         * The builder can continue to be used to create other instances.
+         * @return a new bounds instance
+         * @throws IllegalStateException if no points were given to the builder or any of the computed
+         *      min and max coordinate values are NaN or infinite
+         * @see #hasBounds()
+         */
+        public Bounds2D build() {
+<span class="fc" id="L320">            final Vector2D min = Vector2D.of(minX, minY);</span>
+<span class="fc" id="L321">            final Vector2D max = Vector2D.of(maxX, maxY);</span>
+
+<span class="fc bfc" id="L323" title="All 2 branches covered.">            if (!hasBounds()) {</span>
+<span class="fc bfc" id="L324" title="All 4 branches covered.">                if (Double.isInfinite(minX) &amp;&amp; minX &gt; 0 &amp;&amp;</span>
+<span class="pc bpc" id="L325" title="1 of 4 branches missed.">                        Double.isInfinite(maxX) &amp;&amp; maxX &lt; 0) {</span>
+<span class="fc" id="L326">                    throw new IllegalStateException(&quot;Cannot construct bounds: no points given&quot;);</span>
+                }
+
+<span class="fc" id="L329">                throw new IllegalStateException(&quot;Invalid bounds: min= &quot; + min + &quot;, max= &quot; + max);</span>
+            }
+
+<span class="fc" id="L332">            return new Bounds2D(min, max);</span>
+        }
+    }
+
+    /** Subclass of {@link BoundsLinecaster} for 2D space.
+     */
+    private final class BoundsLinecaster2D extends BoundsLinecaster&lt;Segment, LinecastPoint2D&gt; {
+
+        /** Line convex subset to be tested against the bounds. */
+        private final LineConvexSubset subset;
+
+        /** Line instance for the subset being tested. */
+        private final Line line;
+
+         /** Construct a new instance for computing bounds intersection information with
+          * the given line convex subset.
+          * @param subset line convex subset to compute intersection information for
+          */
+<span class="fc" id="L350">        BoundsLinecaster2D(final LineConvexSubset subset) {</span>
+<span class="fc" id="L351">            super(subset.getLine().getPrecision());</span>
+
+<span class="fc" id="L353">            this.subset = subset;</span>
+<span class="fc" id="L354">            this.line = subset.getLine();</span>
+<span class="fc" id="L355">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        protected Segment createSegment(final double startAbscissa, final double endAbscissa) {
+<span class="fc" id="L360">            return line.segment(startAbscissa, endAbscissa);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected LinecastPoint2D createBoundaryIntersection(final Vector2D pt, final Vector2D normal) {
+<span class="fc" id="L366">            return new LinecastPoint2D(pt, normal, line);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected void addBoundaryIntersections(final double abscissa, final List&lt;LinecastPoint2D&gt; results) {
+<span class="fc bfc" id="L372" title="All 2 branches covered.">            if (subset.classifyAbscissa(abscissa) != RegionLocation.OUTSIDE) {</span>
+<span class="fc" id="L373">                final Vector2D pt = line.toSpace(abscissa);</span>
+
+<span class="fc" id="L375">                addBoundaryIntersectionIfPresent(</span>
+                        pt,
+                        Vector2D.Unit.MINUS_X,
+                        Vector2D.Unit.PLUS_X,
+                        Vector2D::getX,
+                        results);
+
+<span class="fc" id="L382">                addBoundaryIntersectionIfPresent(</span>
+                        pt,
+                        Vector2D.Unit.MINUS_Y,
+                        Vector2D.Unit.PLUS_Y,
+                        Vector2D::getY,
+                        results);
+            }
+<span class="fc" id="L389">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        protected boolean computeNearFar() {
+<span class="fc bfc" id="L394" title="All 2 branches covered.">            return updateNearFar(Vector2D::getX) &amp;&amp;</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">                    updateNearFar(Vector2D::getY);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected Comparator&lt;LinecastPoint2D&gt; getBoundaryIntersectionComparator() {
+<span class="fc" id="L401">            return LinecastPoint2D.ABSCISSA_ORDER;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected Vector2D getLineDir() {
+<span class="fc" id="L407">            return line.getDirection();</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected Vector2D getLineOrigin() {
+<span class="fc" id="L413">            return line.getOrigin();</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected double getSubspaceStart() {
+<span class="fc" id="L419">            return subset.getSubspaceStart();</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected double getSubspaceEnd() {
+<span class="fc" id="L425">            return subset.getSubspaceEnd();</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

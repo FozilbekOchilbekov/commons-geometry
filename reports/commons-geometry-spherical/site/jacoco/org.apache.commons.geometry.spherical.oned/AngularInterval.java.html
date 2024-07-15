@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AngularInterval.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Spherical</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.spherical.oned</a> &gt; <span class="el_source">AngularInterval.java</span></div><h1>AngularInterval.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.spherical.oned;
+
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.BiFunction;
+
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.HyperplaneBoundedRegion;
+import org.apache.commons.geometry.core.partitioning.HyperplaneLocation;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.numbers.angle.Angle;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing an angular interval of size greater than zero to {@code 2pi}. The interval is
+ * defined by two azimuth angles: a min and a max. The interval starts at the min azimuth angle and
+ * contains all points in the direction of increasing azimuth angles up to max.
+ *
+ * &lt;p&gt;Instances of this class are guaranteed to be immutable.&lt;/p&gt;
+ */
+public class AngularInterval implements HyperplaneBoundedRegion&lt;Point1S&gt; {
+    /** The minimum boundary of the interval. */
+    private final CutAngle minBoundary;
+
+    /** The maximum boundary of the interval. */
+    private final CutAngle maxBoundary;
+
+    /** Point halfway between the min and max boundaries. */
+    private final Point1S midpoint;
+
+    /** Flag set to true if the interval wraps around the {@code 0/2pi} point. */
+    private final boolean wraps;
+
+    /** Construct a new instance representing the angular region between the given
+     * min and max azimuth boundaries. The arguments must be either all finite or all
+     * null (to indicate the full space). If the boundaries are finite, then the min
+     * boundary azimuth value must be numerically less than the max boundary. Callers are
+     * responsible for enforcing these constraints. No validation is performed.
+     * @param minBoundary minimum boundary for the interval
+     * @param maxBoundary maximum boundary for the interval
+     */
+<span class="fc" id="L61">    private AngularInterval(final CutAngle minBoundary, final CutAngle maxBoundary) {</span>
+
+<span class="fc" id="L63">        this.minBoundary = minBoundary;</span>
+<span class="fc" id="L64">        this.maxBoundary = maxBoundary;</span>
+
+<span class="fc" id="L66">        Point1S midpointVal = null;</span>
+<span class="fc" id="L67">        boolean wrapsVal = false;</span>
+
+<span class="pc bpc" id="L69" title="1 of 4 branches missed.">        if (minBoundary != null &amp;&amp; maxBoundary != null) {</span>
+<span class="fc" id="L70">            midpointVal = Point1S.of(0.5 * (minBoundary.getAzimuth() + maxBoundary.getAzimuth()));</span>
+
+            // The interval wraps zero if the max boundary lies on the other side of zero than
+            // the min. This is a more reliable way to compute the wrapping flag than direct
+            // comparison of the normalized azimuths since this approach takes into account
+            // azimuths that are equivalent to zero.
+<span class="fc bfc" id="L76" title="All 2 branches covered.">            wrapsVal = minBoundary.classify(maxBoundary.getPoint()) == HyperplaneLocation.PLUS;</span>
+        }
+
+<span class="fc" id="L79">        this.midpoint =  midpointVal;</span>
+<span class="fc" id="L80">        this.wraps = wrapsVal;</span>
+<span class="fc" id="L81">    }</span>
+
+    /** Get the minimum azimuth angle for the interval, or {@code 0}
+     * if the interval is full.
+     * @return the minimum azimuth angle for the interval or {@code 0}
+     *      if the interval represents the full space.
+     */
+    public double getMin() {
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        return (minBoundary != null) ?</span>
+<span class="fc" id="L90">                minBoundary.getAzimuth() :</span>
+<span class="fc" id="L91">                0.0;</span>
+    }
+
+    /** Get the minimum boundary for the interval, or null if the
+     * interval represents the full space.
+     * @return the minimum point for the interval or null if
+     *      the interval represents the full space
+     */
+    public CutAngle getMinBoundary() {
+<span class="fc" id="L100">        return minBoundary;</span>
+    }
+
+    /** Get the maximum azimuth angle for the interval, or {@code 2pi} if
+     * the interval represents the full space.
+     * @return the maximum azimuth angle for the interval or {@code 2pi} if
+     *      the interval represents the full space.
+     */
+    public double getMax() {
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        return (maxBoundary != null) ?</span>
+<span class="fc" id="L110">                maxBoundary.getAzimuth() :</span>
+<span class="fc" id="L111">                Angle.TWO_PI;</span>
+    }
+
+    /** Get the maximum point for the interval. This will be null if the
+     * interval represents the full space.
+     * @return the maximum point for the interval or null if
+     *      the interval represents the full space
+     */
+    public CutAngle getMaxBoundary() {
+<span class="fc" id="L120">        return maxBoundary;</span>
+    }
+
+    /** Get the midpoint of the interval or null if the interval represents
+     *  the full space.
+     * @return the midpoint of the interval or null if the interval represents
+     *      the full space
+     * @see #getCentroid()
+     */
+    public Point1S getMidPoint() {
+<span class="fc" id="L130">        return midpoint;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isFull() {
+        // minBoundary and maxBoundary are either both null or both not null
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        return minBoundary == null;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;This method always returns false.&lt;/p&gt;
+     */
+    @Override
+    public boolean isEmpty() {
+<span class="fc" id="L146">        return false;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getSize() {
+<span class="fc" id="L152">        return getMax() - getMin();</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;This method simply returns 0 because boundaries in one dimension do not
+     *  have any size.&lt;/p&gt;
+     */
+    @Override
+    public double getBoundarySize() {
+<span class="fc" id="L162">        return 0;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;This method is an alias for {@link #getMidPoint()}.&lt;/p&gt;
+     * @see #getMidPoint()
+     */
+    @Override
+    public Point1S getCentroid() {
+<span class="fc" id="L172">        return getMidPoint();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionLocation classify(final Point1S pt) {
+<span class="fc bfc" id="L178" title="All 2 branches covered.">        if (!isFull()) {</span>
+<span class="fc" id="L179">            final HyperplaneLocation minLoc = minBoundary.classify(pt);</span>
+<span class="fc" id="L180">            final HyperplaneLocation maxLoc = maxBoundary.classify(pt);</span>
+
+<span class="fc bfc" id="L182" title="All 4 branches covered.">            if (minLoc == HyperplaneLocation.ON || maxLoc == HyperplaneLocation.ON) {</span>
+<span class="fc" id="L183">                return RegionLocation.BOUNDARY;</span>
+<span class="fc bfc" id="L184" title="All 12 branches covered.">            } else if ((!wraps &amp;&amp; (minLoc == HyperplaneLocation.PLUS || maxLoc == HyperplaneLocation.PLUS)) ||</span>
+                    (wraps &amp;&amp; minLoc == HyperplaneLocation.PLUS &amp;&amp; maxLoc == HyperplaneLocation.PLUS)) {
+<span class="fc" id="L186">                return RegionLocation.OUTSIDE;</span>
+            }
+        }
+<span class="fc" id="L189">        return RegionLocation.INSIDE;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Point1S project(final Point1S pt) {
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        if (!isFull()) {</span>
+<span class="fc" id="L196">            final double minDist = minBoundary.getPoint().distance(pt);</span>
+<span class="fc" id="L197">            final double maxDist = maxBoundary.getPoint().distance(pt);</span>
+
+<span class="fc bfc" id="L199" title="All 2 branches covered.">            return (minDist &lt;= maxDist) ?</span>
+<span class="fc" id="L200">                    minBoundary.getPoint() :</span>
+<span class="fc" id="L201">                    maxBoundary.getPoint();</span>
+        }
+<span class="fc" id="L203">        return null;</span>
+    }
+
+    /** Return true if the interval wraps around the zero/{@code 2pi} point. In this
+     * case, the max boundary azimuth is less than that of the min boundary when both
+     * values are normalized to the range {@code [0, 2pi)}.
+     * @return true if the interval wraps around the zero/{@code 2pi} point
+     */
+    public boolean wrapsZero() {
+<span class="fc" id="L212">        return wraps;</span>
+    }
+
+    /** Return a new instance transformed by the argument. If the transformed size
+     * of the interval is greater than or equal to 2pi, then an interval representing
+     * the full space is returned.
+     * @param transform transform to apply
+     * @return a new instance transformed by the argument
+     */
+    public AngularInterval transform(final Transform&lt;Point1S&gt; transform) {
+<span class="fc" id="L222">        return AngularInterval.transform(this, transform, AngularInterval::of);</span>
+    }
+
+    /** {@inheritDoc}
+    *
+    * &lt;p&gt;This method returns instances of {@link RegionBSPTree1S} instead of
+    * {@link AngularInterval} since it is possible for a convex angular interval
+    * to be split into disjoint regions by a single hyperplane. These disjoint
+    * regions cannot be represented by this class and require the use of a BSP
+    * tree.&lt;/p&gt;
+    *
+    * @see RegionBSPTree1S#split(Hyperplane)
+    */
+    @Override
+    public Split&lt;RegionBSPTree1S&gt; split(final Hyperplane&lt;Point1S&gt; splitter) {
+<span class="fc" id="L237">        return toTree().split(splitter);</span>
+    }
+
+    /** Return a {@link RegionBSPTree1S} instance representing the same region
+     * as this instance.
+     * @return a BSP tree representing the same region as this instance
+     */
+    public RegionBSPTree1S toTree() {
+<span class="fc" id="L245">        return RegionBSPTree1S.fromInterval(this);</span>
+    }
+
+    /** Return a list of convex intervals comprising this region.
+     * @return a list of convex intervals comprising this region
+     * @see Convex
+     */
+    public List&lt;AngularInterval.Convex&gt; toConvex() {
+<span class="fc bfc" id="L253" title="All 2 branches covered.">        if (isConvex(minBoundary, maxBoundary)) {</span>
+<span class="fc" id="L254">            return Collections.singletonList(new Convex(minBoundary, maxBoundary));</span>
+        }
+
+<span class="fc" id="L257">        final CutAngle midPos = CutAngles.createPositiveFacing(midpoint, minBoundary.getPrecision());</span>
+<span class="fc" id="L258">        final CutAngle midNeg = CutAngles.createNegativeFacing(midpoint, maxBoundary.getPrecision());</span>
+
+<span class="fc" id="L260">        return Arrays.asList(</span>
+                    new Convex(minBoundary, midPos),
+                    new Convex(midNeg, maxBoundary)
+                );
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L269">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L270">        sb.append(this.getClass().getSimpleName())</span>
+<span class="fc" id="L271">            .append(&quot;[min= &quot;)</span>
+<span class="fc" id="L272">            .append(getMin())</span>
+<span class="fc" id="L273">            .append(&quot;, max= &quot;)</span>
+<span class="fc" id="L274">            .append(getMax())</span>
+<span class="fc" id="L275">            .append(']');</span>
+
+<span class="fc" id="L277">        return sb.toString();</span>
+    }
+
+    /** Return an instance representing the full space. The returned instance contains all
+     * possible azimuth angles.
+     * @return an interval representing the full space
+     */
+    public static AngularInterval.Convex full() {
+<span class="fc" id="L285">        return Convex.FULL;</span>
+    }
+
+    /** Return an instance representing the angular interval between the given min and max azimuth
+     * values. The max value is adjusted to be numerically above the min value, even if the resulting
+     * azimuth value is greater than or equal to {@code 2pi}. An instance representing the full space
+     * is returned if either point is infinite or min and max are equivalent as evaluated by the
+     * given precision context.
+     * @param min min azimuth value
+     * @param max max azimuth value
+     * @param precision precision precision context used to compare floating point values
+     * @return a new instance resulting the angular region between the given min and max azimuths
+     * @throws IllegalArgumentException if either azimuth is infinite or NaN
+     */
+    public static AngularInterval of(final double min, final double max,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L301">        return of(Point1S.of(min), Point1S.of(max), precision);</span>
+    }
+
+    /** Return an instance representing the angular interval between the given min and max azimuth
+     * points. The max point is adjusted to be numerically above the min point, even if the resulting
+     * azimuth value is greater than or equal to {@code 2pi}. An instance representing the full space
+     * is returned if either point is infinite or min and max are equivalent as evaluated by the
+     * given precision context.
+     * @param min min azimuth value
+     * @param max max azimuth value
+     * @param precision precision precision context used to compare floating point values
+     * @return a new instance resulting the angular region between the given min and max points
+     * @throws IllegalArgumentException if either azimuth is infinite or NaN
+     */
+    public static AngularInterval of(final Point1S min, final Point1S max,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L317">        return createInterval(min, max, precision, AngularInterval::new, Convex.FULL);</span>
+    }
+
+    /** Return an instance representing the angular interval between the given oriented points.
+     * The negative-facing point is used as the minimum boundary and the positive-facing point is
+     * adjusted to be above the minimum. The arguments can be given in any order. The full space
+     * is returned if the points are equivalent or are oriented in the same direction.
+     * @param a first oriented point
+     * @param b second oriented point
+     * @return an instance representing the angular interval between the given oriented points
+     * @throws IllegalArgumentException if either argument is infinite or NaN
+     */
+    public static AngularInterval of(final CutAngle a, final CutAngle b) {
+<span class="fc" id="L330">        return createInterval(a, b, AngularInterval::new, Convex.FULL);</span>
+    }
+
+    /** Internal method to create an interval between the given min and max points. The max point
+     * is adjusted to be numerically above the min point, even if the resulting
+     * azimuth value is greater than or equal to {@code 2pi}. The full instance argument
+     * is returned if either point is infinite or min and max are equivalent as evaluated by the
+     * given precision context.
+     * @param min min azimuth value
+     * @param max max azimuth value
+     * @param precision precision precision context used to compare floating point values
+     * @param factory factory object used to create new instances; this object is passed the validated
+     *      min (negative-facing) cut and the max (positive-facing) cut, in that order
+     * @param &lt;T&gt; Angular interval implementation type
+     * @param fullSpace instance returned if the interval should represent the full space
+     * @return a new instance resulting the angular region between the given min and max points
+     * @throws IllegalArgumentException if either azimuth is infinite or NaN
+     */
+    private static &lt;T extends AngularInterval&gt; T createInterval(final Point1S min, final Point1S max,
+            final Precision.DoubleEquivalence precision,
+            final BiFunction&lt;? super CutAngle, ? super CutAngle, T&gt; factory, final T fullSpace) {
+
+<span class="fc" id="L352">        validateIntervalValues(min, max);</span>
+
+        // return the full space if either point is infinite or the points are equivalent
+<span class="fc bfc" id="L355" title="All 2 branches covered.">        if (min.eq(max, precision)) {</span>
+<span class="fc" id="L356">            return fullSpace;</span>
+        }
+
+<span class="fc" id="L359">        final Point1S adjustedMax = max.above(min);</span>
+
+<span class="fc" id="L361">        return factory.apply(</span>
+<span class="fc" id="L362">                    CutAngles.createNegativeFacing(min, precision),</span>
+<span class="fc" id="L363">                    CutAngles.createPositiveFacing(adjustedMax, precision)</span>
+                );
+    }
+
+    /** Internal method to create a new interval instance from the given cut angles.
+     * The negative-facing point is used as the minimum boundary and the positive-facing point is
+     * adjusted to be above the minimum. The arguments can be given in any order. The full space
+     * argument is returned if the points are equivalent or are oriented in the same direction.
+     * @param a first cut point
+     * @param b second cut point
+     * @param factory factory object used to create new instances; this object is passed the validated
+     *      min (negative-facing) cut and the max (positive-facing) cut, in that order
+     * @param fullSpace instance returned if the interval should represent the full space
+     * @param &lt;T&gt; Angular interval implementation type
+     * @return a new interval instance created from the given cut angles
+     * @throws IllegalArgumentException if either argument is infinite or NaN
+     */
+    private static &lt;T extends AngularInterval&gt; T createInterval(final CutAngle a, final CutAngle b,
+            final BiFunction&lt;? super CutAngle, ? super CutAngle, T&gt; factory, final T fullSpace) {
+
+<span class="fc" id="L383">        final Point1S aPoint = a.getPoint();</span>
+<span class="fc" id="L384">        final Point1S bPoint = b.getPoint();</span>
+
+<span class="fc" id="L386">        validateIntervalValues(aPoint, bPoint);</span>
+
+<span class="fc bfc" id="L388" title="All 2 branches covered.">        if (a.isPositiveFacing() == b.isPositiveFacing() ||</span>
+<span class="fc bfc" id="L389" title="All 2 branches covered.">                aPoint.eq(bPoint, a.getPrecision()) ||</span>
+<span class="fc bfc" id="L390" title="All 2 branches covered.">                bPoint.eq(aPoint, b.getPrecision())) {</span>
+            // points are equivalent or facing in the same direction
+<span class="fc" id="L392">            return fullSpace;</span>
+        }
+
+<span class="fc bfc" id="L395" title="All 2 branches covered.">        final CutAngle min = a.isPositiveFacing() ? b : a;</span>
+<span class="fc bfc" id="L396" title="All 2 branches covered.">        final CutAngle max = a.isPositiveFacing() ? a : b;</span>
+<span class="fc" id="L397">        final CutAngle adjustedMax = CutAngles.createPositiveFacing(</span>
+<span class="fc" id="L398">                max.getPoint().above(min.getPoint()),</span>
+<span class="fc" id="L399">                max.getPrecision());</span>
+
+<span class="fc" id="L401">        return factory.apply(min, adjustedMax);</span>
+    }
+
+    /** Validate that the given points can be used to specify an angular interval.
+     * @param a first point
+     * @param b second point
+     * @throws IllegalArgumentException if either point is infinite NaN
+     */
+    private static void validateIntervalValues(final Point1S a, final Point1S b) {
+<span class="fc bfc" id="L410" title="All 4 branches covered.">        if (!a.isFinite() || !b.isFinite()) {</span>
+<span class="fc" id="L411">            throw new IllegalArgumentException(MessageFormat.format(&quot;Invalid angular interval: [{0}, {1}]&quot;,</span>
+<span class="fc" id="L412">                    a.getAzimuth(), b.getAzimuth()));</span>
+        }
+<span class="fc" id="L414">    }</span>
+
+    /** Return true if the given cut angles define a convex region. By convention, the
+     * precision context from the min cut is used for the floating point comparison.
+     * @param min min (negative-facing) cut angle
+     * @param max max (positive-facing) cut angle
+     * @return true if the given cut angles define a convex region
+     */
+    private static boolean isConvex(final CutAngle min, final CutAngle max) {
+<span class="pc bpc" id="L423" title="1 of 4 branches missed.">        if (min != null &amp;&amp; max != null) {</span>
+<span class="fc" id="L424">            final double dist = max.getAzimuth() - min.getAzimuth();</span>
+<span class="fc" id="L425">            final Precision.DoubleEquivalence precision = min.getPrecision();</span>
+<span class="fc" id="L426">            return precision.lte(dist, Math.PI);</span>
+        }
+
+<span class="fc" id="L429">        return true;</span>
+    }
+
+    /** Internal transform method that transforms the given instance, using the factory
+     * method to create a new instance if needed.
+     * @param interval interval to transform
+     * @param transform transform to apply
+     * @param factory object used to create new instances
+     * @param &lt;T&gt; Angular interval implementation type
+     * @return a transformed instance
+     */
+    private static &lt;T extends AngularInterval&gt; T transform(final T interval,
+            final Transform&lt;Point1S&gt; transform,
+            final BiFunction&lt;? super CutAngle, ? super CutAngle, T&gt; factory) {
+
+<span class="fc bfc" id="L444" title="All 2 branches covered.">        if (!interval.isFull()) {</span>
+<span class="fc" id="L445">            final CutAngle tMin = interval.getMinBoundary().transform(transform);</span>
+<span class="fc" id="L446">            final CutAngle tMax = interval.getMaxBoundary().transform(transform);</span>
+
+<span class="fc" id="L448">            return factory.apply(tMin, tMax);</span>
+        }
+
+<span class="fc" id="L451">        return interval;</span>
+    }
+
+    /** Class representing an angular interval with the additional property that the
+     * region is convex. By convex, it is meant that the shortest path between any
+     * two points in the region is also contained entirely in the region. If there is
+     * a tie for shortest path, then it is sufficient that at least one lie entirely
+     * within the region. For spherical 1D space, this means that the angular interval
+     * is either completely full or has a length less than or equal to {@code pi}.
+     */
+    public static final class Convex extends AngularInterval {
+        /** Interval instance representing the full space. */
+<span class="fc" id="L463">        private static final Convex FULL = new Convex(null, null);</span>
+
+        /** Construct a new convex instance from its boundaries and midpoint. No validation
+         * of the argument is performed. Callers are responsible for ensuring that the size
+         * of interval is less than or equal to {@code pi}.
+         * @param minBoundary minimum boundary for the interval
+         * @param maxBoundary maximum boundary for the interval
+         * @throws IllegalArgumentException if the interval is not convex
+         */
+        private Convex(final CutAngle minBoundary, final CutAngle maxBoundary) {
+<span class="fc" id="L473">            super(minBoundary, maxBoundary);</span>
+
+<span class="fc bfc" id="L475" title="All 2 branches covered.">            if (!isConvex(minBoundary, maxBoundary)) {</span>
+<span class="fc" id="L476">                throw new IllegalArgumentException(MessageFormat.format(&quot;Interval is not convex: [{0}, {1}]&quot;,</span>
+<span class="fc" id="L477">                        minBoundary.getAzimuth(), maxBoundary.getAzimuth()));</span>
+            }
+<span class="fc" id="L479">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        public List&lt;AngularInterval.Convex&gt; toConvex() {
+<span class="fc" id="L484">            return Collections.singletonList(this);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Convex transform(final Transform&lt;Point1S&gt; transform) {
+<span class="fc" id="L490">            return AngularInterval.transform(this, transform, Convex::of);</span>
+        }
+
+        /** Split the instance along a circle diameter.The diameter is defined by the given split point and
+         * its reversed antipodal point.
+         * @param splitter split point defining one side of the split diameter
+         * @return result of the split operation
+         */
+        public Split&lt;Convex&gt; splitDiameter(final CutAngle splitter) {
+
+<span class="fc" id="L500">            final CutAngle opposite = CutAngles.fromPointAndDirection(</span>
+<span class="fc" id="L501">                    splitter.getPoint().antipodal(),</span>
+<span class="fc bfc" id="L502" title="All 2 branches covered.">                    !splitter.isPositiveFacing(),</span>
+<span class="fc" id="L503">                    splitter.getPrecision());</span>
+
+<span class="fc bfc" id="L505" title="All 2 branches covered.">            if (isFull()) {</span>
+<span class="fc" id="L506">                final Convex minus = Convex.of(splitter, opposite);</span>
+<span class="fc" id="L507">                final Convex plus = Convex.of(splitter.reverse(), opposite.reverse());</span>
+
+<span class="fc" id="L509">                return new Split&lt;&gt;(minus, plus);</span>
+            }
+
+<span class="fc" id="L512">            final CutAngle minBoundary = getMinBoundary();</span>
+<span class="fc" id="L513">            final CutAngle maxBoundary = getMaxBoundary();</span>
+
+<span class="fc" id="L515">            final Point1S posPole = Point1S.of(splitter.getPoint().getAzimuth() + Angle.PI_OVER_TWO);</span>
+
+<span class="fc" id="L517">            final int minLoc = minBoundary.getPrecision().compare(Angle.PI_OVER_TWO,</span>
+<span class="fc" id="L518">                    posPole.distance(minBoundary.getPoint()));</span>
+<span class="fc" id="L519">            final int maxLoc = maxBoundary.getPrecision().compare(Angle.PI_OVER_TWO,</span>
+<span class="fc" id="L520">                    posPole.distance(maxBoundary.getPoint()));</span>
+
+<span class="fc" id="L522">            final boolean positiveFacingSplit = splitter.isPositiveFacing();</span>
+
+            // assume a positive orientation of the splitter for region location
+            // purposes and adjust later
+<span class="fc" id="L526">            Convex pos = null;</span>
+<span class="fc" id="L527">            Convex neg = null;</span>
+
+<span class="fc bfc" id="L529" title="All 2 branches covered.">            if (minLoc &gt; 0) {</span>
+                // min is on the pos side
+
+<span class="fc bfc" id="L532" title="All 2 branches covered.">                if (maxLoc &gt;= 0) {</span>
+                    // max is directly on the splitter or on the pos side
+<span class="fc" id="L534">                    pos = this;</span>
+                } else {
+                    // min is on the pos side and max is on the neg side
+<span class="fc bfc" id="L537" title="All 2 branches covered.">                    final CutAngle posCut = positiveFacingSplit ?</span>
+<span class="fc" id="L538">                            opposite.reverse() :</span>
+<span class="fc" id="L539">                            opposite;</span>
+<span class="fc" id="L540">                    pos = Convex.of(minBoundary, posCut);</span>
+
+<span class="fc bfc" id="L542" title="All 2 branches covered.">                    final CutAngle negCut = positiveFacingSplit ?</span>
+<span class="fc" id="L543">                            opposite :</span>
+<span class="fc" id="L544">                            opposite.reverse();</span>
+<span class="fc" id="L545">                    neg = Convex.of(negCut, maxBoundary);</span>
+<span class="fc" id="L546">                }</span>
+<span class="fc bfc" id="L547" title="All 2 branches covered.">            } else if (minLoc &lt; 0) {</span>
+                // min is on the neg side
+
+<span class="fc bfc" id="L550" title="All 2 branches covered.">                if (maxLoc &lt;= 0) {</span>
+                    // max is directly on the splitter or on the neg side
+<span class="fc" id="L552">                    neg = this;</span>
+                } else {
+                    // min is on the neg side and max is on the pos side
+<span class="fc bfc" id="L555" title="All 2 branches covered.">                    final CutAngle posCut = positiveFacingSplit ?</span>
+<span class="fc" id="L556">                            splitter.reverse() :</span>
+<span class="fc" id="L557">                            splitter;</span>
+<span class="fc" id="L558">                    pos = Convex.of(maxBoundary, posCut);</span>
+
+<span class="fc bfc" id="L560" title="All 2 branches covered.">                    final CutAngle negCut = positiveFacingSplit ?</span>
+<span class="fc" id="L561">                            splitter :</span>
+<span class="fc" id="L562">                            splitter.reverse();</span>
+<span class="fc" id="L563">                    neg = Convex.of(negCut, minBoundary);</span>
+<span class="fc" id="L564">                }</span>
+            } else {
+                // min is directly on the splitter; determine whether it was on the main split
+                // point or its antipodal point
+<span class="fc bfc" id="L568" title="All 2 branches covered.">                if (splitter.getPoint().distance(minBoundary.getPoint()) &lt; Angle.PI_OVER_TWO) {</span>
+                    // on main splitter; interval will be located on pos side of split
+<span class="fc" id="L570">                    pos = this;</span>
+                } else {
+                    // on antipodal point; interval will be located on neg side of split
+<span class="fc" id="L573">                    neg = this;</span>
+                }
+            }
+
+            // adjust for the actual orientation of the splitter
+<span class="fc bfc" id="L578" title="All 2 branches covered.">            final Convex minus = positiveFacingSplit ? neg : pos;</span>
+<span class="fc bfc" id="L579" title="All 2 branches covered.">            final Convex plus = positiveFacingSplit ? pos : neg;</span>
+
+<span class="fc" id="L581">            return new Split&lt;&gt;(minus, plus);</span>
+        }
+
+        /** Return an instance representing the convex angular interval between the given min and max azimuth
+         * values. The max value is adjusted to be numerically above the min value, even if the resulting
+         * azimuth value is greater than or equal to {@code 2pi}. An instance representing the full space
+         * is returned if either point is infinite or min and max are equivalent as evaluated by the
+         * given precision context.
+         * @param min min azimuth value
+         * @param max max azimuth value
+         * @param precision precision precision context used to compare floating point values
+         * @return a new instance resulting the angular region between the given min and max azimuths
+         * @throws IllegalArgumentException if either azimuth is infinite or NaN, or the given angular
+         *      interval is not convex (meaning it has a size of greater than {@code pi})
+         */
+        public static Convex of(final double min, final double max, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L597">            return of(Point1S.of(min), Point1S.of(max), precision);</span>
+        }
+
+        /** Return an instance representing the convex angular interval between the given min and max azimuth
+         * points. The max point is adjusted to be numerically above the min point, even if the resulting
+         * azimuth value is greater than or equal to {@code 2pi}. An instance representing the full space
+         * is returned if either point is infinite or min and max are equivalent as evaluated by the
+         * given precision context.
+         * @param min min azimuth value
+         * @param max max azimuth value
+         * @param precision precision precision context used to compare floating point values
+         * @return a new instance resulting the angular region between the given min and max points
+         * @throws IllegalArgumentException if either azimuth is infinite or NaN, or the given angular
+         *      interval is not convex (meaning it has a size of greater than {@code pi})
+         */
+        public static Convex of(final Point1S min, final Point1S max, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L613">            return createInterval(min, max, precision, Convex::new, Convex.FULL);</span>
+        }
+
+        /** Return an instance representing the convex angular interval between the given oriented points.
+         * The negative-facing point is used as the minimum boundary and the positive-facing point is
+         * adjusted to be above the minimum. The arguments can be given in any order. The full space
+         * is returned if the points are equivalent or are oriented in the same direction.
+         * @param a first oriented point
+         * @param b second oriented point
+         * @return an instance representing the angular interval between the given oriented points
+         * @throws IllegalArgumentException if either azimuth is infinite or NaN, or the given angular
+         *      interval is not convex (meaning it has a size of greater than {@code pi})
+         */
+        public static Convex of(final CutAngle a, final CutAngle b) {
+<span class="fc" id="L627">            return createInterval(a, b, Convex::new, Convex.FULL);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="9.3">
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\main\java\org\apache\commons\geometry\enclosing\Encloser.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\main\java\org\apache\commons\geometry\enclosing\EnclosingBall.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\main\java\org\apache\commons\geometry\enclosing\euclidean\threed\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\main\java\org\apache\commons\geometry\enclosing\euclidean\threed\SphereGenerator.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\main\java\org\apache\commons\geometry\enclosing\euclidean\threed\WelzlEncloser3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\main\java\org\apache\commons\geometry\enclosing\euclidean\twod\DiskGenerator.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\main\java\org\apache\commons\geometry\enclosing\euclidean\twod\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\main\java\org\apache\commons\geometry\enclosing\euclidean\twod\WelzlEncloser2D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\main\java\org\apache\commons\geometry\enclosing\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\main\java\org\apache\commons\geometry\enclosing\SupportBallGenerator.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\main\java\org\apache\commons\geometry\enclosing\WelzlEncloser.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\test\java\org\apache\commons\geometry\enclosing\DocumentationExamplesTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\test\java\org\apache\commons\geometry\enclosing\EnclosingBallTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\test\java\org\apache\commons\geometry\enclosing\euclidean\threed\SphereGeneratorTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\test\java\org\apache\commons\geometry\enclosing\euclidean\threed\WelzlEncloser3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\test\java\org\apache\commons\geometry\enclosing\euclidean\twod\DiskGeneratorTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\test\java\org\apache\commons\geometry\enclosing\euclidean\twod\WelzlEncloser2DTest.java">
+</file>
+</checkstyle>

@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PointMap1DImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean</a> &gt; <span class="el_source">PointMap1DImpl.java</span></div><h1>PointMap1DImpl.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean;
+
+import java.util.Iterator;
+import java.util.NavigableMap;
+import java.util.NoSuchElementException;
+import java.util.Set;
+
+import org.apache.commons.geometry.core.internal.AbstractPointMap1D;
+import org.apache.commons.geometry.core.internal.DistancedValue;
+import org.apache.commons.geometry.euclidean.oned.Vector1D;
+import org.apache.commons.numbers.core.Precision;
+
+/** Internal {@link org.apache.commons.geometry.core.collection.PointMap PointMap}
+ * implementation for Euclidean 1D space.
+ * @param &lt;V&gt; Map value type
+ */
+final class PointMap1DImpl&lt;V&gt;
+    extends AbstractPointMap1D&lt;Vector1D, V&gt; {
+
+    /** Construct a new instance using the given precision context to determine
+     * floating point equality.
+     * @param precision precision context
+     */
+    PointMap1DImpl(final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L41">        super(precision, Vector1D::getX);</span>
+<span class="fc" id="L42">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean containsKey(final Object key) {
+<span class="fc" id="L47">        return getMap().containsKey(key);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public V get(final Object key) {
+<span class="fc" id="L53">        return getMap().get(key);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public V remove(final Object key) {
+<span class="fc" id="L59">        return getMap().remove(key);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void clear() {
+<span class="fc" id="L65">        getMap().clear();</span>
+<span class="fc" id="L66">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public Set&lt;Vector1D&gt; keySet() {
+<span class="fc" id="L71">        return getMap().keySet();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Set&lt;Entry&lt;Vector1D, V&gt;&gt; entrySet() {
+<span class="fc" id="L77">        return getMap().entrySet();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected Entry&lt;Vector1D, V&gt; getEntryInternal(final Vector1D key) {
+<span class="fc" id="L83">        final NavigableMap&lt;Vector1D, V&gt; map = getMap();</span>
+
+<span class="fc" id="L85">        final Entry&lt;Vector1D, V&gt; floor = map.floorEntry(key);</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (floor != null &amp;&amp;</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">                map.comparator().compare(floor.getKey(), key) == 0) {</span>
+<span class="fc" id="L88">            return floor;</span>
+        }
+<span class="fc" id="L90">        return null;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected V putInternal(final Vector1D key, final V value) {
+<span class="fc" id="L96">        return getMap().put(key, value);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected Iterator&lt;Entry&lt;Vector1D, V&gt;&gt; nearToFarIterator(final Vector1D pt) {
+<span class="fc" id="L102">        return new NearToFarIterator(pt);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected Iterator&lt;Entry&lt;Vector1D, V&gt;&gt; farToNearIterator(final Vector1D pt) {
+<span class="fc" id="L108">        return new FarToNearIterator(pt);</span>
+    }
+
+    /** Iterator that returns entries in order of ascending distance from
+     * a given reference point.
+     */
+    private final class NearToFarIterator
+        implements Iterator&lt;Entry&lt;Vector1D, V&gt;&gt; {
+
+        /** Reference point to measure distances against. */
+        private final Vector1D refPt;
+
+        /** Low entry iterator. */
+        private final Iterator&lt;Entry&lt;Vector1D, V&gt;&gt; low;
+
+        /** High entry iterator. */
+        private final Iterator&lt;Entry&lt;Vector1D, V&gt;&gt; high;
+
+        /** Low-valued entry. */
+        private DistancedValue&lt;Entry&lt;Vector1D, V&gt;&gt; lowEntry;
+
+        /** High-valued entry. */
+        private DistancedValue&lt;Entry&lt;Vector1D, V&gt;&gt; highEntry;
+
+        /** Construct a new instance with the given reference point.
+         * @param refPt reference point
+         */
+<span class="fc" id="L135">        NearToFarIterator(final Vector1D refPt) {</span>
+<span class="fc" id="L136">            this.refPt = refPt;</span>
+
+<span class="fc" id="L138">            this.low = getMap().descendingMap().tailMap(refPt, false)</span>
+<span class="fc" id="L139">                    .entrySet().iterator();</span>
+<span class="fc" id="L140">            this.high = getMap().tailMap(refPt).entrySet().iterator();</span>
+<span class="fc" id="L141">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean hasNext() {
+<span class="fc bfc" id="L146" title="All 2 branches covered.">            if (lowEntry == null) {</span>
+<span class="fc" id="L147">                lowEntry = getNextEntry(low);</span>
+            }
+<span class="fc bfc" id="L149" title="All 2 branches covered.">            if (highEntry == null) {</span>
+<span class="fc" id="L150">                highEntry = getNextEntry(high);</span>
+            }
+
+<span class="fc bfc" id="L153" title="All 4 branches covered.">            return lowEntry != null || highEntry != null;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Entry&lt;Vector1D, V&gt; next() {
+<span class="fc bfc" id="L159" title="All 2 branches covered.">            if (!hasNext()) {</span>
+<span class="fc" id="L160">                throw new NoSuchElementException();</span>
+            }
+
+            final DistancedValue&lt;Entry&lt;Vector1D, V&gt;&gt; result;
+<span class="fc bfc" id="L164" title="All 4 branches covered.">            if (lowEntry != null &amp;&amp;</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">                    (highEntry == null || lowEntry.getDistance() &lt;= highEntry.getDistance())) {</span>
+<span class="fc" id="L166">                result = lowEntry;</span>
+<span class="fc" id="L167">                lowEntry = null;</span>
+            } else {
+<span class="fc" id="L169">                result = highEntry;</span>
+<span class="fc" id="L170">                highEntry = null;</span>
+            }
+
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">            return result != null ?</span>
+<span class="fc" id="L174">                    result.getValue() :</span>
+<span class="nc" id="L175">                    null;</span>
+        }
+
+        /** Get a {@link DistancedValue} instance containing the next entry from the given
+         * iterator.
+         * @param it iterator to get the next value from
+         * @return distanced value containing the next entry from the iterator or null if the iterator
+         *      does not contain any more elements
+         */
+        private DistancedValue&lt;Entry&lt;Vector1D, V&gt;&gt; getNextEntry(final Iterator&lt;Entry&lt;Vector1D, V&gt;&gt; it) {
+<span class="fc bfc" id="L185" title="All 2 branches covered.">            if (it.hasNext()) {</span>
+<span class="fc" id="L186">                final Entry&lt;Vector1D, V&gt; entry = it.next();</span>
+<span class="fc" id="L187">                return DistancedValue.of(entry, refPt.distance(entry.getKey()));</span>
+            }
+<span class="fc" id="L189">            return null;</span>
+        }
+    }
+
+    /** Iterator that returns entries in order of descending distance from
+     * a given reference point.
+     */
+    private final class FarToNearIterator
+        implements Iterator&lt;Entry&lt;Vector1D, V&gt;&gt; {
+
+        /** Reference point to measure distances against. */
+        private final Vector1D refPt;
+
+        /** Low entry iterator. */
+        private Iterator&lt;Entry&lt;Vector1D, V&gt;&gt; low;
+
+        /** High entry iterator. */
+        private Iterator&lt;Entry&lt;Vector1D, V&gt;&gt; high;
+
+        /** Low-valued entry. */
+        private DistancedValue&lt;Entry&lt;Vector1D, V&gt;&gt; lowEntry;
+
+        /** High-valued entry. */
+        private DistancedValue&lt;Entry&lt;Vector1D, V&gt;&gt; highEntry;
+
+        /** The last value returned by the low iterator. */
+<span class="fc" id="L215">        private double lastLowValue = Double.NEGATIVE_INFINITY;</span>
+
+        /** The last value returned by the high iterator. */
+<span class="fc" id="L218">        private double lastHighValue = Double.POSITIVE_INFINITY;</span>
+
+        /** Construct a new instance that measures distances against the given
+         * reference point.
+         * @param refPt reference point
+         */
+<span class="fc" id="L224">        FarToNearIterator(final Vector1D refPt) {</span>
+<span class="fc" id="L225">            this.refPt = refPt;</span>
+
+<span class="fc" id="L227">            this.low = getMap().entrySet().iterator();</span>
+<span class="fc" id="L228">            this.high = getMap().descendingMap().entrySet().iterator();</span>
+<span class="fc" id="L229">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean hasNext() {
+<span class="fc bfc" id="L234" title="All 6 branches covered.">            if (lowEntry == null &amp;&amp; low != null &amp;&amp; low.hasNext()) {</span>
+<span class="fc" id="L235">                final Entry&lt;Vector1D, V&gt; entry = low.next();</span>
+<span class="fc" id="L236">                lastLowValue = entry.getKey().getX();</span>
+
+<span class="fc bfc" id="L238" title="All 2 branches covered.">                if (entry.getKey().getX() &gt;= lastHighValue) {</span>
+                    // we've crossed over the value returned by the high iterator
+<span class="fc" id="L240">                    low = null;</span>
+                } else {
+<span class="fc" id="L242">                    lowEntry = DistancedValue.of(entry, refPt.distance(entry.getKey()));</span>
+                }
+            }
+<span class="fc bfc" id="L245" title="All 6 branches covered.">            if (highEntry == null &amp;&amp; high != null &amp;&amp; high.hasNext()) {</span>
+<span class="fc" id="L246">                final Entry&lt;Vector1D, V&gt; entry = high.next();</span>
+<span class="fc" id="L247">                lastHighValue = entry.getKey().getX();</span>
+
+<span class="fc bfc" id="L249" title="All 2 branches covered.">                if (entry.getKey().getX() &lt;= lastLowValue) {</span>
+                    // we've crossed over the values returned by the low iterator
+<span class="fc" id="L251">                    high = null;</span>
+                } else {
+<span class="fc" id="L253">                    highEntry = DistancedValue.of(entry, refPt.distance(entry.getKey()));</span>
+                }
+            }
+
+<span class="fc bfc" id="L257" title="All 4 branches covered.">            return lowEntry != null || highEntry != null;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Entry&lt;Vector1D, V&gt; next() {
+<span class="fc bfc" id="L263" title="All 2 branches covered.">            if (!hasNext()) {</span>
+<span class="fc" id="L264">                throw new NoSuchElementException();</span>
+            }
+
+            final DistancedValue&lt;Entry&lt;Vector1D, V&gt;&gt; result;
+<span class="fc bfc" id="L268" title="All 4 branches covered.">            if (lowEntry != null &amp;&amp;</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">                    (highEntry == null || lowEntry.getDistance() &gt; highEntry.getDistance())) {</span>
+<span class="fc" id="L270">                result = lowEntry;</span>
+<span class="fc" id="L271">                lowEntry = null;</span>
+            } else {
+<span class="fc" id="L273">                result = highEntry;</span>
+<span class="fc" id="L274">                highEntry = null;</span>
+            }
+
+<span class="pc bpc" id="L277" title="1 of 2 branches missed.">            return result != null ?</span>
+<span class="fc" id="L278">                    result.getValue() :</span>
+<span class="nc" id="L279">                    null;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

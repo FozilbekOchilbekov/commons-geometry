@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.apache.commons.geometry.euclidean.threed.shape.SphereTest
+-------------------------------------------------------------------------------
+Tests run: 25, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 70.872 s - in org.apache.commons.geometry.euclidean.threed.shape.SphereTest

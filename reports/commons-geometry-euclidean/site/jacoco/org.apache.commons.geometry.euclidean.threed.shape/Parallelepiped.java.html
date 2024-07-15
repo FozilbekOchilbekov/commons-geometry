@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Parallelepiped.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed.shape</a> &gt; <span class="el_source">Parallelepiped.java</span></div><h1>Parallelepiped.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed.shape;
+
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.euclidean.threed.AffineTransformMatrix3D;
+import org.apache.commons.geometry.euclidean.threed.ConvexVolume;
+import org.apache.commons.geometry.euclidean.threed.PlaneConvexSubset;
+import org.apache.commons.geometry.euclidean.threed.Planes;
+import org.apache.commons.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.geometry.euclidean.threed.rotation.QuaternionRotation;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing parallelepipeds, i.e. 3 dimensional figures formed by six
+ * parallelograms. For example, cubes and rectangular prisms are parallelepipeds.
+ * @see &lt;a href=&quot;https://en.wikipedia.org/wiki/Parallelepiped&quot;&gt;Parallelepiped&lt;/a&gt;
+ */
+public final class Parallelepiped extends ConvexVolume {
+
+    /** Vertices defining a cube with sides of length 1 centered at the origin. */
+<span class="fc" id="L40">    private static final List&lt;Vector3D&gt; UNIT_CUBE_VERTICES = Arrays.asList(</span>
+<span class="fc" id="L41">                Vector3D.of(-0.5, -0.5, -0.5),</span>
+<span class="fc" id="L42">                Vector3D.of(0.5, -0.5, -0.5),</span>
+<span class="fc" id="L43">                Vector3D.of(0.5, 0.5, -0.5),</span>
+<span class="fc" id="L44">                Vector3D.of(-0.5, 0.5, -0.5),</span>
+
+<span class="fc" id="L46">                Vector3D.of(-0.5, -0.5, 0.5),</span>
+<span class="fc" id="L47">                Vector3D.of(0.5, -0.5, 0.5),</span>
+<span class="fc" id="L48">                Vector3D.of(0.5, 0.5, 0.5),</span>
+<span class="fc" id="L49">                Vector3D.of(-0.5, 0.5, 0.5)</span>
+            );
+
+    /** Simple constructor. Callers are responsible for ensuring that the given boundaries
+     * represent a parallelepiped. No validation is performed.
+     * @param boundaries the boundaries of the parallelepiped; this must be a list
+     *      with 6 elements
+     */
+    private Parallelepiped(final List&lt;PlaneConvexSubset&gt; boundaries) {
+<span class="fc" id="L58">        super(boundaries);</span>
+<span class="fc" id="L59">    }</span>
+
+    /** Construct a new instance representing a unit cube centered at the origin. The vertices of this
+     * cube are:
+     * &lt;pre&gt;
+     * [
+     *      (-0.5, -0.5, -0.5),
+     *      (0.5, -0.5, -0.5),
+     *      (0.5, 0.5, -0.5),
+     *      (-0.5, 0.5, -0.5),
+     *
+     *      (-0.5, -0.5, 0.5),
+     *      (0.5, -0.5, 0.5),
+     *      (0.5, 0.5, 0.5),
+     *      (-0.5, 0.5, 0.5)
+     * ]
+     * &lt;/pre&gt;
+     * @param precision precision context used to construct boundaries
+     * @return a new instance representing a unit cube centered at the origin
+     */
+    public static Parallelepiped unitCube(final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L80">        return fromTransformedUnitCube(AffineTransformMatrix3D.identity(), precision);</span>
+    }
+
+    /** Return a new instance representing an axis-aligned parallelepiped, ie, a rectangular prism.
+     * The points {@code a} and {@code b} are taken to represent opposite corner points in the prism and may be
+     * specified in any order.
+     * @param a first corner point in the prism (opposite of {@code b})
+     * @param b second corner point in the prism (opposite of {@code a})
+     * @param precision precision context used to construct boundaries
+     * @return a new instance representing an axis-aligned rectangular prism
+     * @throws IllegalArgumentException if the width, height, or depth of the defined prism is zero
+     *      as evaluated by the precision context.
+     */
+    public static Parallelepiped axisAligned(final Vector3D a, final Vector3D b,
+            final Precision.DoubleEquivalence precision) {
+
+<span class="fc" id="L96">        final double minX = Math.min(a.getX(), b.getX());</span>
+<span class="fc" id="L97">        final double maxX = Math.max(a.getX(), b.getX());</span>
+
+<span class="fc" id="L99">        final double minY = Math.min(a.getY(), b.getY());</span>
+<span class="fc" id="L100">        final double maxY = Math.max(a.getY(), b.getY());</span>
+
+<span class="fc" id="L102">        final double minZ = Math.min(a.getZ(), b.getZ());</span>
+<span class="fc" id="L103">        final double maxZ = Math.max(a.getZ(), b.getZ());</span>
+
+<span class="fc" id="L105">        final double xDelta = maxX - minX;</span>
+<span class="fc" id="L106">        final double yDelta = maxY - minY;</span>
+<span class="fc" id="L107">        final double zDelta = maxZ - minZ;</span>
+
+<span class="fc" id="L109">        final Vector3D scale = Vector3D.of(xDelta, yDelta, zDelta);</span>
+<span class="fc" id="L110">        final Vector3D position = Vector3D.of(</span>
+                    (0.5 * xDelta) + minX,
+                    (0.5 * yDelta) + minY,
+                    (0.5 * zDelta) + minZ
+                );
+
+<span class="fc" id="L116">        return builder(precision)</span>
+<span class="fc" id="L117">                .setScale(scale)</span>
+<span class="fc" id="L118">                .setPosition(position)</span>
+<span class="fc" id="L119">                .build();</span>
+    }
+
+    /** Construct a new instance by transforming a unit cube centered at the origin. The vertices of
+     * this input cube are:
+     * &lt;pre&gt;
+     * [
+     *      (-0.5, -0.5, -0.5),
+     *      (0.5, -0.5, -0.5),
+     *      (0.5, 0.5, -0.5),
+     *      (-0.5, 0.5, -0.5),
+     *
+     *      (-0.5, -0.5, 0.5),
+     *      (0.5, -0.5, 0.5),
+     *      (0.5, 0.5, 0.5),
+     *      (-0.5, 0.5, 0.5)
+     * ]
+     * &lt;/pre&gt;
+     * @param transform transform to apply to the vertices of the unit cube
+     * @param precision precision context used to construct boundaries
+     * @return a new instance created by transforming the vertices of a unit cube centered at the origin
+     * @throws IllegalArgumentException if the width, height, or depth of the defined shape is zero
+     *      as evaluated by the precision context.
+     */
+    public static Parallelepiped fromTransformedUnitCube(final Transform&lt;Vector3D&gt; transform,
+            final Precision.DoubleEquivalence precision) {
+
+<span class="fc" id="L146">        final List&lt;Vector3D&gt; vertices = UNIT_CUBE_VERTICES.stream()</span>
+<span class="fc" id="L147">                .map(transform)</span>
+<span class="fc" id="L148">                .collect(Collectors.toList());</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">        final boolean reverse = !transform.preservesOrientation();</span>
+
+        // check lengths in each dimension
+<span class="fc" id="L152">        ensureNonZeroSideLength(vertices.get(0), vertices.get(1), precision);</span>
+<span class="fc" id="L153">        ensureNonZeroSideLength(vertices.get(1), vertices.get(2), precision);</span>
+<span class="fc" id="L154">        ensureNonZeroSideLength(vertices.get(0), vertices.get(4), precision);</span>
+
+<span class="fc" id="L156">        final List&lt;PlaneConvexSubset&gt; boundaries = Arrays.asList(</span>
+                    // planes orthogonal to x
+<span class="fc" id="L158">                    createFace(0, 4, 7, 3, vertices, reverse, precision),</span>
+<span class="fc" id="L159">                    createFace(1, 2, 6, 5, vertices, reverse, precision),</span>
+
+                    // planes orthogonal to y
+<span class="fc" id="L162">                    createFace(0, 1, 5, 4, vertices, reverse, precision),</span>
+<span class="fc" id="L163">                    createFace(3, 7, 6, 2, vertices, reverse, precision),</span>
+
+                    // planes orthogonal to z
+<span class="fc" id="L166">                    createFace(0, 3, 2, 1, vertices, reverse, precision),</span>
+<span class="fc" id="L167">                    createFace(4, 5, 6, 7, vertices, reverse, precision)</span>
+                );
+
+<span class="fc" id="L170">        return new Parallelepiped(boundaries);</span>
+    }
+
+    /** Return a new {@link Builder} instance to use for constructing parallelepipeds.
+     * @param precision precision context used to create boundaries
+     * @return a new {@link Builder} instance
+     */
+    public static Builder builder(final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L178">        return new Builder(precision);</span>
+    }
+
+    /** Create a single face of a parallelepiped using the indices of elements in the given vertex list.
+     * @param a first vertex index
+     * @param b second vertex index
+     * @param c third vertex index
+     * @param d fourth vertex index
+     * @param vertices list of vertices for the parallelepiped
+     * @param reverse if true, reverse the orientation of the face
+     * @param precision precision context used to create the face
+     * @return a parallelepiped face created from the indexed vertices
+     */
+    private static PlaneConvexSubset createFace(final int a, final int b, final int c, final int d,
+            final List&lt;? extends Vector3D&gt; vertices, final boolean reverse,
+            final Precision.DoubleEquivalence precision) {
+
+<span class="fc" id="L195">        final Vector3D pa = vertices.get(a);</span>
+<span class="fc" id="L196">        final Vector3D pb = vertices.get(b);</span>
+<span class="fc" id="L197">        final Vector3D pc = vertices.get(c);</span>
+<span class="fc" id="L198">        final Vector3D pd = vertices.get(d);</span>
+
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        final List&lt;Vector3D&gt; loop = reverse ?</span>
+<span class="fc" id="L201">                Arrays.asList(pd, pc, pb, pa) :</span>
+<span class="fc" id="L202">                Arrays.asList(pa, pb, pc, pd);</span>
+
+<span class="fc" id="L204">        return Planes.convexPolygonFromVertices(loop, precision);</span>
+    }
+
+    /** Ensure that the given points defining one side of a parallelepiped face are separated by a non-zero
+     * distance, as determined by the precision context.
+     * @param a first vertex
+     * @param b second vertex
+     * @param precision precision used to evaluate the distance between the two points
+     * @throws IllegalArgumentException if the given points are equivalent according to the precision context
+     */
+    private static void ensureNonZeroSideLength(final Vector3D a, final Vector3D b,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        if (precision.eqZero(a.distance(b))) {</span>
+<span class="fc" id="L217">            throw new IllegalArgumentException(MessageFormat.format(</span>
+                    &quot;Parallelepiped has zero size: vertices {0} and {1} are equivalent&quot;, a, b));
+        }
+<span class="fc" id="L220">    }</span>
+
+    /** Class designed to aid construction of {@link Parallelepiped} instances. Parallelepipeds are constructed
+     * by transforming the vertices of a unit cube centered at the origin with a transform built from
+     * the values configured here. The transformations applied are &lt;em&gt;scaling&lt;/em&gt;, &lt;em&gt;rotation&lt;/em&gt;,
+     * and &lt;em&gt;translation&lt;/em&gt;, in that order. When applied in this order, the scale factors determine
+     * the width, height, and depth of the parallelepiped; the rotation determines the orientation; and the
+     * translation determines the position of the center point.
+     */
+    public static final class Builder {
+
+        /** Amount to scale the parallelepiped. */
+<span class="fc" id="L232">        private Vector3D scale = Vector3D.of(1, 1, 1);</span>
+
+        /** The rotation of the parallelepiped. */
+<span class="fc" id="L235">        private QuaternionRotation rotation = QuaternionRotation.identity();</span>
+
+        /** Amount to translate the parallelepiped. */
+<span class="fc" id="L238">        private Vector3D position = Vector3D.ZERO;</span>
+
+        /** Precision context used to construct boundaries. */
+        private final Precision.DoubleEquivalence precision;
+
+        /** Construct a new instance configured with the given precision context.
+         * @param precision precision context used to create boundaries
+         */
+<span class="fc" id="L246">        private Builder(final Precision.DoubleEquivalence precision) {</span>
+<span class="fc" id="L247">            this.precision = precision;</span>
+<span class="fc" id="L248">        }</span>
+
+        /** Set the center position of the created parallelepiped.
+         * @param pos center position of the created parallelepiped
+         * @return this instance
+         */
+        public Builder setPosition(final Vector3D pos) {
+<span class="fc" id="L255">            this.position = pos;</span>
+<span class="fc" id="L256">            return this;</span>
+        }
+
+        /** Set the scaling for the created parallelepiped. The scale values determine
+         * the lengths of the respective sides in the created parallelepiped.
+         * @param scaleFactors scale factors
+         * @return this instance
+         */
+        public Builder setScale(final Vector3D scaleFactors) {
+<span class="fc" id="L265">            this.scale = scaleFactors;</span>
+<span class="fc" id="L266">            return this;</span>
+        }
+
+        /** Set the scaling for the created parallelepiped. The scale values determine
+         * the lengths of the respective sides in the created parallelepiped.
+         * @param x x scale factor
+         * @param y y scale factor
+         * @param z z scale factor
+         * @return this instance
+         */
+        public Builder setScale(final double x, final double y, final double z) {
+<span class="fc" id="L277">            return setScale(Vector3D.of(x, y, z));</span>
+        }
+
+        /** Set the scaling for the created parallelepiped. The given scale factor is applied
+         * to the x, y, and z directions.
+         * @param scaleFactor scale factor for the x, y, and z directions
+         * @return this instance
+         */
+        public Builder setScale(final double scaleFactor) {
+<span class="fc" id="L286">            return setScale(scaleFactor, scaleFactor, scaleFactor);</span>
+        }
+
+        /** Set the rotation of the created parallelepiped.
+         * @param rot the rotation of the created parallelepiped
+         * @return this instance
+         */
+        public Builder setRotation(final QuaternionRotation rot) {
+<span class="fc" id="L294">            this.rotation = rot;</span>
+<span class="fc" id="L295">            return this;</span>
+        }
+
+        /** Build a new parallelepiped instance with the values configured in this builder.
+         * @return a new parallelepiped instance
+         * @throws IllegalArgumentException if the length of any side of the parallelepiped is zero,
+         *      as determined by the configured precision context
+         * @see Parallelepiped#fromTransformedUnitCube(Transform, Precision.DoubleEquivalence)
+         */
+        public Parallelepiped build() {
+<span class="fc" id="L305">            final AffineTransformMatrix3D transform = AffineTransformMatrix3D.createScale(scale)</span>
+<span class="fc" id="L306">                    .rotate(rotation)</span>
+<span class="fc" id="L307">                    .translate(position);</span>
+
+<span class="fc" id="L309">            return fromTransformedUnitCube(transform, precision);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

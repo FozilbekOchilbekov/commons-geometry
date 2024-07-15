@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LinePath.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.twod.path</a> &gt; <span class="el_source">LinePath.java</span></div><h1>LinePath.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.twod.path;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.geometry.core.Sized;
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.euclidean.twod.BoundarySource2D;
+import org.apache.commons.geometry.euclidean.twod.Line;
+import org.apache.commons.geometry.euclidean.twod.LineConvexSubset;
+import org.apache.commons.geometry.euclidean.twod.Lines;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing a connected path of {@link LineConvexSubset line convex subsets}.
+ * The elements in the path are connected end to end, with the end vertex of the previous
+ * element equivalent to the start vertex of the next element. Elements are not required to
+ * be finite. However, since path elements are connected, only the first element and/or last
+ * element may be infinite.
+ *
+ * &lt;p&gt;Instances of this class are guaranteed to be immutable.&lt;/p&gt;
+ */
+public class LinePath implements BoundarySource2D, Sized {
+    /** Line path instance containing no elements. */
+<span class="fc" id="L47">    private static final LinePath EMPTY = new LinePath(Collections.emptyList());</span>
+
+    /** The line convex subsets comprising the path. */
+    private final List&lt;LineConvexSubset&gt; elements;
+
+    /** Simple constructor. Callers are responsible for ensuring that the given list of
+     * line subsets defines a valid path. No validation is performed.
+     * @param elements elements defining the path.
+     */
+<span class="fc" id="L56">    LinePath(final List&lt;LineConvexSubset&gt; elements) {</span>
+<span class="fc" id="L57">        this.elements = Collections.unmodifiableList(elements);</span>
+<span class="fc" id="L58">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public Stream&lt;LineConvexSubset&gt; boundaryStream() {
+<span class="fc" id="L63">        return getElements().stream();</span>
+    }
+
+    /** Get the sequence of line subsets comprising the path.
+     * @return the sequence of line subsets comprising the path
+     */
+    public List&lt;LineConvexSubset&gt; getElements() {
+<span class="fc" id="L70">        return elements;</span>
+    }
+
+    /** Get the line subset at the start of the path or null if the path is empty. If the
+     * path consists of a single line subset, then the returned instance with be the same
+     * as that returned by {@link #getEnd()}.
+     * @return the line subset at the start of the path or null if the path is empty
+     * @see #getEnd()
+     */
+    public LineConvexSubset getStart() {
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (!isEmpty()) {</span>
+<span class="fc" id="L81">            return elements.get(0);</span>
+        }
+<span class="fc" id="L83">        return null;</span>
+    }
+
+    /** Get the line subset at the end of the path or null if the path is empty. If the
+     * path consists of a single line subset, then the returned instance with be the same
+     * as that returned by {@link #getStart()}.
+     * @return the line subset at the end of the path or null if the path is empty
+     * @see #getStart()
+     */
+    public LineConvexSubset getEnd() {
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (!isEmpty()) {</span>
+<span class="fc" id="L94">            return elements.get(elements.size() - 1);</span>
+        }
+<span class="fc" id="L96">        return null;</span>
+    }
+
+    /** Get the sequence of vertices defined by the path. Vertices appear in the
+     * list as many times as they are visited in the path. For example, the vertex
+     * sequence for a closed path contains the start point at the beginning
+     * of the list as well as the end.
+     * @return the sequence of vertices defined by the path
+     */
+    public List&lt;Vector2D&gt; getVertexSequence() {
+<span class="fc" id="L106">        final List&lt;Vector2D&gt; sequence = new ArrayList&lt;&gt;();</span>
+
+        Vector2D pt;
+
+        // add the start point, if present
+<span class="fc" id="L111">        pt = getStartVertex();</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        if (pt != null) {</span>
+<span class="fc" id="L113">            sequence.add(pt);</span>
+        }
+
+        // add end points
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        for (final LineConvexSubset sub : elements) {</span>
+<span class="fc" id="L118">            pt = sub.getEndPoint();</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">            if (pt != null) {</span>
+<span class="fc" id="L120">                sequence.add(pt);</span>
+            }
+<span class="fc" id="L122">        }</span>
+
+<span class="fc" id="L124">        return sequence;</span>
+    }
+
+    /** Return true if the path has an element with infinite size.
+     * @return true if the path is infinite
+     */
+    @Override
+    public boolean isInfinite() {
+<span class="fc bfc" id="L132" title="All 6 branches covered.">        return !isEmpty() &amp;&amp; (getStartVertex() == null || getEndVertex() == null);</span>
+    }
+
+    /** Return true if the path has a finite size. This will be true if there are
+     * no elements in the path or if all elements have a finite length.
+     * @return true if the path is finite
+     */
+    @Override
+    public boolean isFinite() {
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        return !isInfinite();</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;The size of the path is defined as the sum of the sizes (lengths) of all path elements.&lt;/p&gt;
+     */
+    @Override
+    public double getSize() {
+<span class="fc" id="L150">        double sum = 0.0;</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        for (final LineConvexSubset element : elements) {</span>
+<span class="fc" id="L152">            sum += element.getSize();</span>
+<span class="fc" id="L153">        }</span>
+
+<span class="fc" id="L155">        return sum;</span>
+    }
+
+    /** Return true if the path does not contain any elements.
+     * @return true if the path does not contain any elements
+     */
+    public boolean isEmpty() {
+<span class="fc" id="L162">        return elements.isEmpty();</span>
+    }
+
+    /** Return true if the path is closed, meaning that the end point for the last
+     * element is equivalent to the start point of the first.
+     * @return true if the end point for the last element is equivalent to the
+     *      start point for the first
+     */
+    public boolean isClosed() {
+<span class="fc" id="L171">        final LineConvexSubset endElement = getEnd();</span>
+
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        if (endElement != null) {</span>
+<span class="fc" id="L174">            final Vector2D start = getStartVertex();</span>
+<span class="fc" id="L175">            final Vector2D end = endElement.getEndPoint();</span>
+
+<span class="fc bfc" id="L177" title="All 6 branches covered.">            return start != null &amp;&amp; end != null &amp;&amp; start.eq(end, endElement.getPrecision());</span>
+        }
+
+<span class="fc" id="L180">        return false;</span>
+    }
+
+    /** Transform this instance with the argument, returning the result in a new instance.
+     * @param transform the transform to apply
+     * @return a new instance, transformed by the argument
+     */
+    public LinePath transform(final Transform&lt;Vector2D&gt; transform) {
+<span class="fc bfc" id="L188" title="All 2 branches covered.">        if (!isEmpty()) {</span>
+<span class="fc" id="L189">            final List&lt;LineConvexSubset&gt; transformed = elements.stream()</span>
+<span class="fc" id="L190">                .map(s -&gt; s.transform(transform))</span>
+<span class="fc" id="L191">                .collect(Collectors.toCollection(ArrayList::new));</span>
+
+<span class="fc" id="L193">            return new LinePath(transformed);</span>
+        }
+
+<span class="fc" id="L196">        return this;</span>
+    }
+
+    /** Return a new instance with all line subset directions, and their order,
+     * reversed. The last line subset in this instance will be the first in the
+     * returned instance.
+     * @return a new instance with the path reversed
+     */
+    public LinePath reverse() {
+<span class="fc bfc" id="L205" title="All 2 branches covered.">        if (!isEmpty()) {</span>
+<span class="fc" id="L206">            final List&lt;LineConvexSubset&gt; reversed = elements.stream()</span>
+<span class="fc" id="L207">                .map(LineConvexSubset::reverse)</span>
+<span class="fc" id="L208">                .collect(Collectors.toCollection(ArrayList::new));</span>
+<span class="fc" id="L209">            Collections.reverse(reversed);</span>
+
+<span class="fc" id="L211">            return new LinePath(reversed);</span>
+        }
+
+<span class="fc" id="L214">        return this;</span>
+    }
+
+    /** Simplify this path, if possible, by combining adjacent elements that lie on the
+     * same line (as determined by {@link Line#equals(Object)}).
+     * @return a simplified instance
+     */
+    public LinePath simplify() {
+<span class="fc" id="L222">        final List&lt;LineConvexSubset&gt; simplified = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L224">        final int size = elements.size();</span>
+
+        LineConvexSubset current;
+        Line currentLine;
+        double end;
+
+<span class="fc" id="L230">        int idx = 0;</span>
+        int testIdx;
+<span class="fc bfc" id="L232" title="All 2 branches covered.">        while (idx &lt; size) {</span>
+<span class="fc" id="L233">            current = elements.get(idx);</span>
+<span class="fc" id="L234">            currentLine = current.getLine();</span>
+<span class="fc" id="L235">            end = current.getSubspaceEnd();</span>
+
+            // try to combine with forward neighbors
+<span class="fc" id="L238">            testIdx = idx + 1;</span>
+<span class="fc bfc" id="L239" title="All 4 branches covered.">            while (testIdx &lt; size &amp;&amp; currentLine.equals(elements.get(testIdx).getLine())) {</span>
+<span class="fc" id="L240">                end = Math.max(end, elements.get(testIdx).getSubspaceEnd());</span>
+<span class="fc" id="L241">                ++testIdx;</span>
+            }
+
+<span class="fc bfc" id="L244" title="All 2 branches covered.">            if (testIdx &gt; idx + 1) {</span>
+                // we found something to merge
+<span class="fc" id="L246">                simplified.add(Lines.subsetFromInterval(currentLine, current.getSubspaceStart(), end));</span>
+            } else {
+<span class="fc" id="L248">                simplified.add(current);</span>
+            }
+
+<span class="fc" id="L251">            idx = testIdx;</span>
+        }
+
+        // combine the first and last items if needed
+<span class="pc bpc" id="L255" title="1 of 6 branches missed.">        if (isClosed() &amp;&amp; simplified.size() &gt; 2 &amp;&amp; simplified.get(0).getLine().equals(</span>
+<span class="fc" id="L256">                simplified.get(simplified.size() - 1).getLine())) {</span>
+
+<span class="fc" id="L258">            final LineConvexSubset startElement = simplified.get(0);</span>
+<span class="fc" id="L259">            final LineConvexSubset endElement = simplified.remove(simplified.size() - 1);</span>
+
+<span class="fc" id="L261">            final LineConvexSubset combined = Lines.subsetFromInterval(</span>
+<span class="fc" id="L262">                    endElement.getLine(), endElement.getSubspaceStart(), startElement.getSubspaceEnd());</span>
+
+<span class="fc" id="L264">            simplified.set(0, combined);</span>
+        }
+
+<span class="fc" id="L267">        return new SimplifiedLinePath(simplified);</span>
+    }
+
+    /** Return a string representation of the path.
+     *
+     * &lt;p&gt;In order to keep the string representation short but useful, the exact format of the return
+     * value depends on the properties of the path. See below for examples.
+     *
+     * &lt;ul&gt;
+     *      &lt;li&gt;Empty path
+     *          &lt;ul&gt;
+     *              &lt;li&gt;{@code LinePath[empty= true]}&lt;/li&gt;
+     *          &lt;/ul&gt;
+     *      &lt;/li&gt;
+     *      &lt;li&gt;Single element
+     *          &lt;ul&gt;
+     *              &lt;li&gt;{@code LinePath[single= Segment[startPoint= (0.0, 0.0), endPoint= (1.0, 0.0)]]}&lt;/li&gt;
+     *          &lt;/ul&gt;
+     *      &lt;/li&gt;
+     *      &lt;li&gt;Path with infinite start element
+     *          &lt;ul&gt;
+     *              &lt;li&gt;{@code LinePath[startDirection= (1.0, 0.0), vertices= [(1.0, 0.0), (1.0, 1.0)]]}&lt;/li&gt;
+     *          &lt;/ul&gt;
+     *      &lt;/li&gt;
+     *      &lt;li&gt;Path with infinite end element
+     *          &lt;ul&gt;
+     *              &lt;li&gt;{@code LinePath[vertices= [(0.0, 1.0), (0.0, 0.0)], endDirection= (1.0, 0.0)]}&lt;/li&gt;
+     *          &lt;/ul&gt;
+     *      &lt;/li&gt;
+     *      &lt;li&gt;Path with infinite start and end elements
+     *          &lt;ul&gt;
+     *              &lt;li&gt;{@code LinePath[startDirection= (0.0, 1.0), vertices= [(0.0, 0.0)], endDirection= (1.0, 0.0)]}&lt;/li&gt;
+     *          &lt;/ul&gt;
+     *      &lt;/li&gt;
+     *      &lt;li&gt;Path with no infinite elements
+     *          &lt;ul&gt;
+     *              &lt;li&gt;{@code LinePath[vertices= [(0.0, 0.0), (1.0, 0.0), (1.0, 1.0)]]}&lt;/li&gt;
+     *          &lt;/ul&gt;
+     *      &lt;/li&gt;
+     * &lt;/ul&gt;
+     */
+    @Override
+    public String toString() {
+<span class="fc" id="L310">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L311">        sb.append(this.getClass().getSimpleName())</span>
+<span class="fc" id="L312">            .append('[');</span>
+
+<span class="fc bfc" id="L314" title="All 2 branches covered.">        if (elements.isEmpty()) {</span>
+<span class="fc" id="L315">            sb.append(&quot;empty= true&quot;);</span>
+<span class="fc bfc" id="L316" title="All 2 branches covered.">        } else if (elements.size() == 1) {</span>
+<span class="fc" id="L317">            sb.append(&quot;single= &quot;)</span>
+<span class="fc" id="L318">                .append(elements.get(0));</span>
+        } else {
+<span class="fc" id="L320">            final LineConvexSubset startElement = getStart();</span>
+<span class="fc bfc" id="L321" title="All 2 branches covered.">            if (startElement.getStartPoint() == null) {</span>
+<span class="fc" id="L322">                sb.append(&quot;startDirection= &quot;)</span>
+<span class="fc" id="L323">                    .append(startElement.getLine().getDirection())</span>
+<span class="fc" id="L324">                    .append(&quot;, &quot;);</span>
+            }
+
+<span class="fc" id="L327">            sb.append(&quot;vertexSequence= &quot;)</span>
+<span class="fc" id="L328">                .append(getVertexSequence());</span>
+
+<span class="fc" id="L330">            final LineConvexSubset endElement = getEnd();</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">            if (endElement.getEndPoint() == null) {</span>
+<span class="fc" id="L332">                sb.append(&quot;, endDirection= &quot;)</span>
+<span class="fc" id="L333">                    .append(endElement.getLine().getDirection());</span>
+            }
+        }
+
+<span class="fc" id="L337">        sb.append(']');</span>
+
+<span class="fc" id="L339">        return sb.toString();</span>
+    }
+
+    /** Get the start vertex for the path or null if the path is empty
+     * or has an infinite start line subset.
+     * @return the start vertex for the path or null if the path does
+     *      not start with a vertex
+     */
+    private Vector2D getStartVertex() {
+<span class="fc" id="L348">        final LineConvexSubset seg = getStart();</span>
+<span class="fc bfc" id="L349" title="All 2 branches covered.">        return (seg != null) ? seg.getStartPoint() : null;</span>
+    }
+
+    /** Get the end vertex for the path or null if the path is empty
+     * or has an infinite end line subset.
+     * @return the end vertex for the path or null if the path does
+     *      not end with a vertex
+     */
+    private Vector2D getEndVertex() {
+<span class="fc" id="L358">        final LineConvexSubset seg = getEnd();</span>
+<span class="pc bpc" id="L359" title="1 of 2 branches missed.">        return (seg != null) ? seg.getEndPoint() : null;</span>
+    }
+
+    /** Build a new path from the given line subsets.
+     * @param subsets the line subsets to comprise the path
+     * @return new path containing the given line subsets in order
+     * @throws IllegalStateException if the line subsets do not form a connected path
+     */
+    public static LinePath from(final LineConvexSubset... subsets) {
+<span class="fc" id="L368">        return from(Arrays.asList(subsets));</span>
+    }
+
+    /** Build a new path from the given line subsets.
+     * @param subsets the line subsets to comprise the path
+     * @return new path containing the given line subsets in order
+     * @throws IllegalStateException if the subsets do not form a connected path
+     */
+    public static LinePath from(final Collection&lt;? extends LineConvexSubset&gt; subsets) {
+<span class="fc" id="L377">        final Builder builder = builder(null);</span>
+
+<span class="fc bfc" id="L379" title="All 2 branches covered.">        for (final LineConvexSubset subset : subsets) {</span>
+<span class="fc" id="L380">            builder.append(subset);</span>
+<span class="fc" id="L381">        }</span>
+
+<span class="fc" id="L383">        return builder.build();</span>
+    }
+
+    /** Build a new path from the given vertices. A line segment is created
+     * from the last vertex to the first one, if the two vertices are not already
+     * considered equal using the given precision context. This method is equivalent to
+     * calling {@link #fromVertices(Collection, boolean, Precision.DoubleEquivalence)
+     * fromVertices(vertices, true, precision)}
+     * @param vertices the vertices to construct the closed path from
+     * @param precision precision context used to construct the line segment
+     *      instances for the path
+     * @return new closed path constructed from the given vertices
+     * @throws IllegalStateException if {@code vertices} contains only a single unique vertex
+     * @see #fromVertices(Collection, boolean, Precision.DoubleEquivalence)
+     */
+    public static LinePath fromVertexLoop(final Collection&lt;Vector2D&gt; vertices,
+            final Precision.DoubleEquivalence precision) {
+
+<span class="fc" id="L401">        return fromVertices(vertices, true, precision);</span>
+    }
+
+    /** Build a new path from the given vertices. No additional segment is added
+     * from the last vertex to the first. This method is equivalent to calling
+     * {@link #fromVertices(Collection, boolean, Precision.DoubleEquivalence)
+     * fromVertices(vertices, false, precision)}.
+     * @param vertices the vertices to construct the path from
+     * @param precision precision context used to construct the line segment
+     *      instances for the path
+     * @return new path constructed from the given vertices
+     * @throws IllegalStateException if {@code vertices} contains only a single unique vertex
+     * @see #fromVertices(Collection, boolean, Precision.DoubleEquivalence)
+     */
+    public static LinePath fromVertices(final Collection&lt;Vector2D&gt; vertices,
+            final Precision.DoubleEquivalence precision) {
+
+<span class="fc" id="L418">        return fromVertices(vertices, false, precision);</span>
+    }
+
+    /** Build a new path from the given vertices.
+     * @param vertices the vertices to construct the path from
+     * @param close if true, a line segment is created from the last vertex
+     *      given to the first one, if the two vertices are not already considered
+     *      equal using the given precision context.
+     * @param precision precision context used to construct the line segment
+     *      instances for the path
+     * @return new path constructed from the given vertices
+     * @throws IllegalStateException if {@code vertices} contains only a single unique vertex
+     */
+    public static LinePath fromVertices(final Collection&lt;Vector2D&gt; vertices,
+            final boolean close, final Precision.DoubleEquivalence precision) {
+
+<span class="fc" id="L434">        return builder(precision)</span>
+<span class="fc" id="L435">                .appendVertices(vertices)</span>
+<span class="fc" id="L436">                .build(close);</span>
+    }
+
+    /** Return a path containing no elements.
+     * @return a path containing no elements
+     */
+    public static LinePath empty() {
+<span class="fc" id="L443">        return EMPTY;</span>
+    }
+
+    /** Return a {@link Builder} instance configured with the given precision
+     * context. The precision context is used when building line segments from
+     * vertices and may be omitted if raw vertices are not used.
+     * @param precision precision context to use when building line segments from
+     *      raw vertices; may be null if raw vertices are not used.
+     * @return a new {@link Builder} instance
+     */
+    public static Builder builder(final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L454">        return new Builder(precision);</span>
+    }
+
+    /** Class used to build line paths.
+     */
+    public static final class Builder {
+        /** Line subsets appended to the path. */
+        private List&lt;LineConvexSubset&gt; appended;
+
+        /** Line subsets prepended to the path. */
+        private List&lt;LineConvexSubset&gt; prepended;
+
+        /** Precision context used when creating line segments directly from vertices. */
+        private Precision.DoubleEquivalence precision;
+
+        /** The current vertex at the start of the path. */
+        private Vector2D startVertex;
+
+        /** The current vertex at the end of the path. */
+        private Vector2D endVertex;
+
+        /** The precision context used when performing comparisons involving the current
+         * end vertex.
+         */
+        private Precision.DoubleEquivalence endVertexPrecision;
+
+        /** Construct a new instance configured with the given precision context. The
+         * precision context is used when building line segments from vertices and
+         * may be omitted if raw vertices are not used.
+         * @param precision precision context to use when creating line segments
+         *      from vertices
+         */
+<span class="fc" id="L486">        private Builder(final Precision.DoubleEquivalence precision) {</span>
+<span class="fc" id="L487">            setPrecision(precision);</span>
+<span class="fc" id="L488">        }</span>
+
+        /** Set the precision context. This context is used only when creating line segments
+         * from appended or prepended vertices. It is not used when adding existing
+         * {@link LineConvexSubset} instances since those contain their own precision contexts.
+         * @param builderPrecision precision context to use when creating line segments
+         *      from vertices
+         * @return this instance
+         */
+        public Builder setPrecision(final Precision.DoubleEquivalence builderPrecision) {
+<span class="fc" id="L498">            this.precision = builderPrecision;</span>
+
+<span class="fc" id="L500">            return this;</span>
+        }
+
+        /** Get the line subset at the start of the path or null if it does not exist.
+         * @return the line subset at the start of the path
+         */
+        public LineConvexSubset getStart() {
+<span class="fc" id="L507">            LineConvexSubset start = getLast(prepended);</span>
+<span class="fc bfc" id="L508" title="All 2 branches covered.">            if (start == null) {</span>
+<span class="fc" id="L509">                start = getFirst(appended);</span>
+            }
+<span class="fc" id="L511">            return start;</span>
+        }
+
+        /** Get the line subset at the end of the path or null if it does not exist.
+         * @return the line subset at the end of the path
+         */
+        public LineConvexSubset getEnd() {
+<span class="fc" id="L518">            LineConvexSubset end = getLast(appended);</span>
+<span class="fc bfc" id="L519" title="All 2 branches covered.">            if (end == null) {</span>
+<span class="fc" id="L520">                end = getFirst(prepended);</span>
+            }
+<span class="fc" id="L522">            return end;</span>
+        }
+
+        /** Append a line subset to the end of the path.
+         * @param subset line subset to append to the path
+         * @return the current builder instance
+         * @throws IllegalStateException if the path contains a previous element
+         *      and the end vertex of the previous element is not equivalent to the
+         *      start vertex of the argument
+         */
+        public Builder append(final LineConvexSubset subset) {
+<span class="fc" id="L533">            validateConnected(getEnd(), subset);</span>
+<span class="fc" id="L534">            appendInternal(subset);</span>
+
+<span class="fc" id="L536">            return this;</span>
+        }
+
+        /** Add a vertex to the end of this path. If the path already has an end vertex,
+         * then a line segment is added between the previous end vertex and this vertex,
+         * using the configured precision context.
+         * @param vertex the vertex to add
+         * @return this instance
+         * @see #setPrecision(Precision.DoubleEquivalence)
+         */
+        public Builder append(final Vector2D vertex) {
+<span class="fc" id="L547">            final Precision.DoubleEquivalence vertexPrecision = getAddVertexPrecision();</span>
+
+<span class="fc bfc" id="L549" title="All 2 branches covered.">            if (endVertex == null) {</span>
+                // make sure that we're not adding to an infinite element
+<span class="fc" id="L551">                final LineConvexSubset end = getEnd();</span>
+<span class="fc bfc" id="L552" title="All 2 branches covered.">                if (end != null) {</span>
+<span class="fc" id="L553">                    throw new IllegalStateException(</span>
+<span class="fc" id="L554">                            MessageFormat.format(&quot;Cannot add vertex {0} after infinite line subset: {1}&quot;,</span>
+                                    vertex, end));
+                }
+
+                // this is the first vertex added
+<span class="fc" id="L559">                startVertex = vertex;</span>
+<span class="fc" id="L560">                endVertex = vertex;</span>
+<span class="fc" id="L561">                endVertexPrecision = vertexPrecision;</span>
+<span class="fc bfc" id="L562" title="All 2 branches covered.">            } else if (!endVertex.eq(vertex, endVertexPrecision)) {</span>
+                // only add the vertex if its not equal to the end point
+                // of the last element
+<span class="fc" id="L565">                appendInternal(Lines.segmentFromPoints(endVertex, vertex, endVertexPrecision));</span>
+            }
+
+<span class="fc" id="L568">            return this;</span>
+        }
+
+        /** Convenience method for appending a collection of vertices to the path in a single method call.
+         * @param vertices the vertices to append
+         * @return this instance
+         * @see #append(Vector2D)
+         */
+        public Builder appendVertices(final Collection&lt;? extends Vector2D&gt; vertices) {
+<span class="fc bfc" id="L577" title="All 2 branches covered.">            for (final Vector2D vertex : vertices) {</span>
+<span class="fc" id="L578">                append(vertex);</span>
+<span class="fc" id="L579">            }</span>
+
+<span class="fc" id="L581">            return this;</span>
+        }
+
+        /** Convenience method for appending multiple vertices to the path at once.
+         * @param vertices the vertices to append
+         * @return this instance
+         * @see #append(Vector2D)
+         */
+        public Builder appendVertices(final Vector2D... vertices) {
+<span class="fc" id="L590">            return appendVertices(Arrays.asList(vertices));</span>
+        }
+
+        /** Prepend a line subset to the beginning of the path.
+         * @param subset line subset to prepend to the path
+         * @return the current builder instance
+         * @throws IllegalStateException if the path contains a start element
+         *      and the end vertex of the argument is not equivalent to the
+         *      start vertex of the start element.
+         */
+        public Builder prepend(final LineConvexSubset subset) {
+<span class="fc" id="L601">            validateConnected(subset, getStart());</span>
+<span class="fc" id="L602">            prependInternal(subset);</span>
+
+<span class="fc" id="L604">            return this;</span>
+        }
+
+        /** Add a vertex to the front of this path. If the path already has a start vertex,
+         * then a line segment is added between this vertex and the previous start vertex,
+         * using the configured precision context.
+         * @param vertex the vertex to add
+         * @return this instance
+         * @see #setPrecision(Precision.DoubleEquivalence)
+         */
+        public Builder prepend(final Vector2D vertex) {
+<span class="fc" id="L615">            final Precision.DoubleEquivalence vertexPrecision = getAddVertexPrecision();</span>
+
+<span class="fc bfc" id="L617" title="All 2 branches covered.">            if (startVertex == null) {</span>
+                // make sure that we're not adding to an infinite element
+<span class="fc" id="L619">                final LineConvexSubset start = getStart();</span>
+<span class="fc bfc" id="L620" title="All 2 branches covered.">                if (start != null) {</span>
+<span class="fc" id="L621">                    throw new IllegalStateException(</span>
+<span class="fc" id="L622">                            MessageFormat.format(&quot;Cannot add vertex {0} before infinite line subset: {1}&quot;,</span>
+                                    vertex, start));
+                }
+
+                // this is the first vertex added
+<span class="fc" id="L627">                startVertex = vertex;</span>
+<span class="fc" id="L628">                endVertex = vertex;</span>
+<span class="fc" id="L629">                endVertexPrecision = vertexPrecision;</span>
+<span class="fc bfc" id="L630" title="All 2 branches covered.">            } else if (!vertex.eq(startVertex, vertexPrecision)) {</span>
+                // only add if the vertex is not equal to the start
+                // point of the first element
+<span class="fc" id="L633">                prependInternal(Lines.segmentFromPoints(vertex, startVertex, vertexPrecision));</span>
+            }
+
+<span class="fc" id="L636">            return this;</span>
+        }
+
+        /** Convenience method for prepending a collection of vertices to the path in a single method call.
+         * The vertices are logically prepended as a single group, meaning that the first vertex
+         * in the given collection appears as the first vertex in the path after this method call.
+         * Internally, this means that the vertices are actually passed to the {@link #prepend(Vector2D)}
+         * method in reverse order.
+         * @param vertices the vertices to prepend
+         * @return this instance
+         * @see #prepend(Vector2D)
+         */
+        public Builder prependVertices(final Collection&lt;Vector2D&gt; vertices) {
+<span class="fc" id="L649">            return prependVertices(vertices.toArray(new Vector2D[0]));</span>
+        }
+
+        /** Convenience method for prepending multiple vertices to the path in a single method call.
+         * The vertices are logically prepended as a single group, meaning that the first vertex
+         * in the given collection appears as the first vertex in the path after this method call.
+         * Internally, this means that the vertices are actually passed to the {@link #prepend(Vector2D)}
+         * method in reverse order.
+         * @param vertices the vertices to prepend
+         * @return this instance
+         * @see #prepend(Vector2D)
+         */
+        public Builder prependVertices(final Vector2D... vertices) {
+<span class="fc bfc" id="L662" title="All 2 branches covered.">            for (int i = vertices.length - 1; i &gt;= 0; --i) {</span>
+<span class="fc" id="L663">                prepend(vertices[i]);</span>
+            }
+
+<span class="fc" id="L666">            return this;</span>
+        }
+
+        /** Close the current path and build a new {@link LinePath} instance.  This method is equivalent
+         * to {@code builder.build(true)}.
+         * @return new closed path instance
+         * @throws IllegalStateException if the builder was given only a single unique vertex
+         */
+        public LinePath close() {
+<span class="fc" id="L675">            return build(true);</span>
+        }
+
+        /** Build a {@link LinePath} instance from the configured path. This method is equivalent
+         * to {@code builder.build(false)}.
+         * @return new path instance
+         * @throws IllegalStateException if the builder was given only a single unique vertex
+         */
+        public LinePath build() {
+<span class="fc" id="L684">            return build(false);</span>
+        }
+
+        /** Build a {@link LinePath} instance from the configured path.
+         * @param close if true, the path will be closed by adding an end point equivalent to the
+         *      start point
+         * @return new path instance
+         * @throws IllegalStateException if the builder was given only a single unique vertex
+         */
+        public LinePath build(final boolean close) {
+<span class="fc bfc" id="L694" title="All 2 branches covered.">            if (close) {</span>
+<span class="fc" id="L695">                closePath();</span>
+            }
+
+            // combine all of the line subsets
+<span class="fc" id="L699">            List&lt;LineConvexSubset&gt; result = null;</span>
+
+<span class="fc bfc" id="L701" title="All 2 branches covered.">            if (prepended != null) {</span>
+<span class="fc" id="L702">                result = prepended;</span>
+<span class="fc" id="L703">                Collections.reverse(result);</span>
+            }
+
+<span class="fc bfc" id="L706" title="All 2 branches covered.">            if (appended != null) {</span>
+<span class="fc bfc" id="L707" title="All 2 branches covered.">                if (result == null) {</span>
+<span class="fc" id="L708">                    result = appended;</span>
+                } else {
+<span class="fc" id="L710">                    result.addAll(appended);</span>
+                }
+            }
+
+<span class="fc bfc" id="L714" title="All 2 branches covered.">            if (result == null) {</span>
+<span class="fc" id="L715">                result = Collections.emptyList();</span>
+            }
+
+<span class="fc bfc" id="L718" title="All 4 branches covered.">            if (result.isEmpty() &amp;&amp; startVertex != null) {</span>
+<span class="fc" id="L719">                throw new IllegalStateException(</span>
+<span class="fc" id="L720">                        MessageFormat.format(&quot;Unable to create line path; only a single unique vertex provided: {0} &quot;,</span>
+                                startVertex));
+            }
+
+            // clear internal state
+<span class="fc" id="L725">            appended = null;</span>
+<span class="fc" id="L726">            prepended = null;</span>
+
+            // build the final path instance, using the shared empty instance if
+            // no line subsets are present
+
+<span class="fc bfc" id="L731" title="All 2 branches covered.">            return result.isEmpty() ? empty() : new LinePath(result);</span>
+        }
+
+        /** Close the path by adding an end point equivalent to the path start point.
+         * @throws IllegalStateException if the path cannot be closed
+         */
+        private void closePath() {
+<span class="fc" id="L738">            final LineConvexSubset end = getEnd();</span>
+
+<span class="fc bfc" id="L740" title="All 2 branches covered.">            if (end != null) {</span>
+<span class="fc bfc" id="L741" title="All 4 branches covered.">                if (startVertex != null &amp;&amp; endVertex != null) {</span>
+<span class="fc bfc" id="L742" title="All 2 branches covered.">                    if (!endVertex.eq(startVertex, endVertexPrecision)) {</span>
+<span class="fc" id="L743">                        appendInternal(Lines.segmentFromPoints(endVertex, startVertex, endVertexPrecision));</span>
+                    }
+                } else {
+<span class="fc" id="L746">                    throw new IllegalStateException(&quot;Unable to close line path: line path is infinite&quot;);</span>
+                }
+            }
+<span class="fc" id="L749">        }</span>
+
+        /** Validate that the given line subsets  are connected, meaning that the end vertex of {@code previous}
+         * is equivalent to the start vertex of {@code next}. The line subsets are considered valid if either
+         * line subset is null.
+         * @param previous previous line subset
+         * @param next next line subset
+         * @throws IllegalStateException if previous and next are not null and the end vertex of previous
+         *      is not equivalent the start vertex of next
+         */
+        private void validateConnected(final LineConvexSubset previous, final LineConvexSubset next) {
+<span class="fc bfc" id="L760" title="All 4 branches covered.">            if (previous != null &amp;&amp; next != null) {</span>
+<span class="fc" id="L761">                final Vector2D nextStartVertex = next.getStartPoint();</span>
+<span class="fc" id="L762">                final Vector2D previousEndVertex = previous.getEndPoint();</span>
+<span class="fc" id="L763">                final Precision.DoubleEquivalence previousPrecision = previous.getPrecision();</span>
+
+<span class="fc bfc" id="L765" title="All 4 branches covered.">                if (nextStartVertex == null || previousEndVertex == null ||</span>
+<span class="fc bfc" id="L766" title="All 2 branches covered.">                        !(nextStartVertex.eq(previousEndVertex, previousPrecision))) {</span>
+
+<span class="fc" id="L768">                    throw new IllegalStateException(</span>
+<span class="fc" id="L769">                            MessageFormat.format(&quot;Path line subsets are not connected: previous= {0}, next= {1}&quot;,</span>
+                                    previous, next));
+                }
+            }
+<span class="fc" id="L773">        }</span>
+
+        /** Get the precision context used when adding raw vertices to the path. An exception is thrown
+         * if no precision has been specified.
+         * @return the precision context used when creating working with raw vertices
+         * @throws IllegalStateException if no precision context is configured
+         */
+        private Precision.DoubleEquivalence getAddVertexPrecision() {
+<span class="fc bfc" id="L781" title="All 2 branches covered.">            if (precision == null) {</span>
+<span class="fc" id="L782">                throw new IllegalStateException(&quot;Unable to create line segment: no vertex precision specified&quot;);</span>
+            }
+
+<span class="fc" id="L785">            return precision;</span>
+        }
+
+        /** Append the given, validated line subsets to the path.
+         * @param subset validated line subset to append
+         */
+        private void appendInternal(final LineConvexSubset subset) {
+<span class="fc bfc" id="L792" title="All 2 branches covered.">            if (appended == null) {</span>
+<span class="fc" id="L793">                appended = new ArrayList&lt;&gt;();</span>
+            }
+
+<span class="fc bfc" id="L796" title="All 4 branches covered.">            if (appended.isEmpty() &amp;&amp;</span>
+<span class="pc bpc" id="L797" title="1 of 2 branches missed.">                    (prepended == null || prepended.isEmpty())) {</span>
+<span class="fc" id="L798">                startVertex = subset.getStartPoint();</span>
+            }
+
+<span class="fc" id="L801">            endVertex = subset.getEndPoint();</span>
+<span class="fc" id="L802">            endVertexPrecision = subset.getPrecision();</span>
+
+<span class="fc" id="L804">            appended.add(subset);</span>
+<span class="fc" id="L805">        }</span>
+
+        /** Prepend the given, validated line subset to the path.
+         * @param subset validated line subset to prepend
+         */
+        private void prependInternal(final LineConvexSubset subset) {
+<span class="fc bfc" id="L811" title="All 2 branches covered.">            if (prepended == null) {</span>
+<span class="fc" id="L812">                prepended = new ArrayList&lt;&gt;();</span>
+            }
+
+<span class="fc" id="L815">            startVertex = subset.getStartPoint();</span>
+
+<span class="fc bfc" id="L817" title="All 4 branches covered.">            if (prepended.isEmpty() &amp;&amp;</span>
+<span class="pc bpc" id="L818" title="1 of 2 branches missed.">                    (appended == null || appended.isEmpty())) {</span>
+<span class="fc" id="L819">                endVertex = subset.getEndPoint();</span>
+<span class="fc" id="L820">                endVertexPrecision = subset.getPrecision();</span>
+            }
+
+<span class="fc" id="L823">            prepended.add(subset);</span>
+<span class="fc" id="L824">        }</span>
+
+        /** Get the first element in the list or null if the list is null
+         * or empty.
+         * @param list the list to return the first item from
+         * @return the first item from the given list or null if it does not exist
+         */
+        private LineConvexSubset getFirst(final List&lt;? extends LineConvexSubset&gt; list) {
+<span class="pc bpc" id="L832" title="1 of 4 branches missed.">            if (list != null &amp;&amp; !list.isEmpty()) {</span>
+<span class="fc" id="L833">                return list.get(0);</span>
+            }
+<span class="fc" id="L835">            return null;</span>
+        }
+
+        /** Get the last element in the list or null if the list is null
+         * or empty.
+         * @param list the list to return the last item from
+         * @return the last item from the given list or null if it does not exist
+         */
+        private LineConvexSubset getLast(final List&lt;? extends LineConvexSubset&gt; list) {
+<span class="pc bpc" id="L844" title="1 of 4 branches missed.">            if (list != null &amp;&amp; !list.isEmpty()) {</span>
+<span class="fc" id="L845">                return list.get(list.size() - 1);</span>
+            }
+<span class="fc" id="L847">            return null;</span>
+        }
+    }
+
+    /** Internal class returned when a line path is simplified to remove unnecessary line subset divisions.
+     * The {@link #simplify()} method on this class simply returns the same instance.
+     */
+    private static final class SimplifiedLinePath extends LinePath {
+        /** Create a new instance containing the given line subsets. No validation is
+         * performed on the inputs. Caller must ensure that the given line subsets represent
+         * a valid, simplified path.
+         * @param elements line subsets comprising the path
+         */
+        private SimplifiedLinePath(final List&lt;LineConvexSubset&gt; elements) {
+<span class="fc" id="L861">            super(elements);</span>
+<span class="fc" id="L862">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        public SimplifiedLinePath simplify() {
+            // already simplified
+<span class="fc" id="L868">            return this;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

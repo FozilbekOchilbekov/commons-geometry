@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmbeddedTreePlaneSubset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed</a> &gt; <span class="el_source">EmbeddedTreePlaneSubset.java</span></div><h1>EmbeddedTreePlaneSubset.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.geometry.euclidean.twod.ConvexArea;
+import org.apache.commons.geometry.euclidean.twod.RegionBSPTree2D;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.geometry.euclidean.twod.rotation.Rotation2D;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing an arbitrary subset of a plane using a {@link RegionBSPTree2D}.
+ * This class can represent convex, non-convex, finite, infinite, and empty regions.
+ *
+ * &lt;p&gt;This class is mutable and &lt;em&gt;not&lt;/em&gt; thread safe.&lt;/p&gt;
+ */
+public final class EmbeddedTreePlaneSubset extends AbstractEmbeddedRegionPlaneSubset {
+
+    /** The 2D region representing the area on the plane. */
+    private final RegionBSPTree2D region;
+
+    /** Construct a new, empty plane subset for the given plane.
+     * @param plane plane containing the subset
+     */
+    public EmbeddedTreePlaneSubset(final EmbeddingPlane plane) {
+<span class="fc" id="L45">        this(plane, false);</span>
+<span class="fc" id="L46">    }</span>
+
+    /** Construct a new subset for the given plane. If {@code full}
+     * is true, then the subset will cover the entire plane; otherwise,
+     * it will be empty.
+     * @param plane plane containing the subset
+     * @param full if true, the subset will cover the entire space;
+     *      otherwise it will be empty
+     */
+    public EmbeddedTreePlaneSubset(final EmbeddingPlane plane, final boolean full) {
+<span class="fc" id="L56">        this(plane, new RegionBSPTree2D(full));</span>
+<span class="fc" id="L57">    }</span>
+
+    /** Construct a new instance from its defining plane and subspace region.
+     * @param plane plane containing the subset
+     * @param region subspace region for the plane subset
+     */
+    public EmbeddedTreePlaneSubset(final EmbeddingPlane plane, final RegionBSPTree2D region) {
+<span class="fc" id="L64">        super(plane);</span>
+
+<span class="fc" id="L66">        this.region = region;</span>
+<span class="fc" id="L67">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public PlaneSubset.Embedded getEmbedded() {
+<span class="fc" id="L72">        return this;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionBSPTree2D getSubspaceRegion() {
+<span class="fc" id="L78">        return region;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;PlaneConvexSubset&gt; toConvex() {
+<span class="fc" id="L84">        final List&lt;ConvexArea&gt; areas = region.toConvex();</span>
+
+<span class="fc" id="L86">        final List&lt;PlaneConvexSubset&gt; facets = new ArrayList&lt;&gt;(areas.size());</span>
+
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        for (final ConvexArea area : areas) {</span>
+<span class="fc" id="L89">            facets.add(Planes.subsetFromConvexArea(getPlane(), area));</span>
+<span class="fc" id="L90">        }</span>
+
+<span class="fc" id="L92">        return facets;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;Triangle3D&gt; toTriangles() {
+<span class="fc" id="L98">        final EmbeddingPlane plane = getPlane();</span>
+<span class="fc" id="L99">        final List&lt;Triangle3D&gt; triangles = new ArrayList&lt;&gt;();</span>
+
+        List&lt;Vector3D&gt; vertices;
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        for (final ConvexArea area : region.toConvex()) {</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">            if (area.isInfinite()) {</span>
+<span class="fc" id="L104">                throw new IllegalStateException(&quot;Cannot convert infinite plane subset to triangles: &quot; + this);</span>
+            }
+
+<span class="fc" id="L107">            vertices = plane.toSpace(area.getVertices());</span>
+
+<span class="fc" id="L109">            triangles.addAll(Planes.convexPolygonToTriangleFan(plane, vertices));</span>
+<span class="fc" id="L110">        }</span>
+
+<span class="fc" id="L112">        return triangles;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Bounds3D getBounds() {
+<span class="fc" id="L118">        return getBoundsFromSubspace(region);</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;In all cases, the current instance is not modified. However, In order to avoid
+     * unnecessary copying, this method will use the current instance as the split value when
+     * the instance lies entirely on the plus or minus side of the splitter. For example, if
+     * this instance lies entirely on the minus side of the splitter, the plane subset
+     * returned by {@link Split#getMinus()} will be this instance. Similarly, {@link Split#getPlus()}
+     * will return the current instance if it lies entirely on the plus side. Callers need to make
+     * special note of this, since this class is mutable.&lt;/p&gt;
+     */
+    @Override
+    public Split&lt;EmbeddedTreePlaneSubset&gt; split(final Hyperplane&lt;Vector3D&gt; splitter) {
+<span class="fc" id="L133">        return Planes.subspaceSplit((Plane) splitter, this,</span>
+<span class="fc" id="L134">            (p, r) -&gt; new EmbeddedTreePlaneSubset(p, (RegionBSPTree2D) r));</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EmbeddedTreePlaneSubset transform(final Transform&lt;Vector3D&gt; transform) {
+<span class="fc" id="L140">        final EmbeddingPlane.SubspaceTransform subTransform =</span>
+<span class="fc" id="L141">                getPlane().getEmbedding().subspaceTransform(transform);</span>
+
+<span class="fc" id="L143">        final RegionBSPTree2D tRegion = RegionBSPTree2D.empty();</span>
+<span class="fc" id="L144">        tRegion.copy(region);</span>
+<span class="fc" id="L145">        tRegion.transform(subTransform.getTransform());</span>
+
+<span class="fc" id="L147">        return new EmbeddedTreePlaneSubset(subTransform.getPlane(), tRegion);</span>
+    }
+
+    /** Add a plane convex subset to this instance.
+     * @param subset plane convex subset to add
+     * @throws IllegalArgumentException if the given plane subset is not from
+     *      a plane equivalent to this instance
+     */
+    public void add(final PlaneConvexSubset subset) {
+<span class="fc" id="L156">        Planes.validatePlanesEquivalent(getPlane(), subset.getPlane());</span>
+
+<span class="fc" id="L158">        final PlaneConvexSubset.Embedded embedded = subset.getEmbedded();</span>
+<span class="fc" id="L159">        final Rotation2D rot = getEmbeddedRegionRotation(embedded);</span>
+
+<span class="fc" id="L161">        final ConvexArea subspaceArea = embedded.getSubspaceRegion();</span>
+
+<span class="fc bfc" id="L163" title="All 2 branches covered.">        final ConvexArea toAdd = rot != null ?</span>
+<span class="fc" id="L164">                subspaceArea.transform(rot) :</span>
+<span class="fc" id="L165">                subspaceArea;</span>
+
+<span class="fc" id="L167">        region.add(toAdd);</span>
+<span class="fc" id="L168">    }</span>
+
+    /** Add a plane subset to this instance.
+     * @param subset plane subset to add
+     * @throws IllegalArgumentException if the given plane subset is not from
+     *      a plane equivalent to this instance
+     */
+    public void add(final EmbeddedTreePlaneSubset subset) {
+<span class="fc" id="L176">        Planes.validatePlanesEquivalent(getPlane(), subset.getPlane());</span>
+
+<span class="fc" id="L178">        final RegionBSPTree2D otherTree = subset.getSubspaceRegion();</span>
+<span class="fc" id="L179">        final Rotation2D rot = getEmbeddedRegionRotation(subset);</span>
+
+        final RegionBSPTree2D regionToAdd;
+<span class="fc bfc" id="L182" title="All 2 branches covered.">        if (rot != null) {</span>
+            // we need to transform the subspace region before adding
+<span class="fc" id="L184">            regionToAdd = otherTree.copy();</span>
+<span class="fc" id="L185">            regionToAdd.transform(rot);</span>
+        } else {
+<span class="fc" id="L187">            regionToAdd = otherTree;</span>
+        }
+
+<span class="fc" id="L190">        region.union(regionToAdd);</span>
+<span class="fc" id="L191">    }</span>
+
+    /** Construct a rotation transform used to transform the subspace of the given embedded region plane
+     * subset into the subspace of this instance. Returns null if no transform is needed. This method must only
+     * be called with embedded regions that share an equivalent plane with this instance, meaning that the
+     * planes have the same origin point and normal
+     * @param embedded the embedded region plane subset to compare with the current instance
+     * @return a rotation transform to convert from the subspace of the argument into the current subspace; returns
+     *      null if no such transform is needed
+     */
+    private Rotation2D getEmbeddedRegionRotation(final PlaneSubset.Embedded embedded) {
+        // check if we need to apply a rotation to the given embedded subspace
+<span class="fc" id="L203">        final EmbeddingPlane thisPlane = getPlane();</span>
+<span class="fc" id="L204">        final EmbeddingPlane otherPlane = embedded.getPlane();</span>
+
+<span class="fc" id="L206">        final Precision.DoubleEquivalence precision = thisPlane.getPrecision();</span>
+
+<span class="fc" id="L208">        final double uDot = thisPlane.getU().dot(otherPlane.getU());</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">        if (!precision.eq(uDot, 1.0)) {</span>
+<span class="fc" id="L210">            final Vector2D otherPlaneU = thisPlane.toSubspace(otherPlane.getOrigin().add(otherPlane.getU()));</span>
+<span class="fc" id="L211">            final double angle = Math.atan2(otherPlaneU.getY(), otherPlaneU.getX());</span>
+
+<span class="fc" id="L213">            return Rotation2D.of(angle);</span>
+        }
+
+<span class="fc" id="L216">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PointMap1SImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Spherical</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.spherical</a> &gt; <span class="el_source">PointMap1SImpl.java</span></div><h1>PointMap1SImpl.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.spherical;
+
+import java.util.AbstractSet;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NavigableMap;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Set;
+
+import org.apache.commons.geometry.core.internal.AbstractPointMap1D;
+import org.apache.commons.geometry.core.internal.DistancedValue;
+import org.apache.commons.geometry.spherical.oned.Point1S;
+import org.apache.commons.numbers.angle.Angle;
+import org.apache.commons.numbers.core.Precision;
+
+/** Internal {@link org.apache.commons.geometry.core.collection.PointMap PointMap}
+ * implementation for 1D spherical space. This class uses a {@link NavigableMap}
+ * internally with special logic to handle wrap around.
+ * @param &lt;V&gt; Map value type
+ */
+final class PointMap1SImpl&lt;V&gt;
+    extends AbstractPointMap1D&lt;Point1S, V&gt; {
+
+    /** Minimum key in the map, or null if not known. */
+    private Point1S minKey;
+
+    /** Maximum key in the map, or null if not known. */
+    private Point1S maxKey;
+
+    /** Modification version of the map. */
+    private int version;
+
+    /** Construct a new instance using the given precision object to determine
+     * floating point equality.
+     * @param precision object used to determine floating point equality
+     */
+    PointMap1SImpl(final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L55">        super(precision, Point1S::getNormalizedAzimuth);</span>
+<span class="fc" id="L56">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean containsKey(final Object key) {
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        return getEntryInternal((Point1S) key) != null;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public V get(final Object key) {
+<span class="fc" id="L67">        return getValue(getEntryInternal((Point1S) key));</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public V remove(final Object key) {
+<span class="fc" id="L73">        final Entry&lt;Point1S, V&gt; entry = getEntryInternal((Point1S) key);</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (entry != null) {</span>
+<span class="fc" id="L75">            final V result = getMap().remove(entry.getKey());</span>
+
+<span class="fc" id="L77">            mapUpdated();</span>
+
+<span class="fc" id="L79">            return result;</span>
+        }
+
+<span class="fc" id="L82">        return null;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void clear() {
+<span class="fc" id="L88">        getMap().clear();</span>
+<span class="fc" id="L89">        mapUpdated();</span>
+<span class="fc" id="L90">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public Set&lt;Point1S&gt; keySet() {
+<span class="fc" id="L95">        return new KeySet();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Set&lt;Entry&lt;Point1S, V&gt;&gt; entrySet() {
+<span class="fc" id="L101">        return new EntrySet();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected Iterator&lt;Entry&lt;Point1S, V&gt;&gt; nearToFarIterator(final Point1S pt) {
+<span class="fc" id="L107">        return new NearToFarIterator(pt);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected Iterator&lt;Entry&lt;Point1S, V&gt;&gt; farToNearIterator(final Point1S pt) {
+<span class="fc" id="L113">        return new NearToFarIterator(pt.antipodal());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected Entry&lt;Point1S, V&gt; getEntryInternal(final Point1S pt) {
+<span class="fc" id="L119">        final NavigableMap&lt;Point1S, V&gt; map = getMap();</span>
+
+<span class="fc" id="L121">        final Entry&lt;Point1S, V&gt; floor = map.floorEntry(pt);</span>
+<span class="fc bfc" id="L122" title="All 4 branches covered.">        if (floor != null &amp;&amp; keyEq(pt, floor)) {</span>
+<span class="fc" id="L123">            return floor;</span>
+        } else {
+<span class="fc bfc" id="L125" title="All 2 branches covered.">            if (pt.getNormalizedAzimuth() &lt; Math.PI) {</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">                if (wrapsLowToHigh(pt)) {</span>
+<span class="fc" id="L127">                    return map.lastEntry();</span>
+                }
+<span class="fc bfc" id="L129" title="All 2 branches covered.">            } else if (wrapsHighToLow(pt)) {</span>
+<span class="fc" id="L130">                return map.firstEntry();</span>
+            }
+        }
+<span class="fc" id="L133">        return null;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected V putInternal(final Point1S key, final V value) {
+<span class="fc" id="L139">        final NavigableMap&lt;Point1S, V&gt; map = getMap();</span>
+
+<span class="fc" id="L141">        final Entry&lt;Point1S, V&gt; entry = getEntryInternal(key);</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">        if (entry != null) {</span>
+<span class="fc" id="L143">            return map.put(entry.getKey(), value);</span>
+        }
+
+<span class="fc" id="L146">        final V result = map.put(key, value);</span>
+<span class="fc" id="L147">        mapUpdated();</span>
+
+<span class="fc" id="L149">        return result;</span>
+    }
+
+    /** Method called when the map is updated.
+     */
+    private void mapUpdated() {
+<span class="fc" id="L155">        minKey = null;</span>
+<span class="fc" id="L156">        maxKey = null;</span>
+
+<span class="fc" id="L158">        ++version;</span>
+<span class="fc" id="L159">    }</span>
+
+    /** Return true if {@code pt} is directly equivalent to the key for {@code entry},
+     * without considering wrap around.
+     * @param pt point
+     * @param entry map entry
+     * @return true if {@code pt} is directly equivalent to the key for {@code entry},
+     *      without considering wrap around
+     */
+    private boolean keyEq(final Point1S pt, final Entry&lt;Point1S, V&gt; entry) {
+<span class="fc" id="L169">        return getPrecision().eq(pt.getNormalizedAzimuth(), entry.getKey().getNormalizedAzimuth());</span>
+    }
+
+    /** Return true if the given point wraps around the zero point from high to low
+     * and is equivalent to the first point in the map.
+     * @param pt point to check
+     * @return true if the normalized azimuth of {@code pt} plus 2pi is equivalent
+     *      to the first key in the map
+     */
+    private boolean wrapsHighToLow(final Point1S pt) {
+<span class="fc bfc" id="L179" title="All 2 branches covered.">        if (size() &gt; 0) {</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">            if (minKey == null) {</span>
+<span class="fc" id="L181">                minKey = getMap().firstKey();</span>
+            }
+
+<span class="fc" id="L184">            final double adjustedAz = pt.getNormalizedAzimuth() - Angle.TWO_PI;</span>
+<span class="fc" id="L185">            return getPrecision().eq(adjustedAz, minKey.getNormalizedAzimuth());</span>
+        }
+
+<span class="fc" id="L188">        return false;</span>
+    }
+
+    /** Return true if the given point wraps around the zero point from low to high
+     * and is equivalent to the last point in the map.
+     * @param pt point to check
+     * @return true if the normalized azimuth of {@code pt} minus 2pi is equivalent
+     *      to the first key in the map
+     */
+    private boolean wrapsLowToHigh(final Point1S pt) {
+<span class="fc bfc" id="L198" title="All 2 branches covered.">        if (size() &gt; 0) {</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">            if (maxKey == null) {</span>
+<span class="fc" id="L200">                maxKey = getMap().lastKey();</span>
+            }
+
+<span class="fc" id="L203">            final double adjustedAz = pt.getNormalizedAzimuth() + Angle.TWO_PI;</span>
+<span class="fc" id="L204">            return getPrecision().eq(adjustedAz, maxKey.getNormalizedAzimuth());</span>
+        }
+
+<span class="fc" id="L207">        return false;</span>
+    }
+
+    /** Null-safe method to get the value from a map entry.
+     * @param &lt;V&gt; Value type
+     * @param entry map entry
+     * @return map value or null if {@code entry} is null
+     */
+    private static &lt;V&gt; V getValue(final Entry&lt;?, V&gt; entry) {
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        return entry != null ?</span>
+<span class="fc" id="L217">                entry.getValue() :</span>
+<span class="fc" id="L218">                null;</span>
+    }
+
+    /** Key set view of the map.
+     */
+<span class="fc" id="L223">    private final class KeySet</span>
+        extends AbstractSet&lt;Point1S&gt; {
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean contains(final Object obj) {
+<span class="fc" id="L229">            return PointMap1SImpl.this.containsKey(obj);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public int size() {
+<span class="fc" id="L235">            return PointMap1SImpl.this.size();</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Iterator&lt;Point1S&gt; iterator() {
+<span class="fc" id="L241">            return new MapIterator&lt;&gt;(getMap().keySet().iterator());</span>
+        }
+    }
+
+    /** Entry set view of the map.
+     */
+<span class="fc" id="L247">    private final class EntrySet</span>
+        extends AbstractSet&lt;Entry&lt;Point1S, V&gt;&gt; {
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean contains(final Object obj) {
+<span class="fc bfc" id="L253" title="All 2 branches covered.">            if (obj instanceof Entry) {</span>
+<span class="fc" id="L254">                final Entry&lt;?, ?&gt; search = (Entry&lt;?, ?&gt;) obj;</span>
+<span class="fc" id="L255">                final Object key = search.getKey();</span>
+
+<span class="fc" id="L257">                final Entry&lt;Point1S, V&gt; actual = getEntry((Point1S) key);</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">                if (actual != null) {</span>
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">                    return actual.getKey().eq((Point1S) search.getKey(), getPrecision()) &amp;&amp;</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">                            Objects.equals(actual.getValue(), search.getValue());</span>
+                }
+            }
+<span class="fc" id="L263">            return false;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public int size() {
+<span class="fc" id="L269">            return PointMap1SImpl.this.size();</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Iterator&lt;Entry&lt;Point1S, V&gt;&gt; iterator() {
+<span class="fc" id="L275">            return new MapIterator&lt;&gt;(getMap().entrySet().iterator());</span>
+        }
+    }
+
+    /** Iterator for iterating through elements in the map.
+     * @param &lt;E&gt; Element type
+     */
+    private final class MapIterator&lt;E&gt;
+        implements Iterator&lt;E&gt; {
+
+        /** Underlying iterator. */
+        private final Iterator&lt;E&gt; it;
+
+        /** Construct a new instance that wraps the given iterator.
+         * @param it underlying iterator
+         */
+<span class="fc" id="L291">        MapIterator(final Iterator&lt;E&gt; it) {</span>
+<span class="fc" id="L292">            this.it = it;</span>
+<span class="fc" id="L293">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean hasNext() {
+<span class="fc" id="L298">            return it.hasNext();</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public E next() {
+<span class="fc" id="L304">            return it.next();</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void remove() {
+<span class="fc" id="L310">            it.remove();</span>
+<span class="fc" id="L311">            mapUpdated();</span>
+<span class="fc" id="L312">        }</span>
+    }
+
+    /** Iterator that returns the entries in order of ascending distance from
+     * a given reference point.
+     */
+    private final class NearToFarIterator
+        implements Iterator&lt;Entry&lt;Point1S, V&gt;&gt; {
+
+        /** Reference point to measure distances against. */
+        private final Point1S refPt;
+
+        /** Low entry iterator. */
+        private Iterator&lt;Entry&lt;Point1S, V&gt;&gt; low;
+
+        /** High entry iterator. */
+        private Iterator&lt;Entry&lt;Point1S, V&gt;&gt; high;
+
+        /** Low-valued entry. */
+        private DistancedValue&lt;Entry&lt;Point1S, V&gt;&gt; lowEntry;
+
+        /** High-valued entry. */
+        private DistancedValue&lt;Entry&lt;Point1S, V&gt;&gt; highEntry;
+
+        /** Number of entries remaining to retrieve from each iterator. */
+        private int remaining;
+
+        /** Expected modification version of the map. */
+        private int expectedVersion;
+
+        /** Construct a new instance with the given reference point.
+         * @param refPt reference point
+         */
+<span class="fc" id="L345">        NearToFarIterator(final Point1S refPt) {</span>
+<span class="fc" id="L346">            this.refPt = refPt;</span>
+
+<span class="fc" id="L348">            this.low = getMap().descendingMap().tailMap(refPt, false)</span>
+<span class="fc" id="L349">                    .entrySet().iterator();</span>
+<span class="fc" id="L350">            this.high = getMap().tailMap(refPt).entrySet().iterator();</span>
+
+<span class="fc" id="L352">            this.remaining = getMap().size();</span>
+
+<span class="fc" id="L354">            this.expectedVersion = version;</span>
+<span class="fc" id="L355">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean hasNext() {
+<span class="fc bfc" id="L360" title="All 4 branches covered.">            if (lowEntry == null &amp;&amp; remaining &gt; 0) {</span>
+<span class="fc" id="L361">                lowEntry = getNextEntry(low);</span>
+
+<span class="fc bfc" id="L363" title="All 2 branches covered.">                if (lowEntry == null) {</span>
+<span class="fc" id="L364">                    low = getMap().descendingMap().entrySet().iterator();</span>
+
+<span class="fc" id="L366">                    lowEntry = getNextEntry(low);</span>
+                }
+            }
+<span class="fc bfc" id="L369" title="All 4 branches covered.">            if (highEntry == null &amp;&amp; remaining &gt; 0) {</span>
+<span class="fc" id="L370">                highEntry = getNextEntry(high);</span>
+
+<span class="fc bfc" id="L372" title="All 2 branches covered.">                if (highEntry == null) {</span>
+<span class="fc" id="L373">                    high = getMap().entrySet().iterator();</span>
+
+<span class="fc" id="L375">                    highEntry = getNextEntry(high);</span>
+                }
+            }
+
+<span class="fc bfc" id="L379" title="All 4 branches covered.">            return lowEntry != null || highEntry != null;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Entry&lt;Point1S, V&gt; next() {
+<span class="fc bfc" id="L385" title="All 2 branches covered.">            if (!hasNext()) {</span>
+<span class="fc" id="L386">                throw new NoSuchElementException();</span>
+            }
+
+<span class="fc" id="L389">            checkVersion();</span>
+
+            final DistancedValue&lt;Entry&lt;Point1S, V&gt;&gt; result;
+<span class="fc bfc" id="L392" title="All 4 branches covered.">            if (lowEntry != null &amp;&amp;</span>
+<span class="fc bfc" id="L393" title="All 2 branches covered.">                    (highEntry == null || lowEntry.getDistance() &lt;= highEntry.getDistance())) {</span>
+<span class="fc" id="L394">                result = lowEntry;</span>
+<span class="fc" id="L395">                lowEntry = null;</span>
+            } else {
+<span class="fc" id="L397">                result = highEntry;</span>
+<span class="fc" id="L398">                highEntry = null;</span>
+            }
+
+<span class="pc bpc" id="L401" title="1 of 2 branches missed.">            return result != null ?</span>
+<span class="fc" id="L402">                    result.getValue() :</span>
+<span class="nc" id="L403">                    null;</span>
+        }
+
+        /** Get a {@link DistancedValue} instance containing the next entry from the given
+         * iterator.
+         * @param it iterator to get the next value from
+         * @return distanced value containing the next entry from the iterator or null if the iterator
+         *      does not contain any more elements
+         */
+        private DistancedValue&lt;Entry&lt;Point1S, V&gt;&gt; getNextEntry(final Iterator&lt;Entry&lt;Point1S, V&gt;&gt; it) {
+<span class="fc bfc" id="L413" title="All 2 branches covered.">            if (it.hasNext()) {</span>
+<span class="fc" id="L414">                --remaining;</span>
+
+<span class="fc" id="L416">                final Entry&lt;Point1S, V&gt; entry = it.next();</span>
+<span class="fc" id="L417">                return DistancedValue.of(entry, refPt.distance(entry.getKey()));</span>
+            }
+<span class="fc" id="L419">            return null;</span>
+        }
+
+        /** Throw a {@link ConcurrentModificationException} if the map version does
+         * not match the expected version.
+         */
+        private void checkVersion() {
+<span class="pc bpc" id="L426" title="1 of 2 branches missed.">            if (expectedVersion != version) {</span>
+<span class="nc" id="L427">                throw new ConcurrentModificationException();</span>
+            }
+<span class="fc" id="L429">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

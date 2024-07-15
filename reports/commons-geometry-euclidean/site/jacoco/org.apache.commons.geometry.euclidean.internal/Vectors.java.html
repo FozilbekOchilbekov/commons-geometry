@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Vectors.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.internal</a> &gt; <span class="el_source">Vectors.java</span></div><h1>Vectors.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.internal;
+
+import org.apache.commons.geometry.core.Vector;
+import org.apache.commons.numbers.core.Norm;
+import org.apache.commons.numbers.core.Sum;
+
+/** This class consists exclusively of static vector utility methods.
+ */
+public final class Vectors {
+
+    /** Private constructor. */
+    private Vectors() {}
+
+    /** Returns true if the given value is real (ie, not NaN or infinite)
+     * and not equal to zero.
+     * @param value the value to test
+     * @return true if {@code value} is not NaN, infinite, or zero; otherwise
+     *      false
+     */
+    public static boolean isRealNonZero(final double value) {
+<span class="fc bfc" id="L37" title="All 4 branches covered.">        return Double.isFinite(value) &amp;&amp; value != 0.0;</span>
+    }
+
+    /** Throws an {@link IllegalArgumentException} if the given norm value
+     * is not real (ie, not NaN or infinite) or zero. The argument is returned
+     * to allow this method to be called inline.
+     * @param norm vector norm value
+     * @return the validated norm value
+     * @throws IllegalArgumentException if the given norm value is NaN, infinite,
+     *      or zero
+     */
+    public static double checkedNorm(final double norm) {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (!isRealNonZero(norm)) {</span>
+<span class="fc" id="L50">            throw illegalNorm(norm);</span>
+        }
+
+<span class="fc" id="L53">        return norm;</span>
+    }
+
+    /** Returns the vector's norm value, throwing an {@link IllegalArgumentException} if the value
+     * is not real (ie, not NaN or infinite) or zero.
+     * @param vec vector to obtain the real, non-zero norm of
+     * @return the validated norm value
+     * @throws IllegalArgumentException if the vector norm value is NaN, infinite,
+     *      or zero
+     */
+    public static double checkedNorm(final Vector&lt;?&gt; vec) {
+<span class="fc" id="L64">        return checkedNorm(vec.norm());</span>
+    }
+
+    /** Return an exception indicating an illegal norm value.
+     * @param norm illegal norm value
+     * @return exception indicating an illegal norm value
+     */
+    public static IllegalArgumentException illegalNorm(final double norm) {
+<span class="fc" id="L72">        return new IllegalArgumentException(&quot;Illegal norm: &quot; + norm);</span>
+    }
+
+    /** Get the L&lt;sub&gt;2&lt;/sub&gt; norm (commonly known as the Euclidean norm) for the vector
+     * with the given components. This corresponds to the common notion of vector magnitude
+     * or length and is defined as the square root of the sum of the squares of all vector components.
+     * @param x vector component
+     * @return L&lt;sub&gt;2&lt;/sub&gt; norm for the vector with the given components
+     * @see &lt;a href=&quot;https://mathworld.wolfram.com/L2-Norm.html&quot;&gt;L2 Norm&lt;/a&gt;
+     */
+    public static double norm(final double x) {
+<span class="fc" id="L83">        return Math.abs(x);</span>
+    }
+
+    /** Get the L&lt;sub&gt;2&lt;/sub&gt; norm (commonly known as the Euclidean norm) for the vector
+     * with the given components. This corresponds to the common notion of vector magnitude
+     * or length and is defined as the square root of the sum of the squares of all vector components.
+     * @param x1 first vector component
+     * @param x2 second vector component
+     * @return L&lt;sub&gt;2&lt;/sub&gt; norm for the vector with the given components
+     * @see &lt;a href=&quot;https://mathworld.wolfram.com/L2-Norm.html&quot;&gt;L2 Norm&lt;/a&gt;
+     */
+    public static double norm(final double x1, final double x2) {
+<span class="fc" id="L95">        return Math.hypot(x1, x2);</span>
+    }
+
+    /** Get the L&lt;sub&gt;2&lt;/sub&gt; norm (commonly known as the Euclidean norm) for the vector
+     * with the given components. This corresponds to the common notion of vector magnitude
+     * or length and is defined as the square root of the sum of the squares of all vector components.
+     * @param x1 first vector component
+     * @param x2 second vector component
+     * @param x3 third vector component
+     * @return L&lt;sub&gt;2&lt;/sub&gt; norm for the vector with the given components
+     * @see &lt;a href=&quot;https://mathworld.wolfram.com/L2-Norm.html&quot;&gt;L2 Norm&lt;/a&gt;
+     */
+    public static double norm(final double x1, final double x2, final double x3) {
+<span class="fc" id="L108">        return Norm.EUCLIDEAN.of(x1, x2, x3);</span>
+    }
+
+    /** Get the square of the L&lt;sub&gt;2&lt;/sub&gt; norm (also known as the Euclidean norm)
+     * for the vector with the given components. This is equal to the sum of the squares of
+     * all vector components.
+     * @param x vector component
+     * @return square of the L&lt;sub&gt;2&lt;/sub&gt; norm for the vector with the given components
+     * @see #norm(double)
+     */
+    public static double normSq(final double x) {
+<span class="fc" id="L119">        return x * x;</span>
+    }
+
+    /** Get the square of the L&lt;sub&gt;2&lt;/sub&gt; norm (also known as the Euclidean norm)
+     * for the vector with the given components. This is equal to the sum of the squares of
+     * all vector components.
+     * @param x1 first vector component
+     * @param x2 second vector component
+     * @return square of the L&lt;sub&gt;2&lt;/sub&gt; norm for the vector with the given components
+     * @see #norm(double, double)
+     */
+    public static double normSq(final double x1, final double x2) {
+<span class="fc" id="L131">        return (x1 * x1) + (x2 * x2);</span>
+    }
+
+    /** Get the square of the L&lt;sub&gt;2&lt;/sub&gt; norm (also known as the Euclidean norm)
+     * for the vector with the given components. This is equal to the sum of the squares of
+     * all vector components.
+     * @param x1 first vector component
+     * @param x2 second vector component
+     * @param x3 third vector component
+     * @return square of the L&lt;sub&gt;2&lt;/sub&gt; norm for the vector with the given components
+     * @see #norm(double, double, double)
+     */
+    public static double normSq(final double x1, final double x2, final double x3) {
+<span class="fc" id="L144">        return (x1 * x1) + (x2 * x2) + (x3 * x3);</span>
+    }
+
+    /** Compute the linear combination \(a_1 b_1 + a_2 b_2 \) with high accuracy.
+     * @param a1 first factor of the first term
+     * @param b1 second factor of the first term
+     * @param a2 first factor of the second term
+     * @param b2 second factor of the seconf term
+     * @return linear combination.
+     * @see Sum
+     */
+    public static double linearCombination(final double a1, final double b1,
+                                           final double a2, final double b2) {
+<span class="fc" id="L157">        return Sum.create()</span>
+<span class="fc" id="L158">                .addProduct(a1, b1)</span>
+<span class="fc" id="L159">                .addProduct(a2, b2).getAsDouble();</span>
+    }
+
+    /** Compute the linear combination \(a_1 b_1 + a_2 b_2 + a_3 b_3 \) with high accuracy.
+     * @param a1 first factor of the first term
+     * @param b1 second factor of the first term
+     * @param a2 first factor of the second term
+     * @param b2 second factor of the seconf term
+     * @param a3 first factor of the third term
+     * @param b3 second factor of the third term
+     * @return linear combination.
+     * @see Sum
+     */
+    public static double linearCombination(final double a1, final double b1,
+                                           final double a2, final double b2,
+                                           final double a3, final double b3) {
+<span class="fc" id="L175">        return Sum.create()</span>
+<span class="fc" id="L176">                .addProduct(a1, b1)</span>
+<span class="fc" id="L177">                .addProduct(a2, b2)</span>
+<span class="fc" id="L178">                .addProduct(a3, b3).getAsDouble();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

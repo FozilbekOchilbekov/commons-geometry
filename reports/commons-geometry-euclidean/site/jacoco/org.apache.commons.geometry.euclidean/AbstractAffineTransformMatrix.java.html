@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractAffineTransformMatrix.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean</a> &gt; <span class="el_source">AbstractAffineTransformMatrix.java</span></div><h1>AbstractAffineTransformMatrix.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean;
+
+/** Base class for affine transform matrices in Euclidean space.
+ *
+ * @param &lt;V&gt; Vector/point implementation type defining the space.
+ * @param &lt;M&gt; Matrix transform implementation type.
+ */
+<span class="fc" id="L24">public abstract class AbstractAffineTransformMatrix&lt;</span>
+        V extends EuclideanVector&lt;V&gt;,
+        M extends AbstractAffineTransformMatrix&lt;V, M&gt;&gt;
+    implements EuclideanTransform&lt;V&gt; {
+
+    /** Apply this transform to the given vector, ignoring translations and normalizing the
+     * result. This is equivalent to {@code transform.applyVector(vec).normalize()} but without
+     * the intermediate vector instance.
+     *
+     * @param vec the vector to transform
+     * @return the new, transformed unit vector
+     * @throws IllegalArgumentException if the transformed vector coordinates cannot be normalized
+     * @see #applyVector(EuclideanVector)
+     */
+    public abstract V applyDirection(V vec);
+
+    /** Get the determinant of the matrix.
+     * @return the determinant of the matrix
+     */
+    public abstract double determinant();
+
+    /** {@inheritDoc}
+     * @throws IllegalStateException if the matrix cannot be inverted
+     */
+    @Override
+    public abstract M inverse();
+
+    /** Return a matrix containing only the linear portion of this transform.
+     * The returned instance contains the same matrix elements as this instance
+     * but with the translation component set to zero.
+     * @return a matrix containing only the linear portion of this transform
+     */
+    public abstract M linear();
+
+    /** Return a matrix containing the transpose of the linear portion of this transform.
+     * The returned instance is linear, meaning it has a translation component of zero.
+     * @return a matrix containing the transpose of the linear portion of this transform
+     */
+    public abstract M linearTranspose();
+
+    /** Return a transform suitable for transforming normals. The returned matrix is
+     * the inverse transpose of the linear portion of this instance, i.e.
+     * &lt;code&gt;N = (L&lt;sup&gt;-1&lt;/sup&gt;)&lt;sup&gt;T&lt;/sup&gt;&lt;/code&gt;, where &lt;code&gt;L&lt;/code&gt; is the linear portion
+     * of this instance and &lt;code&gt;N&lt;/code&gt; is the returned matrix. Note that normals
+     * transformed with the returned matrix may be scaled during transformation and require
+     * normalization.
+     * @return a transform suitable for transforming normals
+     * @throws IllegalStateException if the matrix cannot be inverted
+     * @see &lt;a href=&quot;https://en.wikipedia.org/wiki/Normal_(geometry)#Transforming_normals&quot;&gt;Transforming normals&lt;/a&gt;
+     */
+    public M normalTransform() {
+<span class="fc" id="L75">        return inverse().linearTranspose();</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;This method returns true if the determinant of the matrix is positive.&lt;/p&gt;
+     */
+    @Override
+    public boolean preservesOrientation() {
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        return determinant() &gt; 0.0;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

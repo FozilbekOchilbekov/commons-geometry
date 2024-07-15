@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmbeddingPlane.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed</a> &gt; <span class="el_source">EmbeddingPlane.java</span></div><h1>EmbeddingPlane.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed;
+
+import java.util.Objects;
+
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.EmbeddingHyperplane;
+import org.apache.commons.geometry.euclidean.threed.rotation.QuaternionRotation;
+import org.apache.commons.geometry.euclidean.twod.AffineTransformMatrix2D;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.numbers.core.Precision;
+
+/** Extension of the {@link Plane} class that supports embedding of 2D subspaces in the plane.
+ * This is accomplished by defining two additional vectors, {@link #getU() u} and {@link #getV() v},
+ * that define the {@code x} and {@code y} axes respectively of the embedded subspace. For completeness,
+ * an additional vector {@link #getW()} is defined, which is simply an alias for the plane normal.
+ * Together, the vectors {@code u}, {@code v}, and {@code w} form a right-handed orthonormal basis.
+ *
+ * &lt;p&gt;The additional {@code u} and {@code v} vectors are not required to fulfill the contract of
+ * {@link org.apache.commons.geometry.core.partitioning.Hyperplane Hyperplane}. Therefore, they
+ * are not considered when using instances of this type purely as a hyperplane. For example, the
+ * {@link Plane#eq(Plane, Precision.DoubleEquivalence) eq} and
+ * {@link Plane#similarOrientation(org.apache.commons.geometry.core.partitioning.Hyperplane) similiarOrientation}
+ * methods do not consider them.&lt;/p&gt;
+ */
+public final class EmbeddingPlane extends Plane implements EmbeddingHyperplane&lt;Vector3D, Vector2D&gt; {
+    /** First normalized vector of the plane frame (in plane). */
+    private final Vector3D.Unit u;
+
+    /** Second normalized vector of the plane frame (in plane). */
+    private final Vector3D.Unit v;
+
+    /** Construct a new instance from an orthonormal set of basis vectors and an origin offset.
+     * @param u first vector of the basis (in plane)
+     * @param v second vector of the basis (in plane)
+     * @param w third vector of the basis (plane normal)
+     * @param originOffset offset of the origin with respect to the plane.
+     * @param precision precision context used for floating point comparisons
+     */
+    EmbeddingPlane(final Vector3D.Unit u, final Vector3D.Unit v, final Vector3D.Unit w, final double originOffset,
+                   final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L57">        super(w, originOffset, precision);</span>
+
+<span class="fc" id="L59">        this.u = u;</span>
+<span class="fc" id="L60">        this.v = v;</span>
+<span class="fc" id="L61">    }</span>
+
+    /** Get the plane first canonical vector.
+     * &lt;p&gt;
+     * The frame defined by ({@link #getU u}, {@link #getV v},
+     * {@link #getW w}) is a right-handed orthonormalized frame).
+     * &lt;/p&gt;
+     * @return normalized first canonical vector
+     * @see #getV
+     * @see #getW
+     * @see #getNormal
+     */
+    public Vector3D.Unit getU() {
+<span class="fc" id="L74">        return u;</span>
+    }
+
+    /** Get the plane second canonical vector.
+     * &lt;p&gt;
+     * The frame defined by ({@link #getU u}, {@link #getV v},
+     * {@link #getW w}) is a right-handed orthonormalized frame).
+     * &lt;/p&gt;
+     * @return normalized second canonical vector
+     * @see #getU
+     * @see #getW
+     * @see #getNormal
+     */
+    public Vector3D.Unit getV() {
+<span class="fc" id="L88">        return v;</span>
+    }
+
+    /** Get the plane third canonical vector, ie, the plane normal. This
+     * method is simply an alias for {@link #getNormal()}.
+     * &lt;p&gt;
+     * The frame defined by {@link #getU() u}, {@link #getV() v},
+     * {@link #getW() w} is a right-handed orthonormalized frame.
+     * &lt;/p&gt;
+     * @return normalized normal vector
+     * @see #getU()
+     * @see #getV()
+     * @see #getNormal()
+     */
+    public Vector3D.Unit getW() {
+<span class="fc" id="L103">        return getNormal();</span>
+    }
+
+    /** Return the current instance.
+     */
+    @Override
+    public EmbeddingPlane getEmbedding() {
+<span class="fc" id="L110">        return this;</span>
+    }
+
+    /** Transform a 3D space point into an in-plane point.
+     * @param point point of the space
+     * @return in-plane point
+     * @see #toSpace
+     */
+    @Override
+    public Vector2D toSubspace(final Vector3D point) {
+<span class="fc" id="L120">        return Vector2D.of(point.dot(u), point.dot(v));</span>
+    }
+
+    /** Transform an in-plane point into a 3D space point.
+     * @param point in-plane point
+     * @return 3D space point
+     * @see #toSubspace(Vector3D)
+     */
+    @Override
+    public Vector3D toSpace(final Vector2D point) {
+<span class="fc" id="L130">        return Vector3D.Sum.create()</span>
+<span class="fc" id="L131">                .addScaled(point.getX(), u)</span>
+<span class="fc" id="L132">                .addScaled(point.getY(), v)</span>
+<span class="fc" id="L133">                .addScaled(-getOriginOffset(), getNormal()).get();</span>
+    }
+
+    /** Get one point from the 3D-space.
+     * @param inPlane desired in-plane coordinates for the point in the plane
+     * @param offset  desired offset for the point
+     * @return one point in the 3D-space, with given coordinates and offset relative
+     *         to the plane
+     */
+    public Vector3D pointAt(final Vector2D inPlane, final double offset) {
+<span class="fc" id="L143">        return Vector3D.Sum.create()</span>
+<span class="fc" id="L144">                .addScaled(inPlane.getX(), u)</span>
+<span class="fc" id="L145">                .addScaled(inPlane.getY(), v)</span>
+<span class="fc" id="L146">                .addScaled(offset - getOriginOffset(), getNormal()).get();</span>
+    }
+
+    /** Build a new reversed version of this plane, with opposite orientation.
+     * &lt;p&gt;
+     * The new plane frame is chosen in such a way that a 3D point that had
+     * {@code (x, y)} in-plane coordinates and {@code z} offset with respect to the
+     * plane and is unaffected by the change will have {@code (y, x)} in-plane
+     * coordinates and {@code -z} offset with respect to the new plane. This means
+     * that the {@code u} and {@code v} vectors returned by the {@link #getU} and
+     * {@link #getV} methods are exchanged, and the {@code w} vector returned by the
+     * {@link #getNormal} method is reversed.
+     * &lt;/p&gt;
+     * @return a new reversed plane
+     */
+    @Override
+    public EmbeddingPlane reverse() {
+<span class="fc" id="L163">        return new EmbeddingPlane(v, u, getNormal().negate(), -getOriginOffset(), getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EmbeddingPlane transform(final Transform&lt;Vector3D&gt; transform) {
+<span class="fc" id="L169">        final Vector3D origin = getOrigin();</span>
+<span class="fc" id="L170">        final Vector3D plusU = origin.add(u);</span>
+<span class="fc" id="L171">        final Vector3D plusV = origin.add(v);</span>
+
+<span class="fc" id="L173">        final Vector3D tOrigin = transform.apply(origin);</span>
+<span class="fc" id="L174">        final Vector3D tPlusU = transform.apply(plusU);</span>
+<span class="fc" id="L175">        final Vector3D tPlusV = transform.apply(plusV);</span>
+
+<span class="fc" id="L177">        final Vector3D.Unit tU = tOrigin.directionTo(tPlusU);</span>
+<span class="fc" id="L178">        final Vector3D.Unit tV = tOrigin.directionTo(tPlusV);</span>
+<span class="fc" id="L179">        final Vector3D.Unit tW = tU.cross(tV).normalize();</span>
+
+<span class="fc" id="L181">        final double tOriginOffset = -tOrigin.dot(tW);</span>
+
+<span class="fc" id="L183">        return new EmbeddingPlane(tU, tV, tW, tOriginOffset, getPrecision());</span>
+    }
+
+    /** Translate the plane by the specified amount.
+     * @param translation translation to apply
+     * @return a new plane
+     */
+    @Override
+    public EmbeddingPlane translate(final Vector3D translation) {
+<span class="fc" id="L192">        final Vector3D tOrigin = getOrigin().add(translation);</span>
+
+<span class="fc" id="L194">        return Planes.fromPointAndPlaneVectors(tOrigin, u, v, getPrecision());</span>
+    }
+
+    /** Rotate the plane around the specified point.
+     * @param center rotation center
+     * @param rotation 3-dimensional rotation
+     * @return a new rotated plane
+     */
+    @Override
+    public EmbeddingPlane rotate(final Vector3D center, final QuaternionRotation rotation) {
+<span class="fc" id="L204">        final Vector3D delta = getOrigin().subtract(center);</span>
+<span class="fc" id="L205">        final Vector3D tOrigin = center.add(rotation.apply(delta));</span>
+<span class="fc" id="L206">        final Vector3D.Unit tU = rotation.apply(u).normalize();</span>
+<span class="fc" id="L207">        final Vector3D.Unit tV = rotation.apply(v).normalize();</span>
+
+<span class="fc" id="L209">        return Planes.fromPointAndPlaneVectors(tOrigin, tU, tV, getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L215">        return Objects.hash(getNormal(), getOriginOffset(), u, v, getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L221" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L222">            return true;</span>
+<span class="fc bfc" id="L223" title="All 4 branches covered.">        } else if (obj == null || obj.getClass() != EmbeddingPlane.class) {</span>
+<span class="fc" id="L224">            return false;</span>
+        }
+
+<span class="fc" id="L227">        final EmbeddingPlane other = (EmbeddingPlane) obj;</span>
+
+<span class="fc bfc" id="L229" title="All 2 branches covered.">        return Objects.equals(this.getNormal(), other.getNormal()) &amp;&amp;</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">                Double.compare(this.getOriginOffset(), other.getOriginOffset()) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">                Objects.equals(this.u, other.u) &amp;&amp;</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">                Objects.equals(this.v, other.v) &amp;&amp;</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">                Objects.equals(this.getPrecision(), other.getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L239">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L240">        sb.append(getClass().getSimpleName())</span>
+<span class="fc" id="L241">            .append(&quot;[origin= &quot;)</span>
+<span class="fc" id="L242">            .append(getOrigin())</span>
+<span class="fc" id="L243">            .append(&quot;, u= &quot;)</span>
+<span class="fc" id="L244">            .append(u)</span>
+<span class="fc" id="L245">            .append(&quot;, v= &quot;)</span>
+<span class="fc" id="L246">            .append(v)</span>
+<span class="fc" id="L247">            .append(&quot;, w= &quot;)</span>
+<span class="fc" id="L248">            .append(getNormal())</span>
+<span class="fc" id="L249">            .append(']');</span>
+
+<span class="fc" id="L251">        return sb.toString();</span>
+    }
+
+    /** Get an object containing the current plane transformed by the argument along with a
+     * 2D transform that can be applied to subspace points. The subspace transform transforms
+     * subspace points such that their 3D location in the transformed plane is the same as their
+     * 3D location in the original plane after the 3D transform is applied. For example, consider
+     * the code below:
+     * &lt;pre&gt;
+     *      SubspaceTransform st = plane.subspaceTransform(transform);
+     *
+     *      Vector2D subPt = Vector2D.of(1, 1);
+     *
+     *      Vector3D a = transform.apply(plane.toSpace(subPt)); // transform in 3D space
+     *      Vector3D b = st.getPlane().toSpace(st.getTransform().apply(subPt)); // transform in 2D space
+     * &lt;/pre&gt;
+     * At the end of execution, the points {@code a} (which was transformed using the original
+     * 3D transform) and {@code b} (which was transformed in 2D using the subspace transform)
+     * are equivalent.
+     *
+     * @param transform the transform to apply to this instance
+     * @return an object containing the transformed plane along with a transform that can be applied
+     *      to subspace points
+     * @see #transform(Transform)
+     */
+    public SubspaceTransform subspaceTransform(final Transform&lt;Vector3D&gt; transform) {
+<span class="fc" id="L277">        final Vector3D origin = getOrigin();</span>
+
+<span class="fc" id="L279">        final Vector3D tOrigin = transform.apply(origin);</span>
+<span class="fc" id="L280">        final Vector3D tPlusU = transform.apply(origin.add(u));</span>
+<span class="fc" id="L281">        final Vector3D tPlusV = transform.apply(origin.add(v));</span>
+
+<span class="fc" id="L283">        final EmbeddingPlane tPlane = Planes.fromPointAndPlaneVectors(</span>
+                tOrigin,
+<span class="fc" id="L285">                tOrigin.vectorTo(tPlusU),</span>
+<span class="fc" id="L286">                tOrigin.vectorTo(tPlusV),</span>
+<span class="fc" id="L287">                getPrecision());</span>
+
+<span class="fc" id="L289">        final Vector2D tSubspaceOrigin = tPlane.toSubspace(tOrigin);</span>
+<span class="fc" id="L290">        final Vector2D tSubspaceU = tSubspaceOrigin.vectorTo(tPlane.toSubspace(tPlusU));</span>
+<span class="fc" id="L291">        final Vector2D tSubspaceV = tSubspaceOrigin.vectorTo(tPlane.toSubspace(tPlusV));</span>
+
+<span class="fc" id="L293">        final AffineTransformMatrix2D subspaceTransform =</span>
+<span class="fc" id="L294">                AffineTransformMatrix2D.fromColumnVectors(tSubspaceU, tSubspaceV, tSubspaceOrigin);</span>
+
+<span class="fc" id="L296">        return new SubspaceTransform(tPlane, subspaceTransform);</span>
+    }
+
+    /** Class containing a transformed plane instance along with a subspace (2D) transform. The subspace
+     * transform produces the equivalent of the 3D transform in 2D.
+     */
+    public static final class SubspaceTransform {
+        /** The transformed plane. */
+        private final EmbeddingPlane plane;
+
+        /** The subspace transform instance. */
+        private final AffineTransformMatrix2D transform;
+
+        /** Simple constructor.
+         * @param plane the transformed plane
+         * @param transform 2D transform that can be applied to subspace points
+         */
+<span class="fc" id="L313">        public SubspaceTransform(final EmbeddingPlane plane, final AffineTransformMatrix2D transform) {</span>
+<span class="fc" id="L314">            this.plane = plane;</span>
+<span class="fc" id="L315">            this.transform = transform;</span>
+<span class="fc" id="L316">        }</span>
+
+        /** Get the transformed plane instance.
+         * @return the transformed plane instance
+         */
+        public EmbeddingPlane getPlane() {
+<span class="fc" id="L322">            return plane;</span>
+        }
+
+        /** Get the 2D transform that can be applied to subspace points. This transform can be used
+         * to perform the equivalent of the 3D transform in 2D space.
+         * @return the subspace transform instance
+         */
+        public AffineTransformMatrix2D getTransform() {
+<span class="fc" id="L330">            return transform;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

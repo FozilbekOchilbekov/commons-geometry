@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="9.3">
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\AbstractAffineTransformMatrix.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\AbstractBounds.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\AbstractLinecastPoint.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\AbstractNSphere.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\EuclideanCollections.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\EuclideanTransform.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\EuclideanVector.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\EuclideanVectorSum.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\internal\AbstractPathConnector.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\internal\EuclideanUtils.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\internal\Matrices.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\internal\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\internal\Vectors.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\MultiDimensionalEuclideanVector.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\oned\AffineTransformMatrix1D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\oned\Interval.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\oned\OrientedPoint.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\oned\OrientedPoints.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\oned\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\oned\RegionBSPTree1D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\oned\Vector1D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\PointMap1DImpl.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\PointMap2DImpl.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\PointMap3DImpl.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\AbstractConvexPolygon3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\AbstractEmbeddedRegionPlaneSubset.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\AbstractPlaneSubset.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\AffineTransformMatrix3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\BoundaryList3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\BoundarySource3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\BoundarySourceBoundsBuilder3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\BoundarySourceLinecaster3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\Bounds3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\ConvexPolygon3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\ConvexVolume.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\EmbeddedAreaPlaneConvexSubset.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\EmbeddedTreePlaneSubset.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\EmbeddingPlane.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\line\EmbeddedTreeLineSubset3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\line\Line3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\line\Linecastable3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\line\LinecastPoint3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\line\LineConvexSubset3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\line\Lines3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\line\LineSpanningSubset3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\line\LineSubset3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\line\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\line\Ray3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\line\ReverseRay3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\line\Segment3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\mesh\Mesh.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\mesh\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\mesh\SimpleTriangleMesh.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\mesh\TriangleMesh.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\Plane.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\PlaneConvexSubset.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\Planes.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\PlaneSubset.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\RegionBSPTree3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\rotation\AxisAngleSequence.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\rotation\AxisReferenceFrame.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\rotation\AxisSequence.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\rotation\AxisSequenceType.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\rotation\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\rotation\QuaternionRotation.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\rotation\Rotation3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\shape\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\shape\Parallelepiped.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\shape\Sphere.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\SimpleTriangle3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\SphericalCoordinates.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\Triangle3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\Vector3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\threed\VertexListConvexPolygon3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\AffineTransformMatrix2D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\BoundaryList2D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\BoundarySource2D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\BoundarySourceBoundsBuilder2D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\BoundarySourceLinecaster2D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\Bounds2D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\ConvexArea.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\EmbeddedTreeLineSubset.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\hull\ConvexHull2D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\hull\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\Line.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\Linecastable2D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\LinecastPoint2D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\LineConvexSubset.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\Lines.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\LineSpanningSubset.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\LineSubset.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\path\AbstractLinePathConnector.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\path\InteriorAngleLinePathConnector.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\path\LinePath.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\path\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\PolarCoordinates.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\Ray.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\RegionBSPTree2D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\ReverseRay.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\rotation\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\rotation\Rotation2D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\Segment.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\shape\Circle.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\shape\package-info.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\shape\Parallelogram.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\main\java\org\apache\commons\geometry\euclidean\twod\Vector2D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\DocumentationExamplesTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\EuclideanTestUtils.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\internal\EuclideanUtilsTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\internal\MatricesTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\internal\VectorsTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\oned\AffineTransformMatrix1DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\oned\IntervalTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\oned\OrientedPointTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\oned\PointMap1DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\oned\PointSet1DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\oned\RegionBSPTree1DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\oned\Vector1DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\AffineTransformMatrix3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\BoundaryList3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\BoundarySource3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\BoundarySourceBoundsBuilder3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\BoundarySourceLinecaster3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\Bounds3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\ConvexVolumeTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\EmbeddedAreaPlaneConvexSubsetTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\EmbeddedTreePlaneSubsetTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\EmbeddingPlaneTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\line\EmbeddedTreeLineSubset3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\line\Line3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\line\LinecastPoint3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\line\LineConvexSubset3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\line\Ray3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\line\ReverseRay3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\line\Segment3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\LinecastChecker3D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\mesh\SimpleTriangleMeshTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\PlaneConvexSubsetTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\PlanesTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\PlaneTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\PointMap3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\PointSet3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\RegionBSPTree3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\rotation\AxisAngleSequenceTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\rotation\AxisSequenceTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\rotation\QuaternionRotationTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\rotation\StandardRotations.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\shape\ParallelepipedTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\shape\SphereTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\SimpleTriangle3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\SphericalCoordinatesTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\Vector3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\threed\VertexListConvexPolygon3DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\AffineTransformMatrix2DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\BoundaryList2DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\BoundarySource2DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\BoundarySourceBoundsBuilder2DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\BoundarySourceLinecaster2DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\Bounds2DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\ConvexAreaTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\EmbeddedTreeLineSubsetTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\hull\ConvexHull2DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\hull\ConvexHullBuilderTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\LinecastChecker2D.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\LinecastPoint2DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\LineConvexSubsetTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\LineSpanningSubsetTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\LineSubsetTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\LineTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\path\AbstractLinePathConnectorTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\path\InteriorAngleLinePathConnectorTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\path\LinePathTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\PointMap2DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\PointSet2DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\PolarCoordinatesTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\RayTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\RegionBSPTree2DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\ReverseRayTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\rotation\Rotation2DTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\SegmentTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\shape\CircleTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\shape\ParallelogramTest.java">
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\src\test\java\org\apache\commons\geometry\euclidean\twod\Vector2DTest.java">
+</file>
+</checkstyle>

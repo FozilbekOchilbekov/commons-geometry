@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 http://pmd.sourceforge.net/report_2_0_0.xsd" version="6.55.0" timestamp="2024-07-13T15:25:45.479">
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\main\java\org\apache\commons\geometry\enclosing\EnclosingBall.java">
+<violation beginline="108" endline="108" begincolumn="29" endcolumn="30" rule="InsufficientStringBufferDeclaration" ruleset="Performance" package="org.apache.commons.geometry.enclosing" class="EnclosingBall" method="toString" variable="sb" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_performance.html#insufficientstringbufferdeclaration" priority="3">
+StringBuilder has been initialized with size 16, but has at least 20 characters appended.
+</violation>
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\main\java\org\apache\commons\geometry\enclosing\euclidean\threed\SphereGenerator.java">
+<violation beginline="54" endline="54" begincolumn="30" endcolumn="30" rule="AvoidLiteralsInIfCondition" ruleset="Error Prone" package="org.apache.commons.geometry.enclosing.euclidean.threed" class="SphereGenerator" method="ballOnSupport" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition" priority="3">
+Avoid using Literals in Conditional Statements
+</violation>
+<violation beginline="58" endline="58" begincolumn="30" endcolumn="30" rule="AvoidLiteralsInIfCondition" ruleset="Error Prone" package="org.apache.commons.geometry.enclosing.euclidean.threed" class="SphereGenerator" method="ballOnSupport" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition" priority="3">
+Avoid using Literals in Conditional Statements
+</violation>
+<violation beginline="64" endline="64" begincolumn="30" endcolumn="30" rule="AvoidLiteralsInIfCondition" ruleset="Error Prone" package="org.apache.commons.geometry.enclosing.euclidean.threed" class="SphereGenerator" method="ballOnSupport" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition" priority="3">
+Avoid using Literals in Conditional Statements
+</violation>
+</file>
+<file name="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-enclosing\src\main\java\org\apache\commons\geometry\enclosing\euclidean\twod\DiskGenerator.java">
+<violation beginline="39" endline="39" begincolumn="30" endcolumn="30" rule="AvoidLiteralsInIfCondition" ruleset="Error Prone" package="org.apache.commons.geometry.enclosing.euclidean.twod" class="DiskGenerator" method="ballOnSupport" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition" priority="3">
+Avoid using Literals in Conditional Statements
+</violation>
+<violation beginline="43" endline="43" begincolumn="30" endcolumn="30" rule="AvoidLiteralsInIfCondition" ruleset="Error Prone" package="org.apache.commons.geometry.enclosing.euclidean.twod" class="DiskGenerator" method="ballOnSupport" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_errorprone.html#avoidliteralsinifcondition" priority="3">
+Avoid using Literals in Conditional Statements
+</violation>
+</file>
+</pmd>

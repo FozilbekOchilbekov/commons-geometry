@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractPathConnector.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.internal</a> &gt; <span class="el_source">AbstractPathConnector.java</span></div><h1>AbstractPathConnector.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.internal;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NavigableSet;
+import java.util.TreeSet;
+
+import org.apache.commons.geometry.core.internal.GeometryInternalUtils;
+
+/** Abstract base class for joining unconnected path elements into connected, directional
+ * paths. The connection algorithm is exposed as a set of protected methods, allowing subclasses
+ * to define their own public API. Implementations must supply their own subclass of {@link ConnectableElement}
+ * specific for the objects being connected.
+ *
+ * &lt;p&gt;The connection algorithm proceeds as follows:
+ * &lt;ul&gt;
+ *      &lt;li&gt;Create a sorted list of {@link ConnectableElement}s.&lt;/li&gt;
+ *      &lt;li&gt;For each element, attempt to find other elements with start points next the
+ *      first instance's end point by calling {@link ConnectableElement#getConnectionSearchKey()} and
+ *      using the returned instance to locate a search start location in the sorted element list.&lt;/li&gt;
+ *      &lt;li&gt;Search up through the sorted list from the start location, testing each element for possible connectivity
+ *      with {@link ConnectableElement#canConnectTo(AbstractPathConnector.ConnectableElement)}. Collect possible
+ *      connections in a list. Terminate the search when
+ *      {@link ConnectableElement#shouldContinueConnectionSearch(AbstractPathConnector.ConnectableElement, boolean)}
+ *      returns false.
+ *      &lt;li&gt;Repeat the previous step searching downward through the list from the start location.&lt;/li&gt;
+ *      &lt;li&gt;Select the best connection option from the list of possible connections, using
+ *      {@link #selectPointConnection(AbstractPathConnector.ConnectableElement, List)}
+ *      and/or {@link #selectConnection(AbstractPathConnector.ConnectableElement, List)} when multiple possibilities
+ *      are found.&lt;/li&gt;
+ *      &lt;li&gt;Repeat the above steps for each element. When done, the elements represent a linked list
+ *      of connected paths.&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * &lt;p&gt;This class is not thread-safe.&lt;/p&gt;
+ *
+ * @param &lt;E&gt; Element type
+ * @see ConnectableElement
+ */
+<span class="fc" id="L56">public abstract class AbstractPathConnector&lt;E extends AbstractPathConnector.ConnectableElement&lt;E&gt;&gt; {</span>
+    /** List of path elements. */
+<span class="fc" id="L58">    private final NavigableSet&lt;E&gt; pathElements = new TreeSet&lt;&gt;();</span>
+
+    /** View of the path element set in descending order. */
+<span class="fc" id="L61">    private final NavigableSet&lt;E&gt; pathElementsDescending = pathElements.descendingSet();</span>
+
+    /** List used to store possible connections for the current element. */
+<span class="fc" id="L64">    private final List&lt;E&gt; possibleConnections = new ArrayList&lt;&gt;();</span>
+
+    /** List used to store possible point-like (zero-length) connections for the current element. */
+<span class="fc" id="L67">    private final List&lt;E&gt; possiblePointConnections = new ArrayList&lt;&gt;();</span>
+
+    /** Add a collection of path elements to the connector and attempt to connect each new element
+     * with previously added ones.
+     * @param elements path elements to connect
+     */
+    protected void connectPathElements(final Iterable&lt;E&gt; elements) {
+<span class="fc" id="L74">        elements.forEach(this::addPathElement);</span>
+
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        for (final E element : elements) {</span>
+<span class="fc" id="L77">            makeForwardConnection(element);</span>
+<span class="fc" id="L78">        }</span>
+<span class="fc" id="L79">    }</span>
+
+    /** Add a single path element to the connector, leaving it unconnected until a later call to
+     * to {@link #connectPathElements(Iterable)} or {@link #computePathRoots()}.
+     * @param element value to add to the connector
+     * @see #connectPathElements(Iterable)
+     * @see #computePathRoots()
+     */
+    protected void addPathElement(final E element) {
+<span class="fc" id="L88">        pathElements.add(element);</span>
+<span class="fc" id="L89">    }</span>
+
+    /** Compute all connected paths and return a list of path elements representing
+     * the roots (start locations) of each. Each returned element is the head of a
+     * (possibly circular) linked list that follows a connected path.
+     *
+     * &lt;p&gt;The connector is reset after this call. Further calls to add elements
+     * will result in new paths being generated.&lt;/p&gt;
+     * @return a list of root elements for the computed connected paths
+     */
+    protected List&lt;E&gt; computePathRoots() {
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        for (final E element : pathElements) {</span>
+<span class="fc" id="L101">            followForwardConnections(element);</span>
+<span class="fc" id="L102">        }</span>
+
+<span class="fc" id="L104">        final List&lt;E&gt; rootEntries = new ArrayList&lt;&gt;();</span>
+        E root;
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        for (final E element : pathElements) {</span>
+<span class="fc" id="L107">            root = element.exportPath();</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            if (root != null) {</span>
+<span class="fc" id="L109">                rootEntries.add(root);</span>
+            }
+<span class="fc" id="L111">        }</span>
+
+<span class="fc" id="L113">        pathElements.clear();</span>
+<span class="fc" id="L114">        possibleConnections.clear();</span>
+<span class="fc" id="L115">        possiblePointConnections.clear();</span>
+
+<span class="fc" id="L117">        return rootEntries;</span>
+    }
+
+    /** Find and follow forward connections from the given start element.
+     * @param start element to begin the connection operation with
+     */
+    private void followForwardConnections(final E start) {
+<span class="fc" id="L124">        E current = start;</span>
+
+<span class="fc bfc" id="L126" title="All 6 branches covered.">        while (current != null &amp;&amp; current.hasEnd() &amp;&amp; !current.hasNext()) {</span>
+<span class="fc" id="L127">            current = makeForwardConnection(current);</span>
+        }
+<span class="fc" id="L129">    }</span>
+
+    /** Connect the end point of the given element to the start point of another element. Returns
+     * the newly connected element or null if no forward connection was made.
+     * @param element element to connect
+     * @return the next element in the path or null if no connection was made
+     */
+    private E makeForwardConnection(final E element) {
+<span class="fc" id="L137">        findPossibleConnections(element);</span>
+
+<span class="fc" id="L139">        E next = null;</span>
+
+        // select from all available connections, handling point-like segments first
+<span class="fc bfc" id="L142" title="All 2 branches covered.">        if (!possiblePointConnections.isEmpty()) {</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">            next = (possiblePointConnections.size() == 1) ?</span>
+<span class="fc" id="L144">                    possiblePointConnections.get(0) :</span>
+<span class="fc" id="L145">                    selectPointConnection(element, possiblePointConnections);</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        } else if (!possibleConnections.isEmpty()) {</span>
+
+<span class="fc bfc" id="L148" title="All 2 branches covered.">            next = (possibleConnections.size() == 1) ?</span>
+<span class="fc" id="L149">                    possibleConnections.get(0) :</span>
+<span class="fc" id="L150">                    selectConnection(element, possibleConnections);</span>
+        }
+
+<span class="fc bfc" id="L153" title="All 2 branches covered.">        if (next != null) {</span>
+<span class="fc" id="L154">            element.connectTo(next);</span>
+        }
+
+<span class="fc" id="L157">        return next;</span>
+    }
+
+    /** Find possible connections for the given element and place them in the
+     * {@link #possibleConnections} and {@link #possiblePointConnections} lists.
+     * @param element the element to find connections for
+     */
+    private void findPossibleConnections(final E element) {
+<span class="fc" id="L165">        possibleConnections.clear();</span>
+<span class="fc" id="L166">        possiblePointConnections.clear();</span>
+
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        if (element.hasEnd()) {</span>
+<span class="fc" id="L169">            final E searchKey = element.getConnectionSearchKey();</span>
+
+            // search up
+<span class="fc bfc" id="L172" title="All 2 branches covered.">            for (final E candidate : pathElements.tailSet(searchKey)) {</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">                if (!addPossibleConnection(element, candidate) &amp;&amp;</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">                        !element.shouldContinueConnectionSearch(candidate, true)) {</span>
+<span class="fc" id="L175">                    break;</span>
+                }
+<span class="fc" id="L177">            }</span>
+
+            // search down
+<span class="fc bfc" id="L180" title="All 2 branches covered.">            for (final E candidate : pathElementsDescending.tailSet(searchKey, false)) {</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">                if (!addPossibleConnection(element, candidate) &amp;&amp;</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">                        !element.shouldContinueConnectionSearch(candidate, false)) {</span>
+<span class="fc" id="L183">                    break;</span>
+                }
+<span class="fc" id="L185">            }</span>
+        }
+<span class="fc" id="L187">    }</span>
+
+    /** Add the candidate to one of the connection lists if it represents a possible connection. Returns
+     * true if the candidate was added, otherwise false.
+     * @param element element to check for connections with
+     * @param candidate candidate connection element
+     * @return true if the candidate is a possible connection
+     */
+    private boolean addPossibleConnection(final E element, final E candidate) {
+<span class="fc bfc" id="L196" title="All 2 branches covered.">        if (!GeometryInternalUtils.sameInstance(element, candidate) &amp;&amp;</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">                !candidate.hasPrevious() &amp;&amp;</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">                candidate.hasStart() &amp;&amp;</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">                element.canConnectTo(candidate)) {</span>
+
+<span class="fc bfc" id="L201" title="All 2 branches covered.">            if (element.endPointsEq(candidate)) {</span>
+<span class="fc" id="L202">                possiblePointConnections.add(candidate);</span>
+            } else {
+<span class="fc" id="L204">                possibleConnections.add(candidate);</span>
+            }
+
+<span class="fc" id="L207">            return true;</span>
+        }
+
+<span class="fc" id="L210">        return false;</span>
+    }
+
+    /** Method called to select a connection to use for a given element when multiple zero-length connections are
+     * available. The algorithm here attempts to choose the point most likely to produce a logical path by selecting
+     * the outgoing element with the smallest relative angle with the incoming element, with unconnected element
+     * preferred over ones that are already connected (thereby allowing other connections to occur in the path).
+     * @param incoming the incoming element
+     * @param outgoingList list of available outgoing point-like connections
+     * @return the connection to use
+     */
+    protected E selectPointConnection(final E incoming, final List&lt;E&gt; outgoingList) {
+
+        double angle;
+        boolean isUnconnected;
+
+<span class="fc" id="L226">        double smallestAngle = 0.0;</span>
+<span class="fc" id="L227">        E bestElement = null;</span>
+<span class="fc" id="L228">        boolean bestIsUnconnected = false;</span>
+
+<span class="fc bfc" id="L230" title="All 2 branches covered.">        for (final E outgoing : outgoingList) {</span>
+<span class="fc" id="L231">            angle = Math.abs(incoming.getRelativeAngle(outgoing));</span>
+<span class="fc bfc" id="L232" title="All 2 branches covered.">            isUnconnected = !outgoing.hasNext();</span>
+
+<span class="pc bpc" id="L234" title="3 of 10 branches missed.">            if (bestElement == null || (!bestIsUnconnected &amp;&amp; isUnconnected) ||</span>
+                    (bestIsUnconnected == isUnconnected &amp;&amp; angle &lt; smallestAngle)) {
+
+<span class="fc" id="L237">                smallestAngle = angle;</span>
+<span class="fc" id="L238">                bestElement = outgoing;</span>
+<span class="fc" id="L239">                bestIsUnconnected = isUnconnected;</span>
+            }
+<span class="fc" id="L241">        }</span>
+
+<span class="fc" id="L243">        return bestElement;</span>
+    }
+
+    /** Method called to select a connection to use for a given segment when multiple non-length-zero
+     * connections are available. In this case, the selection of the outgoing connection depends only
+     * on the desired characteristics of the connected path.
+     * @param incoming the incoming segment
+     * @param outgoing list of available outgoing connections; will always contain at least
+     *      two elements
+     * @return the connection to use
+     */
+    protected abstract E selectConnection(E incoming, List&lt;E&gt; outgoing);
+
+    /** Class used to represent connectable path elements for use with {@link AbstractPathConnector}.
+     * Subclasses must fulfill the following requirements in order for path connection operations
+     * to work correctly:
+     * &lt;ul&gt;
+     *      &lt;li&gt;Implement {@link #compareTo(Object)} such that elements are sorted by their start
+     *      point locations. Other criteria may be used as well but elements with start points in close
+     *      proximity must be grouped together.&lt;/li&gt;
+     *      &lt;li&gt;Implement {@link #getConnectionSearchKey()} such that it returns an instance that will be placed
+     *      next to elements with start points close to the current instance's end point when sorted with
+     *      {@link #compareTo(Object)}.&lt;/li&gt;
+     *      &lt;li&gt;Implement {@link #shouldContinueConnectionSearch(AbstractPathConnector.ConnectableElement, boolean)}
+     *      such that it returns false when the search for possible connections through a sorted list of elements
+     *      may terminate.&lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * @param &lt;E&gt; Element type
+     * @see AbstractPathConnector
+     */
+<span class="fc" id="L274">    public abstract static class ConnectableElement&lt;E extends ConnectableElement&lt;E&gt;&gt;</span>
+        implements Comparable&lt;E&gt; {
+        /** Next connected element. */
+        private E next;
+
+        /** Previous connected element. */
+        private E previous;
+
+        /** Flag set to true when this element has exported its value to a path. */
+        private boolean exported;
+
+        /** Return true if the instance is connected to another element's start point.
+         * @return true if the instance has a next element
+         */
+        public boolean hasNext() {
+<span class="fc bfc" id="L289" title="All 2 branches covered.">            return next != null;</span>
+        }
+
+        /** Get the next connected element in the path, if any.
+         * @return the next connected segment in the path; may be null
+         */
+        public E getNext() {
+<span class="fc" id="L296">            return next;</span>
+        }
+
+        /** Set the next connected element for this path. This is intended for
+         * internal use only. Callers should use the {@link #connectTo(AbstractPathConnector.ConnectableElement)}
+         * method instead.
+         * @param next next path element
+         */
+        protected void setNext(final E next) {
+<span class="fc" id="L305">            this.next = next;</span>
+<span class="fc" id="L306">        }</span>
+
+        /** Return true if another element is connected to this instance's start point.
+         * @return true if the instance has a previous element
+         */
+        public boolean hasPrevious() {
+<span class="fc bfc" id="L312" title="All 2 branches covered.">            return previous != null;</span>
+        }
+
+        /** Get the previous connected element in the path, if any.
+         * @return the previous connected element in the path; may be null
+         */
+        public E getPrevious() {
+<span class="fc" id="L319">            return previous;</span>
+        }
+
+        /** Set the previous connected element for this path. This is intended for
+         * internal use only. Callers should use the {@link #connectTo(AbstractPathConnector.ConnectableElement)}
+         * method instead.
+         * @param previous previous path element
+         */
+        protected void setPrevious(final E previous) {
+<span class="fc" id="L328">            this.previous = previous;</span>
+<span class="fc" id="L329">        }</span>
+
+        /** Connect this instance's end point to the given element's start point. No validation
+         * is performed in this method. The {@link #canConnectTo(AbstractPathConnector.ConnectableElement)}
+         * method must have been called previously.
+         * @param nextElement the next element in the path
+         */
+        public void connectTo(final E nextElement) {
+<span class="fc" id="L337">            setNext(nextElement);</span>
+<span class="fc" id="L338">            nextElement.setPrevious(getSelf());</span>
+<span class="fc" id="L339">        }</span>
+
+        /** Export the path that this element belongs to, returning the root
+         * segment. This method traverses all connected element, sets their
+         * exported flags to true, and returns the root element of the path
+         * (or this element in the case of a loop). Each path can only be
+         * exported once. Later calls to this method on this instance or any of its
+         * connected elements will return null.
+         * @return the root of the path or null if the path that this element
+         *      belongs to has already been exported
+         */
+        public E exportPath() {
+<span class="fc bfc" id="L351" title="All 2 branches covered.">            if (markExported()) {</span>
+
+                // export the connected portions of the path, moving both
+                // forward and backward
+                E current;
+<span class="fc" id="L356">                E root = getSelf();</span>
+
+                // forward
+<span class="fc" id="L359">                current = next;</span>
+<span class="fc bfc" id="L360" title="All 4 branches covered.">                while (current != null &amp;&amp; current.markExported()) {</span>
+<span class="fc" id="L361">                    current = current.getNext();</span>
+                }
+
+                // backward
+<span class="fc" id="L365">                current = previous;</span>
+<span class="fc bfc" id="L366" title="All 4 branches covered.">                while (current != null &amp;&amp; current.markExported()) {</span>
+<span class="fc" id="L367">                    root = current;</span>
+<span class="fc" id="L368">                    current = current.getPrevious();</span>
+                }
+
+<span class="fc" id="L371">                return root;</span>
+            }
+
+<span class="fc" id="L374">            return null;</span>
+        }
+
+        /** Set the export flag for this instance to true. Returns true
+         * if the flag was changed and false otherwise.
+         * @return true if the flag was changed and false if it was
+         *      already set to true
+         */
+        protected boolean markExported() {
+<span class="fc bfc" id="L383" title="All 2 branches covered.">            if (!exported) {</span>
+<span class="fc" id="L384">                exported = true;</span>
+<span class="fc" id="L385">                return true;</span>
+            }
+<span class="fc" id="L387">            return false;</span>
+        }
+
+        /** Return true if this instance has a start point that can be
+         * connected to another element's end point.
+         * @return true if this instance has a start point that can be
+         *      connected to another element's end point
+         */
+        public abstract boolean hasStart();
+
+        /** Return true if this instance has an end point that can be
+         * connected to another element's start point.
+         * @return true if this instance has an end point that can be
+         *      connected to another element's start point
+         */
+        public abstract boolean hasEnd();
+
+        /** Return true if the end point of this instance should be considered
+         * equivalent to the end point of the argument.
+         * @param other element to compare end points with
+         * @return true if this instance has an end point equivalent to that
+         *      of the argument
+         */
+        public abstract boolean endPointsEq(E other);
+
+        /** Return true if this instance's end point can be connected to
+         * the argument's start point.
+         * @param nextElement candidate for the next element in the path; this value
+         *      is guaranteed to not be null and to contain a start point
+         * @return true if this instance's end point can be connected to
+         *      the argument's start point
+         */
+        public abstract boolean canConnectTo(E nextElement);
+
+        /** Return the relative angle between this element and the argument.
+         * @param other element to compute the angle with
+         * @return the relative angle between this element and the argument
+         */
+        public abstract double getRelativeAngle(E other);
+
+        /** Get a new instance used as a search key to help locate other elements
+         * with start points matching this instance's end point. The only restriction
+         * on the returned instance is that it be compatible with the implementation
+         * class' {@link #compareTo(Object)} method.
+         * @return a new instance used to help locate other path elements with start
+         *      points equivalent to this instance's end point
+         */
+        public abstract E getConnectionSearchKey();
+
+        /** Return true if the search for possible connections should continue through
+         * the sorted set of possible path elements given the current candidate element
+         * and search direction. The search operation stops for the given direction
+         * when this method returns false.
+         * @param candidate last tested candidate connection element
+         * @param ascending true if the search is proceeding in an ascending direction;
+         *      false otherwise
+         * @return true if the connection search should continue
+         */
+        public abstract boolean shouldContinueConnectionSearch(E candidate, boolean ascending);
+
+        /** Return the current instance as the generic type.
+         * @return the current instance as the generic type.
+         */
+        protected abstract E getSelf();
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

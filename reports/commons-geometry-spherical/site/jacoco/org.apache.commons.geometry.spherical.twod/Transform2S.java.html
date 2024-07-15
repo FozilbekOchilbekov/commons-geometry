@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Transform2S.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Spherical</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.spherical.twod</a> &gt; <span class="el_source">Transform2S.java</span></div><h1>Transform2S.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.spherical.twod;
+
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.euclidean.threed.AffineTransformMatrix3D;
+import org.apache.commons.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.geometry.euclidean.threed.rotation.QuaternionRotation;
+
+/** Implementation of the {@link Transform} interface for spherical 2D points.
+ *
+ * &lt;p&gt;This class uses an {@link AffineTransformMatrix3D} to perform spherical point transforms
+ * in Euclidean 3D space.&lt;/p&gt;
+ *
+ * &lt;p&gt;Instances of this class are guaranteed to be immutable.&lt;/p&gt;
+ */
+public final class Transform2S implements Transform&lt;Point2S&gt; {
+    /** Static instance representing the identity transform. */
+<span class="fc" id="L33">    private static final Transform2S IDENTITY = new Transform2S(AffineTransformMatrix3D.identity());</span>
+
+    /** Static transform instance that reflects across the x-y plane. */
+<span class="fc" id="L36">    private static final AffineTransformMatrix3D XY_PLANE_REFLECTION = AffineTransformMatrix3D.createScale(1, 1, -1);</span>
+
+    /** Euclidean transform matrix underlying the spherical transform. */
+    private final AffineTransformMatrix3D euclideanTransform;
+
+    /** Construct a new instance from its underlying Euclidean transform.
+     * @param euclideanTransform underlying Euclidean transform
+     */
+<span class="fc" id="L44">    private Transform2S(final AffineTransformMatrix3D euclideanTransform) {</span>
+<span class="fc" id="L45">        this.euclideanTransform = euclideanTransform;</span>
+<span class="fc" id="L46">    }</span>
+
+    /** Get the Euclidean transform matrix underlying the spherical transform.
+     * @return the Euclidean transform matrix underlying the spherical transform
+     */
+    public AffineTransformMatrix3D getEuclideanTransform() {
+<span class="fc" id="L52">        return euclideanTransform;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Point2S apply(final Point2S pt) {
+<span class="fc" id="L58">        final Vector3D vec = pt.getVector();</span>
+<span class="fc" id="L59">        return Point2S.from(euclideanTransform.apply(vec));</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean preservesOrientation() {
+<span class="fc" id="L65">        return euclideanTransform.preservesOrientation();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Transform2S inverse() {
+<span class="fc" id="L71">        return new Transform2S(euclideanTransform.inverse());</span>
+    }
+
+    /** Apply a rotation of {@code angle} radians around the given point to this instance.
+     * @param pt point to rotate around
+     * @param angle rotation angle in radians
+     * @return transform resulting from applying the specified rotation to this instance
+     */
+    public Transform2S rotate(final Point2S pt, final double angle) {
+<span class="fc" id="L80">        return premultiply(createRotation(pt, angle));</span>
+    }
+
+    /** Apply a rotation of {@code angle} radians around the given 3D axis to this instance.
+     * @param axis 3D axis of rotation
+     * @param angle rotation angle in radians
+     * @return transform resulting from applying the specified rotation to this instance
+     */
+    public Transform2S rotate(final Vector3D axis, final double angle) {
+<span class="fc" id="L89">        return premultiply(createRotation(axis, angle));</span>
+    }
+
+    /** Apply the given quaternion rotation to this instance.
+     * @param quaternion quaternion rotation to apply
+     * @return transform resulting from applying the specified rotation to this instance
+     */
+    public Transform2S rotate(final QuaternionRotation quaternion) {
+<span class="fc" id="L97">        return premultiply(createRotation(quaternion));</span>
+    }
+
+    /** Apply a reflection across the equatorial plane defined by the given pole point
+     * to this instance.
+     * @param pole pole point defining the equatorial reflection plane
+     * @return transform resulting from applying the specified reflection to this instance
+     */
+    public Transform2S reflect(final Point2S pole) {
+<span class="fc" id="L106">        return premultiply(createReflection(pole));</span>
+    }
+
+    /** Apply a reflection across the equatorial plane defined by the given pole vector
+     * to this instance.
+     * @param poleVector pole vector defining the equatorial reflection plane
+     * @return transform resulting from applying the specified reflection to this instance
+     */
+    public Transform2S reflect(final Vector3D poleVector) {
+<span class="fc" id="L115">        return premultiply(createReflection(poleVector));</span>
+    }
+
+    /** Multiply the underlying Euclidean transform of this instance by that of the argument, eg,
+     * {@code other * this}. The returned transform performs the equivalent of
+     * {@code other} followed by {@code this}.
+     * @param other transform to multiply with
+     * @return a new transform computed by multiplying the matrix of this
+     *      instance by that of the argument
+     * @see AffineTransformMatrix3D#multiply(AffineTransformMatrix3D)
+     */
+    public Transform2S multiply(final Transform2S other) {
+<span class="fc" id="L127">        return multiply(this, other);</span>
+    }
+
+    /** Multiply the underlying Euclidean transform matrix of the argument by that of this instance, eg,
+     * {@code this * other}. The returned transform performs the equivalent of {@code this}
+     * followed by {@code other}.
+     * @param other transform to multiply with
+     * @return a new transform computed by multiplying the matrix of the
+     *      argument by that of this instance
+     * @see AffineTransformMatrix3D#premultiply(AffineTransformMatrix3D)
+     */
+    public Transform2S premultiply(final Transform2S other) {
+<span class="fc" id="L139">        return multiply(other, this);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L145">        return euclideanTransform.hashCode();</span>
+    }
+
+    /**
+     * Return true if the given object is an instance of {@link Transform2S}
+     * and the underlying Euclidean transform matrices are exactly equal.
+     * @param obj object to test for equality with the current instance
+     * @return true if the underlying transform matrices are exactly equal
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L157">            return true;</span>
+        }
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        if (!(obj instanceof Transform2S)) {</span>
+<span class="fc" id="L160">            return false;</span>
+        }
+<span class="fc" id="L162">        final Transform2S other = (Transform2S) obj;</span>
+
+<span class="fc" id="L164">        return euclideanTransform.equals(other.euclideanTransform);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L170">        final StringBuilder sb = new StringBuilder();</span>
+
+<span class="fc" id="L172">        sb.append(this.getClass().getSimpleName())</span>
+<span class="fc" id="L173">            .append(&quot;[euclideanTransform= &quot;)</span>
+<span class="fc" id="L174">            .append(getEuclideanTransform())</span>
+<span class="fc" id="L175">            .append(']');</span>
+
+<span class="fc" id="L177">        return sb.toString();</span>
+    }
+
+    /** Return an instance representing the identity transform. This transform is guaranteed
+     * to return an &lt;em&gt;equivalent&lt;/em&gt; (ie, co-located) point for any input point. However, the
+     * points are not guaranteed to contain exactly equal coordinates. For example, at the poles, an
+     * infinite number of points exist that vary only in the azimuth coordinate. When one of these
+     * points is transformed by this identity transform, the returned point may contain a different
+     * azimuth value from the input, but it will still represent the same location in space.
+     * @return an instance representing the identity transform
+     */
+    public static Transform2S identity() {
+<span class="fc" id="L189">        return IDENTITY;</span>
+    }
+
+    /** Create a transform that rotates the given angle around {@code pt}.
+     * @param pt point to rotate around
+     * @param angle angle of rotation in radians
+     * @return a transform that rotates the given angle around {@code pt}
+     */
+    public static Transform2S createRotation(final Point2S pt, final double angle) {
+<span class="fc" id="L198">        return createRotation(pt.getVector(), angle);</span>
+    }
+
+    /** Create a transform that rotates the given angle around {@code axis}.
+     * @param axis 3D axis of rotation
+     * @param angle angle of rotation in radians
+     * @return a transform that rotates the given angle {@code axis}
+     */
+    public static Transform2S createRotation(final Vector3D axis, final double angle) {
+<span class="fc" id="L207">        return createRotation(QuaternionRotation.fromAxisAngle(axis, angle));</span>
+    }
+
+    /** Create a transform that performs the given 3D rotation.
+     * @param quaternion quaternion instance representing the 3D rotation
+     * @return a transform that performs the given 3D rotation
+     */
+    public static Transform2S createRotation(final QuaternionRotation quaternion) {
+<span class="fc" id="L215">        return new Transform2S(quaternion.toMatrix());</span>
+    }
+
+    /** Create a transform that performs a reflection across the equatorial plane
+     * defined by the given pole point.
+     * @param pole pole point defining the equatorial reflection plane
+     * @return a transform that performs a reflection across the equatorial plane
+     *      defined by the given pole point
+     */
+    public static Transform2S createReflection(final Point2S pole) {
+<span class="fc" id="L225">        return createReflection(pole.getVector());</span>
+    }
+
+    /** Create a transform that performs a reflection across the equatorial plane
+     * defined by the given pole point.
+     * @param poleVector pole vector defining the equatorial reflection plane
+     * @return a transform that performs a reflection across the equatorial plane
+     *      defined by the given pole point
+     */
+    public static Transform2S createReflection(final Vector3D poleVector) {
+<span class="fc" id="L235">        final QuaternionRotation quat = QuaternionRotation.createVectorRotation(poleVector, Vector3D.Unit.PLUS_Z);</span>
+
+<span class="fc" id="L237">        final AffineTransformMatrix3D matrix = quat.toMatrix()</span>
+<span class="fc" id="L238">                .premultiply(XY_PLANE_REFLECTION)</span>
+<span class="fc" id="L239">                .premultiply(quat.inverse().toMatrix());</span>
+
+<span class="fc" id="L241">        return new Transform2S(matrix);</span>
+    }
+
+    /** Multiply the Euclidean transform matrices of the arguments together.
+     * @param a first transform
+     * @param b second transform
+     * @return the transform computed as {@code a x b}
+     */
+    private static Transform2S multiply(final Transform2S a, final Transform2S b) {
+
+<span class="fc" id="L251">        return new Transform2S(a.euclideanTransform.multiply(b.euclideanTransform));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

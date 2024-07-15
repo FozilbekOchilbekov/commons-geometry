@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CutAngle.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Spherical</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.spherical.oned</a> &gt; <span class="el_source">CutAngle.java</span></div><h1>CutAngle.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.spherical.oned;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.AbstractHyperplane;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.HyperplaneConvexSubset;
+import org.apache.commons.geometry.core.partitioning.HyperplaneLocation;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing an oriented point in 1-dimensional spherical space,
+ * meaning an azimuth angle and a direction (increasing or decreasing angles)
+ * along the circle.
+ *
+ * &lt;p&gt;&lt;strong&gt;Point Classification&lt;/strong&gt;&lt;/p&gt;
+ * &lt;p&gt;Hyperplanes split the spaces they are embedded in into three distinct parts:
+ * the hyperplane itself, a plus side and a minus side. However, since spherical
+ * space wraps around, a single oriented point is not sufficient to partition the space;
+ * any point could be classified as being on the plus or minus side of a hyperplane
+ * depending on the direction that the circle is traversed. The approach taken in this
+ * class to address this issue is to (1) define a second, implicit cut point at \(0\pi\) and
+ * (2) define the domain of hyperplane points (for partitioning purposes) to be the
+ * range \([0, 2\pi)\). Each hyperplane then splits the space into the intervals
+ * \([0, x]\) and \([x, 2\pi)\), where \(x\) is the location of the hyperplane.
+ * One way to visualize this is to picture the circle as a cake that has already been
+ * cut at \(0\pi\). Each hyperplane then specifies the location of the second
+ * cut of the cake, with the plus and minus sides being the pieces thus cut.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;Note that with the hyperplane partitioning approach described above, the hyperplane
+ * at \(0\pi\) is unique in that it has the entire space on one side (except for the
+ * hyperplane itself) and no points whatsoever on the other. This is very different from
+ * hyperplanes in Euclidean space, which always have infinitely many points on both sides.&lt;/p&gt;
+ *
+ * &lt;p&gt;Due to the unique status of the \(0\pi\) point, special care must be given to azimuths very
+ * close to this value. The rules below define exactly how points are classified when the hyperplane
+ * point, the test point, or both lie very close to \(0\pi\). In what follows, \(H\) represents the
+ * hyperplane point, \(P\) the point being classified, and the symbol \(\approx\) means equivalent as
+ * evaluated by the instance's {@link #getPrecision() precision context}. Note that points are considered
+ * equivalent to \(0\pi\) if their normalized azimuths are close to either \(0\pi\) or \(2\pi\).
+ * &lt;ul&gt;
+ *  &lt;li&gt;\(H \approx P\) \(\implies\) \(P\) is classified as {@link HyperplaneLocation#ON ON}.&lt;/li&gt;
+ *  &lt;li&gt;\(H \approx 0\) and \(P \approx 0\) \(\implies\) \(P\) is classified as
+ *      {@link HyperplaneLocation#ON ON}.&lt;/li&gt;
+ *  &lt;li&gt;\(H \approx 0\) and \(P \neq 0\) \(\implies\) \(P\) is classified as {@link HyperplaneLocation#PLUS PLUS}
+ *      if the cut is positive facing and {@link HyperplaneLocation#MINUS MINUS} if negative facing.&lt;/li&gt;
+ *  &lt;li&gt;\(H \neq 0\) and \(P \approx 0\) \(\implies\) \(P\) is classified as {@link HyperplaneLocation#MINUS MINUS}
+ *      if the cut is positive facing and {@link HyperplaneLocation#PLUS PLUS} if negative facing.&lt;/li&gt;
+ *  &lt;li&gt;\(H \neq 0\) and \(P \neq 0\) \(\implies\) The normalized azimuths of \(H\) and \(P\) are compared and the
+ *      standard rules applied. If \(P \gt H\), then \(P\) is classified as {@link HyperplaneLocation#PLUS PLUS}
+ *      if the cut is positive facing and {@link HyperplaneLocation#MINUS MINUS} if negative facing. If
+ *      \(P \lt H\), then \(P\) is classified as {@link HyperplaneLocation#MINUS MINUS} if the cut is
+ *      positive facing and {@link HyperplaneLocation#PLUS PLUS} if negative facing.&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * &lt;p&gt;Instances of this class are guaranteed to be immutable.&lt;/p&gt;
+ * @see CutAngles
+ */
+public final class CutAngle extends AbstractHyperplane&lt;Point1S&gt; {
+    /** Hyperplane location as a point. */
+    private final Point1S point;
+
+    /** Hyperplane direction. */
+    private final boolean positiveFacing;
+
+    /** Simple constructor.
+     * @param point location of the hyperplane
+     * @param positiveFacing if true, the hyperplane will point in a positive angular
+     *      direction; otherwise, it will point in a negative direction
+     * @param precision precision context used to compare floating point values
+     */
+    CutAngle(final Point1S point, final boolean positiveFacing,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L95">        super(precision);</span>
+
+<span class="fc" id="L97">        this.point = point;</span>
+<span class="fc" id="L98">        this.positiveFacing = positiveFacing;</span>
+<span class="fc" id="L99">    }</span>
+
+    /** Get the location of the hyperplane as a point.
+     * @return the hyperplane location as a point
+     * @see #getAzimuth()
+     */
+    public Point1S getPoint() {
+<span class="fc" id="L106">        return point;</span>
+    }
+
+    /** Get the location of the hyperplane as a single value. This is
+     * equivalent to {@code cutAngle.getPoint().getAzimuth()}.
+     * @return the location of the hyperplane as a single value.
+     * @see #getPoint()
+     * @see Point1S#getAzimuth()
+     */
+    public double getAzimuth() {
+<span class="fc" id="L116">        return point.getAzimuth();</span>
+    }
+
+    /** Get the location of the hyperplane as a single value, normalized
+     * to the range {@code [0, 2pi)}. This is equivalent to
+     * {@code cutAngle.getPoint().getNormalizedAzimuth()}.
+     * @return the location of the hyperplane, normalized to the range
+     *      {@code [0, 2pi)}
+     * @see #getPoint()
+     * @see Point1S#getNormalizedAzimuth()
+     */
+    public double getNormalizedAzimuth() {
+<span class="fc" id="L128">        return point.getNormalizedAzimuth();</span>
+    }
+
+    /** Return true if the hyperplane is oriented with its plus
+     * side pointing toward increasing angles.
+     * @return true if the hyperplane is facing in the direction
+     *      of increasing angles
+     */
+    public boolean isPositiveFacing() {
+<span class="fc" id="L137">        return positiveFacing;</span>
+    }
+
+    /** Return true if this instance should be considered equivalent to the argument, using the
+     * given precision context for comparison.
+     * &lt;p&gt;The instances are considered equivalent if they
+     * &lt;ol&gt;
+     *    &lt;li&gt;have equivalent point locations (points separated by multiples of 2pi are
+     *      considered equivalent) and
+     *    &lt;li&gt;point in the same direction.&lt;/li&gt;
+     * &lt;/ol&gt;
+     * @param other point to compare with
+     * @param precision precision context to use for the comparison
+     * @return true if this instance should be considered equivalent to the argument
+     * @see Point1S#eq(Point1S, Precision.DoubleEquivalence)
+     */
+    public boolean eq(final CutAngle other, final Precision.DoubleEquivalence precision) {
+<span class="fc bfc" id="L154" title="All 4 branches covered.">        return point.eq(other.point, precision) &amp;&amp;</span>
+                positiveFacing == other.positiveFacing;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double offset(final Point1S pt) {
+<span class="fc" id="L161">        final double dist = pt.getNormalizedAzimuth() - this.point.getNormalizedAzimuth();</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        return positiveFacing ? +dist : -dist;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;Special classification rules are applied in this method due to the unique nature
+     * of spherical space. See the class level documentation for details.&lt;/p&gt;
+     */
+    @Override
+    public HyperplaneLocation classify(final Point1S pt) {
+<span class="fc" id="L172">        int cmp = classifyPositiveFacing(pt);</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        if (!positiveFacing) {</span>
+<span class="fc" id="L174">            cmp = -cmp;</span>
+        }
+
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        if (cmp &lt; 0) {</span>
+<span class="fc" id="L178">            return HyperplaneLocation.MINUS;</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">        } else if (cmp &gt; 0) {</span>
+<span class="fc" id="L180">            return HyperplaneLocation.PLUS;</span>
+        }
+<span class="fc" id="L182">        return HyperplaneLocation.ON;</span>
+    }
+
+    /** Classify the given point assuming a positive facing cut.
+     * @param pt point to classify
+     * @return int value indicating the classification region of {@code pt}
+     */
+    private int classifyPositiveFacing(final Point1S pt) {
+<span class="fc" id="L190">        final Precision.DoubleEquivalence precision = getPrecision();</span>
+
+<span class="fc" id="L192">        final double az = pt.getNormalizedAzimuth();</span>
+<span class="fc" id="L193">        final double base = this.point.getNormalizedAzimuth();</span>
+
+<span class="fc" id="L195">        final int cmp = precision.compare(az, base);</span>
+
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        if (cmp != 0) {</span>
+<span class="fc" id="L198">            final boolean azIsZero = pt.eqZero(precision);</span>
+<span class="fc" id="L199">            final boolean baseIsZero = this.point.eqZero(precision);</span>
+
+<span class="fc bfc" id="L201" title="All 2 branches covered.">            if (baseIsZero) {</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">                return azIsZero ?</span>
+<span class="fc" id="L203">                        0 :</span>
+<span class="fc" id="L204">                        +1;</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">            } else if (azIsZero) {</span>
+<span class="fc" id="L206">                return -1;</span>
+            }
+        }
+<span class="fc" id="L209">        return cmp;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Point1S project(final Point1S pt) {
+<span class="fc" id="L215">        return this.point;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CutAngle reverse() {
+<span class="fc bfc" id="L221" title="All 2 branches covered.">        return new CutAngle(point, !positiveFacing, getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CutAngle transform(final Transform&lt;Point1S&gt; transform) {
+<span class="fc" id="L227">        final Point1S tPoint = transform.apply(point);</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">        final boolean tPositiveFacing = transform.preservesOrientation() == positiveFacing;</span>
+
+<span class="fc" id="L230">        return CutAngles.fromPointAndDirection(tPoint, tPositiveFacing, getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean similarOrientation(final Hyperplane&lt;Point1S&gt; other) {
+<span class="fc bfc" id="L236" title="All 2 branches covered.">        return positiveFacing == ((CutAngle) other).positiveFacing;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;Since there are no subspaces in spherical 1D space, this method effectively returns a stub implementation
+     * of {@link HyperplaneConvexSubset}, the main purpose of which is to support the proper functioning
+     * of the partitioning code.&lt;/p&gt;
+     */
+    @Override
+    public HyperplaneConvexSubset&lt;Point1S&gt; span() {
+<span class="fc" id="L247">        return new CutAngleConvexSubset(this);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L253">        return Objects.hash(point, positiveFacing, getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L259" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L260">            return true;</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">        } else if (!(obj instanceof CutAngle)) {</span>
+<span class="fc" id="L262">            return false;</span>
+        }
+
+<span class="fc" id="L265">        final CutAngle other = (CutAngle) obj;</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">        return Objects.equals(getPrecision(), other.getPrecision()) &amp;&amp;</span>
+<span class="fc bfc" id="L267" title="All 4 branches covered.">                Objects.equals(point, other.point) &amp;&amp;</span>
+                positiveFacing == other.positiveFacing;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L274">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L275">        sb.append(this.getClass().getSimpleName())</span>
+<span class="fc" id="L276">            .append(&quot;[point= &quot;)</span>
+<span class="fc" id="L277">            .append(point)</span>
+<span class="fc" id="L278">            .append(&quot;, positiveFacing= &quot;)</span>
+<span class="fc" id="L279">            .append(isPositiveFacing())</span>
+<span class="fc" id="L280">            .append(']');</span>
+
+<span class="fc" id="L282">        return sb.toString();</span>
+    }
+
+    /** {@link HyperplaneConvexSubset} implementation for spherical 1D space. Since there are no subspaces in 1D,
+     * this is effectively a stub implementation, its main use being to allow for the correct functioning of
+     * partitioning code.
+     */
+    private static final class CutAngleConvexSubset implements HyperplaneConvexSubset&lt;Point1S&gt; {
+        /** The hyperplane containing for this instance. */
+        private final CutAngle hyperplane;
+
+        /** Simple constructor.
+         * @param hyperplane containing hyperplane instance
+         */
+<span class="fc" id="L296">        CutAngleConvexSubset(final CutAngle hyperplane) {</span>
+<span class="fc" id="L297">            this.hyperplane = hyperplane;</span>
+<span class="fc" id="L298">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        public CutAngle getHyperplane() {
+<span class="fc" id="L303">            return hyperplane;</span>
+        }
+
+        /** {@inheritDoc}
+        *
+        * &lt;p&gt;This method always returns {@code false}.&lt;/p&gt;
+        */
+        @Override
+        public boolean isFull() {
+<span class="fc" id="L312">            return false;</span>
+        }
+
+        /** {@inheritDoc}
+        *
+        * &lt;p&gt;This method always returns {@code false}.&lt;/p&gt;
+        */
+        @Override
+        public boolean isEmpty() {
+<span class="fc" id="L321">            return false;</span>
+        }
+
+        /** {@inheritDoc}
+         *
+         * &lt;p&gt;This method always returns {@code false}.&lt;/p&gt;
+         */
+        @Override
+        public boolean isInfinite() {
+<span class="fc" id="L330">            return false;</span>
+        }
+
+        /** {@inheritDoc}
+        *
+        * &lt;p&gt;This method always returns {@code true}.&lt;/p&gt;
+        */
+        @Override
+        public boolean isFinite() {
+<span class="fc" id="L339">            return true;</span>
+        }
+
+        /** {@inheritDoc}
+         *
+         *  &lt;p&gt;This method always returns {@code 0}.&lt;/p&gt;
+         */
+        @Override
+        public double getSize() {
+<span class="fc" id="L348">            return 0;</span>
+        }
+
+        /** {@inheritDoc}
+         *
+         * &lt;p&gt;This method returns the point for the underlying hyperplane.&lt;/p&gt;
+         */
+        @Override
+        public Point1S getCentroid() {
+<span class="fc" id="L357">            return hyperplane.getPoint();</span>
+        }
+
+        /** {@inheritDoc}
+         *
+         * &lt;p&gt;This method returns {@link RegionLocation#BOUNDARY} if the
+         * point is on the hyperplane and {@link RegionLocation#OUTSIDE}
+         * otherwise.&lt;/p&gt;
+         */
+        @Override
+        public RegionLocation classify(final Point1S point) {
+<span class="fc bfc" id="L368" title="All 2 branches covered.">            if (hyperplane.contains(point)) {</span>
+<span class="fc" id="L369">                return RegionLocation.BOUNDARY;</span>
+            }
+
+<span class="fc" id="L372">            return RegionLocation.OUTSIDE;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Point1S closest(final Point1S point) {
+<span class="fc" id="L378">            return hyperplane.project(point);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Split&lt;CutAngleConvexSubset&gt; split(final Hyperplane&lt;Point1S&gt; splitter) {
+<span class="fc" id="L384">            final HyperplaneLocation side = splitter.classify(hyperplane.getPoint());</span>
+
+<span class="fc" id="L386">            CutAngleConvexSubset minus = null;</span>
+<span class="fc" id="L387">            CutAngleConvexSubset plus = null;</span>
+
+<span class="fc bfc" id="L389" title="All 2 branches covered.">            if (side == HyperplaneLocation.MINUS) {</span>
+<span class="fc" id="L390">                minus = this;</span>
+<span class="fc bfc" id="L391" title="All 2 branches covered.">            } else if (side == HyperplaneLocation.PLUS) {</span>
+<span class="fc" id="L392">                plus = this;</span>
+            }
+
+<span class="fc" id="L395">            return new Split&lt;&gt;(minus, plus);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public List&lt;CutAngleConvexSubset&gt; toConvex() {
+<span class="fc" id="L401">            return Collections.singletonList(this);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public CutAngleConvexSubset transform(final Transform&lt;Point1S&gt; transform) {
+<span class="fc" id="L407">            return new CutAngleConvexSubset(getHyperplane().transform(transform));</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public CutAngleConvexSubset reverse() {
+<span class="fc" id="L413">            return new CutAngleConvexSubset(hyperplane.reverse());</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public String toString() {
+<span class="fc" id="L419">            final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L420">            sb.append(this.getClass().getSimpleName())</span>
+<span class="fc" id="L421">                .append(&quot;[hyperplane= &quot;)</span>
+<span class="fc" id="L422">                .append(hyperplane)</span>
+<span class="fc" id="L423">                .append(']');</span>
+
+<span class="fc" id="L425">            return sb.toString();</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

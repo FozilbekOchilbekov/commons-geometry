@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Linecastable3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed.line</a> &gt; <span class="el_source">Linecastable3D.java</span></div><h1>Linecastable3D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed.line;
+
+import java.util.List;
+
+/** Interface for objects that support linecast operations in Euclidean 3D space.
+ *
+ * &lt;p&gt;
+ * Linecasting is a process that takes a line or line convex subset and intersects it with
+ * the boundaries of a region. This is similar to
+ * &lt;a href=&quot;https://en.wikipedia.org/wiki/Ray_casting&quot;&gt;raycasting&lt;/a&gt; used
+ * for collision detection with the exception that the intersecting element can be a
+ * line or line convex subset and not just a ray.
+ * &lt;/p&gt;
+ */
+public interface Linecastable3D {
+
+    /** Intersect the given line against the boundaries in this instance, returning a
+     * list of all intersections in order of increasing distance along the line. An empty
+     * list is returned if no intersections are discovered.
+     * @param line line the line to intersect
+     * @return a list of computed intersections in order of increasing distance
+     *      along the line
+     */
+    default List&lt;LinecastPoint3D&gt; linecast(final Line3D line) {
+<span class="fc" id="L41">        return linecast(line.span());</span>
+    }
+
+    /** Intersect the given line convex subset against the boundaries in this instance, returning
+     * a list of all intersections in order of increasing distance along the line. An empty list is
+     * returned if no intersections are discovered.
+     * @param subset line subset to intersect
+     * @return a list of computed intersections in order of increasing distance
+     *      along the line
+     */
+    List&lt;LinecastPoint3D&gt; linecast(LineConvexSubset3D subset);
+
+    /** Intersect the given line against the boundaries in this instance, returning the first
+     * intersection found when traveling in the direction of the line from infinity.
+     * @param line the line to intersect
+     * @return the first intersection found or null if no intersection
+     *      is found
+     */
+    default LinecastPoint3D linecastFirst(final Line3D line) {
+<span class="fc" id="L60">        return linecastFirst(line.span());</span>
+    }
+
+    /** Intersect the given line convex subset against the boundaries in this instance, returning
+     * the first intersection found when traveling in the direction of the line subset from its
+     * start point.
+     * @param subset line subset to intersect
+     * @return the first intersection found or null if no intersection
+     *      is found
+     */
+    LinecastPoint3D linecastFirst(LineConvexSubset3D subset);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

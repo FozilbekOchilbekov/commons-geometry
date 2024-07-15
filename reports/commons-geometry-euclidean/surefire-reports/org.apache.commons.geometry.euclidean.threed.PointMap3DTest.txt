@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.apache.commons.geometry.euclidean.threed.PointMap3DTest
+-------------------------------------------------------------------------------
+Tests run: 83, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 45.296 s - in org.apache.commons.geometry.euclidean.threed.PointMap3DTest

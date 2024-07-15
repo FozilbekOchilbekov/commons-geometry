@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PointMap2DImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean</a> &gt; <span class="el_source">PointMap2DImpl.java</span></div><h1>PointMap2DImpl.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean;
+
+import java.util.List;
+
+import org.apache.commons.geometry.core.collection.PointMap;
+import org.apache.commons.geometry.core.internal.AbstractBucketPointMap;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.numbers.core.Precision;
+
+/** Internal {@link PointMap} implementation for Euclidean 2D space.
+ * @param &lt;V&gt; Map value type
+ */
+final class PointMap2DImpl&lt;V&gt;
+    extends AbstractBucketPointMap&lt;Vector2D, V&gt;
+    implements PointMap&lt;Vector2D, V&gt; {
+
+    /** Number of children per node. */
+    private static final int NODE_CHILD_COUNT = 4;
+
+    /** Max entries per node. */
+    private static final int MAX_ENTRIES_PER_NODE = 16;
+
+    /** X negative quadrant flag. */
+    private static final int XNEG = 1 &lt;&lt; 3;
+
+    /** X positive quadrant flag. */
+    private static final int XPOS = 1 &lt;&lt; 2;
+
+    /** Y negative quadrant flag. */
+    private static final int YNEG = 1 &lt;&lt; 1;
+
+    /** Y positive quadrant flag. */
+    private static final int YPOS = 1;
+
+    /** Bit mask for x location. */
+    private static final int XMASK = XNEG | XPOS;
+
+    /** Bit mask for y location. */
+    private static final int YMASK = YNEG | YPOS;
+
+    /** Quadtree location flags for child nodes. */
+<span class="fc" id="L58">    private static final int[] CHILD_LOCATIONS = {</span>
+        XNEG | YNEG,
+        XNEG | YPOS,
+        XPOS | YNEG,
+        XPOS | YPOS
+    };
+
+    /** Construct a new instance using the given precision context to determine
+     * floating point equality.
+     * @param precision precision context
+     */
+    PointMap2DImpl(final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L70">        super(MapNode2D::new,</span>
+                MAX_ENTRIES_PER_NODE,
+                NODE_CHILD_COUNT,
+                precision);
+<span class="fc" id="L74">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    protected boolean pointsEq(final Vector2D a, final Vector2D b) {
+<span class="fc" id="L79">        return a.eq(b, getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected int disambiguatePointComparison(final Vector2D a, final Vector2D b) {
+<span class="fc" id="L85">        return Vector2D.COORDINATE_ASCENDING_ORDER.compare(a, b);</span>
+    }
+
+    /** Tree node class for {@link PointMap2DImpl}.
+     * @param &lt;V&gt; Map value type
+     */
+    private static final class MapNode2D&lt;V&gt; extends BucketNode&lt;Vector2D, V&gt; {
+
+        /** Point to split child spaces; will be null for leaf nodes. */
+        private Vector2D split;
+
+        /** Construct a new instance.
+         * @param map owning map
+         * @param parent parent node; set to null for the root node
+         * @param childIndex index of this node in its parent's child list;
+         *      set to {@code -1} for the root node
+         */
+        MapNode2D(final AbstractBucketPointMap&lt;Vector2D, V&gt; map,
+                final BucketNode&lt;Vector2D, V&gt; parent,
+                final int childIndex) {
+<span class="fc" id="L105">            super(map, parent, childIndex);</span>
+<span class="fc" id="L106">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        protected int getSearchLocation(final Vector2D pt) {
+<span class="fc" id="L111">            final Precision.DoubleEquivalence precision = getPrecision();</span>
+
+<span class="fc" id="L113">            int loc = getSearchLocationValue(</span>
+<span class="fc" id="L114">                    precision.compare(pt.getX(), split.getX()),</span>
+                    XNEG,
+                    XPOS);
+<span class="fc" id="L117">            loc |= getSearchLocationValue(</span>
+<span class="fc" id="L118">                    precision.compare(pt.getY(), split.getY()),</span>
+                    YNEG,
+                    YPOS);
+
+<span class="fc" id="L122">            return loc;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected int getInsertLocation(final Vector2D pt) {
+<span class="fc" id="L128">            int loc = getInsertLocationValue(</span>
+<span class="fc" id="L129">                    Double.compare(pt.getX(), split.getX()),</span>
+                    XNEG,
+                    XPOS);
+<span class="fc" id="L132">            loc |= getInsertLocationValue(</span>
+<span class="fc" id="L133">                    Double.compare(pt.getY(), split.getY()),</span>
+                    YNEG,
+                    YPOS);
+
+<span class="fc" id="L137">            return loc;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected void computeSplit() {
+<span class="fc" id="L143">            final Vector2D.Sum sum = Vector2D.Sum.create();</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">            for (final Entry&lt;Vector2D, V&gt; entry : this) {</span>
+<span class="fc" id="L145">                sum.add(entry.getKey());</span>
+<span class="fc" id="L146">            }</span>
+
+<span class="fc" id="L148">            split = sum.get().multiply(1.0 / MAX_ENTRIES_PER_NODE);</span>
+<span class="fc" id="L149">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        protected boolean testChildLocation(final int childIdx, final int loc) {
+<span class="fc" id="L154">            final int childLoc = CHILD_LOCATIONS[childIdx];</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">            return (childLoc &amp; loc) == childLoc;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected void makeLeaf(final List&lt;Entry&lt;Vector2D, V&gt;&gt; leafEntries) {
+<span class="fc" id="L161">            super.makeLeaf(leafEntries);</span>
+
+<span class="fc" id="L163">            split = null;</span>
+<span class="fc" id="L164">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        protected double getMinChildDistance(final int childIdx, final Vector2D pt, final int ptLoc) {
+<span class="fc" id="L169">            final int childLoc = CHILD_LOCATIONS[childIdx];</span>
+
+<span class="fc bfc" id="L171" title="All 2 branches covered.">            final boolean sameX = (ptLoc &amp; XMASK) == (childLoc &amp; XMASK);</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">            final boolean sameY = (ptLoc &amp; YMASK) == (childLoc &amp; YMASK);</span>
+
+<span class="fc" id="L174">            final Vector2D diff = pt.subtract(split);</span>
+
+<span class="fc bfc" id="L176" title="All 2 branches covered.">            if (sameX) {</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">                return sameY ?</span>
+<span class="fc" id="L178">                        0d :</span>
+<span class="fc" id="L179">                        Math.abs(diff.getY());</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">            } else if (sameY) {</span>
+<span class="fc" id="L181">                return Math.abs(diff.getX());</span>
+            }
+
+<span class="fc" id="L184">            return diff.norm();</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected double getMaxChildDistance(final int childIdx, final Vector2D pt, final int ptLoc) {
+<span class="fc" id="L190">            final MapNode2D&lt;V&gt; grandParent = (MapNode2D&lt;V&gt;) getParent();</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">            if (grandParent != null) {</span>
+<span class="fc" id="L192">                final int nodeLoc = CHILD_LOCATIONS[getChildIndex()];</span>
+<span class="fc" id="L193">                final int childLoc = CHILD_LOCATIONS[childIdx];</span>
+
+<span class="fc bfc" id="L195" title="All 2 branches covered.">                final boolean oppositeX = (nodeLoc &amp; XMASK) != (childLoc &amp; XMASK);</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">                final boolean oppositeY = (nodeLoc &amp; YMASK) != (childLoc &amp; YMASK);</span>
+
+<span class="fc bfc" id="L198" title="All 4 branches covered.">                if (oppositeX &amp;&amp; oppositeY) {</span>
+                    // the grandparent and parent splits form a completely enclosed region,
+                    // meaning that we can determine a max distance
+<span class="fc" id="L201">                    final Vector2D diff = Vector2D.of(</span>
+<span class="fc" id="L202">                                getMaxDistance(pt.getX(), grandParent.split.getX(), split.getX()),</span>
+<span class="fc" id="L203">                                getMaxDistance(pt.getY(), grandParent.split.getY(), split.getY())</span>
+                            );
+
+<span class="fc" id="L206">                    return diff.norm();</span>
+                }
+            }
+
+<span class="fc" id="L210">            return Double.POSITIVE_INFINITY;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

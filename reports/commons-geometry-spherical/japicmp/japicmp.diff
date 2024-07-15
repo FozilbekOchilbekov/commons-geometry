@@ -1,0 +1,13 @@
+Comparing source compatibility of commons-geometry-spherical-1.1-SNAPSHOT.jar against commons-geometry-spherical-1.0.jar
+***  MODIFIED CLASS: PUBLIC FINAL org.apache.commons.geometry.spherical.oned.Point1S  (not serializable)
+	===  CLASS FILE FORMAT VERSION: 52.0 <- 52.0
+	+++  NEW METHOD: PUBLIC(+) boolean eqZero(org.apache.commons.numbers.core.Precision$DoubleEquivalence)
++++* NEW CLASS: PUBLIC(+) FINAL(+) org.apache.commons.geometry.spherical.SphericalCollections  (not serializable)
+	+++  CLASS FILE FORMAT VERSION: 52.0 <- n.a.
+	+++  NEW SUPERCLASS: java.lang.Object
+	+++* NEW METHOD: PUBLIC(+) STATIC(+) org.apache.commons.geometry.core.collection.PointMap<org.apache.commons.geometry.spherical.oned.Point1S,V> pointMap1S(org.apache.commons.numbers.core.Precision$DoubleEquivalence)
+		GENERIC TEMPLATES: +++ V:java.lang.Object
+	+++* NEW METHOD: PUBLIC(+) STATIC(+) org.apache.commons.geometry.core.collection.PointMap<org.apache.commons.geometry.spherical.twod.Point2S,V> pointMap2S(org.apache.commons.numbers.core.Precision$DoubleEquivalence)
+		GENERIC TEMPLATES: +++ V:java.lang.Object
+	+++  NEW METHOD: PUBLIC(+) STATIC(+) org.apache.commons.geometry.core.collection.PointSet<org.apache.commons.geometry.spherical.oned.Point1S> pointSet1S(org.apache.commons.numbers.core.Precision$DoubleEquivalence)
+	+++  NEW METHOD: PUBLIC(+) STATIC(+) org.apache.commons.geometry.core.collection.PointSet<org.apache.commons.geometry.spherical.twod.Point2S> pointSet2S(org.apache.commons.numbers.core.Precision$DoubleEquivalence)

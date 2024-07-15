@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GreatArcPath.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Spherical</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.spherical.twod</a> &gt; <span class="el_source">GreatArcPath.java</span></div><h1>GreatArcPath.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.spherical.twod;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
+
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing a connected sequence of {@link GreatArc} instances.
+ */
+public final class GreatArcPath implements BoundarySource2S {
+    /** Instance containing no arcs. */
+<span class="fc" id="L33">    private static final GreatArcPath EMPTY = new GreatArcPath(Collections.emptyList());</span>
+
+    /** Arcs comprising the instance. */
+    private final List&lt;GreatArc&gt; arcs;
+
+    /** Simple constructor. No validation is performed on the input arc.
+     * @param arcs arcs for the path, in connection order
+     */
+<span class="fc" id="L41">    private GreatArcPath(final List&lt;GreatArc&gt; arcs) {</span>
+<span class="fc" id="L42">        this.arcs = Collections.unmodifiableList(arcs);</span>
+<span class="fc" id="L43">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public Stream&lt;GreatArc&gt; boundaryStream() {
+<span class="fc" id="L48">        return getArcs().stream();</span>
+    }
+
+    /** Get the arcs in path.
+     * @return the arcs in the path
+     */
+    public List&lt;GreatArc&gt; getArcs() {
+<span class="fc" id="L55">        return arcs;</span>
+    }
+
+    /** Get the start arc for the path or null if the path is empty.
+     * @return the start arc for the path or null if the path is empty
+     */
+    public GreatArc getStartArc() {
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (!isEmpty()) {</span>
+<span class="fc" id="L63">            return arcs.get(0);</span>
+        }
+<span class="fc" id="L65">        return null;</span>
+    }
+
+    /** Get the end arc for the path or null if the path is empty.
+     * @return the end arc for the path or null if the path is empty
+     */
+    public GreatArc getEndArc() {
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (!isEmpty()) {</span>
+<span class="fc" id="L73">            return arcs.get(arcs.size() - 1);</span>
+        }
+<span class="fc" id="L75">        return null;</span>
+    }
+
+    /** Get the start vertex for the path or null if the path is empty
+     * or consists of a single, full arc.
+     * @return the start vertex for the path
+     */
+    public Point2S getStartVertex() {
+<span class="fc" id="L83">        final GreatArc arc = getStartArc();</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        return (arc != null) ? arc.getStartPoint() : null;</span>
+    }
+
+    /** Get the end vertex for the path or null if the path is empty
+     * or consists of a single, full arc.
+     * @return the end vertex for the path
+     */
+    public Point2S getEndVertex() {
+<span class="fc" id="L92">        final GreatArc arc = getEndArc();</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        return (arc != null) ? arc.getEndPoint() : null;</span>
+    }
+
+    /** Get the vertices contained in the path in the order they appear.
+     * Closed paths contain the start vertex at the beginning of the list
+     * as well as the end.
+     * @return the vertices contained in the path in order they appear
+     */
+    public List&lt;Point2S&gt; getVertices() {
+<span class="fc" id="L102">        final List&lt;Point2S&gt; vertices = new ArrayList&lt;&gt;();</span>
+
+        Point2S pt;
+
+        // add the start point, if present
+<span class="fc" id="L107">        pt = getStartVertex();</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if (pt != null) {</span>
+<span class="fc" id="L109">            vertices.add(pt);</span>
+        }
+
+        // add end points
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        for (final GreatArc arc : arcs) {</span>
+<span class="fc" id="L114">            pt = arc.getEndPoint();</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">            if (pt != null) {</span>
+<span class="fc" id="L116">                vertices.add(pt);</span>
+            }
+<span class="fc" id="L118">        }</span>
+
+<span class="fc" id="L120">        return vertices;</span>
+    }
+
+    /** Return true if the path does not contain any arcs.
+     * @return true if the path does not contain any arcs
+     */
+    public boolean isEmpty() {
+<span class="fc" id="L127">        return arcs.isEmpty();</span>
+    }
+
+    /** Return true if the path is closed, meaning that the end
+     * point for the last arc is equal to the start point
+     * for the path.
+     * @return true if the end point for the last arc is
+     *      equal to the start point for the path
+     */
+    public boolean isClosed() {
+<span class="fc" id="L137">        final GreatArc endArc = getEndArc();</span>
+
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        if (endArc != null) {</span>
+<span class="fc" id="L140">            final Point2S start = getStartVertex();</span>
+<span class="fc" id="L141">            final Point2S end = endArc.getEndPoint();</span>
+
+<span class="pc bpc" id="L143" title="1 of 6 branches missed.">            return start != null &amp;&amp; end != null &amp;&amp; start.eq(end, endArc.getPrecision());</span>
+        }
+
+<span class="fc" id="L146">        return false;</span>
+    }
+
+    /** Return a string representation of this arc path instance.
+    *
+    * &lt;p&gt;In order to keep the string representation short but useful, the exact format of the return
+    * value depends on the properties of the path. See below for examples.
+    *
+    * &lt;ul&gt;
+    *      &lt;li&gt;Empty path
+    *          &lt;ul&gt;
+    *              &lt;li&gt;{@code GreatArcPath[empty= true]}&lt;/li&gt;
+    *          &lt;/ul&gt;
+    *      &lt;/li&gt;
+    *      &lt;li&gt;Single, full arc
+    *          &lt;ul&gt;
+    *              &lt;li&gt;{@code GreatArcPath[full= true, circle= GreatCircle[pole= (0.0, 0.0, 1.0),
+    *              x= (0.0, 1.0, -0.0), y= (-1.0, 0.0, 0.0)]]}&lt;/li&gt;
+    *          &lt;/ul&gt;
+    *      &lt;/li&gt;
+    *      &lt;li&gt;One or more non-full arcs
+    *          &lt;ul&gt;
+    *              &lt;li&gt;{@code GreatArcPath[vertices= [(0.0, 1.5707963267948966),
+    *              (1.5707963267948966, 1.5707963267948966)]]}&lt;/li&gt;
+    *          &lt;/ul&gt;
+    *      &lt;/li&gt;
+    * &lt;/ul&gt;
+    */
+    @Override
+    public String toString() {
+<span class="fc" id="L176">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L177">        sb.append(this.getClass().getSimpleName())</span>
+<span class="fc" id="L178">            .append('[');</span>
+
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        if (isEmpty()) {</span>
+<span class="fc" id="L181">            sb.append(&quot;empty= true&quot;);</span>
+<span class="pc bpc" id="L182" title="1 of 4 branches missed.">        } else if (arcs.size() == 1 &amp;&amp; arcs.get(0).isFull()) {</span>
+<span class="fc" id="L183">            sb.append(&quot;full= true, circle= &quot;)</span>
+<span class="fc" id="L184">                .append(arcs.get(0).getCircle());</span>
+        } else {
+<span class="fc" id="L186">            sb.append(&quot;vertices= &quot;)</span>
+<span class="fc" id="L187">                .append(getVertices());</span>
+        }
+
+<span class="fc" id="L190">        sb.append(']');</span>
+
+<span class="fc" id="L192">        return sb.toString();</span>
+    }
+
+    /** Construct a new path from the given arcs.
+     * @param arcs arc instance to use to construct the path
+     * @return a new instance constructed from the given arc instances
+     */
+    public static GreatArcPath fromArcs(final GreatArc... arcs) {
+<span class="fc" id="L200">        return fromArcs(Arrays.asList(arcs));</span>
+    }
+
+    /** Construct a new path from the given arcs.
+     * @param arcs arc instance to use to construct the path
+     * @return a new instance constructed from the given arc instances
+     */
+    public static GreatArcPath fromArcs(final Collection&lt;GreatArc&gt; arcs) {
+<span class="fc" id="L208">        final Builder builder = builder(null);</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">        for (final GreatArc arc : arcs) {</span>
+<span class="fc" id="L210">            builder.append(arc);</span>
+<span class="fc" id="L211">        }</span>
+
+<span class="fc" id="L213">        return builder.build();</span>
+    }
+
+    /** Return a new path formed by connecting the given vertices. An additional arc is added
+     * from the last point to the first point to construct a loop, if the two points are not
+     * already considered equal by the given precision context. This method is equivalent
+     * to calling {@link #fromVertices(Collection, boolean, Precision.DoubleEquivalence)
+     * fromPoints(points, true, precision)}.
+     * @param vertices the points to construct the path from
+     * @param precision precision precision context used to construct the arc instances for the
+     *      path
+     * @return a new path formed by connecting the given vertices
+     * @see #fromVertices(Collection, boolean, Precision.DoubleEquivalence)
+     */
+    public static GreatArcPath fromVertexLoop(final Collection&lt;Point2S&gt; vertices,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L229">        return fromVertices(vertices, true, precision);</span>
+    }
+
+    /** Return a new path formed by connecting the given vertices. No additional arc
+     * is inserted to connect the last point to the first. This method is equivalent
+     * to calling {@link #fromVertices(Collection, boolean, Precision.DoubleEquivalence)
+     * fromPoint(points, false, precision)}.
+     * @param vertices the points to construct the path from
+     * @param precision precision context used to construct the arc instances for the
+     *      path
+     * @return a new path formed by connecting the given vertices
+     * @see #fromVertices(Collection, boolean, Precision.DoubleEquivalence)
+     */
+    public static GreatArcPath fromVertices(final Collection&lt;Point2S&gt; vertices,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L244">        return fromVertices(vertices, false, precision);</span>
+    }
+
+    /** Return a new path formed by connecting the given vertices.
+     * @param vertices the points to construct the path from
+     * @param close if true, then an additional arc will be added from the last point
+     *      to the first, if the points are not already considered equal by the given
+     *      precision context
+     * @param precision precision context used to construct the arc instances for the
+     *      path
+     * @return a new path formed by connecting the given points
+     */
+    public static GreatArcPath fromVertices(final Collection&lt;Point2S&gt; vertices, final boolean close,
+            final Precision.DoubleEquivalence precision) {
+
+<span class="fc" id="L259">        return builder(precision)</span>
+<span class="fc" id="L260">                .appendVertices(vertices)</span>
+<span class="fc" id="L261">                .build(close);</span>
+    }
+
+    /** Return a {@link Builder} instance configured with the given precision
+     * context. The precision context is used when building arcs from points
+     * and may be omitted if raw points are not used.
+     * @param precision precision context to use when building arcs from
+     *      raw points; may be null if raw points are not used.
+     * @return a new {@link Builder} instance
+     */
+    public static Builder builder(final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L272">        return new Builder(precision);</span>
+    }
+
+    /** Get an instance containing no arcs.
+     * @return an instance containing no arcs
+     */
+    public static GreatArcPath empty() {
+<span class="fc" id="L279">        return EMPTY;</span>
+    }
+
+    /** Class used to build arc paths.
+     */
+    public static final class Builder {
+        /** Arcs appended to the path. */
+        private List&lt;GreatArc&gt; appendedArcs;
+
+        /** Arcs prepended to the path. */
+        private List&lt;GreatArc&gt; prependedArcs;
+
+        /** Precision context used when creating arcs directly from points. */
+        private Precision.DoubleEquivalence precision;
+
+        /** The current point at the start of the path. */
+        private Point2S startVertex;
+
+        /** The current point at the end of the path. */
+        private Point2S endVertex;
+
+        /** The precision context used when performing comparisons involving the current
+         * end point.
+         */
+        private Precision.DoubleEquivalence endVertexPrecision;
+
+        /** Construct a new instance configured with the given precision context. The
+         * precision context is used when building arcs from points and
+         * may be omitted if raw points are not used.
+         * @param precision precision context to use when creating arcs
+         *      from points
+         */
+<span class="fc" id="L311">        private Builder(final Precision.DoubleEquivalence precision) {</span>
+<span class="fc" id="L312">            setPrecision(precision);</span>
+<span class="fc" id="L313">        }</span>
+
+        /** Set the precision context. This context is used only when creating arcs
+         * from appended or prepended points. It is not used when adding existing
+         * {@link GreatArc} instances since those contain their own precision contexts.
+         * @param builderPrecision precision context to use when creating arcs from points
+         * @return this instance
+         */
+        public Builder setPrecision(final Precision.DoubleEquivalence builderPrecision) {
+<span class="fc" id="L322">            this.precision = builderPrecision;</span>
+
+<span class="fc" id="L324">            return this;</span>
+        }
+
+        /** Get the arc at the start of the path or null if it does not exist.
+         * @return the arc at the start of the path
+         */
+        public GreatArc getStartArc() {
+<span class="fc" id="L331">            GreatArc start = getLast(prependedArcs);</span>
+<span class="fc bfc" id="L332" title="All 2 branches covered.">            if (start == null) {</span>
+<span class="fc" id="L333">                start = getFirst(appendedArcs);</span>
+            }
+<span class="fc" id="L335">            return start;</span>
+        }
+
+        /** Get the arc at the end of the path or null if it does not exist.
+         * @return the arc at the end of the path
+         */
+        public GreatArc getEndArc() {
+<span class="fc" id="L342">            GreatArc end = getLast(appendedArcs);</span>
+<span class="fc bfc" id="L343" title="All 2 branches covered.">            if (end == null) {</span>
+<span class="fc" id="L344">                end = getFirst(prependedArcs);</span>
+            }
+<span class="fc" id="L346">            return end;</span>
+        }
+
+        /** Append an arc to the end of the path.
+         * @param arc arc to append to the path
+         * @return the current builder instance
+         * @throws IllegalStateException if the path contains a previous arc
+         *      and the end point of the previous arc is not equivalent to the
+         *      start point of the given arc
+         */
+        public Builder append(final GreatArc arc) {
+<span class="fc" id="L357">            validateArcsConnected(getEndArc(), arc);</span>
+<span class="fc" id="L358">            appendInternal(arc);</span>
+
+<span class="fc" id="L360">            return this;</span>
+        }
+
+        /** Add a vertex to the end of this path. If the path already has an end vertex,
+         * then an arc is added between the previous end vertex and this vertex,
+         * using the configured precision context.
+         * @param vertex the vertex to add
+         * @return this instance
+         * @see #setPrecision(Precision.DoubleEquivalence)
+         */
+        public Builder append(final Point2S vertex) {
+<span class="fc" id="L371">            final Precision.DoubleEquivalence vertexPrecision = getAddPointPrecision();</span>
+
+<span class="fc bfc" id="L373" title="All 2 branches covered.">            if (endVertex == null) {</span>
+                // make sure that we're not adding to a full arc
+<span class="fc" id="L375">                final GreatArc end = getEndArc();</span>
+<span class="fc bfc" id="L376" title="All 2 branches covered.">                if (end != null) {</span>
+<span class="fc" id="L377">                    throw new IllegalStateException(</span>
+<span class="fc" id="L378">                            MessageFormat.format(&quot;Cannot add point {0} after full arc: {1}&quot;, vertex, end));</span>
+                }
+
+                // this is the first vertex added
+<span class="fc" id="L382">                startVertex = vertex;</span>
+<span class="fc" id="L383">                endVertex = vertex;</span>
+<span class="fc" id="L384">                endVertexPrecision = vertexPrecision;</span>
+<span class="pc bpc" id="L385" title="1 of 2 branches missed.">            } else if (!endVertex.eq(vertex, vertexPrecision)) {</span>
+                // only add the vertex if its not equal to the end point
+                // of the last arc
+<span class="fc" id="L388">                appendInternal(GreatCircles.arcFromPoints(endVertex, vertex, endVertexPrecision));</span>
+            }
+
+<span class="fc" id="L391">            return this;</span>
+        }
+
+        /** Convenience method for appending a collection of vertices to the path in a single
+         * method call.
+         * @param vertices the vertices to append
+         * @return this instance
+         * @see #append(Point2S)
+         */
+        public Builder appendVertices(final Collection&lt;Point2S&gt; vertices) {
+<span class="fc bfc" id="L401" title="All 2 branches covered.">            for (final Point2S vertex : vertices) {</span>
+<span class="fc" id="L402">                append(vertex);</span>
+<span class="fc" id="L403">            }</span>
+
+<span class="fc" id="L405">            return this;</span>
+        }
+
+        /** Convenience method for appending multiple vertices to the path at once.
+         * @param vertices the points to append
+         * @return this instance
+         * @see #append(Point2S)
+         */
+        public Builder appendVertices(final Point2S... vertices) {
+<span class="fc" id="L414">            return appendVertices(Arrays.asList(vertices));</span>
+        }
+
+        /** Prepend an arc to the beginning of the path.
+         * @param arc arc to prepend to the path
+         * @return the current builder instance
+         * @throws IllegalStateException if the path contains a start arc
+         *      and the end point of the given arc is not equivalent to the
+         *      start point of the start arc
+         */
+        public Builder prepend(final GreatArc arc) {
+<span class="fc" id="L425">            validateArcsConnected(arc, getStartArc());</span>
+<span class="fc" id="L426">            prependInternal(arc);</span>
+
+<span class="fc" id="L428">            return this;</span>
+        }
+
+        /** Add a vertex to the front of this path. If the path already has a start vertex,
+         * then an arc is added between this vertex and the previous start vertex,
+         * using the configured precision context.
+         * @param vertex the vertex to add
+         * @return this instance
+         * @see #setPrecision(Precision.DoubleEquivalence)
+         */
+        public Builder prepend(final Point2S vertex) {
+<span class="fc" id="L439">            final Precision.DoubleEquivalence vertexPrecision = getAddPointPrecision();</span>
+
+<span class="fc bfc" id="L441" title="All 2 branches covered.">            if (startVertex == null) {</span>
+                // make sure that we're not adding to a full arc
+<span class="fc" id="L443">                final GreatArc start = getStartArc();</span>
+<span class="fc bfc" id="L444" title="All 2 branches covered.">                if (start != null) {</span>
+<span class="fc" id="L445">                    throw new IllegalStateException(</span>
+<span class="fc" id="L446">                            MessageFormat.format(&quot;Cannot add point {0} before full arc: {1}&quot;, vertex, start));</span>
+                }
+
+                // this is the first vertex added
+<span class="fc" id="L450">                startVertex = vertex;</span>
+<span class="fc" id="L451">                endVertex = vertex;</span>
+<span class="fc" id="L452">                endVertexPrecision = vertexPrecision;</span>
+<span class="pc bpc" id="L453" title="1 of 2 branches missed.">            } else if (!vertex.eq(startVertex, vertexPrecision)) {</span>
+                // only add if the vertex is not equal to the start
+                // point of the first arc
+<span class="fc" id="L456">                prependInternal(GreatCircles.arcFromPoints(vertex, startVertex, vertexPrecision));</span>
+            }
+
+<span class="fc" id="L459">            return this;</span>
+        }
+
+        /** Convenience method for prepending a collection of vertices to the path in a single method call.
+         * The vertices are logically prepended as a single group, meaning that the first vertex
+         * in the given collection appears as the first vertex in the path after this method call.
+         * Internally, this means that the vertices are actually passed to the {@link #prepend(Point2S)}
+         * method in reverse order.
+         * @param vertices the points to prepend
+         * @return this instance
+         * @see #prepend(Point2S)
+         */
+        public Builder prependPoints(final Collection&lt;Point2S&gt; vertices) {
+<span class="fc" id="L472">            return prependPoints(vertices.toArray(new Point2S[0]));</span>
+        }
+
+        /** Convenience method for prepending multiple vertices to the path in a single method call.
+         * The vertices are logically prepended as a single group, meaning that the first vertex
+         * in the given collection appears as the first vertex in the path after this method call.
+         * Internally, this means that the vertices are actually passed to the {@link #prepend(Point2S)}
+         * method in reverse order.
+         * @param vertices the vertices to prepend
+         * @return this instance
+         * @see #prepend(Point2S)
+         */
+        public Builder prependPoints(final Point2S... vertices) {
+<span class="fc bfc" id="L485" title="All 2 branches covered.">            for (int i = vertices.length - 1; i &gt;= 0; --i) {</span>
+<span class="fc" id="L486">                prepend(vertices[i]);</span>
+            }
+
+<span class="fc" id="L489">            return this;</span>
+        }
+
+        /** Close the current path and build a new {@link GreatArcPath} instance. This method is equivalent
+         * to {@code builder.build(true)}.
+         * @return new closed path instance
+         */
+        public GreatArcPath close() {
+<span class="fc" id="L497">            return build(true);</span>
+        }
+
+        /** Build a {@link GreatArcPath} instance from the configured path. This method is equivalent
+         * to {@code builder.build(false)}.
+         * @return new path instance
+         */
+        public GreatArcPath build() {
+<span class="fc" id="L505">            return build(false);</span>
+        }
+
+        /** Build a {@link GreatArcPath} instance from the configured path.
+         * @param close if true, the path will be closed by adding an end point equivalent to the
+         *      start point
+         * @return new path instance
+         */
+        public GreatArcPath build(final boolean close) {
+<span class="fc bfc" id="L514" title="All 2 branches covered.">            if (close) {</span>
+<span class="fc" id="L515">                closePath();</span>
+            }
+
+            // combine all of the arcs
+<span class="fc" id="L519">            List&lt;GreatArc&gt; result = null;</span>
+
+<span class="fc bfc" id="L521" title="All 2 branches covered.">            if (prependedArcs != null) {</span>
+<span class="fc" id="L522">                result = prependedArcs;</span>
+<span class="fc" id="L523">                Collections.reverse(result);</span>
+            }
+
+<span class="fc bfc" id="L526" title="All 2 branches covered.">            if (appendedArcs != null) {</span>
+<span class="fc bfc" id="L527" title="All 2 branches covered.">                if (result == null) {</span>
+<span class="fc" id="L528">                    result = appendedArcs;</span>
+                } else {
+<span class="fc" id="L530">                    result.addAll(appendedArcs);</span>
+                }
+            }
+
+<span class="fc bfc" id="L534" title="All 2 branches covered.">            if (result == null) {</span>
+<span class="fc" id="L535">                result = Collections.emptyList();</span>
+            }
+
+<span class="fc bfc" id="L538" title="All 4 branches covered.">            if (result.isEmpty() &amp;&amp; startVertex != null) {</span>
+<span class="fc" id="L539">                throw new IllegalStateException(</span>
+<span class="fc" id="L540">                        MessageFormat.format(&quot;Unable to create path; only a single point provided: {0}&quot;,</span>
+                                startVertex));
+            }
+
+            // clear internal state
+<span class="fc" id="L545">            appendedArcs = null;</span>
+<span class="fc" id="L546">            prependedArcs = null;</span>
+
+            // build the final path instance, using the shared empty instance if
+            // no arcs are present
+<span class="fc bfc" id="L550" title="All 2 branches covered.">            return result.isEmpty() ? empty() : new GreatArcPath(result);</span>
+        }
+
+        /** Close the path by adding an end point equivalent to the path start point.
+         * @throws IllegalStateException if the path cannot be closed
+         */
+        private void closePath() {
+<span class="fc" id="L557">            final GreatArc end = getEndArc();</span>
+
+<span class="fc bfc" id="L559" title="All 2 branches covered.">            if (end != null) {</span>
+<span class="pc bpc" id="L560" title="1 of 4 branches missed.">                if (startVertex != null &amp;&amp; endVertex != null) {</span>
+<span class="fc bfc" id="L561" title="All 2 branches covered.">                    if (!endVertex.eq(startVertex, endVertexPrecision)) {</span>
+<span class="fc" id="L562">                        appendInternal(GreatCircles.arcFromPoints(endVertex, startVertex, endVertexPrecision));</span>
+                    }
+                } else {
+<span class="fc" id="L565">                    throw new IllegalStateException(&quot;Unable to close path: path is full&quot;);</span>
+                }
+            }
+<span class="fc" id="L568">        }</span>
+
+        /** Validate that the given arcs are connected, meaning that the end point of {@code previous}
+         * is equivalent to the start point of {@code next}. The arcs are considered valid if either
+         * arc is null.
+         * @param previous previous arc
+         * @param next next arc
+         * @throws IllegalStateException if previous and next are not null and the end point of previous
+         *      is not equivalent the start point of next
+         */
+        private void validateArcsConnected(final GreatArc previous, final GreatArc next) {
+<span class="fc bfc" id="L579" title="All 4 branches covered.">            if (previous != null &amp;&amp; next != null) {</span>
+<span class="fc" id="L580">                final Point2S nextStartVertex = next.getStartPoint();</span>
+<span class="fc" id="L581">                final Point2S previousEndVertex = previous.getEndPoint();</span>
+<span class="fc" id="L582">                final Precision.DoubleEquivalence previousPrecision = previous.getPrecision();</span>
+
+<span class="pc bpc" id="L584" title="2 of 4 branches missed.">                if (nextStartVertex == null || previousEndVertex == null ||</span>
+<span class="fc bfc" id="L585" title="All 2 branches covered.">                        !(nextStartVertex.eq(previousEndVertex, previousPrecision))) {</span>
+
+<span class="fc" id="L587">                    throw new IllegalStateException(</span>
+<span class="fc" id="L588">                            MessageFormat.format(&quot;Path arcs are not connected: previous= {0}, next= {1}&quot;,</span>
+                                    previous, next));
+                }
+            }
+<span class="fc" id="L592">        }</span>
+
+        /** Get the precision context used when adding raw points to the path. An exception is thrown
+         * if no precision has been specified.
+         * @return the precision context used when working with raw points
+         * @throws IllegalStateException if no precision context is configured
+         */
+        private Precision.DoubleEquivalence getAddPointPrecision() {
+<span class="fc bfc" id="L600" title="All 2 branches covered.">            if (precision == null) {</span>
+<span class="fc" id="L601">                throw new IllegalStateException(&quot;Unable to create arc: no point precision specified&quot;);</span>
+            }
+
+<span class="fc" id="L604">            return precision;</span>
+        }
+
+        /** Append the given, validated arc to the path.
+         * @param arc validated arc to append
+         */
+        private void appendInternal(final GreatArc arc) {
+<span class="fc bfc" id="L611" title="All 2 branches covered.">            if (appendedArcs == null) {</span>
+<span class="fc" id="L612">                appendedArcs = new ArrayList&lt;&gt;();</span>
+            }
+
+<span class="pc bpc" id="L615" title="1 of 4 branches missed.">            if (appendedArcs.isEmpty() &amp;&amp;</span>
+<span class="nc bnc" id="L616" title="All 2 branches missed.">                    (prependedArcs == null || prependedArcs.isEmpty())) {</span>
+<span class="fc" id="L617">                startVertex = arc.getStartPoint();</span>
+            }
+
+<span class="fc" id="L620">            endVertex = arc.getEndPoint();</span>
+<span class="fc" id="L621">            endVertexPrecision = arc.getPrecision();</span>
+
+<span class="fc" id="L623">            appendedArcs.add(arc);</span>
+<span class="fc" id="L624">        }</span>
+
+        /** Prepend the given, validated arc to the path.
+         * @param arc validated arc to prepend
+         */
+        private void prependInternal(final GreatArc arc) {
+<span class="fc bfc" id="L630" title="All 2 branches covered.">            if (prependedArcs == null) {</span>
+<span class="fc" id="L631">                prependedArcs = new ArrayList&lt;&gt;();</span>
+            }
+
+<span class="fc" id="L634">            startVertex = arc.getStartPoint();</span>
+
+<span class="fc bfc" id="L636" title="All 4 branches covered.">            if (prependedArcs.isEmpty() &amp;&amp;</span>
+<span class="pc bpc" id="L637" title="1 of 2 branches missed.">                    (appendedArcs == null || appendedArcs.isEmpty())) {</span>
+<span class="fc" id="L638">                endVertex = arc.getEndPoint();</span>
+<span class="fc" id="L639">                endVertexPrecision = arc.getPrecision();</span>
+            }
+
+<span class="fc" id="L642">            prependedArcs.add(arc);</span>
+<span class="fc" id="L643">        }</span>
+
+        /** Get the first element in the list or null if the list is null
+         * or empty.
+         * @param list the list to return the first item from
+         * @return the first item from the given list or null if it does not exist
+         */
+        private GreatArc getFirst(final List&lt;GreatArc&gt; list) {
+<span class="pc bpc" id="L651" title="1 of 4 branches missed.">            if (list != null &amp;&amp; !list.isEmpty()) {</span>
+<span class="fc" id="L652">                return list.get(0);</span>
+            }
+<span class="fc" id="L654">            return null;</span>
+        }
+
+        /** Get the last element in the list or null if the list is null
+         * or empty.
+         * @param list the list to return the last item from
+         * @return the last item from the given list or null if it does not exist
+         */
+        private GreatArc getLast(final List&lt;GreatArc&gt; list) {
+<span class="pc bpc" id="L663" title="1 of 4 branches missed.">            if (list != null &amp;&amp; !list.isEmpty()) {</span>
+<span class="fc" id="L664">                return list.get(list.size() - 1);</span>
+            }
+<span class="fc" id="L666">            return null;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

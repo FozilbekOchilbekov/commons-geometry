@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.apache.commons.geometry.euclidean.oned.RegionBSPTree1DTest
+-------------------------------------------------------------------------------
+Tests run: 70, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.071 s - in org.apache.commons.geometry.euclidean.oned.RegionBSPTree1DTest

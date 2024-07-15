@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PointMap2SImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Spherical</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.spherical</a> &gt; <span class="el_source">PointMap2SImpl.java</span></div><h1>PointMap2SImpl.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.spherical;
+
+import java.util.List;
+
+import org.apache.commons.geometry.core.collection.PointMap;
+import org.apache.commons.geometry.core.internal.AbstractBucketPointMap;
+import org.apache.commons.geometry.core.partitioning.HyperplaneLocation;
+import org.apache.commons.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.geometry.spherical.twod.GreatCircle;
+import org.apache.commons.geometry.spherical.twod.GreatCircles;
+import org.apache.commons.geometry.spherical.twod.Point2S;
+import org.apache.commons.numbers.angle.Angle;
+import org.apache.commons.numbers.core.Precision;
+
+/** Internal {@link PointMap} implementation for 2D spherical space.
+ * @param &lt;V&gt; Map value type
+ */
+final class PointMap2SImpl&lt;V&gt;
+    extends AbstractBucketPointMap&lt;Point2S, V&gt;
+    implements PointMap&lt;Point2S, V&gt; {
+
+    /** Number of children per node. */
+    private static final int NODE_CHILD_COUNT = 4;
+
+    /** Max entries per node. */
+    private static final int MAX_ENTRIES_PER_NODE = 16;
+
+    /** First negative quadrant flag. */
+    private static final int NEG1 = 1 &lt;&lt; 3;
+
+    /** First positive quadrant flag. */
+    private static final int POS1 = 1 &lt;&lt; 2;
+
+    /** Second negative quadrant flag. */
+    private static final int NEG2 = 1 &lt;&lt; 1;
+
+    /** Second positive quadrant flag. */
+    private static final int POS2 = 1;
+
+    /** Bit mask for first location. */
+    private static final int MASK1 = NEG1 | POS1;
+
+    /** Bit mask for second location. */
+    private static final int MASK2 = NEG2 | POS2;
+
+    /** Location flags for child nodes. */
+<span class="fc" id="L63">    private static final int[] CHILD_LOCATIONS = {</span>
+        NEG1 | NEG2,
+        NEG1 | POS2,
+        POS1 | NEG2,
+        POS1 | POS2
+    };
+
+    PointMap2SImpl(final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L71">        super(MapNode2S::new,</span>
+                MAX_ENTRIES_PER_NODE,
+                NODE_CHILD_COUNT,
+                precision);
+<span class="fc" id="L75">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    protected boolean pointsEq(final Point2S a, final Point2S b) {
+<span class="fc" id="L80">        return a.eq(b, getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected int disambiguatePointComparison(final Point2S a, final Point2S b) {
+<span class="fc" id="L86">        return Point2S.POLAR_AZIMUTH_ASCENDING_ORDER.compare(a, b);</span>
+    }
+
+    /** Tree node class for {@link PointMap2SImpl}.
+     * @param &lt;V&gt; Map value type
+     */
+    private static final class MapNode2S&lt;V&gt;
+        extends BucketNode&lt;Point2S, V&gt; {
+
+        /** Primary intersection point of the splitting hyperplanes. */
+        private Point2S splitPoint;
+
+        /** First hyperplane split. */
+        private GreatCircle firstSplitCircle;
+
+        /** Second hyperplane split. */
+        private GreatCircle secondSplitCircle;
+
+        /** Construct a new instance.
+         * @param map owning map
+         * @param parent parent node; set to null for the root node
+         * @param childIndex index of this node in its parent's child list;
+         *      set to {@code -1} for the root node
+         */
+        MapNode2S(
+                final AbstractBucketPointMap&lt;Point2S, V&gt; map,
+                final BucketNode&lt;Point2S, V&gt; parent,
+                final int childIndex) {
+<span class="fc" id="L114">            super(map, parent, childIndex);</span>
+<span class="fc" id="L115">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        protected void computeSplit() {
+<span class="fc" id="L120">            final Vector3D.Sum sum = Vector3D.Sum.create();</span>
+
+<span class="fc bfc" id="L122" title="All 2 branches covered.">            for (Entry&lt;Point2S, V&gt; entry : this) {</span>
+<span class="fc" id="L123">                sum.add(entry.getKey().getVector());</span>
+<span class="fc" id="L124">            }</span>
+
+            // construct an orthonormal basis with u pointing to the centroid
+            // of the points
+<span class="fc" id="L128">            Vector3D.Unit u = sum.get().multiply(1.0 / MAX_ENTRIES_PER_NODE)</span>
+<span class="fc" id="L129">                    .normalizeOrNull();</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">            if (u == null) {</span>
+<span class="nc" id="L131">                u = Vector3D.Unit.PLUS_X;</span>
+            }
+
+<span class="fc" id="L134">            Vector3D.Unit v =  Vector3D.Unit.PLUS_Z.cross(u)</span>
+<span class="fc" id="L135">                    .normalizeOrNull();</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">            if (v == null) {</span>
+<span class="nc" id="L137">                v = Vector3D.Unit.PLUS_Y.cross(u)</span>
+<span class="nc" id="L138">                        .normalizeOrNull();</span>
+            }
+<span class="fc" id="L140">            final Vector3D.Unit w = u.cross(v).normalize();</span>
+
+            // set the split point
+<span class="fc" id="L143">            splitPoint = Point2S.from(u);</span>
+
+            // construct the splitting hyperplanes as two great circles intersecting at
+            // the split point and with orthogonal poles
+<span class="fc" id="L147">            firstSplitCircle = GreatCircles.fromPoleAndU(v.add(w), u, getPrecision());</span>
+<span class="fc" id="L148">            secondSplitCircle = GreatCircles.fromPoleAndU(v.negate().add(w), u, getPrecision());</span>
+<span class="fc" id="L149">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        protected int getSearchLocation(final Point2S pt) {
+<span class="fc" id="L154">            int loc = getSearchLocationValue(firstSplitCircle.classify(pt), NEG1, POS1);</span>
+
+<span class="fc" id="L156">            loc |= getSearchLocationValue(secondSplitCircle.classify(pt), NEG2, POS2);</span>
+
+<span class="fc" id="L158">            return loc;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected int getInsertLocation(final Point2S pt) {
+<span class="fc bfc" id="L164" title="All 2 branches covered.">            int loc = firstSplitCircle.offset(pt) &gt; 0.0 ?</span>
+<span class="fc" id="L165">                    POS1 :</span>
+<span class="fc" id="L166">                    NEG1;</span>
+
+<span class="fc bfc" id="L168" title="All 2 branches covered.">            loc |= secondSplitCircle.offset(pt) &gt; 0.0 ?</span>
+<span class="fc" id="L169">                    POS2 :</span>
+<span class="fc" id="L170">                    NEG2;</span>
+
+<span class="fc" id="L172">            return loc;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected boolean testChildLocation(final int childIdx, final int loc) {
+<span class="fc" id="L178">            final int childLoc = CHILD_LOCATIONS[childIdx];</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">            return (childLoc &amp; loc) == childLoc;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected void makeLeaf(final List&lt;Entry&lt;Point2S, V&gt;&gt; leafEntries) {
+<span class="fc" id="L185">            super.makeLeaf(leafEntries);</span>
+
+<span class="fc" id="L187">            splitPoint = null;</span>
+<span class="fc" id="L188">            firstSplitCircle = null;</span>
+<span class="fc" id="L189">            secondSplitCircle = null;</span>
+<span class="fc" id="L190">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        protected double getMinChildDistance(final int childIdx, final Point2S pt, final int ptLoc) {
+<span class="fc" id="L195">            final int childLoc = CHILD_LOCATIONS[childIdx];</span>
+
+<span class="fc bfc" id="L197" title="All 2 branches covered.">            final boolean sameFirst = (ptLoc &amp; MASK1) == (childLoc &amp; MASK1);</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">            final boolean sameSecond = (ptLoc &amp; MASK2) == (childLoc &amp; MASK2);</span>
+
+<span class="fc bfc" id="L200" title="All 2 branches covered.">            if (sameFirst) {</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">                return sameSecond ?</span>
+<span class="fc" id="L202">                        0d :</span>
+<span class="fc" id="L203">                        Math.abs(secondSplitCircle.offset(pt));</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">            } else if (sameSecond) {</span>
+<span class="fc" id="L205">                return Math.abs(firstSplitCircle.offset(pt));</span>
+            }
+
+            // the reference point is in the opposite quadrant; this means that the
+            // closest point will be either the split point or the antipode of the
+            // split point
+<span class="fc" id="L211">            final double splitPointDist = pt.distance(splitPoint);</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">            return splitPointDist &gt; Angle.PI_OVER_TWO ?</span>
+<span class="nc" id="L213">                Math.PI - splitPointDist :</span>
+<span class="fc" id="L214">                splitPointDist;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected double getMaxChildDistance(final int childIdx, final Point2S pt, final int ptLoc) {
+<span class="fc" id="L220">            final int childLoc = CHILD_LOCATIONS[childIdx];</span>
+
+<span class="fc bfc" id="L222" title="All 2 branches covered.">            final boolean oppositeFirst = (ptLoc &amp; MASK1) != (childLoc &amp; MASK1);</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">            final boolean oppositeSecond = (ptLoc &amp; MASK2) != (childLoc &amp; MASK2);</span>
+
+
+<span class="fc bfc" id="L226" title="All 2 branches covered.">            if (oppositeFirst) {</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">                return oppositeSecond ?</span>
+<span class="fc" id="L228">                        Math.PI :</span>
+<span class="fc" id="L229">                        Math.PI - Math.abs(secondSplitCircle.offset(pt));</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">            } else if (oppositeSecond) {</span>
+<span class="fc" id="L231">                return Math.PI - Math.abs(firstSplitCircle.offset(pt));</span>
+            }
+
+            // the reference point is in the same quadrant; this means that the
+            // farthest point will be either the split point or the antipode of the
+            // split point
+<span class="fc" id="L237">            final double splitPointDist = pt.distance(splitPoint);</span>
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">            return splitPointDist &gt; Angle.PI_OVER_TWO ?</span>
+<span class="nc" id="L239">                splitPointDist :</span>
+<span class="fc" id="L240">                Math.PI - splitPointDist;</span>
+        }
+
+        /** Get an encoded search location for the given hyperplane location.
+         * @param loc point location
+         * @param neg negative flag
+         * @param pos positive flag
+         * @return encoded search location
+         */
+        private static int getSearchLocationValue(final HyperplaneLocation loc,
+                final int neg, final int pos) {
+<span class="fc bfc" id="L251" title="All 3 branches covered.">            switch (loc) {</span>
+            case MINUS:
+<span class="fc" id="L253">                return neg;</span>
+            case PLUS:
+<span class="fc" id="L255">                return pos;</span>
+            default:
+<span class="fc" id="L257">                return neg | pos;</span>
+            }
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

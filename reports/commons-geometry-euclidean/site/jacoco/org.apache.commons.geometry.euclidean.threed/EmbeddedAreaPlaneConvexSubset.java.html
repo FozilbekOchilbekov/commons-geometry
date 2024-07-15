@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmbeddedAreaPlaneConvexSubset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed</a> &gt; <span class="el_source">EmbeddedAreaPlaneConvexSubset.java</span></div><h1>EmbeddedAreaPlaneConvexSubset.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed;
+
+import java.util.List;
+
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.geometry.euclidean.twod.AffineTransformMatrix2D;
+import org.apache.commons.geometry.euclidean.twod.ConvexArea;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+
+/** Internal implementation of {@link PlaneConvexSubset} that uses an embedded
+ * {@link ConvexArea} to represent the subspace region. This class is capable of
+ * representing regions of infinite size.
+ */
+final class EmbeddedAreaPlaneConvexSubset extends AbstractEmbeddedRegionPlaneSubset
+    implements PlaneConvexSubset, PlaneConvexSubset.Embedded {
+
+    /** The embedded 2D area. */
+    private final ConvexArea area;
+
+    /** Create a new instance from its component parts.
+     * @param plane plane the convex area is embedded in
+     * @param area the embedded convex area
+     */
+    EmbeddedAreaPlaneConvexSubset(final EmbeddingPlane plane, final ConvexArea area) {
+<span class="fc" id="L43">        super(plane);</span>
+
+<span class="fc" id="L45">        this.area = area;</span>
+<span class="fc" id="L46">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public PlaneConvexSubset.Embedded getEmbedded() {
+<span class="fc" id="L51">        return this;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConvexArea getSubspaceRegion() {
+<span class="fc" id="L57">        return area;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;Vector3D&gt; getVertices() {
+<span class="fc" id="L63">        return getPlane().toSpace(area.getVertices());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Bounds3D getBounds() {
+<span class="fc" id="L69">        return getBoundsFromSubspace(area);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;Triangle3D&gt; toTriangles() {
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (isInfinite()) {</span>
+<span class="fc" id="L76">            throw new IllegalStateException(&quot;Cannot convert infinite plane subset to triangles: &quot; + this);</span>
+        }
+
+<span class="fc" id="L79">        final EmbeddingPlane plane = getPlane();</span>
+<span class="fc" id="L80">        final List&lt;Vector3D&gt; vertices = plane.toSpace(area.getVertices());</span>
+
+<span class="fc" id="L82">        return Planes.convexPolygonToTriangleFan(plane, vertices);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EmbeddedAreaPlaneConvexSubset transform(final Transform&lt;Vector3D&gt; transform) {
+<span class="fc" id="L88">        final EmbeddingPlane.SubspaceTransform st = getPlane().subspaceTransform(transform);</span>
+<span class="fc" id="L89">        final ConvexArea tArea = area.transform(st.getTransform());</span>
+
+<span class="fc" id="L91">        return new EmbeddedAreaPlaneConvexSubset(st.getPlane().getEmbedding(), tArea);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EmbeddedAreaPlaneConvexSubset reverse() {
+<span class="fc" id="L97">        final EmbeddingPlane plane = getPlane();</span>
+<span class="fc" id="L98">        final EmbeddingPlane rPlane = plane.reverse();</span>
+
+<span class="fc" id="L100">        final Vector2D rU = rPlane.toSubspace(plane.toSpace(Vector2D.Unit.PLUS_X));</span>
+<span class="fc" id="L101">        final Vector2D rV = rPlane.toSubspace(plane.toSpace(Vector2D.Unit.PLUS_Y));</span>
+
+<span class="fc" id="L103">        final AffineTransformMatrix2D transform =</span>
+<span class="fc" id="L104">                AffineTransformMatrix2D.fromColumnVectors(rU, rV);</span>
+
+<span class="fc" id="L106">        return new EmbeddedAreaPlaneConvexSubset(rPlane, area.transform(transform));</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Split&lt;PlaneConvexSubset&gt; split(final Hyperplane&lt;Vector3D&gt; splitter) {
+        // delegate back to the Planes factory method so that it has a chance to decide
+        // on the best possible implementation for the given area
+<span class="fc" id="L114">        return Planes.subspaceSplit((Plane) splitter, this,</span>
+<span class="fc" id="L115">            (p, r) -&gt; Planes.subsetFromConvexArea(p, (ConvexArea) r));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

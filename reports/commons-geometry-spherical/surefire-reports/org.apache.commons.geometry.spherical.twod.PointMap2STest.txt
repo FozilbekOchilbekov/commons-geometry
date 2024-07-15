@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.apache.commons.geometry.spherical.twod.PointMap2STest
+-------------------------------------------------------------------------------
+Tests run: 81, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 59.451 s - in org.apache.commons.geometry.spherical.twod.PointMap2STest

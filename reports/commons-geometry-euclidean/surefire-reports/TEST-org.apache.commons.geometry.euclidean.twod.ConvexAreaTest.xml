@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.042" tests="61" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="22"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1251"/>
+    <property name="java.class.path" value="C:\Users\ULUGBEK\.m2\repository\org\apache\maven\surefire\surefire-booter\3.0.0\surefire-booter-3.0.0.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\maven\surefire\surefire-api\3.0.0\surefire-api-3.0.0.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\maven\surefire\surefire-extensions-spi\3.0.0\surefire-extensions-spi-3.0.0.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\maven\surefire\surefire-logger-api\3.0.0\surefire-logger-api-3.0.0.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\maven\surefire\surefire-shared-utils\3.0.0\surefire-shared-utils-3.0.0.jar;C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\target\test-classes;C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\target\classes;C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-core\target\commons-geometry-core-1.1-SNAPSHOT.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-core\1.1\commons-numbers-core-1.1.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-arrays\1.1\commons-numbers-arrays-1.1.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-angle\1.1\commons-numbers-angle-1.1.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-quaternion\1.1\commons-numbers-quaternion-1.1.jar;C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-core\target\commons-geometry-core-1.1-SNAPSHOT-tests.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-client-api\1.5\commons-rng-client-api-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-simple\1.5\commons-rng-simple-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-core\1.5\commons-rng-core-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-sampling\1.5\commons-rng-sampling-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter\5.9.3\junit-jupiter-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.3\junit-jupiter-api-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\platform\junit-platform-commons\1.9.3\junit-platform-commons-1.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.9.3\junit-jupiter-params-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.3\junit-jupiter-engine-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\platform\junit-platform-engine\1.9.3\junit-platform-engine-1.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\maven\surefire\surefire-junit-platform\3.0.0\surefire-junit-platform-3.0.0.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\maven\surefire\common-java5\3.0.0\common-java5-3.0.0.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\platform\junit-platform-launcher\1.9.3\junit-platform-launcher-1.9.3.jar"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="user.timezone" value="Europe/Berlin"/>
+    <property name="user.country.format" value="150"/>
+    <property name="os.name" value="Windows 10"/>
+    <property name="java.vm.specification.version" value="22"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="RU"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-22\bin"/>
+    <property name="sun.java.command" value="org.apache.maven.surefire.booter.ForkedBooter C:\Users\ULUGBEK\AppData\Local\Temp\surefire16549721548484839787 2024-07-13T15-19-00_390-jvmRun1 surefire-20240713152026688_3tmp surefire_1-20240713152026688_4tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\target\test-classes;C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\target\classes;C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-core\target\commons-geometry-core-1.1-SNAPSHOT.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-core\1.1\commons-numbers-core-1.1.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-arrays\1.1\commons-numbers-arrays-1.1.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-angle\1.1\commons-numbers-angle-1.1.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-quaternion\1.1\commons-numbers-quaternion-1.1.jar;C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-core\target\commons-geometry-core-1.1-SNAPSHOT-tests.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-client-api\1.5\commons-rng-client-api-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-simple\1.5\commons-rng-simple-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-core\1.5\commons-rng-core-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-sampling\1.5\commons-rng-sampling-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter\5.9.3\junit-jupiter-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.3\junit-jupiter-api-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\platform\junit-platform-commons\1.9.3\junit-platform-commons-1.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.9.3\junit-jupiter-params-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.3\junit-jupiter-engine-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\platform\junit-platform-engine\1.9.3\junit-platform-engine-1.9.3.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\ULUGBEK"/>
+    <property name="user.language" value="ru"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2024-04-16"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk-22"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean"/>
+    <property name="java.vm.compressedOopsMode" value="32-bit"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="22.0.1+8-16"/>
+    <property name="user.name" value="ULUGBEK"/>
+    <property name="stdout.encoding" value="Cp1251"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="localRepository" value="C:\Users\ULUGBEK\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="C:\Users\ULUGBEK\AppData\Local\Temp\"/>
+    <property name="java.version" value="22.0.1"/>
+    <property name="user.dir" value="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.language.format" value="en"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="native.encoding" value="Cp1251"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-22\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\java8path;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Users\ULUGBEK\dev\flutter\bin;C:\Program Files\Python39\Scripts;C:\Program Files\Git\cmd;C:\Program Files\Go\bin;C:\Program Files\apache-maven-3.9.8-bin\bin;C:\Users\ULUGBEK\AppData\Local\Microsoft\WindowsApps;C:\Users\ULUGBEK\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\ULUGBEK\dev\flutter\bin;C:\Program Files\JetBrains\PyCharm 2024.1.1\bin;;C:\Program Files\Python39\Scripts;C:\Program Files\Android\platform-tools;C:\Users\ULUGBEK\go\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2024.1.4\bin;;C:\Program Files\apache-maven-3.9.8-bin\bin;;."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="Cp1251"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="22.0.1+8-16"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="66.0"/>
+  </properties>
+  <testcase name="testProject_halfSpace" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testGetVertices_infiniteWithVertices" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testBoundaryStream" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testSplit_square_onPlusBoundary" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testTrim_square" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testConvexPolygonFromVertices_square_closeRequired" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testTransform_finite_withDoubleReflection" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testConvexPolygonFromVertices_notConvex" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.002"/>
+  <testcase name="testTrim_segmentDirectlyOnBoundaryOfRegion" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testSplit_trimmedSplitterDiscrepancy" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testFromBounds_duplicateLines_similarOrientation" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testBoundaryStream_full" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testSplit_fannedLines" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testToTree_full" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testFromBounds_boundsDoNotProduceAConvexRegion" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testFull" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testToString" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testSplit_full" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testGetVertices_finite" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testSplit_square_splitOnVertices" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testFromBounds_triangle" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testLinecast_full" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testSplit_square_entirelyOnMinus" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testFromBounds_twoLines" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testSplit_square_split" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testTrim_segmentOutsideOfRegion" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testTransform_infinite" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testFromBounds_singleLine" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testSplit_square_splitOnVerticesWithReversedSplitter" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testSplit_halfSpace_splitOnBoundary" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testSplit_square_entirelyOnPlus" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testProject_square" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testConvexPolygonFromVertices_handlesDuplicatePoints" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testFromBounds_duplicateLines_differentOrientation" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testConvexPolygonFromPath_invalidPaths" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testFromBounds_square" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testTrim_full" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testFromBounds_square_duplicateLines" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testTrim_halfSpace" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testGetBounds_infinite" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testGetVertices_full" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testFromBounds_noLines" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testGetVertices_mismatchedEndpoints" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testGetBounds_square" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testTransform_finite_withSingleReflection" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testConvexPolygonFromVertices_square_closeNotRequired" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testTransform_full" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testConvexPolygonFromVertices_triangle" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testTransform_finite" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testSplit_square_onMinusBoundary" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testGetVertices_twoParallelLines" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testToList" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testToTree" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testConvexPolygonFromPath" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testFromBounds_square_extraLines" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testToList_full" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testLinecast" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testProject_full" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+  <testcase name="testConvexPolygonFromVertices_notEnoughUniqueVertices" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.003"/>
+  <testcase name="testSplit_halfSpace_split" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0.001"/>
+  <testcase name="testSplit_halfSpace_splitOnBoundaryWithReversedSplitter" classname="org.apache.commons.geometry.euclidean.twod.ConvexAreaTest" time="0"/>
+</testsuite>

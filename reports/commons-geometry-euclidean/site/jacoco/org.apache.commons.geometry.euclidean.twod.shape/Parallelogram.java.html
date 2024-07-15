@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Parallelogram.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.twod.shape</a> &gt; <span class="el_source">Parallelogram.java</span></div><h1>Parallelogram.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.twod.shape;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.euclidean.twod.AffineTransformMatrix2D;
+import org.apache.commons.geometry.euclidean.twod.ConvexArea;
+import org.apache.commons.geometry.euclidean.twod.LineConvexSubset;
+import org.apache.commons.geometry.euclidean.twod.Lines;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.geometry.euclidean.twod.rotation.Rotation2D;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing parallelograms, i.e. quadrilaterals with two pairs of parallel sides.
+ * @see &lt;a href=&quot;https://en.wikipedia.org/wiki/Parallelogram&quot;&gt;Parallelogram&lt;/a&gt;
+ */
+public final class Parallelogram extends ConvexArea {
+
+    /** Vertices defining a square with sides of length 1 centered on the origin. */
+<span class="fc" id="L40">    private static final List&lt;Vector2D&gt; UNIT_SQUARE_VERTICES = Arrays.asList(</span>
+<span class="fc" id="L41">                Vector2D.of(-0.5, -0.5),</span>
+<span class="fc" id="L42">                Vector2D.of(0.5, -0.5),</span>
+<span class="fc" id="L43">                Vector2D.of(0.5, 0.5),</span>
+<span class="fc" id="L44">                Vector2D.of(-0.5, 0.5)</span>
+            );
+
+    /** Simple constructor. Callers are responsible for ensuring that the given path
+     * represents a parallelogram. No validation is performed.
+     * @param boundaries the boundaries of the parallelogram; this must be a list
+     *      with 4 elements
+     */
+    private Parallelogram(final List&lt;LineConvexSubset&gt; boundaries) {
+<span class="fc" id="L53">        super(boundaries);</span>
+<span class="fc" id="L54">    }</span>
+
+    /** Return a new instance representing a unit square centered on the origin.
+     * The vertices of this square are:
+     * &lt;pre&gt;
+     * [
+     *      (-0.5 -0.5),
+     *      (0.5, -0.5),
+     *      (0.5, 0.5),
+     *      (-0.5, 0.5)
+     * ]
+     * &lt;/pre&gt;
+     * @param precision precision context used to construct boundaries
+     * @return a new instance representing a unit square centered on the origin
+     */
+    public static Parallelogram unitSquare(final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L70">        return fromTransformedUnitSquare(AffineTransformMatrix2D.identity(), precision);</span>
+    }
+
+    /** Return a new instance representing an axis-aligned rectangle. The points {@code a}
+     * and {@code b} are taken to represent opposite corner points in the rectangle and may be specified in
+     * any order.
+     * @param a first corner point in the rectangle (opposite of {@code b})
+     * @param b second corner point in the rectangle (opposite of {@code a})
+     * @param precision precision context used to construct boundaries
+     * @return a new instance representing an axis-aligned rectangle
+     * @throws IllegalArgumentException if the length of any side of the parallelogram is zero,
+     *      as determined by the given precision context
+     */
+    public static Parallelogram axisAligned(final Vector2D a, final Vector2D b,
+            final Precision.DoubleEquivalence precision) {
+
+<span class="fc" id="L86">        final double minX = Math.min(a.getX(), b.getX());</span>
+<span class="fc" id="L87">        final double maxX = Math.max(a.getX(), b.getX());</span>
+
+<span class="fc" id="L89">        final double minY = Math.min(a.getY(), b.getY());</span>
+<span class="fc" id="L90">        final double maxY = Math.max(a.getY(), b.getY());</span>
+
+<span class="fc" id="L92">        final double xDelta = maxX - minX;</span>
+<span class="fc" id="L93">        final double yDelta = maxY - minY;</span>
+
+<span class="fc" id="L95">        final Vector2D scale = Vector2D.of(xDelta, yDelta);</span>
+<span class="fc" id="L96">        final Vector2D position = Vector2D.of(</span>
+                    (0.5 * xDelta) + minX,
+                    (0.5 * yDelta) + minY
+                );
+
+<span class="fc" id="L101">        return builder(precision)</span>
+<span class="fc" id="L102">                .setScale(scale)</span>
+<span class="fc" id="L103">                .setPosition(position)</span>
+<span class="fc" id="L104">                .build();</span>
+    }
+
+    /** Create a new instance by transforming a unit square centered at the origin. The vertices
+     * of this input square are:
+     * &lt;pre&gt;
+     * [
+     *      (-0.5 -0.5),
+     *      (0.5, -0.5),
+     *      (0.5, 0.5),
+     *      (-0.5, 0.5)
+     * ]
+     * &lt;/pre&gt;
+     * @param transform the transform to apply to the unit square
+     * @param precision precision context used to construct boundaries
+     * @return a new instance constructed by transforming the unit square
+     * @throws IllegalArgumentException if the length of any side of the parallelogram is zero,
+     *      as determined by the given precision context
+     */
+    public static Parallelogram fromTransformedUnitSquare(final Transform&lt;Vector2D&gt; transform,
+            final Precision.DoubleEquivalence precision) {
+
+<span class="fc" id="L126">        final List&lt;Vector2D&gt; vertices = UNIT_SQUARE_VERTICES.stream()</span>
+<span class="fc" id="L127">                .map(transform).collect(Collectors.toList());</span>
+
+<span class="fc" id="L129">        final int len = vertices.size();</span>
+<span class="fc" id="L130">        final boolean preservesOrientation = transform.preservesOrientation();</span>
+
+<span class="fc" id="L132">        final List&lt;LineConvexSubset&gt; boundaries = new ArrayList&lt;&gt;(UNIT_SQUARE_VERTICES.size());</span>
+
+        Vector2D p0;
+        Vector2D p1;
+        LineConvexSubset boundary;
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        for (int i = 0; i &lt; len; ++i) {</span>
+<span class="fc" id="L138">            p0 = vertices.get(i);</span>
+<span class="fc" id="L139">            p1 = vertices.get((i + 1) % len);</span>
+
+<span class="fc bfc" id="L141" title="All 2 branches covered.">            if (precision.eqZero(p0.distance(p1))) {</span>
+<span class="fc" id="L142">                throw new IllegalArgumentException(MessageFormat.format(</span>
+                        &quot;Parallelogram has zero size: vertices {0} and {1} are equivalent&quot;, p0, p1));
+            }
+
+<span class="fc bfc" id="L146" title="All 2 branches covered.">            boundary = preservesOrientation ?</span>
+<span class="fc" id="L147">                    Lines.segmentFromPoints(p0, p1, precision) :</span>
+<span class="fc" id="L148">                    Lines.segmentFromPoints(p1, p0, precision);</span>
+
+<span class="fc" id="L150">            boundaries.add(boundary);</span>
+        }
+
+<span class="fc" id="L153">        return new Parallelogram(boundaries);</span>
+    }
+
+    /** Return a new {@link Builder} instance to use for constructing parallelograms.
+     * @param precision precision context used to create boundaries
+     * @return a new {@link Builder} instance
+     */
+    public static Builder builder(final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L161">        return new Builder(precision);</span>
+    }
+
+    /** Class designed to aid construction of {@link Parallelogram} instances. Parallelograms are constructed
+     * by transforming the vertices of a unit square centered at the origin with a transform built from
+     * the values configured here. The transformations applied are &lt;em&gt;scaling&lt;/em&gt;, &lt;em&gt;rotation&lt;/em&gt;,
+     * and &lt;em&gt;translation&lt;/em&gt;, in that order. When applied in this order, the scale factors determine
+     * the width and height of the parallelogram, the rotation determines the orientation, and the translation
+     * determines the position of the center point.
+     */
+    public static final class Builder {
+
+        /** Amount to scale the parallelogram. */
+<span class="fc" id="L174">        private Vector2D scale = Vector2D.of(1, 1);</span>
+
+        /** The rotation of the parallelogram. */
+<span class="fc" id="L177">        private Rotation2D rotation = Rotation2D.identity();</span>
+
+        /** Amount to translate the parallelogram. */
+<span class="fc" id="L180">        private Vector2D position = Vector2D.ZERO;</span>
+
+        /** Precision context used to construct boundaries. */
+        private final Precision.DoubleEquivalence precision;
+
+        /** Construct a new instance configured with the given precision context.
+         * @param precision precision context used to create boundaries
+         */
+<span class="fc" id="L188">        private Builder(final Precision.DoubleEquivalence precision) {</span>
+<span class="fc" id="L189">            this.precision = precision;</span>
+<span class="fc" id="L190">        }</span>
+
+        /** Set the center position of the created parallelogram.
+         * @param pos center position of the created parallelogram
+         * @return this instance
+         */
+        public Builder setPosition(final Vector2D pos) {
+<span class="fc" id="L197">            this.position = pos;</span>
+<span class="fc" id="L198">            return this;</span>
+        }
+
+        /** Set the scaling for the created parallelogram. The scale
+         * values determine the lengths of the respective sides in the
+         * created parallelogram.
+         * @param scaleFactors scale factors
+         * @return this instance
+         */
+        public Builder setScale(final Vector2D scaleFactors) {
+<span class="fc" id="L208">            this.scale = scaleFactors;</span>
+<span class="fc" id="L209">            return this;</span>
+        }
+
+        /** Set the scaling for the created parallelogram. The scale
+         * values determine the lengths of the respective sides in the
+         * created parallelogram.
+         * @param x x scale factor
+         * @param y y scale factor
+         * @return this instance
+         */
+        public Builder setScale(final double x, final double y) {
+<span class="fc" id="L220">            return setScale(Vector2D.of(x, y));</span>
+        }
+
+        /** Set the scaling for the created parallelogram. The given scale
+         * factor is applied to both the x and y directions.
+         * @param scaleFactor scale factor for x and y directions
+         * @return this instance
+         */
+        public Builder setScale(final double scaleFactor) {
+<span class="fc" id="L229">            return setScale(scaleFactor, scaleFactor);</span>
+        }
+
+        /** Set the rotation of the created parallelogram.
+         * @param rot the rotation of the created parallelogram
+         * @return this instance
+         */
+        public Builder setRotation(final Rotation2D rot) {
+<span class="fc" id="L237">            this.rotation = rot;</span>
+<span class="fc" id="L238">            return this;</span>
+        }
+
+        /** Set the rotation of the created parallelogram such that the
+         * relative x-axis of the shape points in the given direction.
+         * @param xDirection the direction of the relative x-axis
+         * @return this instance
+         * @throws IllegalArgumentException if the given vector cannot be normalized
+         * @see #setRotation(Rotation2D)
+         */
+        public Builder setXDirection(final Vector2D xDirection) {
+<span class="fc" id="L249">            return setRotation(</span>
+<span class="fc" id="L250">                    Rotation2D.createVectorRotation(Vector2D.Unit.PLUS_X, xDirection));</span>
+        }
+
+        /** Set the rotation of the created parallelogram such that the
+         * relative y-axis of the shape points in the given direction.
+         * @param yDirection the direction of the relative y-axis
+         * @return this instance
+         * @throws IllegalArgumentException if the given vector cannot be normalized
+         * @see #setRotation(Rotation2D)
+         */
+        public Builder setYDirection(final Vector2D yDirection) {
+<span class="fc" id="L261">            return setRotation(</span>
+<span class="fc" id="L262">                    Rotation2D.createVectorRotation(Vector2D.Unit.PLUS_Y, yDirection));</span>
+        }
+
+        /** Build a new parallelogram instance with the values configured in this builder.
+         * @return a new parallelogram instance
+         * @throws IllegalArgumentException if the length of any side of the parallelogram is zero,
+         *      as determined by the configured precision context
+         * @see Parallelogram#fromTransformedUnitSquare(Transform, Precision.DoubleEquivalence)
+         */
+        public Parallelogram build() {
+<span class="fc" id="L272">            final AffineTransformMatrix2D transform = AffineTransformMatrix2D.createScale(scale)</span>
+<span class="fc" id="L273">                    .rotate(rotation)</span>
+<span class="fc" id="L274">                    .translate(position);</span>
+
+<span class="fc" id="L276">            return fromTransformedUnitSquare(transform, precision);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

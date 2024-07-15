@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrientedPoint.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.oned</a> &gt; <span class="el_source">OrientedPoint.java</span></div><h1>OrientedPoint.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.oned;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.AbstractHyperplane;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.HyperplaneConvexSubset;
+import org.apache.commons.geometry.core.partitioning.HyperplaneLocation;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.numbers.core.Precision;
+
+/** This class represents a 1D oriented hyperplane.
+ *
+ * &lt;p&gt;A hyperplane in 1D is a simple point, its orientation being a
+ * boolean indicating if the direction is positive or negative.&lt;/p&gt;
+ *
+ * &lt;p&gt;Instances of this class are guaranteed to be immutable.&lt;/p&gt;
+ * @see OrientedPoints
+ */
+public final class OrientedPoint extends AbstractHyperplane&lt;Vector1D&gt; {
+    /** Hyperplane location as a point. */
+    private final Vector1D point;
+
+    /** Hyperplane direction. */
+    private final boolean positiveFacing;
+
+    /** Simple constructor.
+     * @param point location of the hyperplane
+     * @param positiveFacing if true, the hyperplane will face toward positive infinity;
+     *      otherwise, it will point toward negative infinity.
+     * @param precision precision context used to compare floating point values
+     */
+    OrientedPoint(final Vector1D point, final boolean positiveFacing, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L54">        super(precision);</span>
+
+<span class="fc" id="L56">        this.point = point;</span>
+<span class="fc" id="L57">        this.positiveFacing = positiveFacing;</span>
+<span class="fc" id="L58">    }</span>
+
+    /** Get the location of the hyperplane as a point.
+     * @return the hyperplane location as a point
+     * @see #getLocation()
+     */
+    public Vector1D getPoint() {
+<span class="fc" id="L65">        return point;</span>
+    }
+
+    /**
+     * Get the location of the hyperplane as a single value. This is
+     * equivalent to {@code pt.getPoint().getX()}.
+     * @return the location of the hyperplane as a single value.
+     * @see #getPoint()
+     */
+    public double getLocation() {
+<span class="fc" id="L75">        return point.getX();</span>
+    }
+
+    /** Get the direction of the hyperplane's plus side.
+     * @return the hyperplane direction
+     */
+    public Vector1D.Unit getDirection() {
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        return positiveFacing ? Vector1D.Unit.PLUS : Vector1D.Unit.MINUS;</span>
+    }
+
+    /**
+     * Return true if the hyperplane is oriented with its plus
+     * side in the direction of positive infinity.
+     * @return true if the hyperplane is facing toward positive
+     *      infinity
+     */
+    public boolean isPositiveFacing() {
+<span class="fc" id="L92">        return positiveFacing;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrientedPoint reverse() {
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        return new OrientedPoint(point, !positiveFacing, getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrientedPoint transform(final Transform&lt;Vector1D&gt; transform) {
+<span class="fc" id="L104">        final Vector1D transformedPoint = transform.apply(point);</span>
+
+        final Vector1D transformedDir;
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (point.isInfinite()) {</span>
+            // use a test point to determine if the direction switches or not
+<span class="fc" id="L109">            final Vector1D transformedZero = transform.apply(Vector1D.ZERO);</span>
+<span class="fc" id="L110">            final Vector1D transformedZeroDir = transform.apply(getDirection());</span>
+
+<span class="fc" id="L112">            transformedDir = transformedZero.vectorTo(transformedZeroDir);</span>
+<span class="fc" id="L113">        } else {</span>
+<span class="fc" id="L114">            final Vector1D transformedPointPlusDir = transform.apply(point.add(getDirection()));</span>
+<span class="fc" id="L115">            transformedDir = transformedPoint.vectorTo(transformedPointPlusDir);</span>
+        }
+
+<span class="fc" id="L118">        return OrientedPoints.fromPointAndDirection(</span>
+                    transformedPoint,
+                    transformedDir,
+<span class="fc" id="L121">                    getPrecision()</span>
+                );
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double offset(final Vector1D pt) {
+<span class="fc" id="L128">        return offset(pt.getX());</span>
+    }
+
+    /** Compute the offset of the given number line location. This is
+     * a convenience overload of {@link #offset(Vector1D)} for use in
+     * one dimension.
+     * @param location the number line location to compute the offset for
+     * @return the offset of the location from the instance
+     */
+    public double offset(final double location) {
+<span class="fc" id="L138">        final double delta = location - point.getX();</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        return positiveFacing ? delta : -delta;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HyperplaneLocation classify(final Vector1D pt) {
+<span class="fc" id="L145">        return classify(pt.getX());</span>
+    }
+
+    /** Classify the number line location with respect to the instance.
+     * This is a convenience overload of {@link #classify(Vector1D)} for
+     * use in one dimension.
+     * @param location the number line location to classify
+     * @return the classification of the number line location with respect
+     *      to this instance
+     */
+    public HyperplaneLocation classify(final double location) {
+<span class="fc" id="L156">        final double offsetValue = offset(location);</span>
+
+<span class="fc" id="L158">        final double cmp = getPrecision().signum(offsetValue);</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        if (cmp &gt; 0) {</span>
+<span class="fc" id="L160">            return HyperplaneLocation.PLUS;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        } else if (cmp &lt; 0) {</span>
+<span class="fc" id="L162">            return HyperplaneLocation.MINUS;</span>
+        }
+<span class="fc" id="L164">        return HyperplaneLocation.ON;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean similarOrientation(final Hyperplane&lt;Vector1D&gt; other) {
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        return positiveFacing == ((OrientedPoint) other).positiveFacing;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D project(final Vector1D pt) {
+<span class="fc" id="L176">        return this.point;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;Since there are no subspaces in 1D, this method effectively returns a stub implementation of
+     * {@link HyperplaneConvexSubset}, the main purpose of which is to support the proper functioning
+     * of the partitioning code.&lt;/p&gt;
+     */
+    @Override
+    public HyperplaneConvexSubset&lt;Vector1D&gt; span() {
+<span class="fc" id="L187">        return new OrientedPointConvexSubset(this);</span>
+    }
+
+    /** Return true if this instance should be considered equivalent to the argument, using the
+     * given precision context for comparison.
+     * &lt;p&gt;Instances are considered equivalent if they
+     * &lt;ol&gt;
+     *      &lt;li&gt;have equivalent locations and&lt;/li&gt;
+     *      &lt;li&gt;point in the same direction.&lt;/li&gt;
+     * &lt;/ol&gt;
+     * @param other the point to compare with
+     * @param precision precision context to use for the comparison
+     * @return true if this instance should be considered equivalent to the argument
+     * @see Vector1D#eq(Vector1D, Precision.DoubleEquivalence)
+     */
+    public boolean eq(final OrientedPoint other, final Precision.DoubleEquivalence precision) {
+<span class="fc bfc" id="L203" title="All 4 branches covered.">        return point.eq(other.point, precision) &amp;&amp;</span>
+                positiveFacing == other.positiveFacing;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L210">        final int prime = 31;</span>
+
+<span class="fc" id="L212">        int result = 1;</span>
+<span class="fc" id="L213">        result = (prime * result) + Objects.hashCode(point);</span>
+<span class="fc" id="L214">        result = (prime * result) + Boolean.hashCode(positiveFacing);</span>
+<span class="fc" id="L215">        result = (prime * result) + Objects.hashCode(getPrecision());</span>
+
+<span class="fc" id="L217">        return result;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L223" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L224">            return true;</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">        } else if (!(obj instanceof OrientedPoint)) {</span>
+<span class="fc" id="L226">            return false;</span>
+        }
+
+<span class="fc" id="L229">        final OrientedPoint other = (OrientedPoint) obj;</span>
+
+<span class="fc bfc" id="L231" title="All 4 branches covered.">        return Objects.equals(this.point, other.point) &amp;&amp;</span>
+                this.positiveFacing == other.positiveFacing &amp;&amp;
+<span class="fc bfc" id="L233" title="All 2 branches covered.">                Objects.equals(this.getPrecision(), other.getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L239">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L240">        sb.append(this.getClass().getSimpleName())</span>
+<span class="fc" id="L241">            .append(&quot;[point= &quot;)</span>
+<span class="fc" id="L242">            .append(point)</span>
+<span class="fc" id="L243">            .append(&quot;, direction= &quot;)</span>
+<span class="fc" id="L244">            .append(getDirection())</span>
+<span class="fc" id="L245">            .append(']');</span>
+
+<span class="fc" id="L247">        return sb.toString();</span>
+    }
+
+    /** {@link HyperplaneConvexSubset} implementation for Euclidean 1D space. Since there are no subspaces in 1D,
+     * this is effectively a stub implementation, its main use being to allow for the correct functioning of
+     * partitioning code.
+     */
+    private static class OrientedPointConvexSubset implements HyperplaneConvexSubset&lt;Vector1D&gt; {
+        /** The underlying hyperplane for this instance. */
+        private final OrientedPoint hyperplane;
+
+        /** Simple constructor.
+         * @param hyperplane underlying hyperplane instance
+         */
+<span class="fc" id="L261">        OrientedPointConvexSubset(final OrientedPoint hyperplane) {</span>
+<span class="fc" id="L262">            this.hyperplane = hyperplane;</span>
+<span class="fc" id="L263">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        public OrientedPoint getHyperplane() {
+<span class="fc" id="L268">            return hyperplane;</span>
+        }
+
+        /** {@inheritDoc}
+        *
+        * &lt;p&gt;This method always returns {@code false}.&lt;/p&gt;
+        */
+        @Override
+        public boolean isFull() {
+<span class="fc" id="L277">            return false;</span>
+        }
+
+        /** {@inheritDoc}
+        *
+        * &lt;p&gt;This method always returns {@code false}.&lt;/p&gt;
+        */
+        @Override
+        public boolean isEmpty() {
+<span class="fc" id="L286">            return false;</span>
+        }
+
+        /** {@inheritDoc}
+         *
+         * &lt;p&gt;This method always returns {@code false}.&lt;/p&gt;
+         */
+        @Override
+        public boolean isInfinite() {
+<span class="fc" id="L295">            return false;</span>
+        }
+
+        /** {@inheritDoc}
+        *
+        * &lt;p&gt;This method always returns {@code true}.&lt;/p&gt;
+        */
+        @Override
+        public boolean isFinite() {
+<span class="fc" id="L304">            return true;</span>
+        }
+
+        /** {@inheritDoc}
+         *
+         *  &lt;p&gt;This method always returns {@code 0}.&lt;/p&gt;
+         */
+        @Override
+        public double getSize() {
+<span class="fc" id="L313">            return 0;</span>
+        }
+
+        /** {@inheritDoc}
+        *
+        *  &lt;p&gt;This method returns the point for the defining hyperplane.&lt;/p&gt;
+        */
+        @Override
+        public Vector1D getCentroid() {
+<span class="fc" id="L322">            return hyperplane.getPoint();</span>
+        }
+
+        /** {@inheritDoc}
+         *
+         * &lt;p&gt;This method returns {@link RegionLocation#BOUNDARY} if the
+         * point is on the hyperplane and {@link RegionLocation#OUTSIDE}
+         * otherwise.&lt;/p&gt;
+         */
+        @Override
+        public RegionLocation classify(final Vector1D point) {
+<span class="fc bfc" id="L333" title="All 2 branches covered.">            if (hyperplane.contains(point)) {</span>
+<span class="fc" id="L334">                return RegionLocation.BOUNDARY;</span>
+            }
+
+<span class="fc" id="L337">            return RegionLocation.OUTSIDE;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Vector1D closest(final Vector1D point) {
+<span class="fc" id="L343">            return hyperplane.project(point);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Split&lt;OrientedPointConvexSubset&gt; split(final Hyperplane&lt;Vector1D&gt; splitter) {
+<span class="fc" id="L349">            final HyperplaneLocation side = splitter.classify(hyperplane.getPoint());</span>
+
+<span class="fc" id="L351">            OrientedPointConvexSubset minus = null;</span>
+<span class="fc" id="L352">            OrientedPointConvexSubset plus = null;</span>
+
+<span class="fc bfc" id="L354" title="All 2 branches covered.">            if (side == HyperplaneLocation.MINUS) {</span>
+<span class="fc" id="L355">                minus = this;</span>
+<span class="fc bfc" id="L356" title="All 2 branches covered.">            } else if (side == HyperplaneLocation.PLUS) {</span>
+<span class="fc" id="L357">                plus = this;</span>
+            }
+
+<span class="fc" id="L360">            return new Split&lt;&gt;(minus, plus);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public List&lt;OrientedPointConvexSubset&gt; toConvex() {
+<span class="fc" id="L366">            return Collections.singletonList(this);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public OrientedPointConvexSubset transform(final Transform&lt;Vector1D&gt; transform) {
+<span class="fc" id="L372">            return new OrientedPointConvexSubset(getHyperplane().transform(transform));</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public OrientedPointConvexSubset reverse() {
+<span class="fc" id="L378">            return new OrientedPointConvexSubset(hyperplane.reverse());</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public String toString() {
+<span class="fc" id="L384">            final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L385">            sb.append(this.getClass().getSimpleName())</span>
+<span class="fc" id="L386">                .append(&quot;[hyperplane= &quot;)</span>
+<span class="fc" id="L387">                .append(hyperplane)</span>
+<span class="fc" id="L388">                .append(']');</span>
+
+<span class="fc" id="L390">            return sb.toString();</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

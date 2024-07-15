@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AxisSequence.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed.rotation</a> &gt; <span class="el_source">AxisSequence.java</span></div><h1>AxisSequence.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed.rotation;
+
+import org.apache.commons.geometry.euclidean.threed.Vector3D;
+
+/** Enum containing rotation axis sequences for use in defining 3 dimensional rotations.
+ */
+<span class="fc" id="L23">public enum AxisSequence {</span>
+
+    /** Set of Tait-Bryan angles around the &lt;strong&gt;X&lt;/strong&gt;, &lt;strong&gt;Y&lt;/strong&gt;, and
+     * &lt;strong&gt;Z&lt;/strong&gt; axes in that order.
+     */
+<span class="fc" id="L28">    XYZ(AxisSequenceType.TAIT_BRYAN, Vector3D.Unit.PLUS_X, Vector3D.Unit.PLUS_Y, Vector3D.Unit.PLUS_Z),</span>
+
+    /** Set of Tait-Bryan angles around the &lt;strong&gt;X&lt;/strong&gt;, &lt;strong&gt;Z&lt;/strong&gt;, and
+     * &lt;strong&gt;Y&lt;/strong&gt; axes in that order.
+     */
+<span class="fc" id="L33">    XZY(AxisSequenceType.TAIT_BRYAN, Vector3D.Unit.PLUS_X, Vector3D.Unit.PLUS_Z, Vector3D.Unit.PLUS_Y),</span>
+
+    /** Set of Tait-Bryan angles around the &lt;strong&gt;Y&lt;/strong&gt;, &lt;strong&gt;X&lt;/strong&gt;, and
+     * &lt;strong&gt;Z&lt;/strong&gt; axes in that order.
+     */
+<span class="fc" id="L38">    YXZ(AxisSequenceType.TAIT_BRYAN, Vector3D.Unit.PLUS_Y, Vector3D.Unit.PLUS_X, Vector3D.Unit.PLUS_Z),</span>
+
+    /** Set of Tait-Bryan angles around the &lt;strong&gt;Y&lt;/strong&gt;, &lt;strong&gt;Z&lt;/strong&gt;, and
+     * &lt;strong&gt;X&lt;/strong&gt; axes in that order.
+     */
+<span class="fc" id="L43">    YZX(AxisSequenceType.TAIT_BRYAN, Vector3D.Unit.PLUS_Y, Vector3D.Unit.PLUS_Z, Vector3D.Unit.PLUS_X),</span>
+
+    /** Set of Cardan angles.
+     * this ordered set of rotations is around Z, then around X, then
+     * around Y
+     */
+<span class="fc" id="L49">    ZXY(AxisSequenceType.TAIT_BRYAN, Vector3D.Unit.PLUS_Z, Vector3D.Unit.PLUS_X, Vector3D.Unit.PLUS_Y),</span>
+
+    /** Set of Tait-Bryan angles around the &lt;strong&gt;Z&lt;/strong&gt;, &lt;strong&gt;Y&lt;/strong&gt;, and
+     * &lt;strong&gt;X&lt;/strong&gt; axes in that order.
+     */
+<span class="fc" id="L54">    ZYX(AxisSequenceType.TAIT_BRYAN, Vector3D.Unit.PLUS_Z, Vector3D.Unit.PLUS_Y, Vector3D.Unit.PLUS_X),</span>
+
+    /** Set of Euler angles around the &lt;strong&gt;X&lt;/strong&gt;, &lt;strong&gt;Y&lt;/strong&gt;, and
+     * &lt;strong&gt;X&lt;/strong&gt; axes in that order.
+     */
+<span class="fc" id="L59">    XYX(AxisSequenceType.EULER, Vector3D.Unit.PLUS_X, Vector3D.Unit.PLUS_Y, Vector3D.Unit.PLUS_X),</span>
+
+    /** Set of Euler angles around the &lt;strong&gt;X&lt;/strong&gt;, &lt;strong&gt;Z&lt;/strong&gt;, and
+     * &lt;strong&gt;X&lt;/strong&gt; axes in that order.
+     */
+<span class="fc" id="L64">    XZX(AxisSequenceType.EULER, Vector3D.Unit.PLUS_X, Vector3D.Unit.PLUS_Z, Vector3D.Unit.PLUS_X),</span>
+
+    /** Set of Euler angles around the &lt;strong&gt;Y&lt;/strong&gt;, &lt;strong&gt;X&lt;/strong&gt;, and
+     * &lt;strong&gt;Y&lt;/strong&gt; axes in that order.
+     */
+<span class="fc" id="L69">    YXY(AxisSequenceType.EULER, Vector3D.Unit.PLUS_Y, Vector3D.Unit.PLUS_X, Vector3D.Unit.PLUS_Y),</span>
+
+    /** Set of Euler angles around the &lt;strong&gt;Y&lt;/strong&gt;, &lt;strong&gt;Z&lt;/strong&gt;, and
+     * &lt;strong&gt;Y&lt;/strong&gt; axes in that order.
+     */
+<span class="fc" id="L74">    YZY(AxisSequenceType.EULER, Vector3D.Unit.PLUS_Y, Vector3D.Unit.PLUS_Z, Vector3D.Unit.PLUS_Y),</span>
+
+    /** Set of Euler angles around the &lt;strong&gt;Z&lt;/strong&gt;, &lt;strong&gt;X&lt;/strong&gt;, and
+     * &lt;strong&gt;Z&lt;/strong&gt; axes in that order.
+     */
+<span class="fc" id="L79">    ZXZ(AxisSequenceType.EULER, Vector3D.Unit.PLUS_Z, Vector3D.Unit.PLUS_X, Vector3D.Unit.PLUS_Z),</span>
+
+    /** Set of Euler angles around the &lt;strong&gt;Z&lt;/strong&gt;, &lt;strong&gt;Y&lt;/strong&gt;, and
+     * &lt;strong&gt;Z&lt;/strong&gt; axes in that order.
+     */
+<span class="fc" id="L84">    ZYZ(AxisSequenceType.EULER, Vector3D.Unit.PLUS_Z, Vector3D.Unit.PLUS_Y, Vector3D.Unit.PLUS_Z);</span>
+
+    /** The type of axis sequence. */
+    private final AxisSequenceType type;
+
+    /** Axis of the first rotation. */
+    private final Vector3D axis1;
+
+    /** Axis of the second rotation. */
+    private final Vector3D axis2;
+
+    /** Axis of the third rotation. */
+    private final Vector3D axis3;
+
+    /** Simple constructor.
+     * @param type the axis sequence type
+     * @param axis1 first rotation axis
+     * @param axis2 second rotation axis
+     * @param axis3 third rotation axis
+     */
+<span class="fc" id="L104">    AxisSequence(final AxisSequenceType type, final Vector3D axis1, final Vector3D axis2, final Vector3D axis3) {</span>
+<span class="fc" id="L105">        this.type = type;</span>
+
+<span class="fc" id="L107">        this.axis1 = axis1;</span>
+<span class="fc" id="L108">        this.axis2 = axis2;</span>
+<span class="fc" id="L109">        this.axis3 = axis3;</span>
+<span class="fc" id="L110">    }</span>
+
+    /** Get the axis sequence type.
+     * @return the axis sequence type
+     */
+    public AxisSequenceType getType() {
+<span class="fc" id="L116">        return type;</span>
+    }
+
+    /** Get the first rotation axis.
+     * @return the first rotation axis
+     */
+    public Vector3D getAxis1() {
+<span class="fc" id="L123">        return axis1;</span>
+    }
+
+    /** Get the second rotation axis.
+     * @return the second rotation axis
+     */
+    public Vector3D getAxis2() {
+<span class="fc" id="L130">        return axis2;</span>
+    }
+
+    /** Get the third rotation axis.
+     * @return the third rotation axis
+     */
+    public Vector3D getAxis3() {
+<span class="fc" id="L137">        return axis3;</span>
+    }
+
+    /** Get an array containing the 3 rotation axes in order.
+     * @return a 3-element array containing the rotation axes in order
+     */
+    public Vector3D[] toArray() {
+<span class="fc" id="L144">        return new Vector3D[]{axis1, axis2, axis3};</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

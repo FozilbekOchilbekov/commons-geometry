@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Point2S.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Spherical</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.spherical.twod</a> &gt; <span class="el_source">Point2S.java</span></div><h1>Point2S.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.spherical.twod;
+
+import java.util.Comparator;
+
+import org.apache.commons.geometry.core.Point;
+import org.apache.commons.geometry.core.internal.SimpleTupleFormat;
+import org.apache.commons.geometry.euclidean.threed.SphericalCoordinates;
+import org.apache.commons.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.geometry.euclidean.threed.rotation.QuaternionRotation;
+import org.apache.commons.numbers.core.Precision;
+
+/** This class represents a point on the 2-sphere.
+ * &lt;p&gt;Instances of this class are guaranteed to be immutable.&lt;/p&gt;
+ */
+public final class Point2S implements Point&lt;Point2S&gt; {
+
+    /** +I (coordinates: ( azimuth = 0, polar = pi/2 )). */
+<span class="fc" id="L34">    public static final Point2S PLUS_I = new Point2S(0, 0.5 * Math.PI, Vector3D.Unit.PLUS_X);</span>
+
+    /** +J (coordinates: ( azimuth = pi/2, polar = pi/2 ))). */
+<span class="fc" id="L37">    public static final Point2S PLUS_J = new Point2S(0.5 * Math.PI, 0.5 * Math.PI, Vector3D.Unit.PLUS_Y);</span>
+
+    /** +K (coordinates: ( azimuth = any angle, polar = 0 )). */
+<span class="fc" id="L40">    public static final Point2S PLUS_K = new Point2S(0, 0, Vector3D.Unit.PLUS_Z);</span>
+
+    /** -I (coordinates: ( azimuth = pi, polar = pi/2 )). */
+<span class="fc" id="L43">    public static final Point2S MINUS_I = new Point2S(Math.PI, 0.5 * Math.PI, Vector3D.Unit.MINUS_X);</span>
+
+    /** -J (coordinates: ( azimuth = 3pi/2, polar = pi/2 )). */
+<span class="fc" id="L46">    public static final Point2S MINUS_J = new Point2S(1.5 * Math.PI, 0.5 * Math.PI, Vector3D.Unit.MINUS_Y);</span>
+
+    /** -K (coordinates: ( azimuth = any angle, polar = pi )). */
+<span class="fc" id="L49">    public static final Point2S MINUS_K = new Point2S(0, Math.PI, Vector3D.Unit.MINUS_Z);</span>
+
+    /** A point with all coordinates set to NaN. */
+<span class="fc" id="L52">    public static final Point2S NaN = new Point2S(Double.NaN, Double.NaN, null);</span>
+
+    /** Comparator that sorts points in component-wise ascending order, first sorting
+     * by polar value and then by azimuth value. Points are only considered equal if
+     * their components match exactly. Null arguments are evaluated as being greater
+     * than non-null arguments.
+     */
+<span class="fc" id="L59">    public static final Comparator&lt;Point2S&gt; POLAR_AZIMUTH_ASCENDING_ORDER = (a, b) -&gt; {</span>
+<span class="fc" id="L60">        int cmp = 0;</span>
+
+<span class="fc bfc" id="L62" title="All 4 branches covered.">        if (a != null &amp;&amp; b != null) {</span>
+<span class="fc" id="L63">            cmp = Double.compare(a.getPolar(), b.getPolar());</span>
+
+<span class="fc bfc" id="L65" title="All 2 branches covered.">            if (cmp == 0) {</span>
+<span class="fc" id="L66">                cmp = Double.compare(a.getAzimuth(), b.getAzimuth());</span>
+            }
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        } else if (a != null) {</span>
+<span class="fc" id="L69">            cmp = -1;</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        } else if (b != null) {</span>
+<span class="fc" id="L71">            cmp = 1;</span>
+        }
+
+<span class="fc" id="L74">        return cmp;</span>
+    };
+    /** Azimuthal angle in the x-y plane. */
+    private final double azimuth;
+
+    /** Polar angle. */
+    private final double polar;
+
+    /** Corresponding 3D normalized vector. */
+    private final Vector3D.Unit vector;
+
+    /** Build a point from its internal components.
+     * @param azimuth azimuthal angle in the x-y plane
+     * @param polar polar angle
+     * @param vector corresponding vector; if null, the vector is computed
+     */
+<span class="fc" id="L90">    private Point2S(final double azimuth, final double polar, final Vector3D.Unit vector) {</span>
+<span class="fc" id="L91">        this.azimuth = SphericalCoordinates.normalizeAzimuth(azimuth);</span>
+<span class="fc" id="L92">        this.polar = SphericalCoordinates.normalizePolar(polar);</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        this.vector = (vector != null) ?</span>
+<span class="fc" id="L94">                vector :</span>
+<span class="fc" id="L95">                computeVector(azimuth, polar);</span>
+<span class="fc" id="L96">    }</span>
+
+    /** Get the azimuth angle in the x-y plane in the range {@code [0, 2pi)}.
+     * @return azimuth angle in the x-y plane in the range {@code [0, 2pi)}.
+     * @see Point2S#of(double, double)
+     */
+    public double getAzimuth() {
+<span class="fc" id="L103">        return azimuth;</span>
+    }
+
+    /** Get the polar angle in the range {@code [0, pi)}.
+     * @return polar angle in the range {@code [0, pi)}.
+     * @see Point2S#of(double, double)
+     */
+    public double getPolar() {
+<span class="fc" id="L111">        return polar;</span>
+    }
+
+    /** Get the corresponding normalized vector in 3D Euclidean space.
+     * This value will be null if the spherical coordinates of the point
+     * are infinite or NaN.
+     * @return normalized vector
+     */
+    public Vector3D.Unit getVector() {
+<span class="fc" id="L120">        return vector;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getDimension() {
+<span class="fc" id="L126">        return 2;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isNaN() {
+<span class="fc bfc" id="L132" title="All 4 branches covered.">        return Double.isNaN(azimuth) || Double.isNaN(polar);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isInfinite() {
+<span class="fc bfc" id="L138" title="All 6 branches covered.">        return !isNaN() &amp;&amp; (Double.isInfinite(azimuth) || Double.isInfinite(polar));</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isFinite() {
+<span class="fc bfc" id="L144" title="All 4 branches covered.">        return Double.isFinite(azimuth) &amp;&amp; Double.isFinite(polar);</span>
+    }
+
+    /** Get the point exactly opposite this point on the sphere. The returned
+     * point is {@code pi} distance away from the current instance.
+     * @return the point exactly opposite this point on the sphere
+     */
+    public Point2S antipodal() {
+<span class="fc" id="L152">        return from(vector.negate());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double distance(final Point2S point) {
+<span class="fc" id="L158">        return distance(this, point);</span>
+    }
+
+    /** Spherically interpolate a point along the shortest arc between this point and
+     * the given point. The parameter {@code t} controls the interpolation and is expected
+     * to be in the range {@code [0, 1]}, with {@code 0} returning a point equivalent to the
+     * current instance {@code 1} returning a point equivalent to the given instance. If the
+     * points are antipodal, then an arbitrary arc is chosen from the infinite number available.
+     * @param other other point to interpolate with
+     * @param t interpolation parameter
+     * @return spherically interpolated point
+     * @see QuaternionRotation#slerp(QuaternionRotation)
+     * @see QuaternionRotation#createVectorRotation(Vector3D, Vector3D)
+     */
+    public Point2S slerp(final Point2S other, final double t) {
+<span class="fc" id="L173">        final QuaternionRotation start = QuaternionRotation.identity();</span>
+<span class="fc" id="L174">        final QuaternionRotation end = QuaternionRotation.createVectorRotation(getVector(), other.getVector());</span>
+
+<span class="fc" id="L176">        final QuaternionRotation quat = start.slerp(end).apply(t);</span>
+
+<span class="fc" id="L178">        return Point2S.from(quat.apply(getVector()));</span>
+    }
+
+    /** Return true if this point should be considered equivalent to the argument using the
+     * given precision context. This will be true if the distance between the points is
+     * equivalent to zero as evaluated by the precision context.
+     * @param point point to compare with
+     * @param precision precision context used to perform floating point comparisons
+     * @return true if this point should be considered equivalent to the argument using the
+     *      given precision context
+     */
+    public boolean eq(final Point2S point, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L190">        return precision.eqZero(distance(point));</span>
+    }
+
+    /** Get a hashCode for the point.
+     * .
+     * &lt;p&gt;All NaN values have the same hash code.&lt;/p&gt;
+     *
+     * @return a hash code value for this object
+     */
+    @Override
+    public int hashCode() {
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        if (isNaN()) {</span>
+<span class="fc" id="L202">            return 542;</span>
+        }
+<span class="fc" id="L204">        return 134 * (37 * Double.hashCode(azimuth) +  Double.hashCode(polar));</span>
+    }
+
+    /** Test for the equality of two points.
+     *
+     * &lt;p&gt;If all spherical coordinates of two points are exactly the same, and none are
+     * &lt;code&gt;Double.NaN&lt;/code&gt;, the two points are considered to be equal. Note
+     * that the comparison is made using the azimuth and polar coordinates only; the
+     * corresponding 3D vectors are not compared. This is significant at the poles,
+     * where an infinite number of points share the same underlying 3D vector but may
+     * have different spherical coordinates. For example, the points {@code (0, 0)}
+     * and {@code (1, 0)} (both located at a pole but with different azimuths) will
+     * &lt;em&gt;not&lt;/em&gt; be considered equal by this method, even though they share the
+     * exact same underlying 3D vector.&lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;code&gt;NaN&lt;/code&gt; coordinates are considered to affect the point globally
+     * and be equals to each other - i.e, if either (or all) coordinates of the
+     * point are equal to &lt;code&gt;Double.NaN&lt;/code&gt;, the point is equal to
+     * {@link #NaN}.
+     * &lt;/p&gt;
+     *
+     * @param other Object to test for equality to this
+     * @return true if two points on the 2-sphere objects are exactly equal, false if
+     *         object is null, not an instance of Point2S, or
+     *         not equal to this Point2S instance
+     */
+    @Override
+    public boolean equals(final Object other) {
+<span class="fc bfc" id="L233" title="All 2 branches covered.">        if (this == other) {</span>
+<span class="fc" id="L234">            return true;</span>
+        }
+<span class="fc bfc" id="L236" title="All 2 branches covered.">        if (!(other instanceof Point2S)) {</span>
+<span class="fc" id="L237">            return false;</span>
+        }
+
+<span class="fc" id="L240">        final Point2S rhs = (Point2S) other;</span>
+<span class="fc bfc" id="L241" title="All 2 branches covered.">        if (rhs.isNaN()) {</span>
+<span class="fc" id="L242">            return this.isNaN();</span>
+        }
+
+<span class="fc bfc" id="L245" title="All 2 branches covered.">        return Double.compare(azimuth, rhs.azimuth) == 0 &amp;&amp;</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">                Double.compare(polar, rhs.polar) == 0;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L252">        return SimpleTupleFormat.getDefault().format(getAzimuth(), getPolar());</span>
+    }
+
+    /** Build a vector from its spherical coordinates.
+     * @param azimuth azimuthal angle in the x-y plane
+     * @param polar polar angle
+     * @return point instance with the given coordinates
+     * @see #getAzimuth()
+     * @see #getPolar()
+     */
+    public static Point2S of(final double azimuth, final double polar) {
+<span class="fc" id="L263">        return new Point2S(azimuth, polar, null);</span>
+    }
+
+    /** Build a point from its underlying 3D vector.
+     * @param vector 3D vector
+     * @return point instance with the coordinates determined by the given 3D vector
+     * @exception IllegalStateException if vector norm is zero
+     */
+    public static Point2S from(final Vector3D vector) {
+<span class="fc" id="L272">        final SphericalCoordinates coords = SphericalCoordinates.fromCartesian(vector);</span>
+
+<span class="fc" id="L274">        return new Point2S(coords.getAzimuth(), coords.getPolar(), vector.normalize());</span>
+    }
+
+    /** Parses the given string and returns a new point instance. The expected string
+     * format is the same as that returned by {@link #toString()}.
+     * @param str the string to parse
+     * @return point instance represented by the string
+     * @throws IllegalArgumentException if the given string has an invalid format
+     */
+    public static Point2S parse(final String str) {
+<span class="fc" id="L284">        return SimpleTupleFormat.getDefault().parse(str, Point2S::of);</span>
+    }
+
+    /** Compute the distance (angular separation) between two points.
+     * @param p1 first vector
+     * @param p2 second vector
+     * @return the angular separation between p1 and p2
+     */
+    public static double distance(final Point2S p1, final Point2S p2) {
+<span class="fc" id="L293">        return p1.vector.angle(p2.vector);</span>
+    }
+
+    /** Compute the 3D Euclidean vector associated with the given spherical coordinates.
+     * Null is returned if the coordinates are infinite or NaN.
+     * @param azimuth azimuth value
+     * @param polar polar value
+     * @return the 3D Euclidean vector associated with the given spherical coordinates
+     *      or null if either of the arguments are infinite or NaN.
+     */
+    private static Vector3D.Unit computeVector(final double azimuth, final double polar) {
+<span class="fc bfc" id="L304" title="All 4 branches covered.">        if (Double.isFinite(azimuth) &amp;&amp; Double.isFinite(polar)) {</span>
+<span class="fc" id="L305">            return SphericalCoordinates.toCartesian(1, azimuth, polar).normalize();</span>
+        }
+<span class="fc" id="L307">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

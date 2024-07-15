@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmbeddedTreeLineSubset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.twod</a> &gt; <span class="el_source">EmbeddedTreeLineSubset.java</span></div><h1>EmbeddedTreeLineSubset.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.twod;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.internal.HyperplaneSubsets;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.geometry.core.partitioning.SplitLocation;
+import org.apache.commons.geometry.euclidean.oned.Interval;
+import org.apache.commons.geometry.euclidean.oned.OrientedPoint;
+import org.apache.commons.geometry.euclidean.oned.OrientedPoints;
+import org.apache.commons.geometry.euclidean.oned.RegionBSPTree1D;
+import org.apache.commons.geometry.euclidean.oned.Vector1D;
+import org.apache.commons.geometry.euclidean.twod.Line.SubspaceTransform;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing an arbitrary subset of a line using a {@link RegionBSPTree1D}.
+ * This class can represent convex, non-convex, finite, infinite, and empty regions.
+ *
+ * &lt;p&gt;This class is mutable and &lt;em&gt;not&lt;/em&gt; thread safe.&lt;/p&gt;
+ */
+public final class EmbeddedTreeLineSubset extends LineSubset {
+    /** The 1D region representing the area on the line. */
+    private final RegionBSPTree1D region;
+
+    /** Construct a new, empty subset for the given line.
+     * @param line line defining the subset
+     */
+    public EmbeddedTreeLineSubset(final Line line) {
+<span class="fc" id="L49">        this(line, false);</span>
+<span class="fc" id="L50">    }</span>
+
+    /** Construct a new subset for the given line. If {@code full}
+     * is true, then the subset will cover the entire line; otherwise,
+     * it will be empty.
+     * @param line line defining the subset
+     * @param full if true, the subset will cover the entire space;
+     *      otherwise it will be empty
+     */
+    public EmbeddedTreeLineSubset(final Line line, final boolean full) {
+<span class="fc" id="L60">        this(line, new RegionBSPTree1D(full));</span>
+<span class="fc" id="L61">    }</span>
+
+    /** Construct a new instance from its defining line and subspace region. The give
+     * BSP tree is used directly by this instance; it is not copied.
+     * @param line line defining the subset
+     * @param region subspace region for the instance
+     */
+    public EmbeddedTreeLineSubset(final Line line, final RegionBSPTree1D region) {
+<span class="fc" id="L69">        super(line);</span>
+
+<span class="fc" id="L71">        this.region = region;</span>
+<span class="fc" id="L72">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isFull() {
+<span class="fc" id="L77">        return region.isFull();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isEmpty() {
+<span class="fc" id="L83">        return region.isEmpty();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getSize() {
+<span class="fc" id="L89">        return region.getSize();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector2D getCentroid() {
+<span class="fc" id="L95">        final Vector1D subspaceCentroid = region.getCentroid();</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (subspaceCentroid != null) {</span>
+<span class="fc" id="L97">            return getLine().toSpace(subspaceCentroid);</span>
+        }
+<span class="fc" id="L99">        return null;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Bounds2D getBounds() {
+<span class="fc" id="L105">        final double min = region.getMin();</span>
+<span class="fc" id="L106">        final double max = region.getMax();</span>
+
+<span class="fc bfc" id="L108" title="All 4 branches covered.">        if (Double.isFinite(min) &amp;&amp; Double.isFinite(max)) {</span>
+<span class="fc" id="L109">            final Line line = getLine();</span>
+
+<span class="fc" id="L111">            return Bounds2D.builder()</span>
+<span class="fc" id="L112">                    .add(line.toSpace(min))</span>
+<span class="fc" id="L113">                    .add(line.toSpace(max))</span>
+<span class="fc" id="L114">                    .build();</span>
+        }
+
+<span class="fc" id="L117">        return null;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector2D closest(final Vector2D pt) {
+<span class="fc" id="L123">        return HyperplaneSubsets.closestToEmbeddedRegion(pt, getLine(), region);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EmbeddedTreeLineSubset transform(final Transform&lt;Vector2D&gt; transform) {
+<span class="fc" id="L129">        final SubspaceTransform st = getLine().subspaceTransform(transform);</span>
+
+<span class="fc" id="L131">        final RegionBSPTree1D tRegion = RegionBSPTree1D.empty();</span>
+<span class="fc" id="L132">        tRegion.copy(region);</span>
+<span class="fc" id="L133">        tRegion.transform(st.getTransform());</span>
+
+<span class="fc" id="L135">        return new EmbeddedTreeLineSubset(st.getLine(), tRegion);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;LineConvexSubset&gt; toConvex() {
+<span class="fc" id="L141">        final List&lt;Interval&gt; intervals = region.toIntervals();</span>
+
+<span class="fc" id="L143">        final Line line = getLine();</span>
+<span class="fc" id="L144">        final List&lt;LineConvexSubset&gt; convexSubsets = new ArrayList&lt;&gt;(intervals.size());</span>
+
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        for (final Interval interval : intervals) {</span>
+<span class="fc" id="L147">            convexSubsets.add(Lines.subsetFromInterval(line, interval));</span>
+<span class="fc" id="L148">        }</span>
+
+<span class="fc" id="L150">        return convexSubsets;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionBSPTree1D getSubspaceRegion() {
+<span class="fc" id="L156">        return region;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionLocation classifyAbscissa(final double abscissa) {
+<span class="fc" id="L162">        return region.classify(abscissa);</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;In all cases, the current instance is not modified. However, In order to avoid
+     * unnecessary copying, this method will use the current instance as the split value when
+     * the instance lies entirely on the plus or minus side of the splitter. For example, if
+     * this instance lies entirely on the minus side of the splitter, the subplane
+     * returned by {@link Split#getMinus()} will be this instance. Similarly, {@link Split#getPlus()}
+     * will return the current instance if it lies entirely on the plus side. Callers need to make
+     * special note of this, since this class is mutable.&lt;/p&gt;
+     */
+    @Override
+    public Split&lt;EmbeddedTreeLineSubset&gt; split(final Hyperplane&lt;Vector2D&gt; splitter) {
+<span class="fc" id="L177">        final Line thisLine = getLine();</span>
+<span class="fc" id="L178">        final Line splitterLine = (Line) splitter;</span>
+<span class="fc" id="L179">        final Precision.DoubleEquivalence precision = getPrecision();</span>
+
+<span class="fc" id="L181">        final Vector2D intersection = splitterLine.intersection(thisLine);</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">        if (intersection == null) {</span>
+<span class="fc" id="L183">            return getNonIntersectingSplitResult(splitterLine, this);</span>
+        }
+
+<span class="fc" id="L186">        final double abscissa = thisLine.abscissa(intersection);</span>
+<span class="fc" id="L187">        final OrientedPoint subspaceSplitter = OrientedPoints.fromLocationAndDirection(</span>
+                abscissa,
+<span class="fc" id="L189">                splitterPlusIsPositiveFacing(splitterLine),</span>
+                precision);
+
+<span class="fc" id="L192">        final Split&lt;RegionBSPTree1D&gt; subspaceSplit = region.split(subspaceSplitter);</span>
+<span class="fc" id="L193">        final SplitLocation subspaceSplitLoc = subspaceSplit.getLocation();</span>
+
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        if (SplitLocation.MINUS == subspaceSplitLoc) {</span>
+<span class="fc" id="L196">            return new Split&lt;&gt;(this, null);</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        } else if (SplitLocation.PLUS == subspaceSplitLoc) {</span>
+<span class="fc" id="L198">            return new Split&lt;&gt;(null, this);</span>
+        }
+
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">        final EmbeddedTreeLineSubset minus = (subspaceSplit.getMinus() != null) ?</span>
+<span class="fc" id="L202">                new EmbeddedTreeLineSubset(thisLine, subspaceSplit.getMinus()) :</span>
+<span class="pc" id="L203">                null;</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">        final EmbeddedTreeLineSubset plus = (subspaceSplit.getPlus() != null) ?</span>
+<span class="fc" id="L205">                new EmbeddedTreeLineSubset(thisLine, subspaceSplit.getPlus()) :</span>
+<span class="pc" id="L206">                null;</span>
+
+<span class="fc" id="L208">        return new Split&lt;&gt;(minus, plus);</span>
+    }
+
+    /** Add a line subset to this instance.
+     * @param subset the line subset to add
+     * @throws IllegalArgumentException if the given line subset is not from
+     *      a line equivalent to this instance
+     */
+    public void add(final LineConvexSubset subset) {
+<span class="fc" id="L217">        Lines.validateLinesEquivalent(getLine(), subset.getLine());</span>
+
+<span class="fc" id="L219">        region.add(subset.getInterval());</span>
+<span class="fc" id="L220">    }</span>
+
+    /** Add the region represented by the given line subset to this instance.
+     * The argument is not modified.
+     * @param subset line subset to add
+     * @throws IllegalArgumentException if the given line subset is not from
+     *      a line equivalent to this instance
+     */
+    public void add(final EmbeddedTreeLineSubset subset) {
+<span class="fc" id="L229">        Lines.validateLinesEquivalent(getLine(), subset.getLine());</span>
+
+<span class="fc" id="L231">        region.union(subset.getSubspaceRegion());</span>
+<span class="fc" id="L232">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L237">        final Line line = getLine();</span>
+
+<span class="fc" id="L239">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L240">        sb.append(this.getClass().getSimpleName())</span>
+<span class="fc" id="L241">            .append('[')</span>
+<span class="fc" id="L242">            .append(&quot;lineOrigin= &quot;)</span>
+<span class="fc" id="L243">            .append(line.getOrigin())</span>
+<span class="fc" id="L244">            .append(&quot;, lineDirection= &quot;)</span>
+<span class="fc" id="L245">            .append(line.getDirection())</span>
+<span class="fc" id="L246">            .append(&quot;, region= &quot;)</span>
+<span class="fc" id="L247">            .append(region)</span>
+<span class="fc" id="L248">            .append(']');</span>
+
+<span class="fc" id="L250">        return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

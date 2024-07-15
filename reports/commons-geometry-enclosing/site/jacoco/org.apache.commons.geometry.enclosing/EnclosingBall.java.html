@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EnclosingBall.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Enclosing</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.enclosing</a> &gt; <span class="el_source">EnclosingBall.java</span></div><h1>EnclosingBall.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.enclosing;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.geometry.core.Point;
+import org.apache.commons.numbers.core.Precision;
+
+/** This class represents a ball enclosing some points.
+ * @param &lt;P&gt; Point type.
+ * @see Point
+ * @see Encloser
+ */
+public class EnclosingBall&lt;P extends Point&lt;P&gt;&gt; {
+    /** Center of the ball. */
+    private final P center;
+
+    /** Radius of the ball. */
+    private final double radius;
+
+    /** Support points used to define the ball. */
+    private final List&lt;P&gt; support;
+
+    /** Construct an enclosing ball defined by a collection of support points. Callers are responsible
+     * for ensuring that the given points lie inside the ball. No validation is performed.
+     * @param center center of the ball
+     * @param radius radius of the ball
+     * @param support support points used to define the ball
+     */
+<span class="fc" id="L48">    public EnclosingBall(final P center, final double radius, final Collection&lt;P&gt; support) {</span>
+<span class="fc" id="L49">        this.center  = center;</span>
+<span class="fc" id="L50">        this.radius  = radius;</span>
+<span class="fc" id="L51">        this.support = Collections.unmodifiableList(new ArrayList&lt;&gt;(support));</span>
+<span class="fc" id="L52">    }</span>
+
+    /** Get the center of the ball.
+     * @return center of the ball
+     */
+    public P getCenter() {
+<span class="fc" id="L58">        return center;</span>
+    }
+
+    /** Get the radius of the ball.
+     * @return radius of the ball (can be negative if the ball is empty)
+     */
+    public double getRadius() {
+<span class="fc" id="L65">        return radius;</span>
+    }
+
+    /** Get the support points used to define the ball.
+     * @return support points used to define the ball
+     */
+    public List&lt;P&gt; getSupport() {
+<span class="fc" id="L72">        return support;</span>
+    }
+
+    /** Get the number of support points used to define the ball.
+     * @return number of support points used to define the ball
+     */
+    public int getSupportSize() {
+<span class="fc" id="L79">        return support.size();</span>
+    }
+
+    /** Check if a point is within the ball or on the boundary. True is returned if the
+     * distance from the center of the ball to the given point is strictly less than
+     * or equal to the ball radius.
+     * @param point point to test
+     * @return true if the point is within the ball or on the boundary
+     */
+    public boolean contains(final P point) {
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        return point.distance(center) &lt;= radius;</span>
+    }
+
+    /** Check if a point is within the ball or on the boundary, using the given precision
+     * context for floating point comparison. True is returned if the distance from the
+     * center of the ball to the given point is less than or equal to the ball radius
+     * as evaluated by the precision context.
+     * @param point point to test
+     * @param precision precision context to use for floating point comparisons
+     * @return true if the point is within the ball or on the boundary as evaluated by
+     *      the precision context
+     */
+    public boolean contains(final P point, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L102">        return precision.lte(point.distance(center), radius);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L108">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L109">        sb.append(getClass().getSimpleName())</span>
+<span class="fc" id="L110">            .append(&quot;[center= &quot;)</span>
+<span class="fc" id="L111">            .append(getCenter())</span>
+<span class="fc" id="L112">            .append(&quot;, radius= &quot;)</span>
+<span class="fc" id="L113">            .append(getRadius())</span>
+<span class="fc" id="L114">            .append(']');</span>
+
+<span class="fc" id="L116">        return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConvexHull2D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.twod.hull</a> &gt; <span class="el_source">ConvexHull2D.java</span></div><h1>ConvexHull2D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.apache.commons.geometry.euclidean.twod.hull;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.geometry.core.ConvexHull;
+import org.apache.commons.geometry.core.collection.PointSet;
+import org.apache.commons.geometry.euclidean.EuclideanCollections;
+import org.apache.commons.geometry.euclidean.twod.ConvexArea;
+import org.apache.commons.geometry.euclidean.twod.Lines;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.geometry.euclidean.twod.path.LinePath;
+import org.apache.commons.numbers.core.Precision;
+
+/**
+ * This class represents a convex hull in two-dimensional Euclidean space.
+ */
+public final class ConvexHull2D implements ConvexHull&lt;Vector2D&gt; {
+
+    /** Vertices for the convex hull, in order. */
+    private final List&lt;Vector2D&gt; vertices;
+
+    /** Polyline path for the convex hull. */
+    private final LinePath path;
+
+    /** Simple constructor; no validation is performed.
+     * @param vertices the vertices of the convex hull; callers are responsible for ensuring that
+     *      the given vertices are in order, unique, and define a convex hull.
+     * @param precision precision context used to compare floating point numbers
+     */
+<span class="fc" id="L51">    ConvexHull2D(final Collection&lt;Vector2D&gt; vertices, final Precision.DoubleEquivalence precision) {</span>
+<span class="fc" id="L52">        this.vertices = Collections.unmodifiableList(new ArrayList&lt;&gt;(vertices));</span>
+<span class="fc" id="L53">        this.path = buildHullPath(vertices, precision);</span>
+<span class="fc" id="L54">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;Vector2D&gt; getVertices() {
+<span class="fc" id="L59">        return vertices;</span>
+    }
+
+    /** Get a path defining the convex hull. The path will contain
+     * &lt;ul&gt;
+     *      &lt;li&gt;zero segments if the hull consists of only a single point,&lt;/li&gt;
+     *      &lt;li&gt;one segment if the hull consists of two points,&lt;/li&gt;
+     *      &lt;li&gt;three or more segments defining a closed loop if the hull consists of more than
+     *          two non-collinear points.&lt;/li&gt;
+     * &lt;/ul&gt;
+     * @return polyline path defining the convex hull
+     */
+    public LinePath getPath() {
+<span class="fc" id="L72">        return path;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConvexArea getRegion() {
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        return path.isClosed() ?</span>
+<span class="fc" id="L79">                ConvexArea.convexPolygonFromPath(path) :</span>
+<span class="fc" id="L80">                null;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L86">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L87">        sb.append(getClass().getSimpleName())</span>
+<span class="fc" id="L88">            .append(&quot;[vertices= &quot;)</span>
+<span class="fc" id="L89">            .append(getVertices())</span>
+<span class="fc" id="L90">            .append(']');</span>
+
+<span class="fc" id="L92">        return sb.toString();</span>
+    }
+
+    /** Build a polyline representing the path for a convex hull.
+     * @param vertices convex hull vertices
+     * @param precision precision context used to compare floating point values
+     * @return path for the convex hull defined by the given vertices
+     */
+    private static LinePath buildHullPath(final Collection&lt;Vector2D&gt; vertices,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        if (vertices.size() &lt; 2) {</span>
+<span class="fc" id="L103">            return LinePath.empty();</span>
+        }
+
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        final boolean closeLoop = vertices.size() &gt; 2;</span>
+
+<span class="fc" id="L108">        return LinePath.builder(precision)</span>
+<span class="fc" id="L109">                .appendVertices(vertices)</span>
+<span class="fc" id="L110">                .build(closeLoop);</span>
+    }
+
+    /** Class used to build convex hulls. The builder is based on the Akl-Toussaint
+     * heuristic to construct the hull. The heuristic is based on the idea of a
+     * convex quadrilateral, which is formed by four points with the lowest and
+     * highest x / y coordinates. Any point that lies inside this quadrilateral can
+     * not be part of the convex hull and can thus be safely discarded before
+     * generating the convex hull itself.
+     * &lt;p&gt;
+     * The complexity of the operation is O(n), and may greatly improve the time it
+     * takes to construct the convex hull afterwards, depending on the point
+     * distribution.
+     *
+     * @see &lt;a href=
+     *      &quot;https://en.wikipedia.org/wiki/Convex_hull_algorithms#Akl-Toussaint_heuristic&quot;&gt;
+     *      Akl-Toussaint heuristic (Wikipedia)&lt;/a&gt;
+     */
+    public static final class Builder {
+
+        /** Corner of quadrilateral with minimal x coordinate. */
+        private Vector2D minX;
+
+        /** Corner of quadrilateral with maximal x coordinate. */
+        private Vector2D maxX;
+
+        /** Corner of quadrilateral with minimal y coordinate. */
+        private Vector2D minY;
+
+        /** Corner of quadrilateral with maximal y coordinate. */
+        private Vector2D maxY;
+
+        /** Collection of all remaining candidates for a convex hull. */
+        private final PointSet&lt;Vector2D&gt; candidates;
+
+        /** Points are tested against this quadrilateral. */
+        private final List&lt;Vector2D&gt; quadrilateral;
+
+        /** A precision context for comparing points. */
+        private final Precision.DoubleEquivalence precision;
+
+        /** Indicates if collinear points on the hull shall be present in the output.
+         * If {@code false}, only the extreme points are added to the hull.
+         */
+        private final boolean includeCollinearPoints;
+
+        /** Return a {@link Builder} instance configured with the given precision
+         * context. The precision context is used when comparing points.
+         *
+         * @param builderPrecision       precision context to use when building a convex
+         *                               hull from raw vertices; may be null if raw
+         *                               vertices are not used.
+         * @param includeCollinearPoints whether collinear points shall be added as hull
+         *                               vertices
+         */
+<span class="fc" id="L165">        public Builder(final boolean includeCollinearPoints, final Precision.DoubleEquivalence builderPrecision) {</span>
+<span class="fc" id="L166">            this.precision = builderPrecision;</span>
+<span class="fc" id="L167">            this.includeCollinearPoints = includeCollinearPoints;</span>
+<span class="fc" id="L168">            candidates = EuclideanCollections.pointSet2D(builderPrecision);</span>
+<span class="fc" id="L169">            quadrilateral = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L170">        }</span>
+
+        /** Appends the given point to a collection of possible hull points, if and only
+         * if the given point is outside of a constructed quadrilateral of extreme properties.
+         *
+         * @param point a given point.
+         * @return this instance.
+         */
+        public Builder append(Vector2D point) {
+
+            // Checks if the given point supersedes one of the corners.
+<span class="fc bfc" id="L181" title="All 2 branches covered.">            if (checkCorners(point)) {</span>
+                //build quadrilateral if any of the corners has changed.
+<span class="fc" id="L183">                buildQuadrilateral(minY, maxX, maxY, minX);</span>
+<span class="fc" id="L184">                return this;</span>
+            }
+
+            // if the quadrilateral is not well formed, e.g. only 2 points, do not attempt to reduce
+<span class="fc bfc" id="L188" title="All 2 branches covered.">            if (quadrilateral.size() &lt; 3) {</span>
+                // Point cannot yet be dismissed.
+<span class="fc" id="L190">                candidates.add(point);</span>
+<span class="fc" id="L191">                return this;</span>
+            }
+
+            // check all points if they are within the quadrilateral
+            // in which case they can not be part of the convex hull
+<span class="fc bfc" id="L196" title="All 2 branches covered.">            if (!insideQuadrilateral(point)) {</span>
+<span class="fc" id="L197">                candidates.add(point);</span>
+            }
+
+<span class="fc" id="L200">            return this;</span>
+        }
+
+        /** Appends the given points to a collection of possible hull points, if and only
+         * if the given points are outside of a constructed quadrilateral of extreme
+         * properties.
+         *
+         * @param points a given collection of points.
+         * @throws NullPointerException if points is {@code null}.
+         * @return this instance.
+         */
+        public Builder append(Collection&lt;Vector2D&gt; points) {
+<span class="fc" id="L212">            points.forEach(this::append);</span>
+<span class="fc" id="L213">            return this;</span>
+        }
+
+        /**
+         * Build a convex hull from the set appended points.
+         *
+         * @return the convex hull
+         * @throws IllegalStateException if generator fails to generate a convex hull for
+         *      the given set of input points
+         */
+        public ConvexHull2D build() {
+            Collection&lt;Vector2D&gt; hullVertices;
+<span class="fc bfc" id="L225" title="All 2 branches covered.">            if (candidates.size() &lt; 2) {</span>
+<span class="fc" id="L226">                hullVertices = candidates;</span>
+            } else {
+<span class="fc" id="L228">                hullVertices = findHullVertices(candidates);</span>
+            }
+
+<span class="fc bfc" id="L231" title="All 2 branches covered.">            if (!isConvex(hullVertices)) {</span>
+<span class="fc" id="L232">                throw new IllegalStateException(&quot;Convex hull algorithm failed to generate solution&quot;);</span>
+            }
+
+<span class="fc" id="L235">            return new ConvexHull2D(hullVertices, precision);</span>
+        }
+
+        /** Build the convex quadrilateral with the found corner points (with min/max x/y
+         * coordinates).
+         *
+         * @param points the respective points with min/max x/y coordinate
+         */
+        private void buildQuadrilateral(final Vector2D... points) {
+<span class="fc" id="L244">            quadrilateral.clear();</span>
+<span class="fc bfc" id="L245" title="All 2 branches covered.">            for (final Vector2D p : points) {</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">                if (!quadrilateral.contains(p)) {</span>
+<span class="fc" id="L247">                    quadrilateral.add(p);</span>
+                }
+            }
+<span class="fc" id="L250">        }</span>
+
+        /**
+         * Checks if the given point supersedes one of the corners. If it does the old
+         * corner is removed and the point added to the collection of points.
+         *
+         * @param point a given point.
+         * @return {@code true} if any of the corners changed as a result of the check,
+         *         {@code false} otherwise.
+         */
+        boolean checkCorners(Vector2D point) {
+<span class="fc bfc" id="L261" title="All 2 branches covered.">            if (minX == null) {</span>
+<span class="fc" id="L262">                minX = minY = maxX = maxY = point;</span>
+<span class="fc" id="L263">                candidates.add(point);</span>
+<span class="fc" id="L264">                return true;</span>
+            }
+<span class="fc" id="L266">            boolean hasBeenModified = false;</span>
+<span class="fc bfc" id="L267" title="All 2 branches covered.">            if (point.getX() &lt; minX.getX()) {</span>
+<span class="fc" id="L268">                minX = point;</span>
+<span class="fc" id="L269">                candidates.add(point);</span>
+<span class="fc" id="L270">                hasBeenModified = true;</span>
+            }
+<span class="fc bfc" id="L272" title="All 2 branches covered.">            if (point.getX() &gt; maxX.getX()) {</span>
+<span class="fc" id="L273">                maxX = point;</span>
+<span class="fc" id="L274">                candidates.add(point);</span>
+<span class="fc" id="L275">                hasBeenModified = true;</span>
+            }
+<span class="fc bfc" id="L277" title="All 2 branches covered.">            if (point.getY() &lt; minY.getY()) {</span>
+<span class="fc" id="L278">                minY = point;</span>
+<span class="fc" id="L279">                candidates.add(point);</span>
+<span class="fc" id="L280">                hasBeenModified = true;</span>
+            }
+<span class="fc bfc" id="L282" title="All 2 branches covered.">            if (point.getY() &gt; maxY.getY()) {</span>
+<span class="fc" id="L283">                maxY = point;</span>
+<span class="fc" id="L284">                candidates.add(point);</span>
+<span class="fc" id="L285">                hasBeenModified = true;</span>
+            }
+<span class="fc" id="L287">            return hasBeenModified;</span>
+        }
+
+        /** Checks if the given point is located within the convex quadrilateral.
+         * @param point the point to check
+         * @return {@code true} if the point is inside the quadrilateral, {@code false} otherwise
+         */
+        private boolean insideQuadrilateral(final Vector2D point) {
+
+<span class="fc" id="L296">            Vector2D v1 = quadrilateral.get(quadrilateral.size() - 1);</span>
+<span class="fc" id="L297">            Vector2D v2 = quadrilateral.get(0);</span>
+
+<span class="pc bpc" id="L299" title="1 of 4 branches missed.">            if (point.equals(v1) || point.equals(v2)) {</span>
+<span class="fc" id="L300">                return true;</span>
+            }
+
+            // get the location of the point relative to the first two vertices
+<span class="fc" id="L304">            final double last = signedAreaPoints(v1, v2, point);</span>
+
+            // If the area is zero then this means the given point is on a boundary line.
+            // and must be included as collinear point.
+<span class="fc bfc" id="L308" title="All 4 branches covered.">            if (precision.eq(last, 0.0) &amp;&amp; includeCollinearPoints) {</span>
+<span class="fc" id="L309">                return false;</span>
+            }
+
+<span class="fc" id="L312">            final int size = quadrilateral.size();</span>
+            // loop through the rest of the vertices
+<span class="fc bfc" id="L314" title="All 2 branches covered.">            for (int i = 1; i &lt; size; i++) {</span>
+<span class="fc" id="L315">                v1 = v2;</span>
+<span class="fc" id="L316">                v2 = quadrilateral.get(i);</span>
+
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">                if (point.equals(v2)) {</span>
+<span class="nc" id="L319">                    return true;</span>
+                }
+
+                // do side of line test: multiply the last location with this location
+                // if they are the same sign then the operation will yield a positive result
+                // -x * -y = +xy, x * y = +xy, -x * y = -xy, x * -y = -xy
+<span class="fc" id="L325">                double signedArea = signedAreaPoints(v1, v2, point);</span>
+                // three collinear points have an area of zero. If we include collinear points
+                // we have to consider this case.
+<span class="fc bfc" id="L328" title="All 6 branches covered.">                if (last * signedArea &lt; 0 || precision.eq(signedArea, 0.0) &amp;&amp; includeCollinearPoints) {</span>
+<span class="fc" id="L329">                    return false;</span>
+                }
+            }
+<span class="fc" id="L332">            return true;</span>
+        }
+
+        /** Compute the signed area of the parallelogram formed by vectors between the given points. The first
+         * vector points from {@code p0} to {@code p1} and the second from {@code p0} to {@code p3}.
+         * @param p0 first point
+         * @param p1 second point
+         * @param p2 third point
+         * @return signed area of parallelogram formed by vectors between the given points
+         */
+        private static double signedAreaPoints(final Vector2D p0, final Vector2D p1, final Vector2D p2) {
+<span class="fc" id="L343">            return p0.vectorTo(p1).signedArea(p0.vectorTo(p2));</span>
+        }
+
+        /**
+         * Find the convex hull vertices from the set of input points.
+         * @param points the set of input points
+         * @return the convex hull vertices in CCW winding
+         */
+        private Collection&lt;Vector2D&gt; findHullVertices(final Collection&lt;Vector2D&gt; points) {
+
+<span class="fc" id="L353">            final List&lt;Vector2D&gt; pointsSortedByXAxis = new ArrayList&lt;&gt;(points);</span>
+
+            // sort the points in increasing order on the x-axis
+<span class="fc" id="L356">            pointsSortedByXAxis.sort((o1, o2) -&gt; {</span>
+                // need to take the tolerance value into account, otherwise collinear points
+                // will not be handled correctly when building the upper/lower hull
+<span class="fc" id="L359">                final int cmp = precision.compare(o1.getX(), o2.getX());</span>
+<span class="fc bfc" id="L360" title="All 2 branches covered.">                if (cmp == 0) {</span>
+<span class="fc" id="L361">                    return precision.compare(o1.getY(), o2.getY());</span>
+                } else {
+<span class="fc" id="L363">                    return cmp;</span>
+                }
+            });
+
+            // build lower hull
+<span class="fc" id="L368">            final List&lt;Vector2D&gt; lowerHull = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L369" title="All 2 branches covered.">            for (final Vector2D p : pointsSortedByXAxis) {</span>
+<span class="fc" id="L370">                updateHull(p, lowerHull);</span>
+<span class="fc" id="L371">            }</span>
+
+            // build upper hull
+<span class="fc" id="L374">            final List&lt;Vector2D&gt; upperHull = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">            for (int idx = pointsSortedByXAxis.size() - 1; idx &gt;= 0; idx--) {</span>
+<span class="fc" id="L376">                final Vector2D p = pointsSortedByXAxis.get(idx);</span>
+<span class="fc" id="L377">                updateHull(p, upperHull);</span>
+            }
+
+            // concatenate the lower and upper hulls
+            // the first point of each list is omitted as it is repeated at the end of the other list
+<span class="fc" id="L382">            final List&lt;Vector2D&gt; hullVertices = new ArrayList&lt;&gt;(lowerHull.size() + upperHull.size() - 2);</span>
+<span class="fc bfc" id="L383" title="All 2 branches covered.">            for (int idx = 1; idx &lt; lowerHull.size(); idx++) {</span>
+<span class="fc" id="L384">                hullVertices.add(lowerHull.get(idx));</span>
+            }
+<span class="fc bfc" id="L386" title="All 2 branches covered.">            for (int idx = 1; idx &lt; upperHull.size(); idx++) {</span>
+<span class="fc" id="L387">                hullVertices.add(upperHull.get(idx));</span>
+            }
+
+<span class="fc" id="L390">            return hullVertices;</span>
+        }
+
+        /**
+         * Update the partial hull with the current point.
+         *
+         * @param point the current point
+         * @param hull the partial hull
+         */
+        private void updateHull(final Vector2D point, final List&lt;Vector2D&gt; hull) {
+<span class="fc bfc" id="L400" title="All 2 branches covered.">            while (hull.size() &gt;= 2) {</span>
+<span class="fc" id="L401">                final int size = hull.size();</span>
+<span class="fc" id="L402">                final Vector2D p1 = hull.get(size - 2);</span>
+<span class="fc" id="L403">                final Vector2D p2 = hull.get(size - 1);</span>
+
+<span class="fc" id="L405">                final double offset = Lines.fromPoints(p1, p2, precision).offset(point);</span>
+<span class="fc bfc" id="L406" title="All 2 branches covered.">                if (precision.eqZero(offset)) {</span>
+                    // the point is collinear to the line (p1, p2)
+<span class="fc bfc" id="L408" title="All 2 branches covered.">                    if (includeCollinearPoints) {</span>
+<span class="fc" id="L409">                        hull.add(size, point);</span>
+                    } else {
+<span class="fc" id="L411">                        hull.remove(size - 1);</span>
+<span class="fc" id="L412">                        hull.add(point);</span>
+                    }
+<span class="fc" id="L414">                    return;</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">                } else if (offset &gt; 0) {</span>
+<span class="fc" id="L416">                    hull.remove(size - 1);</span>
+                } else {
+                    break;
+                }
+<span class="fc" id="L420">            }</span>
+<span class="fc" id="L421">            hull.add(point);</span>
+<span class="fc" id="L422">        }</span>
+
+        /** Return true if the given vertices define a convex hull.
+         * @param vertices the hull vertices
+         * @return {@code true} if the vertices form a convex hull, {@code false} otherwise
+         */
+        private boolean isConvex(final Collection&lt;Vector2D&gt; vertices) {
+<span class="fc" id="L429">            final int size = vertices.size();</span>
+
+<span class="fc bfc" id="L431" title="All 2 branches covered.">            if (size &lt; 3) {</span>
+                // 1 or 2 points always define a convex set
+<span class="fc" id="L433">                return true;</span>
+            }
+
+<span class="fc" id="L436">            final Iterator&lt;Vector2D&gt; it = vertices.iterator();</span>
+
+<span class="fc" id="L438">            Vector2D first = it.next();</span>
+<span class="fc" id="L439">            Vector2D p1 = it.next();</span>
+<span class="fc" id="L440">            Vector2D v1 = first.vectorTo(p1);</span>
+
+            Vector2D p2;
+            Vector2D v2;
+
+<span class="fc bfc" id="L445" title="All 2 branches covered.">            while (it.hasNext()) {</span>
+<span class="fc" id="L446">                p2 = it.next();</span>
+<span class="fc" id="L447">                v2 = p1.vectorTo(p2);</span>
+
+                // negative signed areas mean a clockwise winding
+<span class="fc bfc" id="L450" title="All 2 branches covered.">                if (precision.compare(v1.signedArea(v2), 0.0) &lt; 0) {</span>
+<span class="fc" id="L451">                    return false;</span>
+                }
+
+<span class="fc" id="L454">                p1 = p2;</span>
+<span class="fc" id="L455">                v1 = v2;</span>
+            }
+
+<span class="fc" id="L458">            return true;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

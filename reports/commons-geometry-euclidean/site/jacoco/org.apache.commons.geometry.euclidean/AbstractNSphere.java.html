@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractNSphere.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean</a> &gt; <span class="el_source">AbstractNSphere.java</span></div><h1>AbstractNSphere.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.ToDoubleBiFunction;
+
+import org.apache.commons.geometry.core.Embedding;
+import org.apache.commons.geometry.core.Point;
+import org.apache.commons.geometry.core.Region;
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.euclidean.oned.Vector1D;
+import org.apache.commons.numbers.core.Precision;
+
+/** Abstract base class representing an n-sphere, which is a generalization of the ordinary 3 dimensional
+ * sphere to arbitrary dimensions.
+ * @param &lt;V&gt; Vector implementation type
+ * @see &lt;a href=&quot;https://wikipedia.org/wiki/N-sphere&quot;&gt;N-sphere&lt;/a&gt;
+ */
+public abstract class AbstractNSphere&lt;V extends EuclideanVector&lt;V&gt;&gt; implements Region&lt;V&gt; {
+
+    /** The center point of the n-sphere. */
+    private final V center;
+
+    /** The radius of the n-sphere. */
+    private final double radius;
+
+    /** Precision object used to perform floating point comparisons. */
+    private final Precision.DoubleEquivalence precision;
+
+    /** Construct a new instance from its component parts.
+     * @param center the center point of the n-sphere
+     * @param radius the radius of the n-sphere
+     * @param precision precision context used to perform floating point comparisons
+     * @throws IllegalArgumentException if center is not finite or radius is not finite or is
+     *      less than or equal to zero as evaluated by the given precision context
+     */
+<span class="fc" id="L55">    protected AbstractNSphere(final V center, final double radius, final Precision.DoubleEquivalence precision) {</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (!center.isFinite()) {</span>
+<span class="fc" id="L57">            throw new IllegalArgumentException(&quot;Illegal center point: &quot; + center);</span>
+        }
+<span class="fc bfc" id="L59" title="All 4 branches covered.">        if (!Double.isFinite(radius) || precision.lte(radius, 0.0)) {</span>
+<span class="fc" id="L60">            throw new IllegalArgumentException(&quot;Illegal radius: &quot; + radius);</span>
+        }
+
+<span class="fc" id="L63">        this.center = center;</span>
+<span class="fc" id="L64">        this.radius = radius;</span>
+<span class="fc" id="L65">        this.precision = precision;</span>
+<span class="fc" id="L66">    }</span>
+
+    /** Get the center point of the n-sphere.
+     * @return the center of the n-sphere
+     */
+    public V getCenter() {
+<span class="fc" id="L72">        return center;</span>
+    }
+
+    /** Get the radius of the n-sphere.
+     * @return the radius of the n-sphere.
+     */
+    public double getRadius() {
+<span class="fc" id="L79">        return radius;</span>
+    }
+
+    /** Get the precision object used to perform floating point
+     * comparisons for this instance.
+     * @return the precision object for this instance
+     */
+    public Precision.DoubleEquivalence getPrecision() {
+<span class="fc" id="L87">        return precision;</span>
+    }
+
+    /** {@inheritDoc}
+    *
+    * &lt;p&gt;This method always returns {@code false}.&lt;/p&gt;
+    */
+    @Override
+    public boolean isFull() {
+<span class="fc" id="L96">        return false;</span>
+    }
+
+    /** {@inheritDoc}
+    *
+    * &lt;p&gt;This method always returns {@code false}.&lt;/p&gt;
+    */
+    @Override
+    public boolean isEmpty() {
+<span class="fc" id="L105">        return false;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;This method is an alias for {@link #getCenter()}.&lt;/p&gt;
+     */
+    @Override
+    public V getCentroid() {
+<span class="fc" id="L114">        return getCenter();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionLocation classify(final V pt) {
+<span class="fc" id="L120">        final double dist = ((Point&lt;V&gt;) center).distance(pt);</span>
+<span class="fc" id="L121">        final int cmp = precision.compare(dist, radius);</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if (cmp &lt; 0) {</span>
+<span class="fc" id="L123">            return RegionLocation.INSIDE;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        } else if (cmp &gt; 0) {</span>
+<span class="fc" id="L125">            return RegionLocation.OUTSIDE;</span>
+        }
+<span class="fc" id="L127">        return RegionLocation.BOUNDARY;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L133">        return Objects.hash(center, radius, precision);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L140">            return true;</span>
+<span class="fc bfc" id="L141" title="All 4 branches covered.">        } else if (obj == null || !obj.getClass().equals(this.getClass())) {</span>
+<span class="fc" id="L142">            return false;</span>
+        }
+
+<span class="fc" id="L145">        final AbstractNSphere&lt;?&gt; other = (AbstractNSphere&lt;?&gt;) obj;</span>
+
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        return Objects.equals(this.center, other.center) &amp;&amp;</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">                Double.compare(this.radius, other.radius) == 0 &amp;&amp;</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">                Objects.equals(this.getPrecision(), other.getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L155">        final StringBuilder sb = new StringBuilder(30);</span>
+<span class="fc" id="L156">        sb.append(this.getClass().getSimpleName())</span>
+<span class="fc" id="L157">            .append(&quot;[center= &quot;)</span>
+<span class="fc" id="L158">            .append(center)</span>
+<span class="fc" id="L159">            .append(&quot;, radius= &quot;)</span>
+<span class="fc" id="L160">            .append(radius)</span>
+<span class="fc" id="L161">            .append(']');</span>
+
+<span class="fc" id="L163">        return sb.toString();</span>
+    }
+
+    /** Project the given point to the boundary of the n-sphere. If
+     * the given point is exactly equal to the n-sphere center, it is
+     * projected to the boundary in the direction of {@code defaultVector}.
+     * @param pt the point to project
+     * @param defaultVector the direction to project the point if it lies
+     *      exactly at the center of the n-sphere
+     * @return the projected point
+     */
+    protected V project(final V pt, final V defaultVector) {
+<span class="fc" id="L175">        V vec = center.vectorTo(pt);</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        if (vec.equals(vec.getZero())) {</span>
+            // use the default project vector if the given point lies
+            // exactly_ on the center point
+<span class="fc" id="L179">            vec = defaultVector;</span>
+        }
+
+<span class="fc" id="L182">        return vec.withNorm(radius).add(center);</span>
+    }
+
+    /** Internal method to compute the intersections between a line and this instance. The returned list will
+     * contain either 0, 1, or 2 points.
+     * &lt;ul&gt;
+     *      &lt;li&gt;&lt;strong&gt;2 points&lt;/strong&gt; - The line is a secant line and intersects the n-sphere at two
+     *      distinct points. The points are ordered such that the first point in the list is the first point
+     *      encountered when traveling in the direction of the line. (In other words, the points are ordered
+     *      by increasing abscissa value.)
+     *      &lt;/li&gt;
+     *      &lt;li&gt;&lt;strong&gt;1 point&lt;/strong&gt; - The line is a tangent line and only intersects the n-sphere at a
+     *      single point (as evaluated by the n-sphere's precision context).
+     *      &lt;/li&gt;
+     *      &lt;li&gt;&lt;strong&gt;0 points&lt;/strong&gt; - The line does not intersect the n-sphere.&lt;/li&gt;
+     * &lt;/ul&gt;
+     * @param &lt;L&gt; Line implementation type
+     * @param line line to intersect with the n-sphere
+     * @param abscissaFn function used to compute the abscissa value of a point on a line
+     * @param distanceFn function used to compute the smallest distance between a point
+     *      and a line
+     * @return a list of intersection points between the given line and this n-sphere
+     */
+    protected &lt;L extends Embedding&lt;V, Vector1D&gt;&gt; List&lt;V&gt; intersections(final L line,
+            final ToDoubleBiFunction&lt;L, V&gt; abscissaFn, final ToDoubleBiFunction&lt;L, V&gt; distanceFn) {
+
+<span class="fc" id="L208">        final double dist = distanceFn.applyAsDouble(line, center);</span>
+
+<span class="fc" id="L210">        final int cmp = precision.compare(dist, radius);</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">        if (cmp &lt;= 0) {</span>
+            // on the boundary or inside the n-sphere
+<span class="fc" id="L213">            final double abscissa = abscissaFn.applyAsDouble(line, center);</span>
+<span class="fc" id="L214">            final double abscissaDelta = Math.sqrt((radius * radius) - (dist * dist));</span>
+
+<span class="fc" id="L216">            final V p0 = line.toSpace(Vector1D.of(abscissa - abscissaDelta));</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">            if (cmp &lt; 0) {</span>
+                // secant line =&gt; two intersections
+<span class="fc" id="L219">                final V p1 = line.toSpace(Vector1D.of(abscissa + abscissaDelta));</span>
+
+<span class="fc" id="L221">                return Arrays.asList(p0, p1);</span>
+            }
+
+            // tangent line =&gt; one intersection
+<span class="fc" id="L225">            return Collections.singletonList(p0);</span>
+        }
+
+        // no intersections
+<span class="fc" id="L229">        return Collections.emptyList();</span>
+    }
+
+    /** Internal method to compute the first intersection between a line and this instance.
+     * @param &lt;L&gt; Line implementation type
+     * @param line line to intersect with the n-sphere
+     * @param abscissaFn function used to compute the abscissa value of a point on a line
+     * @param distanceFn function used to compute the smallest distance between a point
+     *      and a line
+     * @return the first intersection between the given line and this instance or null if
+     *      no such intersection exists
+     */
+    protected &lt;L extends Embedding&lt;V, Vector1D&gt;&gt; V firstIntersection(final L line,
+            final ToDoubleBiFunction&lt;L, V&gt; abscissaFn, final ToDoubleBiFunction&lt;L, V&gt; distanceFn) {
+
+<span class="fc" id="L244">        final double dist = distanceFn.applyAsDouble(line, center);</span>
+
+<span class="fc" id="L246">        final int cmp = precision.compare(dist, radius);</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">        if (cmp &lt;= 0) {</span>
+            // on the boundary or inside the n-sphere
+<span class="fc" id="L249">            final double abscissa = abscissaFn.applyAsDouble(line, center);</span>
+<span class="fc" id="L250">            final double abscissaDelta = Math.sqrt((radius * radius) - (dist * dist));</span>
+
+<span class="fc" id="L252">            return line.toSpace(Vector1D.of(abscissa - abscissaDelta));</span>
+        }
+
+<span class="fc" id="L255">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

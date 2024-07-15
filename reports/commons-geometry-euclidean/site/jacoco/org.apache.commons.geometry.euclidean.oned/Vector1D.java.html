@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Vector1D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.oned</a> &gt; <span class="el_source">Vector1D.java</span></div><h1>Vector1D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.oned;
+
+import java.util.Comparator;
+import java.util.function.UnaryOperator;
+
+import org.apache.commons.geometry.core.internal.SimpleTupleFormat;
+import org.apache.commons.geometry.euclidean.EuclideanVector;
+import org.apache.commons.geometry.euclidean.EuclideanVectorSum;
+import org.apache.commons.geometry.euclidean.internal.Vectors;
+import org.apache.commons.numbers.core.Precision;
+
+/** This class represents vectors and points in one-dimensional Euclidean space.
+ * Instances of this class are guaranteed to be immutable.
+ */
+public class Vector1D extends EuclideanVector&lt;Vector1D&gt; {
+
+    /** Zero vector (coordinates: 0). */
+<span class="fc" id="L34">    public static final Vector1D ZERO = new Vector1D(0.0);</span>
+
+    /** A vector with all coordinates set to NaN. */
+<span class="fc" id="L37">    public static final Vector1D NaN = new Vector1D(Double.NaN);</span>
+
+    /** A vector with all coordinates set to positive infinity. */
+<span class="fc" id="L40">    public static final Vector1D POSITIVE_INFINITY =</span>
+        new Vector1D(Double.POSITIVE_INFINITY);
+
+    /** A vector with all coordinates set to negative infinity. */
+<span class="fc" id="L44">    public static final Vector1D NEGATIVE_INFINITY =</span>
+        new Vector1D(Double.NEGATIVE_INFINITY);
+
+    /** Comparator that sorts vectors in component-wise ascending order.
+     * Vectors are only considered equal if their coordinates match exactly.
+     * Null arguments are evaluated as being greater than non-null arguments.
+     */
+<span class="fc" id="L51">    public static final Comparator&lt;Vector1D&gt; COORDINATE_ASCENDING_ORDER = (a, b) -&gt; {</span>
+<span class="fc" id="L52">        int cmp = 0;</span>
+
+<span class="fc bfc" id="L54" title="All 4 branches covered.">        if (a != null &amp;&amp; b != null) {</span>
+<span class="fc" id="L55">            cmp = Double.compare(a.getX(), b.getX());</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        } else if (a != null) {</span>
+<span class="fc" id="L57">            cmp = -1;</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        } else if (b != null) {</span>
+<span class="fc" id="L59">            cmp = 1;</span>
+        }
+
+<span class="fc" id="L62">        return cmp;</span>
+    };
+
+    /** Abscissa (coordinate value). */
+    private final double x;
+
+    /** Simple constructor.
+     * @param x abscissa (coordinate value)
+     */
+<span class="fc" id="L71">    private Vector1D(final double x) {</span>
+<span class="fc" id="L72">        this.x = x;</span>
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Returns the abscissa (coordinate value) of the instance.
+     * @return the abscissa value
+     */
+    public double getX() {
+<span class="fc" id="L80">        return x;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getDimension() {
+<span class="fc" id="L86">        return 1;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isNaN() {
+<span class="fc" id="L92">        return Double.isNaN(x);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isInfinite() {
+<span class="fc bfc" id="L98" title="All 4 branches covered.">        return !isNaN() &amp;&amp; Double.isInfinite(x);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isFinite() {
+<span class="fc" id="L104">        return Double.isFinite(x);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D vectorTo(final Vector1D v) {
+<span class="fc" id="L110">        return v.subtract(this);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Unit directionTo(final Vector1D v) {
+<span class="fc" id="L116">        return vectorTo(v).normalize();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D lerp(final Vector1D p, final double t) {
+<span class="fc" id="L122">        return Sum.create()</span>
+<span class="fc" id="L123">                .addScaled(1.0 - t, this)</span>
+<span class="fc" id="L124">                .addScaled(t, p).get();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D getZero() {
+<span class="fc" id="L130">        return ZERO;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double norm() {
+<span class="fc" id="L136">        return Vectors.norm(x);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double normSq() {
+<span class="fc" id="L142">        return Vectors.normSq(x);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D withNorm(final double magnitude) {
+<span class="fc" id="L148">        getCheckedNorm(); // validate our norm value</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">        return (x &gt; 0.0) ? new Vector1D(magnitude) : new Vector1D(-magnitude);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D add(final Vector1D v) {
+<span class="fc" id="L155">        return new Vector1D(x + v.x);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D add(final double factor, final Vector1D v) {
+<span class="fc" id="L161">        return new Vector1D(x + (factor * v.x));</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D subtract(final Vector1D v) {
+<span class="fc" id="L167">        return new Vector1D(x - v.x);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D subtract(final double factor, final Vector1D v) {
+<span class="fc" id="L173">        return new Vector1D(x - (factor * v.x));</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D negate() {
+<span class="fc" id="L179">        return new Vector1D(-x);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Unit normalize() {
+<span class="fc" id="L185">        return Unit.from(x);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Unit normalizeOrNull() {
+<span class="fc" id="L191">        return Unit.tryCreateNormalized(x, false);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D multiply(final double a) {
+<span class="fc" id="L197">        return new Vector1D(a * x);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double distance(final Vector1D v) {
+<span class="fc" id="L203">        return Vectors.norm(x - v.x);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double distanceSq(final Vector1D v) {
+<span class="fc" id="L209">        return Vectors.normSq(x - v.x);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double dot(final Vector1D v) {
+<span class="fc" id="L215">        return x * v.x;</span>
+    }
+
+    /** {@inheritDoc}
+     * &lt;p&gt;For the one-dimensional case, this method returns 0 if the vector x values have
+     * the same sign and {@code pi} if they are opposite.&lt;/p&gt;
+     */
+    @Override
+    public double angle(final Vector1D v) {
+        // validate the norm values
+<span class="fc" id="L225">        getCheckedNorm();</span>
+<span class="fc" id="L226">        v.getCheckedNorm();</span>
+
+<span class="fc" id="L228">        final double sig1 = Math.signum(x);</span>
+<span class="fc" id="L229">        final double sig2 = Math.signum(v.x);</span>
+
+        // the angle is 0 if the x value signs are the same and pi if not
+<span class="fc bfc" id="L232" title="All 2 branches covered.">        return (sig1 == sig2) ? 0.0 : Math.PI;</span>
+    }
+
+    /** Convenience method to apply a function to this vector. This
+     * can be used to transform the vector inline with other methods.
+     * @param fn the function to apply
+     * @return the transformed vector
+     */
+    public Vector1D transform(final UnaryOperator&lt;Vector1D&gt; fn) {
+<span class="fc" id="L241">        return fn.apply(this);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean eq(final Vector1D vec, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L247">        return precision.eq(x, vec.x);</span>
+    }
+
+    /**
+     * Get a hashCode for the vector.
+     * &lt;p&gt;All NaN values have the same hash code.&lt;/p&gt;
+     *
+     * @return a hash code value for this object
+     */
+    @Override
+    public int hashCode() {
+<span class="fc bfc" id="L258" title="All 2 branches covered.">        if (isNaN()) {</span>
+<span class="fc" id="L259">            return 857;</span>
+        }
+<span class="fc" id="L261">        return 403 * Double.hashCode(x);</span>
+    }
+
+    /**
+     * Test for the equality of two vectors.
+     * &lt;p&gt;
+     * If all coordinates of two vectors are exactly the same, and none are
+     * &lt;code&gt;Double.NaN&lt;/code&gt;, the two vectors are considered to be equal.
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * &lt;code&gt;NaN&lt;/code&gt; coordinates are considered to globally affect the vector
+     * and be equal to each other - i.e, if either (or all) coordinates of the
+     * vector are equal to &lt;code&gt;Double.NaN&lt;/code&gt;, the vector is equal to
+     * {@link #NaN}.
+     * &lt;/p&gt;
+     *
+     * @param other Object to test for equality to this
+     * @return true if two vector objects are equal, false if
+     *         object is null, not an instance of Vector1D, or
+     *         not equal to this Vector1D instance
+     *
+     */
+    @Override
+    public boolean equals(final Object other) {
+<span class="fc bfc" id="L285" title="All 2 branches covered.">        if (this == other) {</span>
+<span class="fc" id="L286">            return true;</span>
+        }
+<span class="fc bfc" id="L288" title="All 2 branches covered.">        if (other instanceof Vector1D) {</span>
+<span class="fc" id="L289">            final Vector1D rhs = (Vector1D) other;</span>
+<span class="fc bfc" id="L290" title="All 2 branches covered.">            if (rhs.isNaN()) {</span>
+<span class="fc" id="L291">                return this.isNaN();</span>
+            }
+
+<span class="fc bfc" id="L294" title="All 2 branches covered.">            return Double.compare(x, rhs.x) == 0;</span>
+        }
+<span class="fc" id="L296">        return false;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L302">        return SimpleTupleFormat.getDefault().format(x);</span>
+    }
+
+    /** Returns a vector with the given coordinate value.
+     * @param x vector coordinate
+     * @return vector instance
+     */
+    public static Vector1D of(final double x) {
+<span class="fc" id="L310">        return new Vector1D(x);</span>
+    }
+
+    /** Parses the given string and returns a new vector instance. The expected string
+     * format is the same as that returned by {@link #toString()}.
+     * @param str the string to parse
+     * @return vector instance represented by the string
+     * @throws IllegalArgumentException if the given string has an invalid format
+     */
+    public static Vector1D parse(final String str) {
+<span class="fc" id="L320">        return SimpleTupleFormat.getDefault().parse(str, Vector1D::new);</span>
+    }
+
+    /**
+     * Represent unit vectors.
+     * This allows optimizations to be performed for certain operations.
+     */
+    public static final class Unit extends Vector1D {
+        /** Unit vector (coordinates: 1). */
+<span class="fc" id="L329">        public static final Unit PLUS  = new Unit(1d);</span>
+        /** Negation of unit vector (coordinates: -1). */
+<span class="fc" id="L331">        public static final Unit MINUS = new Unit(-1d);</span>
+
+        /** Simple constructor. Callers are responsible for ensuring that the given
+         * values represent a normalized vector.
+         * @param x abscissa (first coordinate value)
+         */
+        private Unit(final double x) {
+<span class="fc" id="L338">            super(x);</span>
+<span class="fc" id="L339">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        public double norm() {
+<span class="fc" id="L344">            return 1;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public double normSq() {
+<span class="fc" id="L350">            return 1;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Unit normalize() {
+<span class="fc" id="L356">            return this;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Unit normalizeOrNull() {
+<span class="fc" id="L362">            return this;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Vector1D withNorm(final double mag) {
+<span class="fc" id="L368">            return multiply(mag);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Vector1D negate() {
+<span class="fc bfc" id="L374" title="All 2 branches covered.">            return this == PLUS ? MINUS : PLUS;</span>
+        }
+
+        /** Create a normalized vector.
+         * @param x Vector coordinate.
+         * @return a vector whose norm is 1.
+         * @throws IllegalArgumentException if the norm of the given value is zero, NaN, or infinite
+         */
+        public static Unit from(final double x) {
+<span class="fc" id="L383">            return tryCreateNormalized(x, true);</span>
+        }
+
+        /** Create a normalized vector.
+         * @param v Vector.
+         * @return a vector whose norm is 1.
+         * @throws IllegalArgumentException if the norm of the given value is zero, NaN, or infinite
+         */
+        public static Unit from(final Vector1D v) {
+<span class="fc bfc" id="L392" title="All 2 branches covered.">            return v instanceof Unit ?</span>
+<span class="fc" id="L393">                (Unit) v :</span>
+<span class="fc" id="L394">                from(v.getX());</span>
+        }
+
+        /** Attempt to create a normalized vector from the given coordinate values. If {@code throwOnFailure}
+         * is true, an exception is thrown if a normalized vector cannot be created. Otherwise, null
+         * is returned.
+         * @param x x coordinate
+         * @param throwOnFailure if true, an exception will be thrown if a normalized vector cannot be created
+         * @return normalized vector or null if one cannot be created and {@code throwOnFailure}
+         *      is false
+         * @throws IllegalArgumentException if the computed norm is zero, NaN, or infinite
+         */
+        private static Unit tryCreateNormalized(final double x, final boolean throwOnFailure) {
+<span class="fc" id="L407">            final double norm = Vectors.norm(x);</span>
+
+<span class="fc bfc" id="L409" title="All 2 branches covered.">            if (Vectors.isRealNonZero(norm)) {</span>
+<span class="fc bfc" id="L410" title="All 2 branches covered.">                return x &gt; 0 ? PLUS : MINUS;</span>
+<span class="fc bfc" id="L411" title="All 2 branches covered.">            } else if (throwOnFailure) {</span>
+<span class="fc" id="L412">                throw Vectors.illegalNorm(norm);</span>
+            }
+<span class="fc" id="L414">            return null;</span>
+        }
+    }
+
+    /** Class used to create high-accuracy sums of vectors. Each vector component is
+     * summed using an instance of {@link org.apache.commons.numbers.core.Sum}.
+    *
+    * &lt;p&gt;This class is mutable and not thread-safe.
+    * @see org.apache.commons.numbers.core.Sum
+    */
+    public static final class Sum extends EuclideanVectorSum&lt;Vector1D&gt; {
+
+        /** X component sum. */
+        private final org.apache.commons.numbers.core.Sum xsum;
+
+        /** Construct a new instance with the given initial value.
+         * @param initial initial value
+         */
+<span class="fc" id="L432">        Sum(final Vector1D initial) {</span>
+<span class="fc" id="L433">            this.xsum = org.apache.commons.numbers.core.Sum.of(initial.x);</span>
+<span class="fc" id="L434">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        public Sum add(final Vector1D vec) {
+<span class="fc" id="L439">            xsum.add(vec.x);</span>
+<span class="fc" id="L440">            return this;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Sum addScaled(final double scale, final Vector1D vec) {
+<span class="fc" id="L446">            xsum.addProduct(scale, vec.x);</span>
+<span class="fc" id="L447">            return this;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Vector1D get() {
+<span class="fc" id="L453">            return Vector1D.of(xsum.getAsDouble());</span>
+        }
+
+        /** Create a new instance with an initial value set to the {@link Vector1D#ZERO zero vector}.
+         * @return new instance set to zero
+         */
+        public static Sum create() {
+<span class="fc" id="L460">            return new Sum(Vector1D.ZERO);</span>
+        }
+
+        /** Construct a new instance with an initial value set to the argument.
+         * @param initial initial sum value
+         * @return new instance
+         */
+        public static Sum of(final Vector1D initial) {
+<span class="fc" id="L468">            return new Sum(initial);</span>
+        }
+
+        /** Construct a new instance from multiple values.
+         * @param first first vector
+         * @param more additional vectors
+         * @return new instance
+         */
+        public static Sum of(final Vector1D first, final Vector1D... more) {
+<span class="fc" id="L477">            final Sum s = new Sum(first);</span>
+<span class="fc bfc" id="L478" title="All 2 branches covered.">            for (final Vector1D v : more) {</span>
+<span class="fc" id="L479">                s.add(v);</span>
+            }
+<span class="fc" id="L481">            return s;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

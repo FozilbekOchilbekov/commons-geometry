@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConvexArea2S.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Spherical</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.spherical.twod</a> &gt; <span class="el_source">ConvexArea2S.java</span></div><h1>ConvexArea2S.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.spherical.twod;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.AbstractConvexHyperplaneBoundedRegion;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.HyperplaneConvexSubset;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.numbers.angle.Angle;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing a convex area in 2D spherical space. The boundaries of this
+ * area, if any, are composed of convex great circle arcs.
+ */
+public final class ConvexArea2S extends AbstractConvexHyperplaneBoundedRegion&lt;Point2S, GreatArc&gt;
+    implements BoundarySource2S {
+    /** Instance representing the full spherical area. */
+<span class="fc" id="L43">    private static final ConvexArea2S FULL = new ConvexArea2S(Collections.emptyList());</span>
+
+    /** Constant containing the area of the full spherical space. */
+    private static final double FULL_SIZE = 4 * Math.PI;
+
+    /** Constant containing the area of half of the spherical space. */
+    private static final double HALF_SIZE = Angle.TWO_PI;
+
+    /** Empirically determined threshold for computing the weighted centroid vector using the
+     * triangle fan approach. Areas with boundary sizes under this value use the triangle fan
+     * method to increase centroid accuracy.
+     */
+    private static final double TRIANGLE_FAN_CENTROID_COMPUTE_THRESHOLD = 1e-2;
+
+    /** Construct an instance from its boundaries. Callers are responsible for ensuring
+     * that the given path represents the boundary of a convex area. No validation is
+     * performed.
+     * @param boundaries the boundaries of the convex area
+     */
+    private ConvexArea2S(final List&lt;GreatArc&gt; boundaries) {
+<span class="fc" id="L63">        super(boundaries);</span>
+<span class="fc" id="L64">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public Stream&lt;GreatArc&gt; boundaryStream() {
+<span class="fc" id="L69">        return getBoundaries().stream();</span>
+    }
+
+    /** Get a path instance representing the boundary of the area. The path is oriented
+     * so that the minus sides of the arcs lie on the inside of the area.
+     * @return the boundary path of the area
+     */
+    public GreatArcPath getBoundaryPath() {
+<span class="fc" id="L77">        final List&lt;GreatArcPath&gt; paths = InteriorAngleGreatArcConnector.connectMinimized(getBoundaries());</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (paths.isEmpty()) {</span>
+<span class="fc" id="L79">            return GreatArcPath.empty();</span>
+        }
+
+<span class="fc" id="L82">        return paths.get(0);</span>
+    }
+
+    /** Get an array of interior angles for the area. An empty array is returned if there
+     * are no boundary intersections (ie, it has only one boundary or no boundaries at all).
+     *
+     * &lt;p&gt;The order of the angles corresponds with the order of the boundaries returned
+     * by {@link #getBoundaries()}: if {@code i} is an index into the boundaries list,
+     * then {@code angles[i]} is the angle between boundaries {@code i} and {@code (i+1) % boundariesSize}.&lt;/p&gt;
+     * @return an array of interior angles for the area
+     */
+    public double[] getInteriorAngles() {
+<span class="fc" id="L94">        final List&lt;GreatArc&gt; arcs = getBoundaryPath().getArcs();</span>
+<span class="fc" id="L95">        final int numSides = arcs.size();</span>
+
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (numSides &lt; 2) {</span>
+<span class="fc" id="L98">            return new double[0];</span>
+        }
+
+<span class="fc" id="L101">        final double[] angles = new double[numSides];</span>
+
+        GreatArc current;
+        GreatArc next;
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        for (int i = 0; i &lt; numSides; ++i) {</span>
+<span class="fc" id="L106">            current = arcs.get(i);</span>
+<span class="fc" id="L107">            next = arcs.get((i + 1) % numSides);</span>
+
+<span class="fc" id="L109">            angles[i] = Math.PI - current.getCircle()</span>
+<span class="fc" id="L110">                    .angle(next.getCircle(), current.getEndPoint());</span>
+        }
+
+<span class="fc" id="L113">        return angles;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getSize() {
+<span class="fc" id="L119">        final int numSides = getBoundaries().size();</span>
+
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        if (numSides == 0) {</span>
+<span class="fc" id="L122">            return FULL_SIZE;</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        } else if (numSides == 1) {</span>
+<span class="fc" id="L124">            return HALF_SIZE;</span>
+        } else {
+            // use the extended version of Girard's theorem
+            // https://en.wikipedia.org/wiki/Spherical_trigonometry#Girard's_theorem
+<span class="fc" id="L128">            final double[] angles = getInteriorAngles();</span>
+<span class="fc" id="L129">            final double sum = Arrays.stream(angles).sum();</span>
+
+<span class="fc" id="L131">            return sum - ((angles.length - 2) * Math.PI);</span>
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Point2S getCentroid() {
+<span class="fc" id="L138">        final Vector3D weighted = getWeightedCentroidVector();</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        return weighted == null ? null : Point2S.from(weighted);</span>
+    }
+
+    /** Return the weighted centroid vector of the area. The returned vector points in the direction of the
+     * centroid point on the surface of the unit sphere with the length of the vector proportional to the
+     * effective mass of the area at the centroid. By adding the weighted centroid vectors of multiple
+     * convex areas, a single centroid can be computed for the combined area.
+     * @return weighted centroid vector.
+     * @see &lt;a href=&quot;https://archive.org/details/centroidinertiat00broc&quot;&gt;
+     *  &lt;em&gt;The Centroid and Inertia Tensor for a Spherical Triangle&lt;/em&gt; - John E. Brock&lt;/a&gt;
+     */
+    Vector3D getWeightedCentroidVector() {
+<span class="fc" id="L151">        final List&lt;GreatArc&gt; arcs = getBoundaries();</span>
+<span class="fc" id="L152">        final int numBoundaries = arcs.size();</span>
+
+<span class="fc bfc" id="L154" title="All 4 branches covered.">        switch (numBoundaries) {</span>
+        case 0:
+            // full space; no centroid
+<span class="fc" id="L157">            return null;</span>
+        case 1:
+            // hemisphere
+<span class="fc" id="L160">            return computeHemisphereWeightedCentroidVector(arcs.get(0));</span>
+        case 2:
+            // lune
+<span class="fc" id="L163">            return computeLuneWeightedCentroidVector(arcs.get(0), arcs.get(1));</span>
+        default:
+            // triangle or other convex polygon
+<span class="fc bfc" id="L166" title="All 2 branches covered.">            if (getBoundarySize() &lt; TRIANGLE_FAN_CENTROID_COMPUTE_THRESHOLD) {</span>
+<span class="fc" id="L167">                return computeTriangleFanWeightedCentroidVector(arcs);</span>
+            }
+
+<span class="fc" id="L170">            return computeArcPoleWeightedCentroidVector(arcs);</span>
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Split&lt;ConvexArea2S&gt; split(final Hyperplane&lt;Point2S&gt; splitter) {
+<span class="fc" id="L177">        return splitInternal(splitter, this, GreatArc.class, ConvexArea2S::new);</span>
+    }
+
+    /** Return a BSP tree representing the same region as this instance.
+     */
+    @Override
+    public RegionBSPTree2S toTree() {
+<span class="fc" id="L184">        return RegionBSPTree2S.from(getBoundaries(), true);</span>
+    }
+
+    /** Return a new instance transformed by the argument.
+     * @param transform transform to apply
+     * @return a new instance transformed by the argument
+     */
+    public ConvexArea2S transform(final Transform&lt;Point2S&gt; transform) {
+<span class="fc" id="L192">        return transformInternal(transform, this, GreatArc.class, ConvexArea2S::new);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GreatArc trim(final HyperplaneConvexSubset&lt;Point2S&gt; sub) {
+<span class="fc" id="L198">        return (GreatArc) super.trim(sub);</span>
+    }
+
+    /** Return an instance representing the full spherical 2D space.
+     * @return an instance representing the full spherical 2D space.
+     */
+    public static ConvexArea2S full() {
+<span class="fc" id="L205">        return FULL;</span>
+    }
+
+    /** Construct a convex area by creating great circles between adjacent vertices. The vertices must be given
+     * in a counter-clockwise around order the interior of the shape. If the area is intended to be closed, the
+     * beginning point must be repeated at the end of the path.
+     * @param vertices vertices to use to construct the area
+     * @param precision precision context used to create new great circle instances
+     * @return a convex area constructed using great circles between adjacent vertices
+     * @see #fromVertexLoop(Collection, Precision.DoubleEquivalence)
+     */
+    public static ConvexArea2S fromVertices(final Collection&lt;Point2S&gt; vertices,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L218">        return fromVertices(vertices, false, precision);</span>
+    }
+
+    /** Construct a convex area by creating great circles between adjacent vertices. An implicit great circle is
+     * created between the last vertex given and the first one, if needed. The vertices must be given in a
+     * counter-clockwise around order the interior of the shape.
+     * @param vertices vertices to use to construct the area
+     * @param precision precision context used to create new great circles instances
+     * @return a convex area constructed using great circles between adjacent vertices
+     * @see #fromVertices(Collection, Precision.DoubleEquivalence)
+     */
+    public static ConvexArea2S fromVertexLoop(final Collection&lt;Point2S&gt; vertices,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L231">        return fromVertices(vertices, true, precision);</span>
+    }
+
+    /** Construct a convex area from great circles between adjacent vertices.
+     * @param vertices vertices to use to construct the area
+     * @param close if true, an additional great circle will be created between the last and first vertex
+     * @param precision precision context used to create new great circle instances
+     * @return a convex area constructed using great circles between adjacent vertices
+     */
+    public static ConvexArea2S fromVertices(final Collection&lt;Point2S&gt; vertices, final boolean close,
+            final Precision.DoubleEquivalence precision) {
+
+<span class="fc bfc" id="L243" title="All 2 branches covered.">        if (vertices.isEmpty()) {</span>
+<span class="fc" id="L244">            return full();</span>
+        }
+
+<span class="fc" id="L247">        final List&lt;GreatCircle&gt; circles = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L249">        Point2S first = null;</span>
+<span class="fc" id="L250">        Point2S prev = null;</span>
+<span class="fc" id="L251">        Point2S cur = null;</span>
+
+<span class="fc bfc" id="L253" title="All 2 branches covered.">        for (final Point2S vertex : vertices) {</span>
+<span class="fc" id="L254">            cur = vertex;</span>
+
+<span class="fc bfc" id="L256" title="All 2 branches covered.">            if (first == null) {</span>
+<span class="fc" id="L257">                first = cur;</span>
+            }
+
+<span class="fc bfc" id="L260" title="All 4 branches covered.">            if (prev != null &amp;&amp; !cur.eq(prev, precision)) {</span>
+<span class="fc" id="L261">                circles.add(GreatCircles.fromPoints(prev, cur, precision));</span>
+            }
+
+<span class="fc" id="L264">            prev = cur;</span>
+<span class="fc" id="L265">        }</span>
+
+<span class="pc bpc" id="L267" title="1 of 6 branches missed.">        if (close &amp;&amp; cur != null &amp;&amp; !cur.eq(first, precision)) {</span>
+<span class="fc" id="L268">            circles.add(GreatCircles.fromPoints(cur, first, precision));</span>
+        }
+
+<span class="pc bpc" id="L271" title="1 of 4 branches missed.">        if (!vertices.isEmpty() &amp;&amp; circles.isEmpty()) {</span>
+<span class="fc" id="L272">            throw new IllegalStateException(&quot;Unable to create convex area: only a single unique vertex provided&quot;);</span>
+        }
+
+<span class="fc" id="L275">        return fromBounds(circles);</span>
+    }
+
+    /** Construct a convex area from an arc path. The area represents the intersection of all of the negative
+     * half-spaces of the great circles in the path. The boundaries of the returned area may therefore not match
+     * the arcs in the path.
+     * @param path path to construct the area from
+     * @return a convex area constructed from the great circles in the given path
+     */
+    public static ConvexArea2S fromPath(final GreatArcPath path) {
+<span class="fc" id="L285">        final List&lt;GreatCircle&gt; bounds = path.getArcs().stream()</span>
+<span class="fc" id="L286">            .map(GreatArc::getCircle)</span>
+<span class="fc" id="L287">            .collect(Collectors.toList());</span>
+
+<span class="fc" id="L289">        return fromBounds(bounds);</span>
+    }
+
+    /** Create a convex area formed by the intersection of the negative half-spaces of the
+     * given bounding great circles. The returned instance represents the area that is on the
+     * minus side of all of the given circles. Note that this method does not support areas
+     * of zero size (ie, infinitely thin areas or points.)
+     * @param bounds great circles used to define the convex area
+     * @return a new convex area instance representing the area on the minus side of all
+     *      of the bounding great circles or an instance representing the full area if no
+     *      circles are given
+     * @throws IllegalArgumentException if the given set of bounding great circles do not form a convex area,
+     *      meaning that there is no region that is on the minus side of all of the bounding circles.
+     */
+    public static ConvexArea2S fromBounds(final GreatCircle... bounds) {
+<span class="fc" id="L304">        return fromBounds(Arrays.asList(bounds));</span>
+    }
+
+    /** Create a convex area formed by the intersection of the negative half-spaces of the
+     * given bounding great circles. The returned instance represents the area that is on the
+     * minus side of all of the given circles. Note that this method does not support areas
+     * of zero size (ie, infinitely thin areas or points.)
+     * @param bounds great circles used to define the convex area
+     * @return a new convex area instance representing the area on the minus side of all
+     *      of the bounding great circles or an instance representing the full area if no
+     *      circles are given
+     * @throws IllegalArgumentException if the given set of bounding great circles do not form a convex area,
+     *      meaning that there is no region that is on the minus side of all of the bounding circles.
+     */
+    public static ConvexArea2S fromBounds(final Iterable&lt;GreatCircle&gt; bounds) {
+<span class="fc" id="L319">        final List&lt;GreatArc&gt; arcs = new ConvexRegionBoundaryBuilder&lt;&gt;(GreatArc.class).build(bounds);</span>
+<span class="fc bfc" id="L320" title="All 2 branches covered.">        return arcs.isEmpty() ?</span>
+<span class="fc" id="L321">                full() :</span>
+<span class="fc" id="L322">                new ConvexArea2S(arcs);</span>
+    }
+
+    /** Compute the weighted centroid vector for the hemisphere formed by the given arc.
+     * @param arc arc defining the hemisphere
+     * @return the weighted centroid vector for the hemisphere
+     * @see #getWeightedCentroidVector()
+     */
+    private static Vector3D computeHemisphereWeightedCentroidVector(final GreatArc arc) {
+<span class="fc" id="L331">        return arc.getCircle().getPole().withNorm(HALF_SIZE);</span>
+    }
+
+    /** Compute the weighted centroid vector for the lune formed by the given arcs.
+     * @param a first arc for the lune
+     * @param b second arc for the lune
+     * @return the weighted centroid vector for the lune
+     * @see #getWeightedCentroidVector()
+     */
+    private static Vector3D computeLuneWeightedCentroidVector(final GreatArc a, final GreatArc b) {
+<span class="fc" id="L341">        final Point2S aMid = a.getCentroid();</span>
+<span class="fc" id="L342">        final Point2S bMid = b.getCentroid();</span>
+
+        // compute the centroid vector as the exact center of the lune to avoid inaccurate
+        // results with very small regions
+<span class="fc" id="L346">        final Vector3D.Unit centroid = aMid.slerp(bMid, 0.5).getVector();</span>
+
+        // compute the weight using the reverse of the algorithm from computeArcPoleWeightedCentroidVector()
+<span class="fc" id="L349">        final double weight =</span>
+<span class="fc" id="L350">            (a.getSize() * centroid.dot(a.getCircle().getPole())) +</span>
+<span class="fc" id="L351">            (b.getSize() * centroid.dot(b.getCircle().getPole()));</span>
+
+<span class="fc" id="L353">        return centroid.withNorm(weight);</span>
+    }
+
+    /** Compute the weighted centroid vector for the triangle or polygon formed by the given arcs
+     * by adding together the arc pole vectors multiplied by their respective arc lengths. This
+     * algorithm is described in the paper &lt;a href=&quot;https://archive.org/details/centroidinertiat00broc&quot;&gt;
+     * &lt;em&gt;The Centroid and Inertia Tensor for a Spherical Triangle&lt;/em&gt;&lt;/a&gt; by John E Brock.
+     *
+     * &lt;p&gt;Note: This algorithm works well in general but is susceptible to floating point errors
+     * on very small areas. In these cases, the computed centroid may not be in the expected location
+     * and may even be outside of the area. The {@link #computeTriangleFanWeightedCentroidVector(List)}
+     * method can produce more accurate results in these cases.&lt;/p&gt;
+     * @param arcs boundary arcs for the area
+     * @return the weighted centroid vector for the area
+     * @see #computeTriangleFanWeightedCentroidVector(List)
+     */
+    private static Vector3D computeArcPoleWeightedCentroidVector(final List&lt;GreatArc&gt; arcs) {
+<span class="fc" id="L370">        final Vector3D.Sum centroid = Vector3D.Sum.create();</span>
+
+<span class="fc bfc" id="L372" title="All 2 branches covered.">        for (final GreatArc arc : arcs) {</span>
+<span class="fc" id="L373">            centroid.addScaled(arc.getSize(), arc.getCircle().getPole());</span>
+<span class="fc" id="L374">        }</span>
+
+<span class="fc" id="L376">        return centroid.get();</span>
+    }
+
+    /** Compute the weighted centroid vector for the triangle or polygon formed by the given arcs
+     * using a triangle fan approach. This method is specifically designed for use with areas of very small size,
+     * where use of the standard algorithm from {@link ##computeArcPoleWeightedCentroidVector(List))} can produce
+     * inaccurate results. The algorithm proceeds as follows:
+     * &lt;ol&gt;
+     *  &lt;li&gt;The polygon is divided into spherical triangles using a triangle fan.&lt;/li&gt;
+     *  &lt;li&gt;For each triangle, the vectors of the 3 spherical points are added together to approximate the direction
+     *      of the spherical centroid. This ensures that the computed centroid lies within the area.&lt;/li&gt;
+     *  &lt;li&gt;The length of the weighted centroid vector is determined by computing the sum of the contributions that
+     *      each arc in the triangle would make to the centroid using the algorithm from
+     *      {@link ##computeArcPoleWeightedCentroidVector(List)}. This essentially performs part of that algorithm in
+     *      reverse: given a centroid direction, compute the contribution that each arc makes.&lt;/li&gt;
+     *  &lt;li&gt;The sum of the weighted centroid vectors for each triangle is computed and returned.&lt;/li&gt;
+     * &lt;/ol&gt;
+     * @param arcs boundary arcs for the area; must contain at least 3 arcs
+     * @return the weighted centroid vector for the area
+     * @see #computeArcPoleWeightedCentroidVector(List)
+     */
+    private static Vector3D computeTriangleFanWeightedCentroidVector(final List&lt;GreatArc&gt; arcs) {
+<span class="fc" id="L398">        final Iterator&lt;GreatArc&gt; arcIt = arcs.iterator();</span>
+
+<span class="fc" id="L400">        final Point2S p0 = arcIt.next().getStartPoint();</span>
+<span class="fc" id="L401">        final Vector3D.Unit v0 = p0.getVector();</span>
+
+<span class="fc" id="L403">        final Vector3D.Sum areaCentroid = Vector3D.Sum.create();</span>
+
+        GreatArc arc;
+        Point2S p1;
+        Point2S p2;
+        Vector3D.Unit v1;
+        Vector3D.Unit v2;
+        Vector3D.Unit triangleCentroid;
+        double triangleCentroidLen;
+<span class="fc bfc" id="L412" title="All 2 branches covered.">        while (arcIt.hasNext()) {</span>
+<span class="fc" id="L413">            arc = arcIt.next();</span>
+
+<span class="fc bfc" id="L415" title="All 2 branches covered.">            if (!arc.contains(p0)) {</span>
+<span class="fc" id="L416">                p1 = arc.getStartPoint();</span>
+<span class="fc" id="L417">                p2 = arc.getEndPoint();</span>
+
+<span class="fc" id="L419">                v1 = p1.getVector();</span>
+<span class="fc" id="L420">                v2 = p2.getVector();</span>
+
+<span class="fc" id="L422">                triangleCentroid = Vector3D.Sum.create()</span>
+<span class="fc" id="L423">                        .add(v0)</span>
+<span class="fc" id="L424">                        .add(v1)</span>
+<span class="fc" id="L425">                        .add(v2)</span>
+<span class="fc" id="L426">                        .get().normalize();</span>
+<span class="fc" id="L427">                triangleCentroidLen =</span>
+<span class="fc" id="L428">                        computeArcCentroidContribution(v0, v1, triangleCentroid) +</span>
+<span class="fc" id="L429">                        computeArcCentroidContribution(v1, v2, triangleCentroid) +</span>
+<span class="fc" id="L430">                        computeArcCentroidContribution(v2, v0, triangleCentroid);</span>
+
+<span class="fc" id="L432">                areaCentroid.addScaled(triangleCentroidLen, triangleCentroid);</span>
+            }
+        }
+
+<span class="fc" id="L436">        return areaCentroid.get();</span>
+    }
+
+    /** Compute the contribution made by a single arc to a weighted centroid vector.
+     * @param a first point in the arc
+     * @param b second point in the arc
+     * @param triangleCentroid the centroid vector for the area
+     * @return the contribution made by the arc {@code ab} to the length of the weighted centroid vector
+     */
+    private static double computeArcCentroidContribution(final Vector3D.Unit a, final Vector3D.Unit b,
+            final Vector3D.Unit triangleCentroid) {
+<span class="fc" id="L447">        final double arcLength = a.angle(b);</span>
+<span class="fc" id="L448">        final Vector3D.Unit planeNormal = a.cross(b).normalize();</span>
+
+<span class="fc" id="L450">        return arcLength * triangleCentroid.dot(planeNormal);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

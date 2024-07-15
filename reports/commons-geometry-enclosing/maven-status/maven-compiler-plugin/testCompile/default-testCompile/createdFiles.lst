@@ -1,0 +1,6 @@
+org\apache\commons\geometry\enclosing\euclidean\twod\DiskGeneratorTest.class
+org\apache\commons\geometry\enclosing\DocumentationExamplesTest.class
+org\apache\commons\geometry\enclosing\EnclosingBallTest.class
+org\apache\commons\geometry\enclosing\euclidean\threed\SphereGeneratorTest.class
+org\apache\commons\geometry\enclosing\euclidean\twod\WelzlEncloser2DTest.class
+org\apache\commons\geometry\enclosing\euclidean\threed\WelzlEncloser3DTest.class

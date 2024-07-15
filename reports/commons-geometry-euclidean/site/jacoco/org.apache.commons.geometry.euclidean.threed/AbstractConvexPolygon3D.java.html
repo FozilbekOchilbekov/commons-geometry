@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractConvexPolygon3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed</a> &gt; <span class="el_source">AbstractConvexPolygon3D.java</span></div><h1>AbstractConvexPolygon3D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.HyperplaneLocation;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.geometry.euclidean.internal.Vectors;
+import org.apache.commons.geometry.euclidean.threed.line.Lines3D;
+import org.apache.commons.geometry.euclidean.twod.ConvexArea;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.numbers.core.Precision;
+
+/** Abstract base class for {@link ConvexPolygon3D} implementations.
+ */
+abstract class AbstractConvexPolygon3D extends AbstractPlaneSubset implements ConvexPolygon3D {
+
+    /** Plane containing the convex polygon. */
+    private final Plane plane;
+
+    /** Simple constructor.
+     * @param plane the plane containing the convex polygon
+     */
+<span class="fc" id="L43">    AbstractConvexPolygon3D(final Plane plane) {</span>
+<span class="fc" id="L44">        this.plane = plane;</span>
+<span class="fc" id="L45">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public Plane getPlane() {
+<span class="fc" id="L50">        return plane;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     *  &lt;p&gt;This method always returns {@code false}.&lt;/p&gt;
+     */
+    @Override
+    public boolean isFull() {
+<span class="fc" id="L59">        return false;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     *  &lt;p&gt;This method always returns {@code false}.&lt;/p&gt;
+     */
+    @Override
+    public boolean isEmpty() {
+<span class="fc" id="L68">        return false;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getSize() {
+        // see https://geomalgorithms.com/a01-_area.html#3D-Planar-Polygons
+<span class="fc" id="L75">        final List&lt;Vector3D&gt; vertices = getVertices();</span>
+
+<span class="fc" id="L77">        double crossSumX = 0.0;</span>
+<span class="fc" id="L78">        double crossSumY = 0.0;</span>
+<span class="fc" id="L79">        double crossSumZ = 0.0;</span>
+
+<span class="fc" id="L81">        Vector3D prevPt = vertices.get(vertices.size() - 1);</span>
+        Vector3D cross;
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        for (final Vector3D curPt : vertices) {</span>
+<span class="fc" id="L84">            cross = prevPt.cross(curPt);</span>
+
+<span class="fc" id="L86">            crossSumX += cross.getX();</span>
+<span class="fc" id="L87">            crossSumY += cross.getY();</span>
+<span class="fc" id="L88">            crossSumZ += cross.getZ();</span>
+
+<span class="fc" id="L90">            prevPt = curPt;</span>
+<span class="fc" id="L91">        }</span>
+
+<span class="fc" id="L93">        return 0.5 * plane.getNormal().dot(Vector3D.of(crossSumX, crossSumY, crossSumZ));</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D getCentroid() {
+<span class="fc" id="L99">        final List&lt;Vector3D&gt; vertices = getVertices();</span>
+
+<span class="fc" id="L101">        double areaSum = 0.0;</span>
+<span class="fc" id="L102">        double scaledCentroidSumX = 0.0;</span>
+<span class="fc" id="L103">        double scaledCentroidSumY = 0.0;</span>
+<span class="fc" id="L104">        double scaledCentroidSumZ = 0.0;</span>
+
+<span class="fc" id="L106">        final Iterator&lt;Vector3D&gt; it = vertices.iterator();</span>
+
+<span class="fc" id="L108">        final Vector3D startPt = it.next();</span>
+
+<span class="fc" id="L110">        Vector3D prevPt = it.next();</span>
+        Vector3D curPt;
+
+<span class="fc" id="L113">        Vector3D prevVec = startPt.vectorTo(prevPt);</span>
+        Vector3D curVec;
+
+        double triArea;
+        Vector3D triCentroid;
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        while (it.hasNext()) {</span>
+<span class="fc" id="L119">            curPt = it.next();</span>
+<span class="fc" id="L120">            curVec = startPt.vectorTo(curPt);</span>
+
+<span class="fc" id="L122">            triArea = 0.5 * prevVec.cross(curVec).norm();</span>
+<span class="fc" id="L123">            triCentroid = Vector3D.centroid(startPt, prevPt, curPt);</span>
+
+<span class="fc" id="L125">            areaSum += triArea;</span>
+
+<span class="fc" id="L127">            scaledCentroidSumX += triArea * triCentroid.getX();</span>
+<span class="fc" id="L128">            scaledCentroidSumY += triArea * triCentroid.getY();</span>
+<span class="fc" id="L129">            scaledCentroidSumZ += triArea * triCentroid.getZ();</span>
+
+<span class="fc" id="L131">            prevPt = curPt;</span>
+<span class="fc" id="L132">            prevVec = curVec;</span>
+        }
+
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        if (areaSum &gt; 0) {</span>
+<span class="fc" id="L136">            final double scale = 1 / areaSum;</span>
+<span class="fc" id="L137">            return Vector3D.of(</span>
+                        scale * scaledCentroidSumX,
+                        scale * scaledCentroidSumY,
+                        scale * scaledCentroidSumZ
+                    );
+        }
+
+        // zero area, which means that the points are all linear; return the point midway between the
+        // min and max points
+<span class="fc" id="L146">        final Vector3D min = Vector3D.min(vertices);</span>
+<span class="fc" id="L147">        final Vector3D max = Vector3D.max(vertices);</span>
+
+<span class="fc" id="L149">        return min.lerp(max, 0.5);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Bounds3D getBounds() {
+<span class="fc" id="L155">        return Bounds3D.from(getVertices());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionLocation classify(final Vector3D pt) {
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        if (plane.contains(pt)) {</span>
+<span class="fc" id="L162">            final List&lt;Vector3D&gt; vertices = getVertices();</span>
+<span class="fc" id="L163">            final Precision.DoubleEquivalence precision = plane.getPrecision();</span>
+
+<span class="fc" id="L165">            final Vector3D normal = plane.getNormal();</span>
+            Vector3D edgeVec;
+            Vector3D edgePlusVec;
+            Vector3D testVec;
+
+            Vector3D offsetVec;
+            double offsetSign;
+            double offset;
+            int cmp;
+
+<span class="fc" id="L175">            boolean onBoundary = false;</span>
+
+<span class="fc" id="L177">            Vector3D startVertex = vertices.get(vertices.size() - 1);</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">            for (final Vector3D nextVertex : vertices) {</span>
+
+<span class="fc" id="L180">                edgeVec = startVertex.vectorTo(nextVertex);</span>
+<span class="fc" id="L181">                edgePlusVec = edgeVec.cross(normal);</span>
+
+<span class="fc" id="L183">                testVec = startVertex.vectorTo(pt);</span>
+
+<span class="fc" id="L185">                offsetVec = testVec.reject(edgeVec);</span>
+<span class="fc" id="L186">                offsetSign = Math.signum(offsetVec.dot(edgePlusVec));</span>
+<span class="fc" id="L187">                offset = offsetSign * offsetVec.norm();</span>
+
+<span class="fc" id="L189">                cmp = precision.compare(offset, 0.0);</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">                if (cmp &gt; 0) {</span>
+                    // the point is on the plus side (outside) of a boundary
+<span class="fc" id="L192">                    return RegionLocation.OUTSIDE;</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">                } else if (cmp == 0) {</span>
+<span class="fc" id="L194">                    onBoundary = true;</span>
+                }
+
+<span class="fc" id="L197">                startVertex = nextVertex;</span>
+<span class="fc" id="L198">            }</span>
+
+<span class="fc bfc" id="L200" title="All 2 branches covered.">            if (onBoundary) {</span>
+                // the point is not on the outside of any boundaries and is directly on at least one
+<span class="fc" id="L202">                return RegionLocation.BOUNDARY;</span>
+            }
+
+            // the point is on the inside of all boundaries
+<span class="fc" id="L206">            return RegionLocation.INSIDE;</span>
+        }
+
+        // the point is not on the plane
+<span class="fc" id="L210">        return RegionLocation.OUTSIDE;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D closest(final Vector3D pt) {
+<span class="fc" id="L216">        final Vector3D normal = plane.getNormal();</span>
+<span class="fc" id="L217">        final Precision.DoubleEquivalence precision = plane.getPrecision();</span>
+
+<span class="fc" id="L219">        final List&lt;Vector3D&gt; vertices = getVertices();</span>
+
+<span class="fc" id="L221">        final Vector3D projPt = plane.project(pt);</span>
+
+        Vector3D edgeVec;
+        Vector3D edgePlusVec;
+        Vector3D testVec;
+
+        Vector3D offsetVec;
+        double offsetSign;
+        double offset;
+        int cmp;
+
+        Vector3D boundaryVec;
+        double boundaryPointT;
+        Vector3D boundaryPoint;
+        double boundaryPointDistSq;
+
+<span class="fc" id="L237">        double closestBoundaryPointDistSq = Double.POSITIVE_INFINITY;</span>
+<span class="fc" id="L238">        Vector3D closestBoundaryPoint = null;</span>
+
+<span class="fc" id="L240">        Vector3D startVertex = vertices.get(vertices.size() - 1);</span>
+<span class="fc bfc" id="L241" title="All 2 branches covered.">        for (final Vector3D nextVertex : vertices) {</span>
+
+<span class="fc" id="L243">            edgeVec = startVertex.vectorTo(nextVertex);</span>
+<span class="fc" id="L244">            edgePlusVec = edgeVec.cross(normal);</span>
+
+<span class="fc" id="L246">            testVec = startVertex.vectorTo(projPt);</span>
+
+<span class="fc" id="L248">            offsetVec = testVec.reject(edgeVec);</span>
+<span class="fc" id="L249">            offsetSign = Math.signum(offsetVec.dot(edgePlusVec));</span>
+<span class="fc" id="L250">            offset = offsetSign * offsetVec.norm();</span>
+
+<span class="fc" id="L252">            cmp = precision.compare(offset, 0.0);</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">            if (cmp &gt;= 0) {</span>
+                // the point is on directly on the boundary or on its plus side; project the point onto the
+                // boundary, taking care to restrict the point to the actual extent of the boundary,
+                // and select the point with the shortest distance
+<span class="fc" id="L257">                boundaryVec = testVec.subtract(offsetVec);</span>
+<span class="fc" id="L258">                boundaryPointT =</span>
+<span class="fc" id="L259">                        Math.signum(boundaryVec.dot(edgeVec)) * (boundaryVec.norm() / Vectors.checkedNorm(edgeVec));</span>
+<span class="fc" id="L260">                boundaryPointT = Math.max(0, Math.min(1, boundaryPointT));</span>
+
+<span class="fc" id="L262">                boundaryPoint = startVertex.lerp(nextVertex, boundaryPointT);</span>
+
+<span class="fc" id="L264">                boundaryPointDistSq = boundaryPoint.distanceSq(projPt);</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">                if (boundaryPointDistSq &lt; closestBoundaryPointDistSq) {</span>
+<span class="fc" id="L266">                    closestBoundaryPointDistSq = boundaryPointDistSq;</span>
+<span class="fc" id="L267">                    closestBoundaryPoint = boundaryPoint;</span>
+                }
+            }
+
+<span class="fc" id="L271">            startVertex = nextVertex;</span>
+<span class="fc" id="L272">        }</span>
+
+<span class="fc bfc" id="L274" title="All 2 branches covered.">        if (closestBoundaryPoint != null) {</span>
+            // the point is on the outside of the polygon; return the closest point on the boundary
+<span class="fc" id="L276">            return closestBoundaryPoint;</span>
+        }
+
+        // the projected point is on the inside of all boundaries and therefore on the inside of the subset
+<span class="fc" id="L280">        return projPt;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PlaneConvexSubset.Embedded getEmbedded() {
+<span class="fc" id="L286">        final EmbeddingPlane embeddingPlane = plane.getEmbedding();</span>
+<span class="fc" id="L287">        final List&lt;Vector2D&gt; subspaceVertices = embeddingPlane.toSubspace(getVertices());</span>
+<span class="fc" id="L288">        final ConvexArea area = ConvexArea.convexPolygonFromVertices(subspaceVertices,</span>
+<span class="fc" id="L289">                embeddingPlane.getPrecision());</span>
+
+<span class="fc" id="L291">        return new EmbeddedAreaPlaneConvexSubset(embeddingPlane, area);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Split&lt;PlaneConvexSubset&gt; split(final Hyperplane&lt;Vector3D&gt; splitter) {
+<span class="fc" id="L297">        final Plane splitterPlane = (Plane) splitter;</span>
+<span class="fc" id="L298">        final List&lt;Vector3D&gt; vertices = getVertices();</span>
+
+<span class="fc" id="L300">        final int size = vertices.size();</span>
+
+<span class="fc" id="L302">        int minusPlusTransitionIdx = -1;</span>
+<span class="fc" id="L303">        Vector3D minusPlusInsertVertex = null;</span>
+
+<span class="fc" id="L305">        int plusMinusTransitionIdx = -1;</span>
+<span class="fc" id="L306">        Vector3D plusMinusInsertVertex = null;</span>
+
+<span class="fc" id="L308">        int transitionCount = 0;</span>
+
+        Vector3D curVertex;
+        HyperplaneLocation curLoc;
+
+<span class="fc" id="L313">        int lastSideIdx = -1;</span>
+<span class="fc" id="L314">        Vector3D lastSideVertex = null;</span>
+<span class="fc" id="L315">        HyperplaneLocation lastSideLoc = null;</span>
+
+<span class="fc" id="L317">        int lastBoundaryIdx = -1;</span>
+
+<span class="fc bfc" id="L319" title="All 4 branches covered.">        for (int i = 0; i &lt;= size || transitionCount == 1; ++i) {</span>
+
+<span class="fc" id="L321">            curVertex = vertices.get(i % size);</span>
+<span class="fc" id="L322">            curLoc = splitter.classify(curVertex);</span>
+
+<span class="fc bfc" id="L324" title="All 4 branches covered.">            if (lastSideLoc == HyperplaneLocation.MINUS &amp;&amp; curLoc == HyperplaneLocation.PLUS) {</span>
+                // transitioned from minus side to plus side
+<span class="fc" id="L326">                minusPlusTransitionIdx = Math.max(lastSideIdx, lastBoundaryIdx);</span>
+<span class="fc" id="L327">                ++transitionCount;</span>
+
+<span class="fc bfc" id="L329" title="All 2 branches covered.">                if (lastBoundaryIdx &lt; 0) {</span>
+                    // no shared boundary point; compute a new vertex
+<span class="fc" id="L331">                    minusPlusInsertVertex = splitterPlane.intersection(</span>
+<span class="fc" id="L332">                            Lines3D.fromPoints(lastSideVertex, curVertex, splitterPlane.getPrecision()));</span>
+                }
+<span class="fc bfc" id="L334" title="All 4 branches covered.">            } else if (lastSideLoc == HyperplaneLocation.PLUS &amp;&amp; curLoc == HyperplaneLocation.MINUS) {</span>
+                // transitioned from plus side to minus side
+<span class="fc" id="L336">                plusMinusTransitionIdx = Math.max(lastSideIdx, lastBoundaryIdx);</span>
+<span class="fc" id="L337">                ++transitionCount;</span>
+
+<span class="fc bfc" id="L339" title="All 2 branches covered.">                if (lastBoundaryIdx &lt; 0) {</span>
+                    // no shared boundary point; compute a new vertex
+<span class="fc" id="L341">                    plusMinusInsertVertex = splitterPlane.intersection(</span>
+<span class="fc" id="L342">                            Lines3D.fromPoints(lastSideVertex, curVertex, splitterPlane.getPrecision()));</span>
+                }
+            }
+
+<span class="fc bfc" id="L346" title="All 2 branches covered.">            if (curLoc == HyperplaneLocation.ON) {</span>
+<span class="fc" id="L347">                lastBoundaryIdx = i;</span>
+            } else {
+<span class="fc" id="L349">                lastBoundaryIdx = -1;</span>
+
+<span class="fc" id="L351">                lastSideIdx = i;</span>
+<span class="fc" id="L352">                lastSideVertex = curVertex;</span>
+<span class="fc" id="L353">                lastSideLoc = curLoc;</span>
+            }
+        }
+
+<span class="pc bpc" id="L357" title="1 of 4 branches missed.">        if (minusPlusTransitionIdx &gt; -1 &amp;&amp; plusMinusTransitionIdx &gt; -1) {</span>
+            // we've split; compute the vertex list for each side
+<span class="fc" id="L359">            final List&lt;Vector3D&gt; minusVertices =  buildPolygonSplitVertexList(</span>
+                    plusMinusTransitionIdx, plusMinusInsertVertex,
+                    minusPlusTransitionIdx, minusPlusInsertVertex, vertices);
+<span class="fc" id="L362">            final List&lt;Vector3D&gt; plusVertices = buildPolygonSplitVertexList(</span>
+                    minusPlusTransitionIdx, minusPlusInsertVertex,
+                    plusMinusTransitionIdx, plusMinusInsertVertex, vertices);
+
+            // delegate back to the Planes factory methods to determine the concrete types
+            // for each side of the split
+<span class="fc" id="L368">            return new Split&lt;&gt;(</span>
+<span class="fc" id="L369">                    Planes.fromConvexPlanarVertices(plane, minusVertices),</span>
+<span class="fc" id="L370">                    Planes.fromConvexPlanarVertices(plane, plusVertices));</span>
+
+<span class="fc bfc" id="L372" title="All 2 branches covered.">        } else if (lastSideLoc == HyperplaneLocation.PLUS) {</span>
+            // we lie entirely on the plus side of the splitter
+<span class="fc" id="L374">            return new Split&lt;&gt;(null, this);</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">        } else if (lastSideLoc == HyperplaneLocation.MINUS) {</span>
+            // we lie entirely on the minus side of the splitter
+<span class="fc" id="L377">            return new Split&lt;&gt;(this, null);</span>
+        }
+
+        // we lie entirely on the splitter
+<span class="fc" id="L381">        return new Split&lt;&gt;(null, null);</span>
+    }
+
+    /** Internal method for building a vertex list for one side of a split result. The method is
+     * designed to make the fewest allocations possible.
+     * @param enterIdx the index of the vertex from {@code vertices} immediately before the polygon transitioned
+     *      to being fully entered into this side of the split result. If no point from {@code vertices} lay
+     *      directly on the splitting plane while entering this side and a new vertex had to be computed for the
+     *      split result, then this index will be the last vertex on the opposite side of the split. If a vertex
+     *      did lie directly on the splitting plane, then this index will point to that vertex.
+     * @param newEnterPt the newly-computed point to be added as the first vertex in the split result; may
+     *      be null if no such point exists
+     * @param exitIdx the index of the vertex from {@code vertices} immediately before the polygon transitioned
+     *      to being fully exited from this side of the split result. If no point from {@code vertices} lay
+     *      directly on the splitting plane while exiting this side and a new vertex had to be computed for the
+     *      split result, then this index will be the last vertex on the this side of the split. If a vertex did
+     *      lie directly on the splitting plane, then this index will point to that vertex.
+     * @param newExitPt the newly-computed point to be added as the last vertex in the split result; may
+     *      be null if no such point exists
+     * @param vertices the original list of vertices that this split result originated from; this list is
+     *      not modified by this operation
+     * @return the list of vertices for the split result
+     */
+    private List&lt;Vector3D&gt; buildPolygonSplitVertexList(final int enterIdx, final Vector3D newEnterPt,
+            final int exitIdx, final Vector3D newExitPt, final List&lt;? extends Vector3D&gt; vertices) {
+
+<span class="fc" id="L407">        final int size = vertices.size();</span>
+
+<span class="fc bfc" id="L409" title="All 2 branches covered.">        final boolean hasNewEnterPt = newEnterPt != null;</span>
+<span class="fc bfc" id="L410" title="All 2 branches covered.">        final boolean hasNewExitPt = newExitPt != null;</span>
+
+<span class="fc bfc" id="L412" title="All 2 branches covered.">        final int startIdx = (hasNewEnterPt ? enterIdx + 1 : enterIdx) % size;</span>
+<span class="fc" id="L413">        final int endIdx = exitIdx % size;</span>
+
+<span class="fc bfc" id="L415" title="All 2 branches covered.">        final boolean hasWrappedIndices = endIdx &lt; startIdx;</span>
+
+<span class="fc bfc" id="L417" title="All 2 branches covered.">        final int resultSize = (hasWrappedIndices ? endIdx + size : endIdx) - startIdx + 1;</span>
+<span class="fc" id="L418">        final List&lt;Vector3D&gt; result = new ArrayList&lt;&gt;(resultSize);</span>
+
+<span class="fc bfc" id="L420" title="All 2 branches covered.">        if (hasNewEnterPt) {</span>
+<span class="fc" id="L421">            result.add(newEnterPt);</span>
+        }
+
+<span class="fc bfc" id="L424" title="All 2 branches covered.">        if (hasWrappedIndices) {</span>
+<span class="fc" id="L425">            result.addAll(vertices.subList(startIdx, size));</span>
+<span class="fc" id="L426">            result.addAll(vertices.subList(0, endIdx + 1));</span>
+        } else {
+<span class="fc" id="L428">            result.addAll(vertices.subList(startIdx, endIdx + 1));</span>
+        }
+
+<span class="fc bfc" id="L431" title="All 2 branches covered.">        if (hasNewExitPt) {</span>
+<span class="fc" id="L432">            result.add(newExitPt);</span>
+        }
+
+<span class="fc" id="L435">        return result;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L441">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L442">        sb.append(getClass().getSimpleName())</span>
+<span class="fc" id="L443">            .append(&quot;[normal= &quot;)</span>
+<span class="fc" id="L444">            .append(getPlane().getNormal())</span>
+<span class="fc" id="L445">            .append(&quot;, vertices= &quot;)</span>
+<span class="fc" id="L446">            .append(getVertices())</span>
+<span class="fc" id="L447">            .append(']');</span>
+
+<span class="fc" id="L449">        return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

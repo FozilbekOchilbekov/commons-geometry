@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Interval.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.oned</a> &gt; <span class="el_source">Interval.java</span></div><h1>Interval.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.oned;
+
+import java.text.MessageFormat;
+
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.HyperplaneBoundedRegion;
+import org.apache.commons.geometry.core.partitioning.HyperplaneLocation;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing an interval in one dimension. The interval is defined
+ * by minimum and maximum values. One or both of these values may be infinite
+ * although not with the same sign.
+ *
+ * &lt;p&gt;Instances of this class are guaranteed to be immutable.&lt;/p&gt;
+ */
+public final class Interval implements HyperplaneBoundedRegion&lt;Vector1D&gt; {
+    /** Interval instance representing the entire real number line. */
+<span class="fc" id="L37">    private static final Interval FULL = new Interval(null, null);</span>
+
+    /** {@link OrientedPoint} instance representing the min boundary of the interval,
+     * or null if no min boundary exists. If present, this instance will be negative-facing.
+     * Infinite values are allowed but not NaN.
+     */
+    private final OrientedPoint minBoundary;
+
+    /** {@link OrientedPoint} instance representing the max boundary of the interval,
+     * or null if no max boundary exists. If present, this instance will be negative-facing.
+     * Infinite values are allowed but not NaN.
+     */
+    private final OrientedPoint maxBoundary;
+
+    /** Create an instance from min and max bounding hyperplanes. No validation is performed.
+     * Callers are responsible for ensuring that the given hyperplanes represent a valid
+     * interval.
+     * @param minBoundary the min (negative-facing) hyperplane
+     * @param maxBoundary the max (positive-facing) hyperplane
+     */
+<span class="fc" id="L57">    private Interval(final OrientedPoint minBoundary, final OrientedPoint maxBoundary) {</span>
+<span class="fc" id="L58">        this.minBoundary = minBoundary;</span>
+<span class="fc" id="L59">        this.maxBoundary = maxBoundary;</span>
+<span class="fc" id="L60">    }</span>
+
+    /** Get the minimum value for the interval or {@link Double#NEGATIVE_INFINITY}
+     * if no minimum value exists.
+     * @return the minimum value for the interval or {@link Double#NEGATIVE_INFINITY}
+     *      if no minimum value exists.
+     */
+    public double getMin() {
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        return (minBoundary != null) ? minBoundary.getLocation() : Double.NEGATIVE_INFINITY;</span>
+    }
+
+    /** Get the maximum value for the interval or {@link Double#POSITIVE_INFINITY}
+     * if no maximum value exists.
+     * @return the maximum value for the interval or {@link Double#POSITIVE_INFINITY}
+     *      if no maximum value exists.
+     */
+    public double getMax() {
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        return (maxBoundary != null) ? maxBoundary.getLocation() : Double.POSITIVE_INFINITY;</span>
+    }
+
+    /**
+     * Get the {@link OrientedPoint} forming the minimum bounding hyperplane
+     * of the interval, or null if none exists. If present, This hyperplane
+     * is oriented to point in the negative direction.
+     * @return the hyperplane forming the minimum boundary of the interval or
+     *      null if no minimum boundary exists
+     */
+    public OrientedPoint getMinBoundary() {
+<span class="fc" id="L88">        return minBoundary;</span>
+    }
+
+    /**
+     * Get the {@link OrientedPoint} forming the maximum bounding hyperplane
+     * of the interval, or null if none exists. If present, this hyperplane
+     * is oriented to point in the positive direction.
+     * @return the hyperplane forming the maximum boundary of the interval or
+     *      null if no maximum boundary exists
+     */
+    public OrientedPoint getMaxBoundary() {
+<span class="fc" id="L99">        return maxBoundary;</span>
+    }
+
+    /** Return true if the interval has a minimum (lower) boundary.
+     * @return true if the interval has minimum (lower) boundary
+     */
+    public boolean hasMinBoundary() {
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        return minBoundary != null;</span>
+    }
+
+    /** Return true if the interval has a maximum (upper) boundary.
+     * @return true if the interval has maximum (upper) boundary
+     */
+    public boolean hasMaxBoundary() {
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        return maxBoundary != null;</span>
+    }
+
+    /** True if the region is infinite, meaning that at least one of the boundaries
+     * does not exist.
+     * @return true if the region is infinite
+     */
+    @Override
+    public boolean isInfinite() {
+<span class="fc bfc" id="L122" title="All 4 branches covered.">        return minBoundary == null || maxBoundary == null;</span>
+    }
+
+    /** True if the region is finite, meaning that both the minimum and maximum
+     * boundaries exist and the region size is finite.
+     * @return true if the region is finite
+     */
+    @Override
+    public boolean isFinite() {
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        return !isInfinite();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionLocation classify(final Vector1D pt) {
+<span class="fc" id="L137">        return classify(pt.getX());</span>
+    }
+
+    /** Classify a point with respect to the interval.
+     * @param location the location to classify
+     * @return the classification of the point with respect to the interval
+     * @see #classify(Vector1D)
+     */
+    public RegionLocation classify(final double location) {
+<span class="fc" id="L146">        final RegionLocation minLoc = classifyWithBoundary(location, minBoundary);</span>
+<span class="fc" id="L147">        final RegionLocation maxLoc = classifyWithBoundary(location, maxBoundary);</span>
+
+<span class="fc bfc" id="L149" title="All 4 branches covered.">        if (minLoc == RegionLocation.BOUNDARY || maxLoc == RegionLocation.BOUNDARY) {</span>
+<span class="fc" id="L150">            return RegionLocation.BOUNDARY;</span>
+<span class="fc bfc" id="L151" title="All 4 branches covered.">        } else if (minLoc == RegionLocation.INSIDE &amp;&amp; maxLoc == RegionLocation.INSIDE) {</span>
+<span class="fc" id="L152">            return RegionLocation.INSIDE;</span>
+        }
+<span class="fc" id="L154">        return RegionLocation.OUTSIDE;</span>
+    }
+
+    /** Classify the location using the given interval boundary, which may be null.
+     * @param location the location to classify
+     * @param boundary interval boundary to classify against
+     * @return the location of the point relative to the boundary
+     */
+    private RegionLocation classifyWithBoundary(final double location, final OrientedPoint boundary) {
+<span class="fc bfc" id="L163" title="All 2 branches covered.">        if (Double.isNaN(location)) {</span>
+<span class="fc" id="L164">            return RegionLocation.OUTSIDE;</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        } else if (boundary == null) {</span>
+<span class="fc" id="L166">            return RegionLocation.INSIDE;</span>
+        } else {
+<span class="fc" id="L168">            final HyperplaneLocation hyperLoc = boundary.classify(location);</span>
+
+<span class="fc bfc" id="L170" title="All 2 branches covered.">            if (hyperLoc == HyperplaneLocation.ON) {</span>
+<span class="fc" id="L171">                return RegionLocation.BOUNDARY;</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">            } else if (hyperLoc == HyperplaneLocation.PLUS) {</span>
+<span class="fc" id="L173">                return RegionLocation.OUTSIDE;</span>
+            }
+<span class="fc" id="L175">            return RegionLocation.INSIDE;</span>
+        }
+    }
+
+    /** Return true if the given point location is on the inside or boundary
+     * of the region.
+     * @param x the location to test
+     * @return true if the location is on the inside or boundary of the region
+     * @see #contains(org.apache.commons.geometry.core.Point)
+     */
+    public boolean contains(final double x) {
+<span class="fc bfc" id="L186" title="All 2 branches covered.">        return classify(x) != RegionLocation.OUTSIDE;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;The point is projected onto the nearest interval boundary. When a point
+     * is on the inside of the interval and is equidistant from both boundaries,
+     * then the minimum boundary is selected. when a point is on the outside of the
+     * interval and is equidistant from both boundaries (as is the case for intervals
+     * representing a single point), then the boundary facing the point is returned,
+     * ensuring that the returned offset is positive.
+     * &lt;/p&gt;
+     */
+    @Override
+    public Vector1D project(final Vector1D pt) {
+
+<span class="fc" id="L202">        OrientedPoint boundary = null;</span>
+
+<span class="fc bfc" id="L204" title="All 4 branches covered.">        if (minBoundary != null &amp;&amp; maxBoundary != null) {</span>
+            // both boundaries are present; use the closest
+<span class="fc" id="L206">            final double minOffset = minBoundary.offset(pt.getX());</span>
+<span class="fc" id="L207">            final double maxOffset = maxBoundary.offset(pt.getX());</span>
+
+<span class="fc" id="L209">            final double minDist = Math.abs(minOffset);</span>
+<span class="fc" id="L210">            final double maxDist = Math.abs(maxOffset);</span>
+
+            // Project onto the max boundary if it's the closest or the point is on its plus side.
+            // Otherwise, project onto the min boundary.
+<span class="fc bfc" id="L214" title="All 4 branches covered.">            if (maxDist &lt; minDist || maxOffset &gt; 0) {</span>
+<span class="fc" id="L215">                boundary = maxBoundary;</span>
+            } else {
+<span class="fc" id="L217">                boundary = minBoundary;</span>
+            }
+<span class="fc bfc" id="L219" title="All 2 branches covered.">        } else if (minBoundary != null) {</span>
+            // only the min boundary is present
+<span class="fc" id="L221">            boundary = minBoundary;</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        } else if (maxBoundary != null) {</span>
+            // only the max boundary is present
+<span class="fc" id="L224">            boundary = maxBoundary;</span>
+        }
+
+<span class="fc bfc" id="L227" title="All 2 branches covered.">        return (boundary != null) ? boundary.project(pt) : null;</span>
+    }
+
+    /** Return a new instance transformed by the argument.
+     * @param transform transform to apply
+     * @return a new instance transformed by the argument
+     */
+    public Interval transform(final Transform&lt;Vector1D&gt; transform) {
+<span class="fc bfc" id="L235" title="All 2 branches covered.">        final OrientedPoint transformedMin = (minBoundary != null) ?</span>
+<span class="fc" id="L236">                minBoundary.transform(transform) :</span>
+<span class="fc" id="L237">                null;</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">        final OrientedPoint transformedMax = (maxBoundary != null) ?</span>
+<span class="fc" id="L239">                maxBoundary.transform(transform) :</span>
+<span class="fc" id="L240">                null;</span>
+
+<span class="fc" id="L242">        return of(transformedMin, transformedMax);</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     *  &lt;p&gt;This method always returns false since there is always at least
+     *  one point that can be classified as not being on the outside of
+     *  the region.&lt;/p&gt;
+     */
+    @Override
+    public boolean isEmpty() {
+<span class="fc" id="L253">        return false;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isFull() {
+<span class="fc bfc" id="L259" title="All 4 branches covered.">        return minBoundary == null &amp;&amp; maxBoundary == null;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getSize() {
+<span class="fc bfc" id="L265" title="All 2 branches covered.">        if (isInfinite()) {</span>
+<span class="fc" id="L266">            return Double.POSITIVE_INFINITY;</span>
+        }
+
+<span class="fc" id="L269">        return getMax() - getMin();</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     *  &lt;p&gt;This method simply returns 0 because boundaries in one dimension do not
+     *  have any size.&lt;/p&gt;
+     */
+    @Override
+    public double getBoundarySize() {
+<span class="fc" id="L279">        return 0;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D getCentroid() {
+<span class="fc bfc" id="L285" title="All 2 branches covered.">        if (isInfinite()) {</span>
+<span class="fc" id="L286">            return null;</span>
+        }
+
+<span class="fc" id="L289">        final double min = getMin();</span>
+<span class="fc" id="L290">        final double max = getMax();</span>
+
+<span class="fc" id="L292">        return Vector1D.of((0.5 * (max - min)) + min);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Split&lt;Interval&gt; split(final Hyperplane&lt;Vector1D&gt; splitter) {
+<span class="fc" id="L298">        final OrientedPoint splitOrientedPoint = (OrientedPoint) splitter;</span>
+<span class="fc" id="L299">        final Vector1D splitPoint = splitOrientedPoint.getPoint();</span>
+
+<span class="fc bfc" id="L301" title="All 2 branches covered.">        final HyperplaneLocation splitterMinLoc = (minBoundary != null) ? minBoundary.classify(splitPoint) : null;</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">        final HyperplaneLocation splitterMaxLoc = (maxBoundary != null) ? maxBoundary.classify(splitPoint) : null;</span>
+
+<span class="fc" id="L304">        Interval low = null;</span>
+<span class="fc" id="L305">        Interval high = null;</span>
+
+<span class="fc bfc" id="L307" title="All 4 branches covered.">        if (splitterMinLoc != HyperplaneLocation.ON || splitterMaxLoc != HyperplaneLocation.ON) {</span>
+
+<span class="fc bfc" id="L309" title="All 4 branches covered.">            if (splitterMinLoc != null &amp;&amp; splitterMinLoc != HyperplaneLocation.MINUS) {</span>
+                // splitter is on or below min boundary
+<span class="fc" id="L311">                high = this;</span>
+<span class="pc bpc" id="L312" title="1 of 4 branches missed.">            } else if (splitterMaxLoc != null &amp;&amp; splitterMaxLoc != HyperplaneLocation.MINUS) {</span>
+                // splitter is on or above max boundary
+<span class="fc" id="L314">                low = this;</span>
+            } else {
+                // the interval is split in two
+<span class="fc" id="L317">                low = new Interval(minBoundary, OrientedPoints.createPositiveFacing(</span>
+<span class="fc" id="L318">                        splitPoint, splitOrientedPoint.getPrecision()));</span>
+<span class="fc" id="L319">                high = new Interval(OrientedPoints.createNegativeFacing(</span>
+<span class="fc" id="L320">                        splitPoint, splitOrientedPoint.getPrecision()), maxBoundary);</span>
+            }
+        }
+
+        // assign minus/plus based on the orientation of the splitter
+<span class="fc" id="L325">        final boolean lowIsMinus = splitOrientedPoint.isPositiveFacing();</span>
+<span class="fc bfc" id="L326" title="All 2 branches covered.">        final Interval minus = lowIsMinus ? low : high;</span>
+<span class="fc bfc" id="L327" title="All 2 branches covered.">        final Interval plus = lowIsMinus ? high : low;</span>
+
+<span class="fc" id="L329">        return new Split&lt;&gt;(minus, plus);</span>
+    }
+
+    /** Return a {@link RegionBSPTree1D} representing the same region as this instance.
+     * @return a BSP tree representing the same region
+     * @see RegionBSPTree1D#from(Interval, Interval...)
+     */
+    public RegionBSPTree1D toTree() {
+<span class="fc" id="L337">        return RegionBSPTree1D.from(this);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L343">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L344">        sb.append(this.getClass().getSimpleName())</span>
+<span class="fc" id="L345">            .append(&quot;[min= &quot;)</span>
+<span class="fc" id="L346">            .append(getMin())</span>
+<span class="fc" id="L347">            .append(&quot;, max= &quot;)</span>
+<span class="fc" id="L348">            .append(getMax())</span>
+<span class="fc" id="L349">            .append(']');</span>
+
+<span class="fc" id="L351">        return sb.toString();</span>
+    }
+
+    /** Create a new interval from the given point locations. The returned interval represents
+     * the region between the points, regardless of the order they are given as arguments.
+     * @param a first point location
+     * @param b second point location
+     * @param precision precision context used to compare floating point numbers
+     * @return a new interval representing the region between the given point locations
+     * @throws IllegalArgumentException if either number is {@link Double#NaN NaN} or the numbers
+     *      are both infinite and have the same sign
+     */
+    public static Interval of(final double a, final double b, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L364">        validateIntervalValues(a, b);</span>
+
+<span class="fc" id="L366">        final double min = Math.min(a, b);</span>
+<span class="fc" id="L367">        final double max = Math.max(a, b);</span>
+
+<span class="fc bfc" id="L369" title="All 2 branches covered.">        final OrientedPoint minBoundary = Double.isFinite(min) ?</span>
+<span class="fc" id="L370">                OrientedPoints.fromLocationAndDirection(min, false, precision) :</span>
+<span class="fc" id="L371">                null;</span>
+
+<span class="fc bfc" id="L373" title="All 2 branches covered.">        final OrientedPoint maxBoundary = Double.isFinite(max) ?</span>
+<span class="fc" id="L374">                OrientedPoints.fromLocationAndDirection(max, true, precision) :</span>
+<span class="fc" id="L375">                null;</span>
+
+<span class="fc bfc" id="L377" title="All 4 branches covered.">        if (minBoundary == null &amp;&amp; maxBoundary == null) {</span>
+<span class="fc" id="L378">            return FULL;</span>
+        }
+
+<span class="fc" id="L381">        return new Interval(minBoundary, maxBoundary);</span>
+    }
+
+    /** Create a new interval from the given points. The returned interval represents
+     * the region between the points, regardless of the order they are given as arguments.
+     * @param a first point
+     * @param b second point
+     * @param precision precision context used to compare floating point numbers
+     * @return a new interval representing the region between the given points
+     * @throws IllegalArgumentException if either point is {@link Vector1D#isNaN() NaN} or the points
+     *      are both {@link Vector1D#isInfinite() infinite} and have the same sign
+     */
+    public static Interval of(final Vector1D a, final Vector1D b, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L394">        return of(a.getX(), b.getX(), precision);</span>
+    }
+
+    /** Create a new interval from the given hyperplanes. The hyperplanes may be given in
+     * any order but one must be positive-facing and the other negative-facing, with the positive-facing
+     * hyperplane located above the negative-facing hyperplane. Either or both argument may be null,
+     * in which case the returned interval will extend to infinity in the appropriate direction. If both
+     * arguments are null, an interval representing the full space is returned.
+     * @param a first hyperplane; may be null
+     * @param b second hyperplane; may be null
+     * @return a new interval representing the region between the given hyperplanes
+     * @throws IllegalArgumentException if the hyperplanes have the same orientation or
+     *      do not form an interval (for example, if the positive-facing hyperplane is below
+     *      the negative-facing hyperplane)
+     */
+    public static Interval of(final OrientedPoint a, final OrientedPoint b) {
+
+<span class="fc" id="L411">        validateBoundaryRelationship(a, b);</span>
+
+<span class="fc bfc" id="L413" title="All 2 branches covered.">        final boolean hasA = a != null;</span>
+<span class="fc bfc" id="L414" title="All 2 branches covered.">        final boolean hasB = b != null;</span>
+
+<span class="fc bfc" id="L416" title="All 4 branches covered.">        if (!hasA &amp;&amp; !hasB) {</span>
+            // both boundaries null; return the full space
+<span class="fc" id="L418">            return FULL;</span>
+        }
+
+        // determine the ordering of the hyperplanes; we know that at least one is non-null
+<span class="fc bfc" id="L422" title="All 8 branches covered.">        final OrientedPoint minBoundary = ((hasA &amp;&amp; !a.isPositiveFacing()) || (hasB &amp;&amp; b.isPositiveFacing())) ? a : b;</span>
+<span class="fc bfc" id="L423" title="All 8 branches covered.">        final OrientedPoint maxBoundary = ((hasA &amp;&amp; a.isPositiveFacing()) || (hasB &amp;&amp; !b.isPositiveFacing())) ? a : b;</span>
+
+        // validate the boundary locations; this will ensure that we don't have NaN values
+<span class="fc bfc" id="L426" title="All 2 branches covered.">        final double minLoc = (minBoundary != null) ? minBoundary.getLocation() : Double.NEGATIVE_INFINITY;</span>
+<span class="fc bfc" id="L427" title="All 2 branches covered.">        final double maxLoc = (maxBoundary != null) ? maxBoundary.getLocation() : Double.POSITIVE_INFINITY;</span>
+
+<span class="fc" id="L429">        validateIntervalValues(minLoc, maxLoc);</span>
+
+        // create the interval, replacing infinites with nulls
+<span class="fc" id="L432">        return new Interval(</span>
+<span class="fc bfc" id="L433" title="All 2 branches covered.">                Double.isFinite(minLoc) ? minBoundary : null,</span>
+<span class="fc bfc" id="L434" title="All 2 branches covered.">                Double.isFinite(maxLoc) ? maxBoundary : null);</span>
+    }
+
+    /** Return an interval with the given min value and no max.
+     * @param min min value for the interval
+     * @param precision precision context used to compare floating point numbers
+     * @return an interval with the given min value and no max.
+     */
+    public static Interval min(final double min, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L443">        return of(min, Double.POSITIVE_INFINITY, precision);</span>
+    }
+
+    /** Return an interval with the given max value and no min.
+     * @param max max value for the interval
+     * @param precision precision context used to compare floating point numbers
+     * @return an interval with the given max value and no min.
+     */
+    public static Interval max(final double max, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L452">        return of(Double.NEGATIVE_INFINITY, max, precision);</span>
+    }
+
+    /** Return an interval representing a single point at the given location.
+     * @param location the location of the interval
+     * @param precision precision context used to compare floating point numbers
+     * @return an interval representing a single point
+     */
+    public static Interval point(final double location, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L461">        return of(location, location, precision);</span>
+    }
+
+    /** Return an interval representing the entire real number line. The {@link #isFull()}
+     * method of the instance will return true.
+     * @return an interval representing the entire real number line
+     * @see #isFull()
+     */
+    public static Interval full() {
+<span class="fc" id="L470">        return FULL;</span>
+    }
+
+    /** Validate that the orientations and positions of the arguments may be used to create an interval.
+     * The arguments may be given in any order. Does nothing if one or both arguments are null.
+     * @param a first boundary; may be null
+     * @param b second boundary may be null
+     * @throws IllegalArgumentException is {@code a} and {@code b} have the same orientation or one does
+     *      not lie on the plus side of the other.
+     */
+    private static void validateBoundaryRelationship(final OrientedPoint a, final OrientedPoint b) {
+<span class="fc bfc" id="L481" title="All 4 branches covered.">        if (a != null &amp;&amp; b != null) {</span>
+<span class="fc bfc" id="L482" title="All 2 branches covered.">            if (a.isPositiveFacing() == b.isPositiveFacing()) {</span>
+<span class="fc" id="L483">                throw new IllegalArgumentException(</span>
+<span class="fc" id="L484">                        MessageFormat.format(&quot;Invalid interval: hyperplanes have same orientation: {0}, {1}&quot;, a, b));</span>
+            }
+
+<span class="fc bfc" id="L487" title="All 2 branches covered.">            if (a.classify(b.getPoint()) == HyperplaneLocation.PLUS ||</span>
+<span class="pc bpc" id="L488" title="1 of 2 branches missed.">                    b.classify(a.getPoint()) == HyperplaneLocation.PLUS) {</span>
+<span class="fc" id="L489">                throw new IllegalArgumentException(</span>
+<span class="fc" id="L490">                        MessageFormat.format(&quot;Invalid interval: hyperplanes do not form interval: {0}, {1}&quot;, a, b));</span>
+            }
+        }
+<span class="fc" id="L493">    }</span>
+
+    /** Validate that the given value can be used to construct an interval. The values
+     * must not be NaN and if infinite, must have opposite signs.
+     * @param a first value
+     * @param b second value
+     * @throws IllegalArgumentException if either value is NaN or if both values are infinite
+     *      and have the same sign
+     */
+    private static void validateIntervalValues(final double a, final double b) {
+<span class="fc bfc" id="L503" title="All 4 branches covered.">        if (Double.isNaN(a) || Double.isNaN(b) ||</span>
+<span class="fc bfc" id="L504" title="All 4 branches covered.">                (Double.isInfinite(a) &amp;&amp; Double.compare(a, b) == 0)) {</span>
+
+<span class="fc" id="L506">            throw new IllegalArgumentException(</span>
+<span class="fc" id="L507">                    MessageFormat.format(&quot;Invalid interval values: [{0}, {1}]&quot;, a, b));</span>
+        }
+<span class="fc" id="L509">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LineSubset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.twod</a> &gt; <span class="el_source">LineSubset.java</span></div><h1>LineSubset.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.twod;
+
+import java.util.List;
+
+import org.apache.commons.geometry.core.RegionEmbedding;
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.core.partitioning.HyperplaneBoundedRegion;
+import org.apache.commons.geometry.core.partitioning.HyperplaneSubset;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.geometry.euclidean.oned.Vector1D;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing a subset of points on a line in 2D Euclidean space. For example, line segments
+ * and rays are line subsets. Line subsets may be finite or infinite.
+ */
+public abstract class LineSubset implements HyperplaneSubset&lt;Vector2D&gt;, RegionEmbedding&lt;Vector2D, Vector1D&gt; {
+    /** The line containing this instance. */
+    private final Line line;
+
+    /** Construct a new instance based on the given line.
+     * @param line line forming the base of the instance
+     */
+<span class="fc" id="L39">    LineSubset(final Line line) {</span>
+<span class="fc" id="L40">        this.line = line;</span>
+<span class="fc" id="L41">    }</span>
+
+    /** Get the line containing this subset. This method is an alias
+     * for {@link #getHyperplane()}.
+     * @return the line containing this subset
+     * @see #getHyperplane()
+     */
+    public Line getLine() {
+<span class="fc" id="L49">        return getHyperplane();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Line getHyperplane() {
+<span class="fc" id="L55">        return line;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D toSubspace(final Vector2D pt) {
+<span class="fc" id="L61">        return line.toSubspace(pt);</span>
+    }
+
+    /** Get a {@link Bounds2D} object defining an axis-aligned bounding box containing all
+     * vertices for this subset. Null is returned if the subset is infinite or does not
+     * contain any vertices.
+     * @return the bounding box for this instance or null if no valid bounds could be determined
+     */
+    public abstract Bounds2D getBounds();
+
+    /** {@inheritDoc} */
+    @Override
+    public abstract HyperplaneBoundedRegion&lt;Vector1D&gt; getSubspaceRegion();
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector2D toSpace(final Vector1D pt) {
+<span class="fc" id="L78">        return line.toSpace(pt);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public abstract List&lt;LineConvexSubset&gt; toConvex();
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionLocation classify(final Vector2D pt) {
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        if (line.contains(pt)) {</span>
+<span class="fc" id="L89">            return classifyAbscissa(line.abscissa(pt));</span>
+        }
+
+<span class="fc" id="L92">        return RegionLocation.OUTSIDE;</span>
+    }
+
+    /** Get the unique intersection of this subset with the given line. Null is
+     * returned if no unique intersection point exists (ie, the lines are
+     * parallel or coincident) or the line does not intersect this instance.
+     * @param inputLine line to intersect with this line subset
+     * @return the unique intersection point between the line and this line subset
+     *      or null if no such point exists.
+     * @see Line#intersection(Line)
+     */
+    public Vector2D intersection(final Line inputLine) {
+<span class="fc" id="L104">        final Vector2D pt = line.intersection(inputLine);</span>
+<span class="fc bfc" id="L105" title="All 4 branches covered.">        return (pt != null &amp;&amp; contains(pt)) ? pt : null;</span>
+    }
+
+    /** Get the unique intersection of this instance with the given line subset. Null
+     * is returned if the lines containing the line subsets do not have a unique intersection
+     * point (ie, they are parallel or coincident) or the intersection point is unique
+     * but is not contained in both line subsets.
+     * @param subset line subset to intersect with
+     * @return the unique intersection point between this line subset and the argument or
+     *      null if no such point exists.
+     * @see Line#intersection(Line)
+     */
+    public Vector2D intersection(final LineSubset subset) {
+<span class="fc" id="L118">        final Vector2D pt = intersection(subset.getLine());</span>
+<span class="fc bfc" id="L119" title="All 4 branches covered.">        return (pt != null &amp;&amp; subset.contains(pt)) ? pt : null;</span>
+    }
+
+    /** Return the object used to perform floating point comparisons, which is the
+     * same object used by the underlying {@link Line}).
+     * @return precision object used to perform floating point comparisons.
+     */
+    public Precision.DoubleEquivalence getPrecision() {
+<span class="fc" id="L127">        return line.getPrecision();</span>
+    }
+
+    /** Classify the given line abscissa value with respect to the subspace region.
+     * @param abscissa the abscissa value to classify
+     * @return the region location of the line abscissa value
+     */
+    public abstract RegionLocation classifyAbscissa(double abscissa);
+
+    /** Get a split result for cases where no intersection exists between the splitting line and the
+     * line underlying the given line subset. This occurs when the two lines are parallel or coincident.
+     * @param &lt;T&gt; Line subset type
+     * @param splitter splitting line
+     * @param subset line subset instance being split
+     * @return return result of the non-intersecting split operation
+     */
+    &lt;T extends LineSubset&gt; Split&lt;T&gt; getNonIntersectingSplitResult(final Line splitter, final T subset) {
+        // check which side of the splitter we lie on
+<span class="fc" id="L145">        final double offset = splitter.offset(subset.getLine());</span>
+<span class="fc" id="L146">        final int comp = getPrecision().compare(offset, 0.0);</span>
+
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        if (comp &lt; 0) {</span>
+<span class="fc" id="L149">            return new Split&lt;&gt;(subset, null);</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        } else if (comp &gt; 0) {</span>
+<span class="fc" id="L151">            return new Split&lt;&gt;(null, subset);</span>
+        } else {
+<span class="fc" id="L153">            return new Split&lt;&gt;(null, null);</span>
+        }
+    }
+
+    /** Return true if the plus side of the given splitter line is facing in the positive direction
+     * of this line.
+     * @param splitterLine line splitting this instance
+     * @return true if the plus side of the given line is facing in the positive direction of this
+     *      line
+     */
+    boolean splitterPlusIsPositiveFacing(final Line splitterLine) {
+<span class="fc bfc" id="L164" title="All 2 branches covered.">        return line.getOffsetDirection().dot(splitterLine.getDirection()) &lt;= 0;</span>
+    }
+
+    /** Create a split result for the given splitter line, given the low and high split portion of this
+     * instance. The arguments are assigned to the split result's minus and plus properties based on the
+     * relative orientation of the splitter line.
+     * @param &lt;T&gt; Line subset type
+     * @param splitter splitter line
+     * @param low portion of the split result closest to negative infinity on this line
+     * @param high portion of th split result closest to positive infinity on this line
+     * @return a split result for the given splitter line.
+     */
+    &lt;T extends LineSubset&gt; Split&lt;T&gt; createSplitResult(final Line splitter, final T low, final T high) {
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        return splitterPlusIsPositiveFacing(splitter) ?</span>
+<span class="fc" id="L178">                new Split&lt;&gt;(low, high) :</span>
+<span class="fc" id="L179">                new Split&lt;&gt;(high, low);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

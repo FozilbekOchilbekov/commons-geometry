@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.109" tests="80" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="22"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1251"/>
+    <property name="java.class.path" value="C:\Users\ULUGBEK\.m2\repository\org\apache\maven\surefire\surefire-booter\3.0.0\surefire-booter-3.0.0.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\maven\surefire\surefire-api\3.0.0\surefire-api-3.0.0.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\maven\surefire\surefire-extensions-spi\3.0.0\surefire-extensions-spi-3.0.0.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\maven\surefire\surefire-logger-api\3.0.0\surefire-logger-api-3.0.0.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\maven\surefire\surefire-shared-utils\3.0.0\surefire-shared-utils-3.0.0.jar;C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\target\test-classes;C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\target\classes;C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-core\target\commons-geometry-core-1.1-SNAPSHOT.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-core\1.1\commons-numbers-core-1.1.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-arrays\1.1\commons-numbers-arrays-1.1.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-angle\1.1\commons-numbers-angle-1.1.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-quaternion\1.1\commons-numbers-quaternion-1.1.jar;C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-core\target\commons-geometry-core-1.1-SNAPSHOT-tests.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-client-api\1.5\commons-rng-client-api-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-simple\1.5\commons-rng-simple-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-core\1.5\commons-rng-core-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-sampling\1.5\commons-rng-sampling-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter\5.9.3\junit-jupiter-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.3\junit-jupiter-api-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\platform\junit-platform-commons\1.9.3\junit-platform-commons-1.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.9.3\junit-jupiter-params-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.3\junit-jupiter-engine-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\platform\junit-platform-engine\1.9.3\junit-platform-engine-1.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\maven\surefire\surefire-junit-platform\3.0.0\surefire-junit-platform-3.0.0.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\maven\surefire\common-java5\3.0.0\common-java5-3.0.0.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\platform\junit-platform-launcher\1.9.3\junit-platform-launcher-1.9.3.jar"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="user.timezone" value="Europe/Berlin"/>
+    <property name="user.country.format" value="150"/>
+    <property name="os.name" value="Windows 10"/>
+    <property name="java.vm.specification.version" value="22"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="RU"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-22\bin"/>
+    <property name="sun.java.command" value="org.apache.maven.surefire.booter.ForkedBooter C:\Users\ULUGBEK\AppData\Local\Temp\surefire16549721548484839787 2024-07-13T15-19-00_390-jvmRun1 surefire-20240713152026688_3tmp surefire_1-20240713152026688_4tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\target\test-classes;C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean\target\classes;C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-core\target\commons-geometry-core-1.1-SNAPSHOT.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-core\1.1\commons-numbers-core-1.1.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-arrays\1.1\commons-numbers-arrays-1.1.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-angle\1.1\commons-numbers-angle-1.1.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-numbers-quaternion\1.1\commons-numbers-quaternion-1.1.jar;C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-core\target\commons-geometry-core-1.1-SNAPSHOT-tests.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-client-api\1.5\commons-rng-client-api-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-simple\1.5\commons-rng-simple-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-core\1.5\commons-rng-core-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\apache\commons\commons-rng-sampling\1.5\commons-rng-sampling-1.5.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter\5.9.3\junit-jupiter-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.3\junit-jupiter-api-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\platform\junit-platform-commons\1.9.3\junit-platform-commons-1.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.9.3\junit-jupiter-params-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.3\junit-jupiter-engine-5.9.3.jar;C:\Users\ULUGBEK\.m2\repository\org\junit\platform\junit-platform-engine\1.9.3\junit-platform-engine-1.9.3.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\ULUGBEK"/>
+    <property name="user.language" value="ru"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2024-04-16"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk-22"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean"/>
+    <property name="java.vm.compressedOopsMode" value="32-bit"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="22.0.1+8-16"/>
+    <property name="user.name" value="ULUGBEK"/>
+    <property name="stdout.encoding" value="Cp1251"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="localRepository" value="C:\Users\ULUGBEK\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="C:\Users\ULUGBEK\AppData\Local\Temp\"/>
+    <property name="java.version" value="22.0.1"/>
+    <property name="user.dir" value="C:\Users\ULUGBEK\IdeaProjects\commons-geometry\commons-geometry-euclidean"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.language.format" value="en"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="native.encoding" value="Cp1251"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-22\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\java8path;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Users\ULUGBEK\dev\flutter\bin;C:\Program Files\Python39\Scripts;C:\Program Files\Git\cmd;C:\Program Files\Go\bin;C:\Program Files\apache-maven-3.9.8-bin\bin;C:\Users\ULUGBEK\AppData\Local\Microsoft\WindowsApps;C:\Users\ULUGBEK\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\ULUGBEK\dev\flutter\bin;C:\Program Files\JetBrains\PyCharm 2024.1.1\bin;;C:\Program Files\Python39\Scripts;C:\Program Files\Android\platform-tools;C:\Users\ULUGBEK\go\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2024.1.4\bin;;C:\Program Files\apache-maven-3.9.8-bin\bin;;."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="Cp1251"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="22.0.1+8-16"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="66.0"/>
+  </properties>
+  <testcase name="testUnitFrom_coordinates" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testCrossProduct_cancellation" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testParse_failure" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.002"/>
+  <testcase name="testWithNorm_unitVectors" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testVectorTo" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testSum_factoryMethods" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testToArray" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testUnitFrom_static_illegalNorm" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.002"/>
+  <testcase name="testDotProduct_accuracy" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.013"/>
+  <testcase name="testEqualsAndHashCode_signedZeroConsistency" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testAdd" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testMax" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testMin" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testNaN" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testOrthogonal_givenDirection_directionIsCollinear" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testSubtract" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testCrossProduct_accuracy" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.01"/>
+  <testcase name="testMax_noPointsGiven" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testAngle" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testParse" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testLerp" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testNorm" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testZero" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testSum_instanceMethods" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testToString" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testOf" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testPrecisionEquals" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testWithNorm_illegalNorm" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.002"/>
+  <testcase name="testOrthogonal_givenDirection_illegalNorm" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.003"/>
+  <testcase name="testProject" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testUnitFrom_vector" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testSum_accept" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testScalarMultiply" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testDimension" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testDotProduct" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testNormalizeOrNull_isIdempotent" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testWithNorm" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testNormalize_illegalNorm" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.003"/>
+  <testcase name="testCentroid" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testAngle_illegalNorm" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.003"/>
+  <testcase name="testReject_baseHasIllegalNorm" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.002"/>
+  <testcase name="testNorm_unitVectors" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testUnitFactoryOptimization" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testCrossProduct" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testSubtract_scaled" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testConstants" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testOrthogonal" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testCentroid_noPointsGiven" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testOrthogonal_givenDirection" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testCoordinateAscendingOrder" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testHashCode" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testInfinite" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testNormalizeOrNull" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testNormalize" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testConstants_normalize" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.002"/>
+  <testcase name="testOrthogonal_illegalNorm" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testDistance" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testMin_noPointsGiven" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testDirectionTo_illegalNorm" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.002"/>
+  <testcase name="testCoordinates" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testEquals" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testAdd_scaled" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testDotProduct_nearlyOrthogonal" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testFinite" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testIsZero" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testNormalize_isIdempotent" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testNegate_unitVectors" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testNegate" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testProject_baseHasIllegalNorm" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.002"/>
+  <testcase name="testNormSq" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testDistanceSq" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testReject" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testTransform" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testCrossProduct_nearlyAntiParallel" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testProjectAndReject_areComplementary" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.006"/>
+  <testcase name="testOf_arrayArg_invalidDimensions" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testOf_arrayArg" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testDirectionTo" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0.001"/>
+  <testcase name="testAngle_angularSeparation" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+  <testcase name="testNormSq_unitVectors" classname="org.apache.commons.geometry.euclidean.threed.Vector3DTest" time="0"/>
+</testsuite>

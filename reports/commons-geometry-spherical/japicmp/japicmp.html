@@ -1,0 +1,526 @@
+<html>
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Comparing source compatibility of commons-geometry-spherical-1.1-SNAPSHOT.jar against commons-geometry-spherical-1.0.jar</title>
+        <style type="text/css">
+body {
+    font-family: Verdana;
+}
+.title {
+    font-weight: bold;
+}
+.new {
+    color: green;
+}
+.removed {
+    color: red;
+}
+.modified {
+    color: orange;
+}
+.unchanged {
+    color: black;
+}
+thead tr td {
+    font-weight: bold;
+}
+.toc {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border: 1px solid #dcdcdc;
+    padding: 5px;
+    background: #ededed;
+    display: inline-block;
+}
+table {
+    border-collapse: collapse;
+}
+table tr td {
+    border: 1px solid black;
+    padding: 5px;
+}
+table thead {
+    background-color: #dee3e9;
+}
+table tbody tr td.matrix_layout {
+    background-color: #dee3e9;
+    font-weight: bold;
+}
+.class {
+    margin-bottom: 2em;
+    border: 1px solid #dcdcdc;
+    padding: 5px;
+    background: #ededed;
+    display: inline-block;
+}
+.class_compatibilityChanges {
+	margin-top: 1em;
+}
+
+.class_fileFormatVersion {
+	margin-top: 1em;
+}
+.class_generictemplates {
+	margin-top: 1em;
+}
+.class_superclass {
+    margin-top: 1em;
+}
+.class_interfaces {
+    margin-top: 1em;
+}
+.class_fields {
+    margin-top: 1em;
+}
+.class_serialVersionUid {
+    margin-top: 1em;
+}
+.class_constructors {
+    margin-top: 1em;
+}
+.class_methods {
+    margin-top: 1em;
+}
+.class_annotations {
+    margin-top: 1em;
+}
+.label {
+    font-weight: bold;
+}
+.label_class_member {
+    background-color: #4d7a97;
+    display: inline-block;
+    padding: 5px;
+}
+.toc_link {
+    margin-left: 10px;
+    font-size: 0.5em;
+}
+.modifier {
+    font-style: italic;
+}
+.method_return_type {
+
+}
+.method_parameter {
+
+}
+ul {
+    list-style-type: none;
+    padding: 0px 0px;
+}
+.meta-information {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    background: #ededed;
+    display: inline-block;
+}
+.warnings {
+    margin-top: 1em;
+    font-size: 0.75em;
+}
+.explanations {
+	margin-bottom: 2em;
+}
+.table_head_td {
+	background-color: #dee3e9;
+	font-weight: bold;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+</style>
+    </head>
+    <body>
+        <span class="title">Comparing source compatibility of commons-geometry-spherical-1.1-SNAPSHOT.jar against commons-geometry-spherical-1.0.jar</span>
+        <br>
+        <div class="meta-information">
+            <table>
+                <tr>
+                    <td>Old:</td><td>commons-geometry-spherical-1.0.jar</td>
+                </tr>
+                <tr>
+                    <td>New:</td><td>commons-geometry-spherical-1.1-SNAPSHOT.jar</td>
+                </tr>
+                <tr>
+                    <td>Created:</td><td>2024-07-13T15:28:25.860+0200</td>
+                </tr>
+                <tr>
+                    <td>Access modifier filter:</td><td>PROTECTED</td>
+                </tr>
+                <tr>
+                    <td>Only modifications:</td><td>true</td>
+                </tr>
+                <tr>
+                    <td>Only binary incompatible modifications:</td><td>false</td>
+                </tr>
+                <tr>
+                    <td>Ignore missing classes:</td><td>false</td>
+                </tr>
+                <tr>
+                    <td>Includes:</td><td>all</td>
+                </tr>
+                <tr>
+                    <td>Excludes:</td><td>n.a.</td>
+                </tr>
+                <tr>
+                    <td id="semver-label">Semantic Versioning:</td><td id="semver-version">0.1.0</td>
+                </tr>
+            </table>
+        </div>
+        <ul>
+            <li>
+                <a href="#toc">Classes</a>
+            </li>
+        </ul>
+            
+        <div class="toc" id="toc">
+            <span class="label">Classes:</span>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Status</td><td>Fully Qualified Name</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="modified">MODIFIED</span></td><td><a href="#org.apache.commons.geometry.spherical.oned.Point1S">org.apache.commons.geometry.spherical.oned.Point1S</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="new">NEW&nbsp;(*)</span></td><td><a href="#org.apache.commons.geometry.spherical.SphericalCollections">org.apache.commons.geometry.spherical.SphericalCollections</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="explanations">
+            <span>Binary incompatible changes are marked with (!) while source incompatible changes are marked with (*).</span>
+        </div>
+        <div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.spherical.oned.Point1S">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.spherical.oned.Point1S"></a><span class="modified">MODIFIED</span><span class="">&nbsp;</span><span class="unchanged modifier">final&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.spherical.oned.Point1S</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">boolean</span></td><td>eqZero(<span class="unchanged method_parameter">org.apache.commons.numbers.core.Precision$DoubleEquivalence</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>223</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.spherical.SphericalCollections">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.spherical.SphericalCollections"></a><span class="new">NEW&nbsp;(*)</span><span class="">&nbsp;</span><span class="new modifier">final&nbsp;</span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new">class</span>&nbsp;org.apache.commons.geometry.spherical.SphericalCollections</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW&nbsp;(*)</span></td><td><span class="new modifier"></span><span class="new modifier">static&nbsp;</span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change Status</td><td>Name</td><td>Old Type</td><td>New Type</td><td>Generics</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="new">NEW</span></td><td>V</td><td>n.a.</td><td>java.lang.Object</td><td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td><span class="new method_return_type">org.apache.commons.geometry.core.collection.PointMap
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>org.apache.commons.geometry.spherical.oned.Point1S</td><td>V</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>pointMap1S(<span class="unchanged method_parameter">org.apache.commons.numbers.core.Precision$DoubleEquivalence</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>CLASS_GENERIC_TEMPLATE_CHANGED</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>53</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW&nbsp;(*)</span></td><td><span class="new modifier"></span><span class="new modifier">static&nbsp;</span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change Status</td><td>Name</td><td>Old Type</td><td>New Type</td><td>Generics</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="new">NEW</span></td><td>V</td><td>n.a.</td><td>java.lang.Object</td><td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td><span class="new method_return_type">org.apache.commons.geometry.core.collection.PointMap
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>org.apache.commons.geometry.spherical.twod.Point2S</td><td>V</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>pointMap2S(<span class="unchanged method_parameter">org.apache.commons.numbers.core.Precision$DoubleEquivalence</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>CLASS_GENERIC_TEMPLATE_CHANGED</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>76</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier">static&nbsp;</span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.core.collection.PointSet
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>org.apache.commons.geometry.spherical.oned.Point1S</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>pointSet1S(<span class="unchanged method_parameter">org.apache.commons.numbers.core.Precision$DoubleEquivalence</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>41</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier">static&nbsp;</span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.core.collection.PointSet
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>org.apache.commons.geometry.spherical.twod.Point2S</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>pointSet2S(<span class="unchanged method_parameter">org.apache.commons.numbers.core.Precision$DoubleEquivalence</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>64</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>

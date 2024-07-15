@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmbeddedTreeLineSubset3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed.line</a> &gt; <span class="el_source">EmbeddedTreeLineSubset3D.java</span></div><h1>EmbeddedTreeLineSubset3D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed.line;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.euclidean.oned.Interval;
+import org.apache.commons.geometry.euclidean.oned.RegionBSPTree1D;
+import org.apache.commons.geometry.euclidean.oned.Vector1D;
+import org.apache.commons.geometry.euclidean.threed.Bounds3D;
+import org.apache.commons.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.geometry.euclidean.threed.line.Line3D.SubspaceTransform;
+
+/** Class representing an arbitrary subset of a line in 3D Euclidean space using a
+ * {@link RegionBSPTree1D}. This class can represent convex, non-convex, finite,
+ * infinite, and empty regions.
+ *
+ * &lt;p&gt;This class is mutable and &lt;em&gt;not&lt;/em&gt; thread safe.&lt;/p&gt;
+ */
+public final class EmbeddedTreeLineSubset3D extends LineSubset3D {
+    /** The 1D region representing the area on the line. */
+    private final RegionBSPTree1D region;
+
+    /** Construct a new, empty subset for the given line.
+     * @param line line defining the subset
+     */
+    public EmbeddedTreeLineSubset3D(final Line3D line) {
+<span class="fc" id="L45">        this(line, false);</span>
+<span class="fc" id="L46">    }</span>
+
+    /** Construct a new subset for the given line. If {@code full}
+     * is true, then the subset will cover the entire line; otherwise,
+     * it will be empty.
+     * @param line line defining the subset
+     * @param full if true, the subset will cover the entire space;
+     *      otherwise it will be empty
+     */
+    public EmbeddedTreeLineSubset3D(final Line3D line, final boolean full) {
+<span class="fc" id="L56">        this(line, new RegionBSPTree1D(full));</span>
+<span class="fc" id="L57">    }</span>
+
+    /** Construct a new instance from its defining line and subspace region.
+     * @param line line defining the subset
+     * @param region subspace region for the subset
+     */
+    public EmbeddedTreeLineSubset3D(final Line3D line, final RegionBSPTree1D region) {
+<span class="fc" id="L64">        super(line);</span>
+
+<span class="fc" id="L66">        this.region = region;</span>
+<span class="fc" id="L67">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public double getSize() {
+<span class="fc" id="L72">        return region.getSize();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionBSPTree1D getSubspaceRegion() {
+<span class="fc" id="L78">        return region;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D getCentroid() {
+<span class="fc" id="L84">        final Vector1D subcenter = region.getCentroid();</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        return subcenter != null ?</span>
+<span class="fc" id="L86">                getLine().toSpace(subcenter) :</span>
+<span class="fc" id="L87">                null;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Bounds3D getBounds() {
+<span class="fc" id="L93">        final double min = region.getMin();</span>
+<span class="fc" id="L94">        final double max = region.getMax();</span>
+
+<span class="fc bfc" id="L96" title="All 4 branches covered.">        if (Double.isFinite(min) &amp;&amp; Double.isFinite(max)) {</span>
+<span class="fc" id="L97">            final Line3D line = getLine();</span>
+
+<span class="fc" id="L99">            return Bounds3D.builder()</span>
+<span class="fc" id="L100">                    .add(line.toSpace(min))</span>
+<span class="fc" id="L101">                    .add(line.toSpace(max))</span>
+<span class="fc" id="L102">                    .build();</span>
+        }
+
+<span class="fc" id="L105">        return null;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionLocation classifyAbscissa(final double abscissa) {
+<span class="fc" id="L111">        return region.classify(abscissa);</span>
+    }
+
+    /** Transform this instance.
+     * @param transform the transform to apply
+     * @return a new, transformed instance
+     */
+    public EmbeddedTreeLineSubset3D transform(final Transform&lt;Vector3D&gt; transform) {
+<span class="fc" id="L119">        final SubspaceTransform st = getLine().subspaceTransform(transform);</span>
+
+<span class="fc" id="L121">        final RegionBSPTree1D tRegion = RegionBSPTree1D.empty();</span>
+<span class="fc" id="L122">        tRegion.copy(region);</span>
+<span class="fc" id="L123">        tRegion.transform(st.getTransform());</span>
+
+<span class="fc" id="L125">        return new EmbeddedTreeLineSubset3D(st.getLine(), tRegion);</span>
+    }
+
+    /** Return a list of {@link LineConvexSubset3D} instances representing the same region
+     * as this instance.
+     * @return a list of {@link LineConvexSubset3D} instances representing the same region
+     *      as this instance.
+     */
+    public List&lt;LineConvexSubset3D&gt; toConvex() {
+<span class="fc" id="L134">        final List&lt;Interval&gt; intervals = region.toIntervals();</span>
+
+<span class="fc" id="L136">        final Line3D line = getLine();</span>
+<span class="fc" id="L137">        final List&lt;LineConvexSubset3D&gt; convex = new ArrayList&lt;&gt;(intervals.size());</span>
+
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        for (final Interval interval : intervals) {</span>
+<span class="fc" id="L140">            convex.add(Lines3D.subsetFromInterval(line, interval));</span>
+<span class="fc" id="L141">        }</span>
+
+<span class="fc" id="L143">        return convex;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L149">        final Line3D line = getLine();</span>
+
+<span class="fc" id="L151">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L152">        sb.append(this.getClass().getSimpleName())</span>
+<span class="fc" id="L153">            .append('[')</span>
+<span class="fc" id="L154">            .append(&quot;lineOrigin= &quot;)</span>
+<span class="fc" id="L155">            .append(line.getOrigin())</span>
+<span class="fc" id="L156">            .append(&quot;, lineDirection= &quot;)</span>
+<span class="fc" id="L157">            .append(line.getDirection())</span>
+<span class="fc" id="L158">            .append(&quot;, region= &quot;)</span>
+<span class="fc" id="L159">            .append(region)</span>
+<span class="fc" id="L160">            .append(']');</span>
+
+<span class="fc" id="L162">        return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

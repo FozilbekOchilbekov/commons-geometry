@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BoundarySourceLinecaster3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed</a> &gt; <span class="el_source">BoundarySourceLinecaster3D.java</span></div><h1>BoundarySourceLinecaster3D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D;
+import org.apache.commons.geometry.euclidean.threed.line.LinecastPoint3D;
+import org.apache.commons.geometry.euclidean.threed.line.Linecastable3D;
+
+/** Class that performs linecast operations against arbitrary {@link BoundarySource3D}
+ * instances. This class performs a brute-force computation of the intersections of the
+ * line or line convex subset against all boundaries. Some data structures may support more
+ * efficient algorithms and should therefore prefer those instead.
+ */
+final class BoundarySourceLinecaster3D implements Linecastable3D {
+
+    /** The boundary source instance providing boundaries for the linecast operation. */
+    private final BoundarySource3D boundarySrc;
+
+    /** Construct a new instance for linecasting against the given boundary source.
+     * @param boundarySrc boundary source to linecast against.
+     */
+<span class="fc" id="L42">    BoundarySourceLinecaster3D(final BoundarySource3D boundarySrc) {</span>
+<span class="fc" id="L43">        this.boundarySrc = boundarySrc;</span>
+<span class="fc" id="L44">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;LinecastPoint3D&gt; linecast(final LineConvexSubset3D subset) {
+<span class="fc" id="L49">        try (Stream&lt;LinecastPoint3D&gt; stream = getIntersectionStream(subset)) {</span>
+
+<span class="fc" id="L51">            final List&lt;LinecastPoint3D&gt; results = stream.collect(Collectors.toCollection(ArrayList::new));</span>
+<span class="fc" id="L52">            LinecastPoint3D.sortAndFilter(results);</span>
+
+<span class="fc" id="L54">            return results;</span>
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinecastPoint3D linecastFirst(final LineConvexSubset3D subset) {
+<span class="fc" id="L61">        try (Stream&lt;LinecastPoint3D&gt; stream = getIntersectionStream(subset)) {</span>
+<span class="fc" id="L62">            return stream.min(LinecastPoint3D.ABSCISSA_ORDER)</span>
+<span class="fc" id="L63">                    .orElse(null);</span>
+        }
+    }
+
+    /** Return a stream containing intersections between the boundary source and the
+     * given line convex subset.
+     * @param subset line subset to intersect
+     * @return a stream containing linecast intersections
+     */
+    private Stream&lt;LinecastPoint3D&gt; getIntersectionStream(final LineConvexSubset3D subset) {
+<span class="fc" id="L73">        return boundarySrc.boundaryStream()</span>
+<span class="fc" id="L74">                .map(boundary -&gt; computeIntersection(boundary, subset))</span>
+<span class="fc" id="L75">                .filter(Objects::nonNull);</span>
+    }
+
+    /** Compute the intersection between a boundary plane subset and line subset. Null is
+     * returned if no intersection is discovered.
+     * @param planeSubset plane subset from the boundary source
+     * @param lineSubset line subset to intersect with
+     * @return the linecast intersection between the two arguments or null if there is no such
+     *      intersection
+     */
+    private LinecastPoint3D computeIntersection(final PlaneConvexSubset planeSubset,
+            final LineConvexSubset3D lineSubset) {
+<span class="fc" id="L87">        final Vector3D intersectionPt = planeSubset.intersection(lineSubset);</span>
+
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (intersectionPt != null) {</span>
+<span class="fc" id="L90">            final Vector3D normal = planeSubset.getPlane().getNormal();</span>
+
+<span class="fc" id="L92">            return new LinecastPoint3D(intersectionPt, normal, lineSubset.getLine());</span>
+        }
+
+<span class="fc" id="L95">        return null; // no intersection</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

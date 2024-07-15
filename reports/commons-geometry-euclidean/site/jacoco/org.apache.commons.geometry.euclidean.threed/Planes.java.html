@@ -1,0 +1,892 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Planes.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed</a> &gt; <span class="el_source">Planes.java</span></div><h1>Planes.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.BiFunction;
+
+import org.apache.commons.geometry.core.partitioning.HyperplaneBoundedRegion;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.geometry.core.partitioning.SplitLocation;
+import org.apache.commons.geometry.euclidean.internal.EuclideanUtils;
+import org.apache.commons.geometry.euclidean.threed.line.Line3D;
+import org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D;
+import org.apache.commons.geometry.euclidean.twod.ConvexArea;
+import org.apache.commons.geometry.euclidean.twod.Line;
+import org.apache.commons.geometry.euclidean.twod.LineConvexSubset;
+import org.apache.commons.geometry.euclidean.twod.Lines;
+import org.apache.commons.geometry.euclidean.twod.RegionBSPTree2D;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.geometry.euclidean.twod.path.LinePath;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class containing factory methods for constructing {@link Plane} and {@link PlaneSubset} instances.
+ */
+public final class Planes {
+
+    /** Utility class; no instantiation. */
+    private Planes() {
+    }
+
+    /** Build a plane from a point and two (on plane) vectors.
+     * @param p the provided point (on plane)
+     * @param u u vector (on plane)
+     * @param v v vector (on plane)
+     * @param precision precision context used to compare floating point values
+     * @return a new plane
+     * @throws IllegalArgumentException if the norm of the given values is zero, NaN, or infinite.
+     */
+    public static EmbeddingPlane fromPointAndPlaneVectors(final Vector3D p, final Vector3D u, final Vector3D v,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L59">        final Vector3D.Unit uNorm = u.normalize();</span>
+<span class="fc" id="L60">        final Vector3D.Unit vNorm = uNorm.orthogonal(v);</span>
+<span class="fc" id="L61">        final Vector3D.Unit wNorm = uNorm.cross(vNorm).normalize();</span>
+<span class="fc" id="L62">        final double originOffset = -p.dot(wNorm);</span>
+
+<span class="fc" id="L64">        return new EmbeddingPlane(uNorm, vNorm, wNorm, originOffset, precision);</span>
+    }
+
+    /** Build a plane from a normal.
+     * Chooses origin as point on plane.
+     * @param normal normal direction to the plane
+     * @param precision precision context used to compare floating point values
+     * @return a new plane
+     * @throws IllegalArgumentException if the norm of the given values is zero, NaN, or infinite.
+     */
+    public static Plane fromNormal(final Vector3D normal, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L75">        return fromPointAndNormal(Vector3D.ZERO, normal, precision);</span>
+    }
+
+    /** Build a plane from a point and a normal.
+     *
+     * @param p point belonging to the plane
+     * @param normal normal direction to the plane
+     * @param precision precision context used to compare floating point values
+     * @return a new plane
+     * @throws IllegalArgumentException if the norm of the given values is zero, NaN, or infinite.
+     */
+    public static Plane fromPointAndNormal(final Vector3D p, final Vector3D normal,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L88">        final Vector3D.Unit unitNormal = normal.normalize();</span>
+<span class="fc" id="L89">        final double originOffset = -p.dot(unitNormal);</span>
+
+<span class="fc" id="L91">        return new Plane(unitNormal, originOffset, precision);</span>
+    }
+
+    /** Build a plane from three points.
+     * &lt;p&gt;
+     * The plane is oriented in the direction of {@code (p2-p1) ^ (p3-p1)}
+     * &lt;/p&gt;
+     *
+     * @param p1 first point belonging to the plane
+     * @param p2 second point belonging to the plane
+     * @param p3 third point belonging to the plane
+     * @param precision precision context used to compare floating point values
+     * @return a new plane
+     * @throws IllegalArgumentException if the points do not define a unique plane
+     */
+    public static Plane fromPoints(final Vector3D p1, final Vector3D p2, final Vector3D p3,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L108">        return fromPoints(Arrays.asList(p1, p2, p3), precision);</span>
+    }
+
+    /** Construct a plane from a collection of points lying on the plane. The plane orientation is
+     * determined by the overall orientation of the point sequence. For example, if the points wind
+     * around the z-axis in a counter-clockwise direction, then the plane normal will point up the
+     * +z axis. If the points wind in the opposite direction, then the plane normal will point down
+     * the -z axis. The {@code u} vector for the plane is set to the first non-zero vector between
+     * points in the sequence (ie, the first direction in the path).
+     *
+     * @param pts collection of sequenced points lying on the plane
+     * @param precision precision context used to compare floating point values
+     * @return a new plane containing the given points
+     * @throws IllegalArgumentException if the given collection does not contain at least 3 points or the
+     *      points do not define a unique plane
+     */
+    public static Plane fromPoints(final Collection&lt;Vector3D&gt; pts, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L125">        return new PlaneBuilder(pts, precision).build();</span>
+    }
+
+    /** Create a new plane subset from a plane and an embedded convex subspace area.
+     * @param plane embedding plane for the area
+     * @param area area embedded in the plane
+     * @return a new convex sub plane instance
+     */
+    public static PlaneConvexSubset subsetFromConvexArea(final EmbeddingPlane plane, final ConvexArea area) {
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        if (area.isFinite()) {</span>
+            // prefer a vertex-based representation for finite areas
+<span class="fc" id="L136">            final List&lt;Vector3D&gt; vertices = plane.toSpace(area.getVertices());</span>
+<span class="fc" id="L137">            return fromConvexPlanarVertices(plane, vertices);</span>
+        }
+
+<span class="fc" id="L140">        return new EmbeddedAreaPlaneConvexSubset(plane, area);</span>
+    }
+
+    /** Create a new convex polygon from the given sequence of vertices. The vertices must define a unique
+     * plane, meaning that at least 3 unique vertices must be given. The given sequence is assumed to be closed,
+     * ie that an edge exists between the last vertex and the first.
+     * @param pts collection of points defining the convex polygon
+     * @param precision precision context used to compare floating point values
+     * @return a new convex polygon defined by the given sequence of vertices
+     * @throws IllegalArgumentException if fewer than 3 vertices are given or the vertices do not define a
+     *       unique plane
+     * @see #fromPoints(Collection, Precision.DoubleEquivalence)
+     */
+    public static ConvexPolygon3D convexPolygonFromVertices(final Collection&lt;Vector3D&gt; pts,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L155">        final List&lt;Vector3D&gt; vertices = new ArrayList&lt;&gt;(pts.size());</span>
+<span class="fc" id="L156">        final Plane plane = new PlaneBuilder(pts, precision).buildForConvexPolygon(vertices);</span>
+
+        // make sure that the first point is not repeated at the end
+<span class="fc" id="L159">        final Vector3D firstPt = vertices.get(0);</span>
+<span class="fc" id="L160">        final Vector3D lastPt = vertices.get(vertices.size() - 1);</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        if (firstPt.eq(lastPt, precision)) {</span>
+<span class="fc" id="L162">            vertices.remove(vertices.size() - 1);</span>
+        }
+
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        if (vertices.size() == EuclideanUtils.TRIANGLE_VERTEX_COUNT) {</span>
+<span class="fc" id="L166">            return new SimpleTriangle3D(plane, vertices.get(0), vertices.get(1), vertices.get(2));</span>
+        }
+<span class="fc" id="L168">        return new VertexListConvexPolygon3D(plane, vertices);</span>
+    }
+
+    /** Construct a triangle from three vertices. The triangle plane is oriented such that the points
+     * are arranged in a counter-clockwise order when looking down the plane normal.
+     * @param p1 first vertex
+     * @param p2 second vertex
+     * @param p3 third vertex
+     * @param precision precision context used for floating point comparisons
+     * @return a triangle constructed from the three vertices
+     * @throws IllegalArgumentException if the points do not define a unique plane
+     */
+    public static Triangle3D triangleFromVertices(final Vector3D p1, final Vector3D p2, final Vector3D p3,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L182">        final Plane plane = fromPoints(p1, p2, p3, precision);</span>
+<span class="fc" id="L183">        return new SimpleTriangle3D(plane, p1, p2, p3);</span>
+    }
+
+    /** Construct a list of {@link Triangle3D} instances from a set of vertices and arrays of face indices.
+     * For example, the following code constructs a list of triangles forming a square pyramid.
+     * &lt;pre&gt;
+     * Precision.DoubleEquivalence precision = Precision.doubleEquivalenceOfEpsilon(1e-10);
+     *
+     * Vector3D[] vertices = {
+     *      Vector3D.ZERO,
+     *      Vector3D.of(1, 0, 0),
+     *      Vector3D.of(1, 1, 0),
+     *      Vector3D.of(0, 1, 0),
+     *      Vector3D.of(0.5, 0.5, 4)
+     * };
+     *
+     * int[][] faceIndices = {
+     *      {0, 2, 1},
+     *      {0, 3, 2},
+     *      {0, 1, 4},
+     *      {1, 2, 4},
+     *      {2, 3, 4},
+     *      {3, 0, 4}
+     * };
+     *
+     * List&amp;lt;Triangle3D&amp;gt; triangles = Planes.indexedTriangles(vertices, faceIndices, TEST_PRECISION);
+     * &lt;/pre&gt;
+     * @param vertices vertices available for use in triangle construction
+     * @param faceIndices array of indices for each triangular face; each entry in the array is an array of
+     *      3 index values into {@code vertices}, defining the 3 vertices that will be used to construct the
+     *      triangle
+     * @param precision precision context used for floating point comparisons
+     * @return a list of triangles constructed from the set of vertices and face indices
+     * @throws IllegalArgumentException if any face index array does not contain exactly 3 elements or a set
+     *      of 3 vertices do not define a plane
+     * @throws IndexOutOfBoundsException if any index into {@code vertices} is out of bounds
+     */
+    public static List&lt;Triangle3D&gt; indexedTriangles(final Vector3D[] vertices, final int[][] faceIndices,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L222">        return indexedTriangles(Arrays.asList(vertices), faceIndices, precision);</span>
+    }
+
+    /** Construct a list of {@link Triangle3D} instances from a set of vertices and arrays of face indices.
+     * @param vertices vertices available for use in triangle construction
+     * @param faceIndices array of indices for each triangular face; each entry in the array is an array of
+     *      3 index values into {@code vertices}, defining the 3 vertices that will be used to construct the
+     *      triangle
+     * @param precision precision context used for floating point comparisons
+     * @return a list of triangles constructed from the set of vertices and face indices
+     * @throws IllegalArgumentException if any face index array does not contain exactly 3 elements or a set
+     *      of 3 vertices do not define a plane
+     * @throws IndexOutOfBoundsException if any index into {@code vertices} is out of bounds
+     * @see #indexedTriangles(Vector3D[], int[][], Precision.DoubleEquivalence)
+     */
+    public static List&lt;Triangle3D&gt; indexedTriangles(final List&lt;? extends Vector3D&gt; vertices, final int[][] faceIndices,
+            final Precision.DoubleEquivalence precision) {
+
+<span class="fc" id="L240">        final int numFaces = faceIndices.length;</span>
+<span class="fc" id="L241">        final List&lt;Triangle3D&gt; triangles = new ArrayList&lt;&gt;(numFaces);</span>
+
+        int[] face;
+<span class="fc bfc" id="L244" title="All 2 branches covered.">        for (int i = 0; i &lt; numFaces; ++i) {</span>
+<span class="fc" id="L245">            face = faceIndices[i];</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">            if (face.length != EuclideanUtils.TRIANGLE_VERTEX_COUNT) {</span>
+<span class="fc" id="L247">                throw new IllegalArgumentException(MessageFormat.format(</span>
+                        &quot;Invalid number of vertex indices for face at index {0}: expected {1} but found {2}&quot;,
+<span class="fc" id="L249">                        i, EuclideanUtils.TRIANGLE_VERTEX_COUNT, face.length));</span>
+            }
+
+<span class="fc" id="L252">            triangles.add(triangleFromVertices(</span>
+<span class="fc" id="L253">                        vertices.get(face[0]),</span>
+<span class="fc" id="L254">                        vertices.get(face[1]),</span>
+<span class="fc" id="L255">                        vertices.get(face[2]),</span>
+                        precision
+                    ));
+        }
+
+<span class="fc" id="L260">        return triangles;</span>
+    }
+
+    /** Construct a list of {@link ConvexPolygon3D} instances from a set of vertices and arrays of face indices. Each
+     * face must contain at least 3 vertices but the number of vertices per face does not need to be constant.
+     * For example, the following code constructs a list of convex polygons forming a square pyramid.
+     * Note that the first face (the pyramid base) uses a different number of vertices than the other faces.
+     * &lt;pre&gt;
+     * Precision.DoubleEquivalence precision = Precision.doubleEquivalenceOfEpsilon(1e-10);
+     *
+     * Vector3D[] vertices = {
+     *      Vector3D.ZERO,
+     *      Vector3D.of(1, 0, 0),
+     *      Vector3D.of(1, 1, 0),
+     *      Vector3D.of(0, 1, 0),
+     *      Vector3D.of(0.5, 0.5, 4)
+     * };
+     *
+     * int[][] faceIndices = {
+     *      {0, 3, 2, 1}, // square base
+     *      {0, 1, 4},
+     *      {1, 2, 4},
+     *      {2, 3, 4},
+     *      {3, 0, 4}
+     * };
+     *
+     * List&amp;lt;ConvexPolygon3D&amp;gt; polygons = Planes.indexedConvexPolygons(vertices, faceIndices, precision);
+     * &lt;/pre&gt;
+     * @param vertices vertices available for use in convex polygon construction
+     * @param faceIndices array of indices for each triangular face; each entry in the array is an array of
+     *      at least 3 index values into {@code vertices}, defining the vertices that will be used to construct the
+     *      convex polygon
+     * @param precision precision context used for floating point comparisons
+     * @return a list of convex polygons constructed from the set of vertices and face indices
+     * @throws IllegalArgumentException if any face index array does not contain at least 3 elements or a set
+     *      of vertices do not define a planar convex polygon
+     * @throws IndexOutOfBoundsException if any index into {@code vertices} is out of bounds
+     */
+    public static List&lt;ConvexPolygon3D&gt; indexedConvexPolygons(final Vector3D[] vertices, final int[][] faceIndices,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L300">        return indexedConvexPolygons(Arrays.asList(vertices), faceIndices, precision);</span>
+    }
+
+    /** Construct a list of {@link ConvexPolygon3D} instances from a set of vertices and arrays of face indices. Each
+     * face must contain at least 3 vertices but the number of vertices per face does not need to be constant.
+     * @param vertices vertices available for use in convex polygon construction
+     * @param faceIndices array of indices for each triangular face; each entry in the array is an array of
+     *      at least 3 index values into {@code vertices}, defining the vertices that will be used to construct the
+     *      convex polygon
+     * @param precision precision context used for floating point comparisons
+     * @return a list of convex polygons constructed from the set of vertices and face indices
+     * @throws IllegalArgumentException if any face index array does not contain at least 3 elements or a set
+     *      of vertices do not define a planar convex polygon
+     * @throws IndexOutOfBoundsException if any index into {@code vertices} is out of bounds
+     * @see #indexedConvexPolygons(Vector3D[], int[][], Precision.DoubleEquivalence)
+     */
+    public static List&lt;ConvexPolygon3D&gt; indexedConvexPolygons(final List&lt;? extends Vector3D&gt; vertices,
+            final int[][] faceIndices, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L318">        final int numFaces = faceIndices.length;</span>
+<span class="fc" id="L319">        final List&lt;ConvexPolygon3D&gt; polygons = new ArrayList&lt;&gt;(numFaces);</span>
+<span class="fc" id="L320">        final List&lt;Vector3D&gt; faceVertices = new ArrayList&lt;&gt;();</span>
+
+        int[] face;
+<span class="fc bfc" id="L323" title="All 2 branches covered.">        for (int i = 0; i &lt; numFaces; ++i) {</span>
+<span class="fc" id="L324">            face = faceIndices[i];</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">            if (face.length &lt; EuclideanUtils.TRIANGLE_VERTEX_COUNT) {</span>
+<span class="fc" id="L326">                throw new IllegalArgumentException(MessageFormat.format(</span>
+                        &quot;Invalid number of vertex indices for face at index {0}: required at least {1} but found {2}&quot;,
+<span class="fc" id="L328">                        i, EuclideanUtils.TRIANGLE_VERTEX_COUNT, face.length));</span>
+            }
+
+<span class="fc bfc" id="L331" title="All 2 branches covered.">            for (final int vertexIndex : face) {</span>
+<span class="fc" id="L332">                faceVertices.add(vertices.get(vertexIndex));</span>
+            }
+
+<span class="fc" id="L335">            polygons.add(convexPolygonFromVertices(</span>
+                        faceVertices,
+                        precision
+                    ));
+
+<span class="fc" id="L340">            faceVertices.clear();</span>
+        }
+
+<span class="fc" id="L343">        return polygons;</span>
+    }
+
+    /** Get the boundaries of a 3D region created by extruding a polygon defined by a list of vertices. The ends
+     * (&quot;top&quot; and &quot;bottom&quot;) of the extruded 3D region are flat while the sides follow the boundaries of the original
+     * 2D region.
+     * @param vertices vertices forming the 2D polygon to extrude
+     * @param plane plane to extrude the 2D polygon from
+     * @param extrusionVector vector to extrude the polygon vertices through
+     * @param precision precision context used to construct the 3D region boundaries
+     * @return the boundaries of the extruded 3D region
+     * @throws IllegalStateException if {@code vertices} contains only a single unique vertex
+     * @throws IllegalArgumentException if regions of non-zero size cannot be produced with the
+     *      given plane and extrusion vector. This occurs when the extrusion vector has zero length
+     *      or is orthogonal to the plane normal
+     * @see LinePath#fromVertexLoop(Collection, Precision.DoubleEquivalence)
+     * @see #extrude(LinePath, EmbeddingPlane, Vector3D, Precision.DoubleEquivalence)
+     */
+    public static List&lt;PlaneConvexSubset&gt; extrudeVertexLoop(final List&lt;Vector2D&gt; vertices,
+            final EmbeddingPlane plane, final Vector3D extrusionVector, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L363">        final LinePath path = LinePath.fromVertexLoop(vertices, precision);</span>
+<span class="fc" id="L364">        return extrude(path, plane, extrusionVector, precision);</span>
+    }
+
+    /** Get the boundaries of the 3D region created by extruding a 2D line path. The ends (&quot;top&quot; and &quot;bottom&quot;) of
+     * the extruded 3D region are flat while the sides follow the boundaries of the original 2D region. The path is
+     * converted to a BSP tree before extrusion.
+     * @param path path to extrude
+     * @param plane plane to extrude the path from
+     * @param extrusionVector vector to extrude the polygon points through
+     * @param precision precision precision context used to construct the 3D region boundaries
+     * @return the boundaries of the extruded 3D region
+     * @throws IllegalArgumentException if regions of non-zero size cannot be produced with the
+     *      given plane and extrusion vector. This occurs when the extrusion vector has zero length
+     *      or is orthogonal to the plane normal
+     * @see #extrude(RegionBSPTree2D, EmbeddingPlane, Vector3D, Precision.DoubleEquivalence)
+     */
+    public static List&lt;PlaneConvexSubset&gt; extrude(final LinePath path, final EmbeddingPlane plane,
+            final Vector3D extrusionVector, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L382">        return extrude(path.toTree(), plane, extrusionVector, precision);</span>
+    }
+
+    /** Get the boundaries of the 3D region created by extruding a 2D region. The ends (&quot;top&quot; and &quot;bottom&quot;) of
+     * the extruded 3D region are flat while the sides follow the boundaries of the original 2D region.
+     * @param region region to extrude
+     * @param plane plane to extrude the region from
+     * @param extrusionVector vector to extrude the region points through
+     * @param precision precision precision context used to construct the 3D region boundaries
+     * @return the boundaries of the extruded 3D region
+     * @throws IllegalArgumentException if regions of non-zero size cannot be produced with the
+     *      given plane and extrusion vector. This occurs when the extrusion vector has zero length
+     *      or is orthogonal to the plane normal
+     */
+    public static List&lt;PlaneConvexSubset&gt; extrude(final RegionBSPTree2D region, final EmbeddingPlane plane,
+            final Vector3D extrusionVector, final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L398">        return new PlaneRegionExtruder(plane, extrusionVector, precision).extrude(region);</span>
+    }
+
+    /** Get the unique intersection of the plane subset with the given line. Null is
+     * returned if no unique intersection point exists (ie, the line and plane are
+     * parallel or coincident) or the line does not intersect the plane subset.
+     * @param planeSubset plane subset to intersect with
+     * @param line line to intersect with this plane subset
+     * @return the unique intersection point between the line and this plane subset
+     *      or null if no such point exists.
+     */
+    static Vector3D intersection(final PlaneSubset planeSubset, final Line3D line) {
+<span class="fc" id="L410">        final Vector3D pt = planeSubset.getPlane().intersection(line);</span>
+<span class="fc bfc" id="L411" title="All 4 branches covered.">        return (pt != null &amp;&amp; planeSubset.contains(pt)) ? pt : null;</span>
+    }
+
+    /** Get the unique intersection of the plane subset with the given line subset. Null
+     * is returned if the underlying line and plane do not have a unique intersection
+     * point (ie, they are parallel or coincident) or the intersection point is unique
+     * but is not contained in both the line subset and plane subset.
+     * @param planeSubset plane subset to intersect with
+     * @param lineSubset line subset to intersect with
+     * @return the unique intersection point between this plane subset and the argument or
+     *      null if no such point exists.
+     */
+    static Vector3D intersection(final PlaneSubset planeSubset, final LineConvexSubset3D lineSubset) {
+<span class="fc" id="L424">        final Vector3D pt = intersection(planeSubset, lineSubset.getLine());</span>
+<span class="fc bfc" id="L425" title="All 4 branches covered.">        return (pt != null &amp;&amp; lineSubset.contains(pt)) ? pt : null;</span>
+    }
+
+    /** Validate that the actual plane contains the same points as the expected plane, throwing an exception if not.
+     * The subspace orientations of embedding planes are not considered.
+     * @param expected the expected plane
+     * @param actual the actual plane
+     * @throws IllegalArgumentException if the actual plane is not equivalent to the expected plane
+     */
+    static void validatePlanesEquivalent(final Plane expected, final Plane actual) {
+<span class="fc bfc" id="L435" title="All 2 branches covered.">        if (!expected.eq(actual, expected.getPrecision())) {</span>
+<span class="fc" id="L436">            throw new IllegalArgumentException(&quot;Arguments do not represent the same plane. Expected &quot; +</span>
+                    expected + &quot; but was &quot; + actual + &quot;.&quot;);
+        }
+<span class="fc" id="L439">    }</span>
+
+    /** Generic split method that uses performs the split using the subspace region of the plane subset.
+     * @param splitter splitting hyperplane
+     * @param subset the plane subset being split
+     * @param factory function used to create new plane subset instances
+     * @param &lt;T&gt; Plane subset implementation type
+     * @return the result of the split operation
+     */
+    static &lt;T extends PlaneSubset&gt; Split&lt;T&gt; subspaceSplit(final Plane splitter, final T subset,
+            final BiFunction&lt;? super EmbeddingPlane, ? super HyperplaneBoundedRegion&lt;Vector2D&gt;, T&gt; factory) {
+
+<span class="fc" id="L451">        final EmbeddingPlane thisPlane = subset.getPlane().getEmbedding();</span>
+
+<span class="fc" id="L453">        final Line3D intersection = thisPlane.intersection(splitter);</span>
+<span class="fc bfc" id="L454" title="All 2 branches covered.">        if (intersection == null) {</span>
+<span class="fc" id="L455">            return getNonIntersectingSplitResult(splitter, subset);</span>
+        } else {
+<span class="fc" id="L457">            final EmbeddingPlane embeddingPlane = subset.getPlane().getEmbedding();</span>
+
+            // the lines intersect; split the subregion
+<span class="fc" id="L460">            final Vector3D intersectionOrigin = intersection.getOrigin();</span>
+<span class="fc" id="L461">            final Vector2D subspaceP1 = embeddingPlane.toSubspace(intersectionOrigin);</span>
+<span class="fc" id="L462">            final Vector2D subspaceP2 = embeddingPlane.toSubspace(intersectionOrigin.add(intersection.getDirection()));</span>
+
+<span class="fc" id="L464">            final Line subspaceSplitter = Lines.fromPoints(subspaceP1, subspaceP2, thisPlane.getPrecision());</span>
+
+<span class="fc" id="L466">            final Split&lt;? extends HyperplaneBoundedRegion&lt;Vector2D&gt;&gt; split =</span>
+<span class="fc" id="L467">                    subset.getEmbedded().getSubspaceRegion().split(subspaceSplitter);</span>
+<span class="fc" id="L468">            final SplitLocation subspaceSplitLoc = split.getLocation();</span>
+
+<span class="fc bfc" id="L470" title="All 2 branches covered.">            if (SplitLocation.MINUS == subspaceSplitLoc) {</span>
+<span class="fc" id="L471">                return new Split&lt;&gt;(subset, null);</span>
+<span class="fc bfc" id="L472" title="All 2 branches covered.">            } else if (SplitLocation.PLUS == subspaceSplitLoc) {</span>
+<span class="fc" id="L473">                return new Split&lt;&gt;(null, subset);</span>
+            }
+
+<span class="fc bfc" id="L476" title="All 2 branches covered.">            final T minus = (split.getMinus() != null) ? factory.apply(thisPlane, split.getMinus()) : null;</span>
+<span class="fc bfc" id="L477" title="All 2 branches covered.">            final T plus = (split.getPlus() != null) ? factory.apply(thisPlane, split.getPlus()) : null;</span>
+
+<span class="fc" id="L479">            return new Split&lt;&gt;(minus, plus);</span>
+        }
+    }
+
+    /** Get a split result for cases where the splitting plane and the plane containing the subset being split
+     * do not intersect. Callers are responsible for ensuring that the planes involved do not actually intersect.
+     * @param &lt;T&gt; Plane subset implementation type
+     * @param splitter plane performing the splitting
+     * @param subset subset being split
+     * @return the split result for the non-intersecting split
+     */
+    private static &lt;T extends PlaneSubset&gt; Split&lt;T&gt; getNonIntersectingSplitResult(
+            final Plane splitter, final T subset) {
+<span class="fc" id="L492">        final Plane plane = subset.getPlane();</span>
+
+<span class="fc" id="L494">        final double offset = splitter.offset(plane);</span>
+<span class="fc" id="L495">        final int comp = plane.getPrecision().compare(offset, 0.0);</span>
+
+<span class="fc bfc" id="L497" title="All 2 branches covered.">        if (comp &lt; 0) {</span>
+<span class="fc" id="L498">            return new Split&lt;&gt;(subset, null);</span>
+<span class="fc bfc" id="L499" title="All 2 branches covered.">        } else if (comp &gt; 0) {</span>
+<span class="fc" id="L500">            return new Split&lt;&gt;(null, subset);</span>
+        } else {
+<span class="fc" id="L502">            return new Split&lt;&gt;(null, null);</span>
+        }
+    }
+
+    /** Construct a convex polygon 3D from a plane and a list of vertices lying in the plane. Callers are
+     * responsible for ensuring that the vertices lie in the plane and define a convex polygon.
+     * @param plane the plane containing the convex polygon
+     * @param vertices vertices defining the closed, convex polygon. The must must contain at least 3 unique
+     *      vertices and should not include the start vertex at the end of the list.
+     * @return a new convex polygon instance
+     * @throws IllegalArgumentException if the size of {@code vertices} if less than 3
+     */
+    static ConvexPolygon3D fromConvexPlanarVertices(final Plane plane, final List&lt;Vector3D&gt; vertices) {
+<span class="fc" id="L515">        final int size = vertices.size();</span>
+
+<span class="fc bfc" id="L517" title="All 2 branches covered.">        if (size == EuclideanUtils.TRIANGLE_VERTEX_COUNT) {</span>
+<span class="fc" id="L518">            return new SimpleTriangle3D(plane, vertices.get(0), vertices.get(1), vertices.get(2));</span>
+        }
+
+<span class="fc" id="L521">        return new VertexListConvexPolygon3D(plane, vertices);</span>
+    }
+
+    /** Convert a convex polygon defined by a plane and list of points into a triangle fan.
+     * @param plane plane containing the convex polygon
+     * @param vertices vertices defining the convex polygon
+     * @return a triangle fan representing the same area as the convex polygon
+     * @throws IllegalArgumentException if fewer than 3 vertices are given
+     */
+    static List&lt;Triangle3D&gt; convexPolygonToTriangleFan(final Plane plane, final List&lt;Vector3D&gt; vertices) {
+<span class="fc" id="L531">        return EuclideanUtils.convexPolygonToTriangleFan(vertices,</span>
+<span class="fc" id="L532">                tri -&gt; new SimpleTriangle3D(plane, tri.get(0), tri.get(1), tri.get(2)));</span>
+    }
+
+    /** Internal helper class used to construct planes from sequences of points. Instances can be also be
+     * configured to collect lists of unique points found during plane construction and validate that the
+     * defined region is convex.
+     */
+    private static final class PlaneBuilder {
+
+        /** The point sequence to build a plane for. */
+        private final Collection&lt;? extends Vector3D&gt; pts;
+
+        /** Precision context used for floating point comparisons. */
+        private final Precision.DoubleEquivalence precision;
+
+        /** The start point from the point sequence. */
+        private Vector3D startPt;
+
+        /** The previous point from the point sequence. */
+        private Vector3D prevPt;
+
+        /** The previous vector from the point sequence, preceding from the {@code startPt} to {@code prevPt}. */
+        private Vector3D prevVector;
+
+        /** The computed {@code normal} vector for the plane. */
+        private Vector3D.Unit normal;
+
+        /** The x component of the sum of all cross products from adjacent vectors in the point sequence. */
+        private double crossSumX;
+
+        /** The y component of the sum of all cross products from adjacent vectors in the point sequence. */
+        private double crossSumY;
+
+        /** The z component of the sum of all cross products from adjacent vectors in the point sequence. */
+        private double crossSumZ;
+
+        /** If true, an exception will be thrown if the point sequence is discovered to be non-convex. */
+        private boolean requireConvex;
+
+        /** List that unique vertices discovered in the input sequence will be added to. */
+        private List&lt;? super Vector3D&gt; uniqueVertexOutput;
+
+        /** Construct a new build instance for the given point sequence and precision context.
+         * @param pts point sequence
+         * @param precision precision context used to perform floating point comparisons
+         */
+<span class="fc" id="L578">        PlaneBuilder(final Collection&lt;? extends Vector3D&gt; pts, final Precision.DoubleEquivalence precision) {</span>
+<span class="fc" id="L579">            this.pts = pts;</span>
+<span class="fc" id="L580">            this.precision = precision;</span>
+<span class="fc" id="L581">        }</span>
+
+        /** Build a plane from the configured point sequence.
+         * @return a plane built from the configured point sequence
+         * @throws IllegalArgumentException if the points do not define a plane
+         */
+        Plane build() {
+<span class="fc bfc" id="L588" title="All 2 branches covered.">            if (pts.size() &lt; EuclideanUtils.TRIANGLE_VERTEX_COUNT) {</span>
+<span class="fc" id="L589">                throw nonPlanar();</span>
+            }
+
+<span class="fc" id="L592">            pts.forEach(this::processPoint);</span>
+
+<span class="fc" id="L594">            return createPlane();</span>
+        }
+
+        /** Build a plane from the configured point sequence, validating that the points form a convex region
+         * and adding all discovered unique points to the given list.
+         * @param vertexOutput list that unique points discovered in the point sequence will be added to
+         * @return a plane created from the configured point sequence
+         * @throws IllegalArgumentException if the points do not define a plane or the {@code requireConvex}
+         *      flag is true and the points do not define a convex area
+         */
+        Plane buildForConvexPolygon(final List&lt;? super Vector3D&gt; vertexOutput) {
+<span class="fc" id="L605">            this.requireConvex = true;</span>
+<span class="fc" id="L606">            this.uniqueVertexOutput = vertexOutput;</span>
+
+<span class="fc" id="L608">            return build();</span>
+        }
+
+        /** Process a point from the point sequence.
+         * @param pt the {@link Vector3D} process point.
+         * @throws IllegalArgumentException if the points do not define a plane or the {@code requireConvex}
+         *      flag is true and the points do not define a convex area
+         */
+        private void processPoint(final Vector3D pt) {
+<span class="fc bfc" id="L617" title="All 2 branches covered.">            if (prevPt == null) {</span>
+<span class="fc" id="L618">                startPt = pt;</span>
+<span class="fc" id="L619">                prevPt = pt;</span>
+
+<span class="fc bfc" id="L621" title="All 2 branches covered.">                if (uniqueVertexOutput != null) {</span>
+<span class="fc" id="L622">                    uniqueVertexOutput.add(pt);</span>
+                }
+
+<span class="fc bfc" id="L625" title="All 2 branches covered.">            } else if (!prevPt.eq(pt, precision)) { // skip duplicate points</span>
+<span class="fc" id="L626">                final Vector3D vec = startPt.vectorTo(pt);</span>
+
+<span class="fc bfc" id="L628" title="All 2 branches covered.">                if (prevVector != null) {</span>
+<span class="fc" id="L629">                    processCrossProduct(prevVector.cross(vec));</span>
+                }
+
+<span class="fc bfc" id="L632" title="All 2 branches covered.">                if (uniqueVertexOutput != null) {</span>
+<span class="fc" id="L633">                    uniqueVertexOutput.add(pt);</span>
+                }
+
+<span class="fc" id="L636">                prevPt = pt;</span>
+<span class="fc" id="L637">                prevVector = vec;</span>
+            }
+<span class="fc" id="L639">        }</span>
+
+        /** Process the computed cross product of two vectors from the input point sequence. The vectors
+         * start at the first point in the sequence and point to adjacent points later in the sequence.
+         * @param cross the cross product of two vectors from the input point sequence
+         * @throws IllegalArgumentException if the points do not define a plane or the {@code requireConvex}
+         *      flag is true and the points do not define a convex area
+         */
+        private void processCrossProduct(final Vector3D cross) {
+<span class="fc" id="L648">            crossSumX += cross.getX();</span>
+<span class="fc" id="L649">            crossSumY += cross.getY();</span>
+<span class="fc" id="L650">            crossSumZ += cross.getZ();</span>
+
+<span class="fc" id="L652">            final double crossNorm = cross.norm();</span>
+
+<span class="fc bfc" id="L654" title="All 2 branches covered.">            if (!precision.eqZero(crossNorm)) {</span>
+                // the cross product has non-zero magnitude
+<span class="fc bfc" id="L656" title="All 2 branches covered.">                if (normal == null) {</span>
+                    // save the first non-zero cross product as our normal
+<span class="fc" id="L658">                    normal = cross.normalize();</span>
+                } else {
+<span class="fc" id="L660">                    final double crossDot = normal.dot(cross) / crossNorm;</span>
+
+                    // check non-planar before non-convex since the former is a more general type
+                    // of issue
+<span class="fc bfc" id="L664" title="All 2 branches covered.">                    if (!precision.eq(1.0, Math.abs(crossDot))) {</span>
+<span class="fc" id="L665">                        throw nonPlanar();</span>
+<span class="fc bfc" id="L666" title="All 4 branches covered.">                    } else if (requireConvex &amp;&amp; crossDot &lt; 0) {</span>
+<span class="fc" id="L667">                        throw nonConvex();</span>
+                    }
+                }
+            }
+<span class="fc" id="L671">        }</span>
+
+        /** Construct the plane instance using the value gathered during point processing.
+         * @return the created plane instance
+         * @throws IllegalArgumentException if the point do not define a plane
+         */
+        private Plane createPlane() {
+<span class="fc bfc" id="L678" title="All 2 branches covered.">            if (normal == null) {</span>
+<span class="fc" id="L679">                throw nonPlanar();</span>
+            }
+
+            // flip the normal if needed to match the overall orientation of the points
+<span class="fc bfc" id="L683" title="All 2 branches covered.">            if (normal.dot(Vector3D.of(crossSumX, crossSumY, crossSumZ)) &lt; 0) {</span>
+<span class="fc" id="L684">                normal = normal.negate();</span>
+            }
+
+            // construct the plane
+<span class="fc" id="L688">            final double originOffset = -startPt.dot(normal);</span>
+
+<span class="fc" id="L690">            return new Plane(normal, originOffset, precision);</span>
+        }
+
+        /** Return an exception with a message stating that the points given to this builder do not
+         * define a plane.
+         * @return an exception stating that the points do not define a plane
+         */
+        private IllegalArgumentException nonPlanar() {
+<span class="fc" id="L698">            return new IllegalArgumentException(&quot;Points do not define a plane: &quot; + pts);</span>
+        }
+
+        /** Return an exception with a message stating that the points given to this builder do not
+         * define a convex region.
+         * @return an exception stating that the points do not define a plane
+         */
+        private IllegalArgumentException nonConvex() {
+<span class="fc" id="L706">            return new IllegalArgumentException(&quot;Points do not define a convex region: &quot; + pts);</span>
+        }
+    }
+
+    /** Class designed to create 3D regions by taking a 2D region and extruding from a base plane
+     * through an extrusion vector. The ends (&quot;top&quot; and &quot;bottom&quot;) of the extruded 3D region are flat
+     * while the sides follow the boundaries of the original 2D region.
+     */
+    private static final class PlaneRegionExtruder {
+        /** Base plane to extrude from. */
+        private final EmbeddingPlane basePlane;
+
+        /** Vector to extrude along; the extruded plane is translated from the base plane by this amount. */
+        private final Vector3D extrusionVector;
+
+        /** True if the extrusion vector points to the plus side of the base plane. */
+        private final boolean extrudingOnPlusSide;
+
+        /** Precision context used to create boundaries. */
+        private final Precision.DoubleEquivalence precision;
+
+        /** Construct a new instance that performs extrusions from {@code basePlane} along {@code extrusionVector}.
+         * @param basePlane base plane to extrude from
+         * @param extrusionVector vector to extrude along
+         * @param precision precision context used to construct boundaries
+         * @throws IllegalArgumentException if the given extrusion vector and plane produce regions
+         *      of zero size
+         */
+        PlaneRegionExtruder(final EmbeddingPlane basePlane, final Vector3D extrusionVector,
+<span class="fc" id="L735">                final Precision.DoubleEquivalence precision) {</span>
+
+<span class="fc" id="L737">            this.basePlane = basePlane;</span>
+
+            // Extruded plane; this forms the end of the 3D region opposite the base plane.
+<span class="fc" id="L740">            final EmbeddingPlane extrudedPlane = basePlane.translate(extrusionVector);</span>
+
+<span class="fc bfc" id="L742" title="All 2 branches covered.">            if (basePlane.contains(extrudedPlane)) {</span>
+<span class="fc" id="L743">                throw new IllegalArgumentException(</span>
+                        &quot;Extrusion vector produces regions of zero size: extrusionVector= &quot; +
+                                extrusionVector + &quot;,  plane= &quot; + basePlane);
+            }
+
+<span class="fc" id="L748">            this.extrusionVector = extrusionVector;</span>
+<span class="fc bfc" id="L749" title="All 2 branches covered.">            this.extrudingOnPlusSide = basePlane.getNormal().dot(extrusionVector) &gt; 0;</span>
+
+<span class="fc" id="L751">            this.precision = precision;</span>
+<span class="fc" id="L752">        }</span>
+
+        /** Extrude the given 2D BSP tree using the configured base plane and extrusion vector.
+         * @param subspaceRegion region to extrude
+         * @return the boundaries of the extruded region
+         */
+        public List&lt;PlaneConvexSubset&gt; extrude(final RegionBSPTree2D subspaceRegion) {
+<span class="fc" id="L759">            final List&lt;PlaneConvexSubset&gt; extrudedBoundaries = new ArrayList&lt;&gt;();</span>
+
+            // add the boundaries
+<span class="fc" id="L762">            addEnds(subspaceRegion, extrudedBoundaries);</span>
+<span class="fc" id="L763">            addSides(subspaceRegion, extrudedBoundaries);</span>
+
+<span class="fc" id="L765">            return extrudedBoundaries;</span>
+        }
+
+        /** Add the end (&quot;top&quot; and &quot;bottom&quot;) of the extruded subspace region to the result list.
+         * @param subspaceRegion subspace region being extruded.
+         * @param result list to add the boundary results to
+         */
+        private void addEnds(final RegionBSPTree2D subspaceRegion, final List&lt;? super PlaneConvexSubset&gt; result) {
+            // add the base boundaries
+<span class="fc" id="L774">            final List&lt;ConvexArea&gt; baseAreas = subspaceRegion.toConvex();</span>
+
+<span class="fc" id="L776">            final List&lt;PlaneConvexSubset&gt; baseList = new ArrayList&lt;&gt;(baseAreas.size());</span>
+<span class="fc" id="L777">            final List&lt;PlaneConvexSubset&gt; extrudedList = new ArrayList&lt;&gt;(baseAreas.size());</span>
+
+<span class="fc" id="L779">            final AffineTransformMatrix3D extrudeTransform = AffineTransformMatrix3D.createTranslation(extrusionVector);</span>
+
+            PlaneConvexSubset base;
+<span class="fc bfc" id="L782" title="All 2 branches covered.">            for (final ConvexArea area : baseAreas) {</span>
+<span class="fc" id="L783">                base = subsetFromConvexArea(basePlane, area);</span>
+<span class="fc bfc" id="L784" title="All 2 branches covered.">                if (extrudingOnPlusSide) {</span>
+<span class="fc" id="L785">                    base = base.reverse();</span>
+                }
+
+<span class="fc" id="L788">                baseList.add(base);</span>
+<span class="fc" id="L789">                extrudedList.add(base.transform(extrudeTransform).reverse());</span>
+<span class="fc" id="L790">            }</span>
+
+<span class="fc" id="L792">            result.addAll(baseList);</span>
+<span class="fc" id="L793">            result.addAll(extrudedList);</span>
+<span class="fc" id="L794">        }</span>
+
+        /** Add the side boundaries of the extruded region to the result list.
+         * @param subspaceRegion subspace region being extruded.
+         * @param result list to add the boundary results to
+         */
+        private void addSides(final RegionBSPTree2D subspaceRegion, final List&lt;? super PlaneConvexSubset&gt; result) {
+            Vector2D subStartPt;
+            Vector2D subEndPt;
+
+            PlaneConvexSubset boundary;
+<span class="fc bfc" id="L805" title="All 2 branches covered.">            for (final LinePath path : subspaceRegion.getBoundaryPaths()) {</span>
+<span class="fc bfc" id="L806" title="All 2 branches covered.">                for (final LineConvexSubset lineSubset : path.getElements()) {</span>
+<span class="fc" id="L807">                    subStartPt = lineSubset.getStartPoint();</span>
+<span class="fc" id="L808">                    subEndPt = lineSubset.getEndPoint();</span>
+
+<span class="fc bfc" id="L810" title="All 4 branches covered.">                    boundary = (subStartPt != null &amp;&amp; subEndPt != null) ?</span>
+<span class="fc" id="L811">                            extrudeSideFinite(basePlane.toSpace(subStartPt), basePlane.toSpace(subEndPt)) :</span>
+<span class="fc" id="L812">                            extrudeSideInfinite(lineSubset);</span>
+
+<span class="fc" id="L814">                    result.add(boundary);</span>
+<span class="fc" id="L815">                }</span>
+<span class="fc" id="L816">            }</span>
+<span class="fc" id="L817">        }</span>
+
+        /** Extrude a single, finite boundary forming one of the sides of the extruded region.
+         * @param startPt start point of the boundary
+         * @param endPt end point of the boundary
+         * @return the extruded region side boundary
+         */
+        private ConvexPolygon3D extrudeSideFinite(final Vector3D startPt, final Vector3D endPt) {
+<span class="fc" id="L825">            final Vector3D extrudedStartPt = startPt.add(extrusionVector);</span>
+<span class="fc" id="L826">            final Vector3D extrudedEndPt = endPt.add(extrusionVector);</span>
+
+<span class="fc bfc" id="L828" title="All 2 branches covered.">            final List&lt;Vector3D&gt; vertices = extrudingOnPlusSide ?</span>
+<span class="fc" id="L829">                    Arrays.asList(startPt, endPt, extrudedEndPt, extrudedStartPt) :</span>
+<span class="fc" id="L830">                    Arrays.asList(startPt, extrudedStartPt, extrudedEndPt, endPt);</span>
+
+<span class="fc" id="L832">            return convexPolygonFromVertices(vertices, precision);</span>
+        }
+
+        /** Extrude a single, infinite boundary forming one of the sides of the extruded region.
+         * @param lineSubset line subset to extrude
+         * @return the extruded region side boundary
+         */
+        private PlaneConvexSubset extrudeSideInfinite(final LineConvexSubset lineSubset) {
+<span class="fc" id="L840">            final Vector2D subLinePt = lineSubset.getLine().getOrigin();</span>
+<span class="fc" id="L841">            final Vector2D subLineDir = lineSubset.getLine().getDirection();</span>
+
+<span class="fc" id="L843">            final Vector3D linePt = basePlane.toSpace(subLinePt);</span>
+<span class="fc" id="L844">            final Vector3D lineDir = linePt.vectorTo(basePlane.toSpace(subLinePt.add(subLineDir)));</span>
+
+            final EmbeddingPlane sidePlane;
+<span class="fc bfc" id="L847" title="All 2 branches covered.">            if (extrudingOnPlusSide) {</span>
+<span class="fc" id="L848">                sidePlane = fromPointAndPlaneVectors(linePt, lineDir, extrusionVector, precision);</span>
+            } else {
+<span class="fc" id="L850">                sidePlane = fromPointAndPlaneVectors(linePt, extrusionVector, lineDir, precision);</span>
+            }
+
+<span class="fc" id="L853">            final Vector2D sideLineOrigin = sidePlane.toSubspace(linePt);</span>
+<span class="fc" id="L854">            final Vector2D sideLineDir = sideLineOrigin.vectorTo(sidePlane.toSubspace(linePt.add(lineDir)));</span>
+
+<span class="fc" id="L856">            final Vector2D extrudedSideLineOrigin = sidePlane.toSubspace(linePt.add(extrusionVector));</span>
+
+<span class="fc" id="L858">            final Vector2D sideExtrusionDir = sidePlane.toSubspace(sidePlane.getOrigin().add(extrusionVector))</span>
+<span class="fc" id="L859">                    .normalize();</span>
+
+            // construct a list of lines forming the bounds of the extruded subspace region
+<span class="fc" id="L862">            final List&lt;Line&gt; lines = new ArrayList&lt;&gt;();</span>
+
+            // add the top and bottom lines (original and extruded)
+<span class="fc bfc" id="L865" title="All 2 branches covered.">            if (extrudingOnPlusSide) {</span>
+<span class="fc" id="L866">                lines.add(Lines.fromPointAndDirection(sideLineOrigin, sideLineDir, precision));</span>
+<span class="fc" id="L867">                lines.add(Lines.fromPointAndDirection(extrudedSideLineOrigin, sideLineDir.negate(), precision));</span>
+            } else {
+<span class="fc" id="L869">                lines.add(Lines.fromPointAndDirection(sideLineOrigin, sideLineDir.negate(), precision));</span>
+<span class="fc" id="L870">                lines.add(Lines.fromPointAndDirection(extrudedSideLineOrigin, sideLineDir, precision));</span>
+            }
+
+            // if we have a point on the original line, then connect the two
+<span class="fc" id="L874">            final Vector2D startPt = lineSubset.getStartPoint();</span>
+<span class="fc" id="L875">            final Vector2D endPt = lineSubset.getEndPoint();</span>
+<span class="fc bfc" id="L876" title="All 2 branches covered.">            if (startPt != null) {</span>
+<span class="fc" id="L877">                lines.add(Lines.fromPointAndDirection(</span>
+<span class="fc" id="L878">                        sidePlane.toSubspace(basePlane.toSpace(startPt)),</span>
+<span class="fc bfc" id="L879" title="All 2 branches covered.">                        extrudingOnPlusSide ? sideExtrusionDir.negate() : sideExtrusionDir,</span>
+                        precision));
+<span class="fc bfc" id="L881" title="All 2 branches covered.">            } else if (endPt != null) {</span>
+<span class="fc" id="L882">                lines.add(Lines.fromPointAndDirection(</span>
+<span class="fc" id="L883">                        sidePlane.toSubspace(basePlane.toSpace(endPt)),</span>
+<span class="fc bfc" id="L884" title="All 2 branches covered.">                        extrudingOnPlusSide ? sideExtrusionDir : sideExtrusionDir.negate(),</span>
+                        precision));
+            }
+
+<span class="fc" id="L888">            return subsetFromConvexArea(sidePlane, ConvexArea.fromBounds(lines));</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

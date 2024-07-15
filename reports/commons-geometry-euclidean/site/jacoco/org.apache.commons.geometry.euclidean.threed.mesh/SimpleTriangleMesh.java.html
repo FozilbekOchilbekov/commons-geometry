@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimpleTriangleMesh.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed.mesh</a> &gt; <span class="el_source">SimpleTriangleMesh.java</span></div><h1>SimpleTriangleMesh.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed.mesh;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.collection.PointMap;
+import org.apache.commons.geometry.euclidean.EuclideanCollections;
+import org.apache.commons.geometry.euclidean.internal.EuclideanUtils;
+import org.apache.commons.geometry.euclidean.threed.BoundarySource3D;
+import org.apache.commons.geometry.euclidean.threed.Bounds3D;
+import org.apache.commons.geometry.euclidean.threed.PlaneConvexSubset;
+import org.apache.commons.geometry.euclidean.threed.Planes;
+import org.apache.commons.geometry.euclidean.threed.Triangle3D;
+import org.apache.commons.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.numbers.core.Precision;
+
+/** A simple implementation of the {@link TriangleMesh} interface. This class ensures that
+ * faces always contain 3 valid references into the vertex list but does not enforce that
+ * the referenced vertices are unique or that they define a triangle with non-zero size. For
+ * example, a mesh could contain a face with 3 vertices that are considered equivalent by the
+ * configured precision context. Attempting to call the {@link TriangleMesh.Face#getPolygon()}
+ * method on such a face results in an exception. The
+ * {@link TriangleMesh.Face#definesPolygon()} method can be used to determine if a face defines
+ * a valid triangle.
+ *
+ * &lt;p&gt;Instances of this class are guaranteed to be immutable.&lt;/p&gt;
+ */
+public final class SimpleTriangleMesh implements TriangleMesh {
+
+    /** Vertices in the mesh. */
+    private final List&lt;Vector3D&gt; vertices;
+
+    /** Faces in the mesh. */
+    private final List&lt;int[]&gt; faces;
+
+    /** The bounds of the mesh. */
+    private final Bounds3D bounds;
+
+    /** Object used for floating point comparisons. */
+    private final Precision.DoubleEquivalence precision;
+
+    /** Construct a new instance from a vertex list and set of faces. No validation is
+     * performed on the input.
+     * @param vertices vertex list
+     * @param faces face indices list
+     * @param bounds mesh bounds
+     * @param precision precision context used when creating face polygons
+     */
+    private SimpleTriangleMesh(final List&lt;Vector3D&gt; vertices, final List&lt;int[]&gt; faces, final Bounds3D bounds,
+<span class="fc" id="L76">            final Precision.DoubleEquivalence precision) {</span>
+<span class="fc" id="L77">        this.vertices = Collections.unmodifiableList(vertices);</span>
+<span class="fc" id="L78">        this.faces = Collections.unmodifiableList(faces);</span>
+<span class="fc" id="L79">        this.bounds = bounds;</span>
+<span class="fc" id="L80">        this.precision = precision;</span>
+<span class="fc" id="L81">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public Iterable&lt;Vector3D&gt; vertices() {
+<span class="fc" id="L86">        return getVertices();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;Vector3D&gt; getVertices() {
+<span class="fc" id="L92">        return vertices;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getVertexCount() {
+<span class="fc" id="L98">        return vertices.size();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Iterable&lt;TriangleMesh.Face&gt; faces() {
+<span class="fc" id="L104">        return () -&gt; new FaceIterator&lt;&gt;(Function.identity());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;TriangleMesh.Face&gt; getFaces() {
+<span class="fc" id="L110">        final int count = getFaceCount();</span>
+
+<span class="fc" id="L112">        final List&lt;Face&gt; faceList = new ArrayList&lt;&gt;(count);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        for (int i = 0; i &lt; count; ++i) {</span>
+<span class="fc" id="L114">            faceList.add(getFace(i));</span>
+        }
+
+<span class="fc" id="L117">        return faceList;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getFaceCount() {
+<span class="fc" id="L123">        return faces.size();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TriangleMesh.Face getFace(final int index) {
+<span class="fc" id="L129">        return new SimpleTriangleFace(index, faces.get(index));</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Bounds3D getBounds() {
+<span class="fc" id="L135">        return bounds;</span>
+    }
+
+    /** Get the precision context for the mesh. This context is used during construction of
+     * face {@link Triangle3D} instances.
+     * @return the precision context for the mesh
+     */
+    public Precision.DoubleEquivalence getPrecision() {
+<span class="fc" id="L143">        return precision;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Stream&lt;PlaneConvexSubset&gt; boundaryStream() {
+<span class="fc" id="L149">        return createFaceStream(Face::getPolygon);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Stream&lt;Triangle3D&gt; triangleStream() {
+<span class="fc" id="L155">        return createFaceStream(Face::getPolygon);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SimpleTriangleMesh transform(final Transform&lt;Vector3D&gt; transform) {
+        // only the vertices and bounds are modified; the faces are the same
+<span class="fc" id="L162">        final Bounds3D.Builder boundsBuilder = Bounds3D.builder();</span>
+<span class="fc" id="L163">        final List&lt;Vector3D&gt; tVertices = new ArrayList&lt;&gt;(vertices.size());</span>
+
+        Vector3D tVertex;
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        for (final Vector3D vertex : vertices) {</span>
+<span class="fc" id="L167">            tVertex = transform.apply(vertex);</span>
+
+<span class="fc" id="L169">            boundsBuilder.add(tVertex);</span>
+<span class="fc" id="L170">            tVertices.add(tVertex);</span>
+<span class="fc" id="L171">        }</span>
+
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        final Bounds3D tBounds = boundsBuilder.hasBounds() ?</span>
+<span class="fc" id="L174">                boundsBuilder.build() :</span>
+<span class="fc" id="L175">                null;</span>
+
+<span class="fc" id="L177">        return new SimpleTriangleMesh(tVertices, faces, tBounds, precision);</span>
+    }
+
+    /** Return this instance if the given precision context is equal to the current precision context.
+     * Otherwise, create a new mesh with the given precision context but the same vertices, faces, and
+     * bounds.
+     * @param meshPrecision precision context to use when generating face polygons
+     * @return a mesh instance with the given precision context and the same mesh structure as the current
+     *      instance
+     */
+    @Override
+    public SimpleTriangleMesh toTriangleMesh(final Precision.DoubleEquivalence meshPrecision) {
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (this.precision.equals(meshPrecision)) {</span>
+<span class="fc" id="L190">            return this;</span>
+        }
+
+<span class="fc" id="L193">        return new SimpleTriangleMesh(vertices, faces, bounds, meshPrecision);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L199">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L200">        sb.append(getClass().getSimpleName())</span>
+<span class="fc" id="L201">            .append(&quot;[vertexCount= &quot;)</span>
+<span class="fc" id="L202">            .append(getVertexCount())</span>
+<span class="fc" id="L203">            .append(&quot;, faceCount= &quot;)</span>
+<span class="fc" id="L204">            .append(getFaceCount())</span>
+<span class="fc" id="L205">            .append(&quot;, bounds= &quot;)</span>
+<span class="fc" id="L206">            .append(getBounds())</span>
+<span class="fc" id="L207">            .append(']');</span>
+
+<span class="fc" id="L209">        return sb.toString();</span>
+    }
+
+    /** Create a stream containing the results of applying {@code fn} to each face in
+     * the mesh.
+     * @param &lt;T&gt; Stream element type
+     * @param fn function used to extract the stream values from each face
+     * @return a stream containing the results of applying {@code fn} to each face in
+     *      the mesh
+     */
+    private &lt;T&gt; Stream&lt;T&gt; createFaceStream(final Function&lt;TriangleMesh.Face, T&gt; fn) {
+<span class="fc" id="L220">        final Iterable&lt;T&gt; iterable = () -&gt; new FaceIterator&lt;&gt;(fn);</span>
+<span class="fc" id="L221">        return StreamSupport.stream(iterable.spliterator(), false);</span>
+    }
+
+    /** Return a builder for creating new triangle mesh objects.
+     * @param precision precision object used for floating point comparisons
+     * @return a builder for creating new triangle mesh objects
+     */
+    public static Builder builder(final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L229">        return new Builder(precision);</span>
+    }
+
+    /** Construct a new triangle mesh from the given vertices and face indices.
+     * @param vertices vertices for the mesh
+     * @param faces face indices for the mesh
+     * @param precision precision context used for floating point comparisons
+     * @return a new triangle mesh instance
+     * @throws IllegalArgumentException if any of the face index arrays does not have exactly 3 elements or
+     *       if any index is not a valid index into the vertex list
+     */
+    public static SimpleTriangleMesh from(final Vector3D[] vertices, final int[][] faces,
+                                          final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L242">        return from(Arrays.asList(vertices), Arrays.asList(faces), precision);</span>
+    }
+
+    /** Construct a new triangle mesh from the given vertices and face indices.
+     * @param vertices vertices for the mesh
+     * @param faces face indices for the mesh
+     * @param precision precision context used for floating point comparisons
+     * @return a new triangle mesh instance
+     * @throws IllegalArgumentException if any of the face index arrays does not have exactly 3 elements or
+     *       if any index is not a valid index into the vertex list
+     */
+    public static SimpleTriangleMesh from(final Collection&lt;Vector3D&gt; vertices, final Collection&lt;int[]&gt; faces,
+                                          final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L255">        final Builder builder = builder(precision);</span>
+
+<span class="fc" id="L257">        return builder.addVertices(vertices)</span>
+<span class="fc" id="L258">                .addFaces(faces)</span>
+<span class="fc" id="L259">                .build();</span>
+    }
+
+    /** Construct a new mesh instance containing all triangles from the given boundary
+     * source. Equivalent vertices are reused wherever possible.
+     * @param boundarySrc boundary source to construct a mesh from
+     * @param precision precision context used for floating point comparisons
+     * @return new mesh instance containing all triangles from the given boundary
+     *      source
+     * @throws IllegalStateException if any boundary in the boundary source has infinite size and cannot
+     *      be converted to triangles
+     */
+    public static SimpleTriangleMesh from(final BoundarySource3D boundarySrc,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L273">        final Builder builder = builder(precision);</span>
+<span class="fc" id="L274">        try (Stream&lt;Triangle3D&gt; stream = boundarySrc.triangleStream()) {</span>
+<span class="fc" id="L275">            stream.forEach(tri -&gt; builder.addFaceUsingVertices(</span>
+<span class="fc" id="L276">                tri.getPoint1(),</span>
+<span class="fc" id="L277">                tri.getPoint2(),</span>
+<span class="fc" id="L278">                tri.getPoint3()));</span>
+        }
+
+<span class="fc" id="L281">        return builder.build();</span>
+    }
+
+    /** Internal implementation of {@link TriangleMesh.Face}.
+     */
+    private final class SimpleTriangleFace implements TriangleMesh.Face {
+
+        /** The index of the face in the mesh. */
+        private final int index;
+
+        /** Vertex indices for the face. */
+        private final int[] vertexIndices;
+
+<span class="fc" id="L294">        SimpleTriangleFace(final int index, final int[] vertexIndices) {</span>
+<span class="fc" id="L295">            this.index = index;</span>
+<span class="fc" id="L296">            this.vertexIndices = vertexIndices;</span>
+<span class="fc" id="L297">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        public int getIndex() {
+<span class="fc" id="L302">            return index;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public int[] getVertexIndices() {
+<span class="fc" id="L308">            return vertexIndices.clone();</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public List&lt;Vector3D&gt; getVertices() {
+<span class="fc" id="L314">            return Arrays.asList(</span>
+<span class="fc" id="L315">                    getPoint1(),</span>
+<span class="fc" id="L316">                    getPoint2(),</span>
+<span class="fc" id="L317">                    getPoint3());</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Vector3D getPoint1() {
+<span class="fc" id="L323">            return vertices.get(vertexIndices[0]);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Vector3D getPoint2() {
+<span class="fc" id="L329">            return vertices.get(vertexIndices[1]);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Vector3D getPoint3() {
+<span class="fc" id="L335">            return vertices.get(vertexIndices[2]);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean definesPolygon() {
+<span class="fc" id="L341">            final Vector3D p1 = getPoint1();</span>
+<span class="fc" id="L342">            final Vector3D v1 = p1.vectorTo(getPoint2());</span>
+<span class="fc" id="L343">            final Vector3D v2 = p1.vectorTo(getPoint3());</span>
+
+<span class="fc bfc" id="L345" title="All 2 branches covered.">            return !precision.eqZero(v1.cross(v2).norm());</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Triangle3D getPolygon() {
+<span class="fc" id="L351">            return Planes.triangleFromVertices(</span>
+<span class="fc" id="L352">                    getPoint1(),</span>
+<span class="fc" id="L353">                    getPoint2(),</span>
+<span class="fc" id="L354">                    getPoint3(),</span>
+<span class="fc" id="L355">                    precision);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public String toString() {
+<span class="fc" id="L361">            final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L362">            sb.append(getClass().getSimpleName())</span>
+<span class="fc" id="L363">                .append(&quot;[index= &quot;)</span>
+<span class="fc" id="L364">                .append(getIndex())</span>
+<span class="fc" id="L365">                .append(&quot;, vertexIndices= &quot;)</span>
+<span class="fc" id="L366">                .append(Arrays.toString(getVertexIndices()))</span>
+<span class="fc" id="L367">                .append(&quot;, vertices= &quot;)</span>
+<span class="fc" id="L368">                .append(getVertices())</span>
+<span class="fc" id="L369">                .append(']');</span>
+
+<span class="fc" id="L371">            return sb.toString();</span>
+        }
+    }
+
+    /** Internal class for iterating through the mesh faces and extracting a value from each.
+     * @param &lt;T&gt; Type returned by the iterator
+     */
+    private final class FaceIterator&lt;T&gt; implements Iterator&lt;T&gt; {
+
+        /** The current index of the iterator. */
+        private int index;
+
+        /** Function to apply to each face in the mesh. */
+        private final Function&lt;? super TriangleMesh.Face, T&gt; fn;
+
+        /** Construct a new instance for iterating through the mesh faces and extracting
+         * a value from each.
+         * @param fn function to apply to each face in order to obtain the iterated value
+         */
+<span class="fc" id="L390">        FaceIterator(final Function&lt;? super TriangleMesh.Face, T&gt; fn) {</span>
+<span class="fc" id="L391">            this.fn = fn;</span>
+<span class="fc" id="L392">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean hasNext() {
+<span class="fc bfc" id="L397" title="All 2 branches covered.">            return index &lt; faces.size();</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public T next() {
+<span class="fc bfc" id="L403" title="All 2 branches covered.">            if (hasNext()) {</span>
+<span class="fc" id="L404">                final Face face = getFace(index++);</span>
+<span class="fc" id="L405">                return fn.apply(face);</span>
+            }
+<span class="fc" id="L407">            throw new NoSuchElementException();</span>
+        }
+    }
+
+    /** Builder class for creating mesh instances.
+     */
+    public static final class Builder {
+
+        /** List of vertices. */
+<span class="fc" id="L416">        private final ArrayList&lt;Vector3D&gt; vertices = new ArrayList&lt;&gt;();</span>
+
+        /** Map of vertices to their first occurrence in the vertex list. */
+        private PointMap&lt;Vector3D, Integer&gt; vertexIndexMap;
+
+        /** List of face vertex indices. */
+<span class="fc" id="L422">        private final ArrayList&lt;int[]&gt; faces = new ArrayList&lt;&gt;();</span>
+
+        /** Object used to construct the 3D bounds of the vertex list. */
+<span class="fc" id="L425">        private final Bounds3D.Builder boundsBuilder = Bounds3D.builder();</span>
+
+        /** Precision context used for floating point comparisons; this value may be null
+         * if vertices are not to be combined in this builder.
+         */
+        private final Precision.DoubleEquivalence precision;
+
+        /** Flag set to true once a mesh is constructed from this builder. */
+        private boolean built;
+
+        /** Construct a new builder.
+         * @param precision precision context used for floating point comparisons; may
+         *      be null if vertices are not to be combined in this builder.
+         */
+<span class="fc" id="L439">        private Builder(final Precision.DoubleEquivalence precision) {</span>
+<span class="fc" id="L440">            Objects.requireNonNull(precision, &quot;Precision context must not be null&quot;);</span>
+
+<span class="fc" id="L442">            this.precision = precision;</span>
+<span class="fc" id="L443">        }</span>
+
+        /** Use a vertex in the constructed mesh. If an equivalent vertex already exist, as determined
+         * by the configured {@link Precision.DoubleEquivalence}, then the index of the previously added
+         * vertex is returned. Otherwise, the given vertex is added to the vertex list and the index
+         * of the new entry is returned. This is in contrast with the {@link #addVertex(Vector3D)},
+         * which always adds a new entry to the vertex list.
+         * @param vertex vertex to use
+         * @return the index of the added vertex or an equivalent vertex that was added previously
+         * @see #addVertex(Vector3D)
+         */
+        public int useVertex(final Vector3D vertex) {
+<span class="fc" id="L455">            final int nextIdx = vertices.size();</span>
+<span class="fc" id="L456">            final int actualIdx = addToVertexIndexMap(vertex, nextIdx, getVertexIndexMap());</span>
+
+            // add to the vertex list if not already present
+<span class="fc bfc" id="L459" title="All 2 branches covered.">            if (actualIdx == nextIdx) {</span>
+<span class="fc" id="L460">                addToVertexList(vertex);</span>
+            }
+
+<span class="fc" id="L463">            return actualIdx;</span>
+        }
+
+        /** Add a vertex directly to the vertex list, returning the index of the added vertex.
+         * The vertex is added regardless of whether or not an equivalent vertex already
+         * exists in the list. This is in contrast with the {@link #useVertex(Vector3D)} method,
+         * which only adds a new entry to the vertex list if an equivalent one does not
+         * already exist.
+         * @param vertex the vertex to append
+         * @return the index of the appended vertex in the vertex list
+         */
+        public int addVertex(final Vector3D vertex) {
+<span class="fc" id="L475">            final int idx = addToVertexList(vertex);</span>
+
+<span class="fc bfc" id="L477" title="All 2 branches covered.">            if (vertexIndexMap != null) {</span>
+                // add to the map in order to keep it in sync
+<span class="fc" id="L479">                addToVertexIndexMap(vertex, idx, vertexIndexMap);</span>
+            }
+
+<span class="fc" id="L482">            return idx;</span>
+        }
+
+        /** Add a group of vertices directly to the vertex list. No equivalent vertices are reused.
+         * @param newVertices vertices to append
+         * @return this instance
+         * @see #addVertex(Vector3D)
+         */
+        public Builder addVertices(final Vector3D[] newVertices) {
+<span class="fc" id="L491">            return addVertices(Arrays.asList(newVertices));</span>
+        }
+
+        /** Add a group of vertices directly to the vertex list. No equivalent vertices are reused.
+         * @param newVertices vertices to append
+         * @return this instance
+         * @see #addVertex(Vector3D)
+         */
+        public Builder addVertices(final Collection&lt;? extends Vector3D&gt; newVertices) {
+<span class="fc" id="L500">            final int newSize = vertices.size() + newVertices.size();</span>
+<span class="fc" id="L501">            ensureVertexCapacity(newSize);</span>
+
+<span class="fc bfc" id="L503" title="All 2 branches covered.">            for (final Vector3D vertex : newVertices) {</span>
+<span class="fc" id="L504">                addVertex(vertex);</span>
+<span class="fc" id="L505">            }</span>
+
+<span class="fc" id="L507">            return this;</span>
+        }
+
+        /** Ensure that this instance has enough capacity to store at least {@code numVertices}
+         * number of vertices without reallocating space. This can be used to help improve performance
+         * and memory usage when creating meshes with large numbers of vertices.
+         * @param numVertices the number of vertices to ensure that this instance can contain
+         * @return this instance
+         */
+        public Builder ensureVertexCapacity(final int numVertices) {
+<span class="fc" id="L517">            vertices.ensureCapacity(numVertices);</span>
+<span class="fc" id="L518">            return this;</span>
+        }
+
+        /** Get the current number of vertices in this mesh.
+         * @return the current number of vertices in this mesh
+         */
+        public int getVertexCount() {
+<span class="fc" id="L525">            return vertices.size();</span>
+        }
+
+        /** Get the vertex at the given index.
+         * @param index index of the vertex to retrieve
+         * @return vertex at the given index
+         * @throws IndexOutOfBoundsException if the index is out of bounds of the mesh vertex list
+         */
+        public Vector3D getVertex(final int index) {
+<span class="fc" id="L534">            return vertices.get(index);</span>
+        }
+
+        /** Append a face to this mesh.
+         * @param index1 index of the first vertex in the face
+         * @param index2 index of the second vertex in the face
+         * @param index3 index of the third vertex in the face
+         * @return this instance
+         * @throws IllegalArgumentException if any of the arguments is not a valid index into
+         *      the current vertex list
+         */
+        public Builder addFace(final int index1, final int index2, final int index3) {
+<span class="fc" id="L546">            validateCanModify();</span>
+
+<span class="fc" id="L548">            final int[] indices = {</span>
+<span class="fc" id="L549">                validateVertexIndex(index1),</span>
+<span class="fc" id="L550">                validateVertexIndex(index2),</span>
+<span class="fc" id="L551">                validateVertexIndex(index3)</span>
+            };
+
+<span class="fc" id="L554">            faces.add(indices);</span>
+
+<span class="fc" id="L556">            return this;</span>
+        }
+
+        /** Append a face to this mesh.
+         * @param face array containing the 3 vertex indices defining the face
+         * @return this instance
+         * @throws IllegalArgumentException if {@code face} does not contain exactly 3 elements
+         *      or if any of the vertex indices is not a valid index into the current vertex list
+         */
+        public Builder addFace(final int[] face) {
+<span class="fc bfc" id="L566" title="All 2 branches covered.">            if (face.length != EuclideanUtils.TRIANGLE_VERTEX_COUNT) {</span>
+<span class="fc" id="L567">                throw new IllegalArgumentException(&quot;Face must contain &quot; + EuclideanUtils.TRIANGLE_VERTEX_COUNT +</span>
+                        &quot; vertex indices; found &quot; + face.length);
+            }
+
+<span class="fc" id="L571">            addFace(face[0], face[1], face[2]);</span>
+
+<span class="fc" id="L573">            return this;</span>
+        }
+
+        /** Append a group of faces to this mesh.
+         * @param faceIndices faces to append
+         * @return this instance
+         * @throws IllegalArgumentException if any of the face index arrays does not have exactly 3 elements or
+         *       if any index is not a valid index into the current vertex list
+         */
+        public Builder addFaces(final int[][] faceIndices) {
+<span class="fc" id="L583">            return addFaces(Arrays.asList(faceIndices));</span>
+        }
+
+        /** Append a group of faces to this mesh.
+         * @param faceIndices faces to append
+         * @return this instance
+         * @throws IllegalArgumentException if any of the face index arrays does not have exactly 3 elements or
+         *       if any index is not a valid index into the current vertex list
+         */
+        public Builder addFaces(final Collection&lt;int[]&gt; faceIndices) {
+<span class="fc" id="L593">            final int newSize = faces.size() + faceIndices.size();</span>
+<span class="fc" id="L594">            ensureFaceCapacity(newSize);</span>
+
+<span class="fc bfc" id="L596" title="All 2 branches covered.">            for (final int[] face : faceIndices) {</span>
+<span class="fc" id="L597">                addFace(face);</span>
+<span class="fc" id="L598">            }</span>
+
+<span class="fc" id="L600">            return this;</span>
+        }
+
+        /** Add a face to this mesh, only adding vertices to the vertex list if equivalent vertices are
+         * not found.
+         * @param p1 first face vertex
+         * @param p2 second face vertex
+         * @param p3 third face vertex
+         * @return this instance
+         * @see #useVertex(Vector3D)
+         */
+        public Builder addFaceUsingVertices(final Vector3D p1, final Vector3D p2, final Vector3D p3) {
+<span class="fc" id="L612">            return addFace(</span>
+<span class="fc" id="L613">                        useVertex(p1),</span>
+<span class="fc" id="L614">                        useVertex(p2),</span>
+<span class="fc" id="L615">                        useVertex(p3)</span>
+                    );
+        }
+
+        /** Add a face and its vertices to this mesh. The vertices are always added to the vertex list,
+         * regardless of whether or not equivalent vertices exist in the vertex list.
+         * @param p1 first face vertex
+         * @param p2 second face vertex
+         * @param p3 third face vertex
+         * @return this instance
+         * @see #addVertex(Vector3D)
+         */
+        public Builder addFaceAndVertices(final Vector3D p1, final Vector3D p2, final Vector3D p3) {
+<span class="fc" id="L628">            return addFace(</span>
+<span class="fc" id="L629">                        addVertex(p1),</span>
+<span class="fc" id="L630">                        addVertex(p2),</span>
+<span class="fc" id="L631">                        addVertex(p3)</span>
+                    );
+        }
+
+        /** Ensure that this instance has enough capacity to store at least {@code numFaces}
+         * number of faces without reallocating space. This can be used to help improve performance
+         * and memory usage when creating meshes with large numbers of faces.
+         * @param numFaces the number of faces to ensure that this instance can contain
+         * @return this instance
+         */
+        public Builder ensureFaceCapacity(final int numFaces) {
+<span class="fc" id="L642">            faces.ensureCapacity(numFaces);</span>
+<span class="fc" id="L643">            return this;</span>
+        }
+
+        /** Get the current number of faces in this mesh.
+         * @return the current number of faces in this meshr
+         */
+        public int getFaceCount() {
+<span class="fc" id="L650">            return faces.size();</span>
+        }
+
+        /** Build a triangle mesh containing the vertices and faces in this builder.
+         * @return a triangle mesh containing the vertices and faces in this builder
+         */
+        public SimpleTriangleMesh build() {
+<span class="fc" id="L657">            built = true;</span>
+
+<span class="fc bfc" id="L659" title="All 2 branches covered.">            final Bounds3D bounds = boundsBuilder.hasBounds() ?</span>
+<span class="fc" id="L660">                    boundsBuilder.build() :</span>
+<span class="fc" id="L661">                    null;</span>
+
+<span class="fc" id="L663">            vertices.trimToSize();</span>
+<span class="fc" id="L664">            faces.trimToSize();</span>
+
+<span class="fc" id="L666">            return new SimpleTriangleMesh(</span>
+                    vertices,
+                    faces,
+                    bounds,
+                    precision);
+        }
+
+        /** Get the vertex index map, creating and initializing it if needed.
+         * @return the vertex index map
+         */
+        private PointMap&lt;Vector3D, Integer&gt; getVertexIndexMap() {
+<span class="fc bfc" id="L677" title="All 2 branches covered.">            if (vertexIndexMap == null) {</span>
+<span class="fc" id="L678">                vertexIndexMap = EuclideanCollections.pointMap3D(precision);</span>
+
+                // populate the index map
+<span class="fc" id="L681">                final int size = vertices.size();</span>
+<span class="fc bfc" id="L682" title="All 2 branches covered.">                for (int i = 0; i &lt; size; ++i) {</span>
+<span class="fc" id="L683">                    addToVertexIndexMap(vertices.get(i), i, vertexIndexMap);</span>
+                }
+            }
+<span class="fc" id="L686">            return vertexIndexMap;</span>
+        }
+
+        /** Add a vertex to the given vertex index map. The vertex is inserted and mapped to {@code targetidx}
+         *  if an equivalent vertex does not already exist. The index now associated with the given vertex
+         *  or its equivalent is returned.
+         * @param vertex vertex to add
+         * @param targetIdx the index to associate with the vertex if no equivalent vertex has already been
+         *      mapped
+         * @param map vertex index map
+         * @return the index now associated with the given vertex or its equivalent
+         */
+        private int addToVertexIndexMap(final Vector3D vertex, final int targetIdx,
+                final PointMap&lt;Vector3D, Integer&gt; map) {
+<span class="fc" id="L700">            validateCanModify();</span>
+
+<span class="fc" id="L702">            final Integer actualIdx = map.putIfAbsent(vertex, targetIdx);</span>
+
+<span class="fc bfc" id="L704" title="All 2 branches covered.">            return actualIdx != null ?</span>
+<span class="fc" id="L705">                    actualIdx :</span>
+<span class="fc" id="L706">                    targetIdx;</span>
+        }
+
+        /** Append the given vertex to the end of the vertex list. The index of the vertex is returned.
+         * @param vertex the vertex to append
+         * @return the index of the appended vertex
+         */
+        private int addToVertexList(final Vector3D vertex) {
+<span class="fc" id="L714">            validateCanModify();</span>
+
+<span class="fc" id="L716">            boundsBuilder.add(vertex);</span>
+
+<span class="fc" id="L718">            final int idx = vertices.size();</span>
+<span class="fc" id="L719">            vertices.add(vertex);</span>
+
+<span class="fc" id="L721">            return idx;</span>
+        }
+
+        /** Throw an exception if the given vertex index is not valid.
+         * @param idx vertex index to validate
+         * @return the validated index
+         * @throws IllegalArgumentException if the given index is not a valid index into
+         *      the vertices list
+         */
+        private int validateVertexIndex(final int idx) {
+<span class="fc bfc" id="L731" title="All 4 branches covered.">            if (idx &lt; 0 || idx &gt;= vertices.size()) {</span>
+<span class="fc" id="L732">                throw new IllegalArgumentException(&quot;Invalid vertex index: &quot; + idx);</span>
+            }
+
+<span class="fc" id="L735">            return idx;</span>
+        }
+
+        /** Throw an exception if the builder has been used to construct a mesh instance
+         * and can no longer be modified.
+         */
+        private void validateCanModify() {
+<span class="fc bfc" id="L742" title="All 2 branches covered.">            if (built) {</span>
+<span class="fc" id="L743">                throw new IllegalStateException(&quot;Builder instance cannot be modified: mesh construction is complete&quot;);</span>
+            }
+<span class="fc" id="L745">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

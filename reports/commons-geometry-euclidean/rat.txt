@@ -1,0 +1,218 @@
+
+*****************************************************
+Summary
+-------
+Generated at: 2024-07-13T15:20:09+02:00
+
+Notes: 2
+Binaries: 0
+Archives: 0
+Standards: 190
+
+Apache Licensed: 190
+Generated Documents: 0
+
+JavaDocs are generated, thus a license header is optional.
+Generated files do not require license headers.
+
+0 Unknown Licenses
+
+*****************************************************
+  Files with Apache License headers will be marked AL
+  Binary files (which do not require any license headers) will be marked B
+  Compressed archives will be marked A
+  Notices, licenses etc. will be marked N
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/CONTRIBUTING.md
+  N     C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/LICENSE
+  N     C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/NOTICE
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/pom.xml
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/README.md
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/AbstractAffineTransformMatrix.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/AbstractBounds.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/AbstractLinecastPoint.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/AbstractNSphere.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/EuclideanCollections.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/EuclideanTransform.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/EuclideanVector.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/EuclideanVectorSum.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/internal/AbstractPathConnector.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/internal/EuclideanUtils.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/internal/Matrices.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/internal/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/internal/Vectors.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/MultiDimensionalEuclideanVector.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/oned/AffineTransformMatrix1D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/oned/Interval.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/oned/OrientedPoint.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/oned/OrientedPoints.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/oned/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/oned/RegionBSPTree1D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/oned/Vector1D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/PointMap1DImpl.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/PointMap2DImpl.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/PointMap3DImpl.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/AbstractConvexPolygon3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/AbstractEmbeddedRegionPlaneSubset.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/AbstractPlaneSubset.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/AffineTransformMatrix3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/BoundaryList3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/BoundarySource3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/BoundarySourceBoundsBuilder3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/BoundarySourceLinecaster3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/Bounds3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/ConvexPolygon3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/ConvexVolume.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/EmbeddedAreaPlaneConvexSubset.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/EmbeddedTreePlaneSubset.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/EmbeddingPlane.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/line/EmbeddedTreeLineSubset3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/line/Line3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/line/Linecastable3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/line/LinecastPoint3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/line/LineConvexSubset3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/line/Lines3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/line/LineSpanningSubset3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/line/LineSubset3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/line/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/line/Ray3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/line/ReverseRay3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/line/Segment3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/mesh/Mesh.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/mesh/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/mesh/SimpleTriangleMesh.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/mesh/TriangleMesh.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/Plane.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/PlaneConvexSubset.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/Planes.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/PlaneSubset.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/RegionBSPTree3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/rotation/AxisAngleSequence.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/rotation/AxisReferenceFrame.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/rotation/AxisSequence.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/rotation/AxisSequenceType.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/rotation/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/rotation/QuaternionRotation.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/rotation/Rotation3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/shape/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/shape/Parallelepiped.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/shape/Sphere.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/SimpleTriangle3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/SphericalCoordinates.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/Triangle3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/Vector3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/threed/VertexListConvexPolygon3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/AffineTransformMatrix2D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/BoundaryList2D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/BoundarySource2D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/BoundarySourceBoundsBuilder2D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/BoundarySourceLinecaster2D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/Bounds2D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/ConvexArea.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/EmbeddedTreeLineSubset.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/hull/ConvexHull2D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/hull/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/Line.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/Linecastable2D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/LinecastPoint2D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/LineConvexSubset.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/Lines.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/LineSpanningSubset.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/LineSubset.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/path/AbstractLinePathConnector.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/path/InteriorAngleLinePathConnector.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/path/LinePath.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/path/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/PolarCoordinates.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/Ray.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/RegionBSPTree2D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/ReverseRay.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/rotation/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/rotation/Rotation2D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/Segment.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/shape/Circle.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/shape/package-info.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/shape/Parallelogram.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/main/java/org/apache/commons/geometry/euclidean/twod/Vector2D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/site/site.xml
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/DocumentationExamplesTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/EuclideanTestUtils.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/internal/EuclideanUtilsTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/internal/MatricesTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/internal/VectorsTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/oned/AffineTransformMatrix1DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/oned/IntervalTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/oned/OrientedPointTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/oned/PointMap1DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/oned/PointSet1DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/oned/RegionBSPTree1DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/oned/Vector1DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/AffineTransformMatrix3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/BoundaryList3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/BoundarySource3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/BoundarySourceBoundsBuilder3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/BoundarySourceLinecaster3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/Bounds3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/ConvexVolumeTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/EmbeddedAreaPlaneConvexSubsetTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/EmbeddedTreePlaneSubsetTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/EmbeddingPlaneTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/line/EmbeddedTreeLineSubset3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/line/Line3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/line/LinecastPoint3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/line/LineConvexSubset3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/line/Ray3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/line/ReverseRay3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/line/Segment3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/LinecastChecker3D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/mesh/SimpleTriangleMeshTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/PlaneConvexSubsetTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/PlanesTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/PlaneTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/PointMap3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/PointSet3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/RegionBSPTree3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/rotation/AxisAngleSequenceTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/rotation/AxisSequenceTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/rotation/QuaternionRotationTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/rotation/StandardRotations.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/shape/ParallelepipedTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/shape/SphereTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/SimpleTriangle3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/SphericalCoordinatesTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/Vector3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/threed/VertexListConvexPolygon3DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/AffineTransformMatrix2DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/BoundaryList2DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/BoundarySource2DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/BoundarySourceBoundsBuilder2DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/BoundarySourceLinecaster2DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/Bounds2DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/ConvexAreaTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/EmbeddedTreeLineSubsetTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/hull/ConvexHull2DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/hull/ConvexHullBuilderTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/LinecastChecker2D.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/LinecastPoint2DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/LineConvexSubsetTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/LineSpanningSubsetTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/LineSubsetTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/LineTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/path/AbstractLinePathConnectorTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/path/InteriorAngleLinePathConnectorTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/path/LinePathTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/PointMap2DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/PointSet2DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/PolarCoordinatesTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/RayTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/RegionBSPTree2DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/ReverseRayTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/rotation/Rotation2DTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/SegmentTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/shape/CircleTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/shape/ParallelogramTest.java
+  AL    C:/Users/ULUGBEK/IdeaProjects/commons-geometry/commons-geometry-euclidean/src/test/java/org/apache/commons/geometry/euclidean/twod/Vector2DTest.java
+ 
+*****************************************************

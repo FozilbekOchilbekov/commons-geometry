@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Plane.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed</a> &gt; <span class="el_source">Plane.java</span></div><h1>Plane.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed;
+
+import java.util.Objects;
+
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.AbstractHyperplane;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.euclidean.threed.line.Line3D;
+import org.apache.commons.geometry.euclidean.threed.line.Lines3D;
+import org.apache.commons.geometry.euclidean.threed.rotation.QuaternionRotation;
+import org.apache.commons.geometry.euclidean.twod.ConvexArea;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing a plane in 3 dimensional Euclidean space. Each plane is defined by a
+ * {@link #getNormal() normal} and an {@link #getOriginOffset() origin offset}. If \(\vec{n}\) is the plane normal,
+ * \(d\) is the origin offset, and \(p\) and \(q\) are any points in the plane, then the following are true:
+ * &lt;ul&gt;
+ *  &lt;li&gt;\(\lVert \vec{n} \rVert\) = 1&lt;/li&gt;
+ *  &lt;li&gt;\(\vec{n} \cdot (p - q) = 0\)&lt;/li&gt;
+ *  &lt;li&gt;\(d = - (\vec{n} \cdot q)\)&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *  In other words, the normal is a unit vector such that the dot product of the normal and the difference of
+ *  any two points in the plane is always equal to \(0\). Similarly, the {@code origin offset} is equal to the
+ *  negation of the dot product of the normal and any point in the plane. The projection of the origin onto the
+ *  plane (given by {@link #getOrigin()}), is computed as \(-d \vec{n}\).
+ *
+ * &lt;p&gt;Instances of this class are guaranteed to be immutable.&lt;/p&gt;
+ * @see Planes
+ */
+public class Plane extends AbstractHyperplane&lt;Vector3D&gt; {
+
+    /** Plane normal. */
+    private final Vector3D.Unit normal;
+
+    /** Offset of the origin with respect to the plane. */
+    private final double originOffset;
+
+    /** Construct a plane from its component parts.
+     * @param normal unit normal vector
+     * @param originOffset offset of the origin with respect to the plane
+     * @param precision precision context used to compare floating point values
+     */
+    Plane(final Vector3D.Unit normal, final double originOffset,
+          final Precision.DoubleEquivalence precision) {
+
+<span class="fc" id="L62">        super(precision);</span>
+
+<span class="fc" id="L64">        this.normal = normal;</span>
+<span class="fc" id="L65">        this.originOffset = originOffset;</span>
+<span class="fc" id="L66">    }</span>
+
+    /** Get the orthogonal projection of the 3D-space origin in the plane.
+     * @return the origin point of the plane frame (point closest to the 3D-space
+     *         origin)
+     */
+    public Vector3D getOrigin() {
+<span class="fc" id="L73">        return normal.multiply(-originOffset);</span>
+    }
+
+    /** Get the offset of the spatial origin ({@code 0, 0, 0}) with respect to the plane.
+     * @return the offset of the origin with respect to the plane.
+     */
+    public double getOriginOffset() {
+<span class="fc" id="L80">        return originOffset;</span>
+    }
+
+    /** Get the plane normal vector.
+     * @return plane normal vector
+     */
+    public Vector3D.Unit getNormal() {
+<span class="fc" id="L87">        return normal;</span>
+    }
+
+    /** Return an {@link EmbeddingPlane} instance suitable for embedding 2D geometric objects
+     * into this plane. Returned instances are guaranteed to be equal between invocations.
+     * @return a plane instance suitable for embedding 2D subspaces
+     */
+    public EmbeddingPlane getEmbedding() {
+<span class="fc" id="L95">        final Vector3D.Unit u = normal.orthogonal();</span>
+<span class="fc" id="L96">        final Vector3D.Unit v = normal.cross(u).normalize();</span>
+
+<span class="fc" id="L98">        return new EmbeddingPlane(u, v, normal, originOffset, getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double offset(final Vector3D point) {
+<span class="fc" id="L104">        return point.dot(normal) + originOffset;</span>
+    }
+
+    /** Get the offset (oriented distance) of the given line with respect to the plane. The value
+     * closest to zero is returned, which will always be zero if the line is not parallel to the plane.
+     * @param line line to calculate the offset of
+     * @return the offset of the line with respect to the plane or 0.0 if the line
+     *      is not parallel to the plane.
+     */
+    public double offset(final Line3D line) {
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (!isParallel(line)) {</span>
+<span class="fc" id="L115">            return 0.0;</span>
+        }
+<span class="fc" id="L117">        return offset(line.getOrigin());</span>
+    }
+
+    /** Get the offset (oriented distance) of the given plane with respect to this instance. The value
+     * closest to zero is returned, which will always be zero if the planes are not parallel.
+     * @param plane plane to calculate the offset of
+     * @return the offset of the plane with respect to this instance or 0.0 if the planes
+     *      are not parallel.
+     */
+    public double offset(final Plane plane) {
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        if (!isParallel(plane)) {</span>
+<span class="fc" id="L128">            return 0.0;</span>
+        }
+<span class="fc bfc" id="L130" title="All 2 branches covered.">        return originOffset + (similarOrientation(plane) ? -plane.originOffset : plane.originOffset);</span>
+    }
+
+    /** Check if the instance contains a point.
+     * @param p point to check
+     * @return true if p belongs to the plane
+     */
+    @Override
+    public boolean contains(final Vector3D p) {
+<span class="fc" id="L139">        return getPrecision().eqZero(offset(p));</span>
+    }
+
+    /** Check if the instance contains a line.
+     * @param line line to check
+     * @return true if line is contained in this plane
+     */
+    public boolean contains(final Line3D line) {
+<span class="fc bfc" id="L147" title="All 4 branches covered.">        return isParallel(line) &amp;&amp; contains(line.getOrigin());</span>
+    }
+
+    /** Check if the instance contains another plane. Planes are considered similar if they contain
+     * the same points. This does not mean they are equal since they can have opposite normals.
+     * @param plane plane to which the instance is compared
+     * @return true if the planes are similar
+     */
+    public boolean contains(final Plane plane) {
+<span class="fc" id="L156">        final double angle = normal.angle(plane.normal);</span>
+<span class="fc" id="L157">        final Precision.DoubleEquivalence precision = getPrecision();</span>
+
+<span class="fc bfc" id="L159" title="All 4 branches covered.">        return ((precision.eqZero(angle)) &amp;&amp; precision.eq(originOffset, plane.originOffset)) ||</span>
+<span class="pc bpc" id="L160" title="1 of 4 branches missed.">                ((precision.eq(angle, Math.PI)) &amp;&amp; precision.eq(originOffset, -plane.originOffset));</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D project(final Vector3D point) {
+<span class="fc" id="L166">        return getOrigin().add(point.reject(normal));</span>
+    }
+
+    /** Project a 3D line onto the plane.
+     * @param line the line to project
+     * @return the projection of the given line onto the plane.
+     */
+    public Line3D project(final Line3D line) {
+<span class="fc" id="L174">        final Vector3D direction = line.getDirection();</span>
+<span class="fc" id="L175">        final Vector3D projection = normal.multiply(direction.dot(normal) * (1 / normal.normSq()));</span>
+
+<span class="fc" id="L177">        final Vector3D projectedLineDirection = direction.subtract(projection);</span>
+<span class="fc" id="L178">        final Vector3D p1 = project(line.getOrigin());</span>
+<span class="fc" id="L179">        final Vector3D p2 = p1.add(projectedLineDirection);</span>
+
+<span class="fc" id="L181">        return Lines3D.fromPoints(p1, p2, getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PlaneConvexSubset span() {
+<span class="fc" id="L187">        return Planes.subsetFromConvexArea(getEmbedding(), ConvexArea.full());</span>
+    }
+
+    /** Check if the line is parallel to the instance.
+     * @param line line to check.
+     * @return true if the line is parallel to the instance, false otherwise.
+     */
+    public boolean isParallel(final Line3D line) {
+<span class="fc" id="L195">        final double dot = normal.dot(line.getDirection());</span>
+
+<span class="fc" id="L197">        return getPrecision().eqZero(dot);</span>
+    }
+
+    /** Check if the plane is parallel to the instance.
+     * @param plane plane to check.
+     * @return true if the plane is parallel to the instance, false otherwise.
+     */
+    public boolean isParallel(final Plane plane) {
+<span class="fc" id="L205">        return getPrecision().eqZero(normal.cross(plane.normal).norm());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean similarOrientation(final Hyperplane&lt;Vector3D&gt; other) {
+<span class="fc bfc" id="L211" title="All 2 branches covered.">        return (((Plane) other).normal).dot(normal) &gt; 0;</span>
+    }
+
+    /** Get the intersection of a line with this plane.
+     * @param line line intersecting the instance
+     * @return intersection point between between the line and the instance (null if
+     *         the line is parallel to the instance)
+     */
+    public Vector3D intersection(final Line3D line) {
+<span class="fc" id="L220">        final Vector3D direction = line.getDirection();</span>
+<span class="fc" id="L221">        final double dot = normal.dot(direction);</span>
+
+<span class="fc bfc" id="L223" title="All 2 branches covered.">        if (getPrecision().eqZero(dot)) {</span>
+<span class="fc" id="L224">            return null;</span>
+        }
+
+<span class="fc" id="L227">        final Vector3D point = line.pointAt(0);</span>
+<span class="fc" id="L228">        final double k = -(originOffset + normal.dot(point)) / dot;</span>
+
+<span class="fc" id="L230">        return Vector3D.Sum.of(point)</span>
+<span class="fc" id="L231">                .addScaled(k, direction)</span>
+<span class="fc" id="L232">                .get();</span>
+    }
+
+    /** Get the line formed by the intersection of this instance with the given plane.
+     * The returned line lies in both planes and points in the direction of
+     * the cross product &lt;code&gt;n&lt;sub&gt;1&lt;/sub&gt; x n&lt;sub&gt;2&lt;/sub&gt;&lt;/code&gt;, where &lt;code&gt;n&lt;sub&gt;1&lt;/sub&gt;&lt;/code&gt;
+     * is the normal of the current instance and &lt;code&gt;n&lt;sub&gt;2&lt;/sub&gt;&lt;/code&gt; is the normal
+     * of the argument.
+     *
+     * &lt;p&gt;Null is returned if the planes are parallel.&lt;/p&gt;
+     *
+     * @param other other plane
+     * @return line at the intersection of the instance and the other plane, or null
+     *      if no such line exists
+     */
+    public Line3D intersection(final Plane other) {
+<span class="fc" id="L248">        final Vector3D direction = normal.cross(other.normal);</span>
+
+<span class="fc bfc" id="L250" title="All 2 branches covered.">        if (getPrecision().eqZero(direction.norm())) {</span>
+<span class="fc" id="L251">            return null;</span>
+        }
+
+<span class="fc" id="L254">        final Vector3D point = intersection(this, other, Planes.fromNormal(direction, getPrecision()));</span>
+
+<span class="fc" id="L256">        return Lines3D.fromPointAndDirection(point, direction, getPrecision());</span>
+    }
+
+    /** Build a new reversed version of this plane, with opposite orientation.
+     * @return a new reversed plane
+     */
+    @Override
+    public Plane reverse() {
+<span class="fc" id="L264">        return new Plane(normal.negate(), -originOffset, getPrecision());</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;Instances are transformed by selecting 3 representative points from the
+     * plane, transforming them, and constructing a new plane from the transformed points.
+     * Since the normal is not transformed directly, but rather is constructed new from the
+     * transformed points, the relative orientations of points in the plane are preserved,
+     * even for transforms that do not
+     * {@link Transform#preservesOrientation() preserve orientation}. The example below shows
+     * a plane being transformed by a non-orientation-preserving transform. The normal of the
+     * transformed plane retains its counterclockwise relationship to the points in the plane,
+     * in contrast with the normal that is transformed directly by the transform.
+     * &lt;/p&gt;
+     * &lt;pre&gt;
+     * // construct a plane from 3 points; the normal will be selected such that the
+     * // points are ordered counterclockwise when looking down the plane normal.
+     * Vector3D p1 = Vector3D.of(0, 0, 0);
+     * Vector3D p2 = Vector3D.of(+1, 0, 0);
+     * Vector3D p3 = Vector3D.of(0, +1, 0);
+     *
+     * Plane plane = Planes.fromPoints(p1, p2, p3, precision); // normal is (0, 0, +1)
+     *
+     * // create a transform that negates all x-values; this transform does not
+     * // preserve orientation, i.e. it will convert a right-handed system into a left-handed
+     * // system and vice versa
+     * AffineTransformMatrix3D transform = AffineTransformMatrix3D.createScale(-1, 1,  1);
+     *
+     * // transform the plane
+     * Plane transformedPlane = plane.transform(transform);
+     *
+     * // the plane normal is oriented such that transformed points are still ordered
+     * // counterclockwise when looking down the plane normal; since the point (1, 0, 0) has
+     * // now become (-1, 0, 0), the normal has flipped to (0, 0, -1)
+     * transformedPlane.getNormal();
+     *
+     * // directly transform the original plane normal; the normal is unchanged by the transform
+     * // since the target space of the transform is left-handed
+     * AffineTransformMatrix3D normalTransform = transform.normalTransform();
+     * Vector3D directlyTransformedNormal = normalTransform.apply(plane.getNormal()); // (0, 0, +1)
+     * &lt;/pre&gt;
+     */
+    @Override
+    public Plane transform(final Transform&lt;Vector3D&gt; transform) {
+        // create 3 representation points lying on the plane, transform them,
+        // and use the transformed points to create a new plane
+
+<span class="fc" id="L312">        final Vector3D u = normal.orthogonal();</span>
+<span class="fc" id="L313">        final Vector3D v = normal.cross(u);</span>
+
+<span class="fc" id="L315">        final Vector3D p1 = getOrigin();</span>
+<span class="fc" id="L316">        final Vector3D p2 = p1.add(u);</span>
+<span class="fc" id="L317">        final Vector3D p3 = p1.add(v);</span>
+
+<span class="fc" id="L319">        final Vector3D t1 = transform.apply(p1);</span>
+<span class="fc" id="L320">        final Vector3D t2 = transform.apply(p2);</span>
+<span class="fc" id="L321">        final Vector3D t3 = transform.apply(p3);</span>
+
+<span class="fc" id="L323">        return Planes.fromPoints(t1, t2, t3, getPrecision());</span>
+    }
+
+    /** Translate the plane by the specified amount.
+     * @param translation translation to apply
+     * @return a new plane
+     */
+    public Plane translate(final Vector3D translation) {
+<span class="fc" id="L331">        final Vector3D tOrigin = getOrigin().add(translation);</span>
+
+<span class="fc" id="L333">        return Planes.fromPointAndNormal(tOrigin, normal, getPrecision());</span>
+    }
+
+    /** Rotate the plane around the specified point.
+     * @param center rotation center
+     * @param rotation 3-dimensional rotation
+     * @return a new plane
+     */
+    public Plane rotate(final Vector3D center, final QuaternionRotation rotation) {
+<span class="fc" id="L342">        final Vector3D delta = getOrigin().subtract(center);</span>
+<span class="fc" id="L343">        final Vector3D tOrigin = center.add(rotation.apply(delta));</span>
+
+        // we can directly apply the rotation to the normal since it will transform
+        // it properly (there is no translation or scaling involved)
+<span class="fc" id="L347">        final Vector3D.Unit tNormal = rotation.apply(normal).normalize();</span>
+
+<span class="fc" id="L349">        return Planes.fromPointAndNormal(tOrigin, tNormal, getPrecision());</span>
+    }
+
+    /** Return true if this instance should be considered equivalent to the argument, using the
+     * given precision context for comparison. Instances are considered equivalent if they contain
+     * the same points, which is determined by comparing the plane {@code origins} and {@code normals}.
+     * @param other the point to compare with
+     * @param precision precision context to use for the comparison
+     * @return true if this instance should be considered equivalent to the argument
+     * @see Vector3D#eq(Vector3D, Precision.DoubleEquivalence)
+     */
+    public boolean eq(final Plane other, final Precision.DoubleEquivalence precision) {
+<span class="fc bfc" id="L361" title="All 2 branches covered.">        return getOrigin().eq(other.getOrigin(), precision) &amp;&amp;</span>
+<span class="fc bfc" id="L362" title="All 2 branches covered.">                normal.eq(other.normal, precision);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L368">        return Objects.hash(normal, originOffset, getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L374" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L375">            return true;</span>
+<span class="fc bfc" id="L376" title="All 4 branches covered.">        } else if (obj == null || obj.getClass() != this.getClass()) {</span>
+<span class="fc" id="L377">            return false;</span>
+        }
+
+<span class="fc" id="L380">        final Plane other = (Plane) obj;</span>
+
+<span class="fc bfc" id="L382" title="All 2 branches covered.">        return Objects.equals(this.normal, other.normal) &amp;&amp;</span>
+<span class="fc bfc" id="L383" title="All 2 branches covered.">                Double.compare(this.originOffset, other.originOffset) == 0 &amp;&amp;</span>
+<span class="fc bfc" id="L384" title="All 2 branches covered.">                Objects.equals(this.getPrecision(), other.getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L390">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L391">        sb.append(getClass().getSimpleName())</span>
+<span class="fc" id="L392">            .append(&quot;[origin= &quot;)</span>
+<span class="fc" id="L393">            .append(getOrigin())</span>
+<span class="fc" id="L394">            .append(&quot;, normal= &quot;)</span>
+<span class="fc" id="L395">            .append(normal)</span>
+<span class="fc" id="L396">            .append(']');</span>
+
+<span class="fc" id="L398">        return sb.toString();</span>
+    }
+
+    /** Get the intersection point of three planes. Returns null if no unique intersection point
+     * exists (ie, there are no intersection points or an infinite number).
+     * @param plane1 first plane1
+     * @param plane2 second plane2
+     * @param plane3 third plane2
+     * @return intersection point of the three planes or null if no unique intersection point exists
+     */
+    public static Vector3D intersection(final Plane plane1, final Plane plane2, final Plane plane3) {
+
+        // coefficients of the three planes linear equations
+<span class="fc" id="L411">        final double a1 = plane1.normal.getX();</span>
+<span class="fc" id="L412">        final double b1 = plane1.normal.getY();</span>
+<span class="fc" id="L413">        final double c1 = plane1.normal.getZ();</span>
+<span class="fc" id="L414">        final double d1 = plane1.originOffset;</span>
+
+<span class="fc" id="L416">        final double a2 = plane2.normal.getX();</span>
+<span class="fc" id="L417">        final double b2 = plane2.normal.getY();</span>
+<span class="fc" id="L418">        final double c2 = plane2.normal.getZ();</span>
+<span class="fc" id="L419">        final double d2 = plane2.originOffset;</span>
+
+<span class="fc" id="L421">        final double a3 = plane3.normal.getX();</span>
+<span class="fc" id="L422">        final double b3 = plane3.normal.getY();</span>
+<span class="fc" id="L423">        final double c3 = plane3.normal.getZ();</span>
+<span class="fc" id="L424">        final double d3 = plane3.originOffset;</span>
+
+        // direct Cramer resolution of the linear system
+        // (this is still feasible for a 3x3 system)
+<span class="fc" id="L428">        final double a23 = (b2 * c3) - (b3 * c2);</span>
+<span class="fc" id="L429">        final double b23 = (c2 * a3) - (c3 * a2);</span>
+<span class="fc" id="L430">        final double c23 = (a2 * b3) - (a3 * b2);</span>
+<span class="fc" id="L431">        final double determinant = (a1 * a23) + (b1 * b23) + (c1 * c23);</span>
+
+        // use the precision context of the first plane to determine equality
+<span class="fc bfc" id="L434" title="All 2 branches covered.">        if (plane1.getPrecision().eqZero(determinant)) {</span>
+<span class="fc" id="L435">            return null;</span>
+        }
+
+<span class="fc" id="L438">        final double r = 1.0 / determinant;</span>
+<span class="fc" id="L439">        return Vector3D.of((-a23 * d1 - (c1 * b3 - c3 * b1) * d2 - (c2 * b1 - c1 * b2) * d3) * r,</span>
+                (-b23 * d1 - (c3 * a1 - c1 * a3) * d2 - (c1 * a2 - c2 * a1) * d3) * r,
+                (-c23 * d1 - (b1 * a3 - b3 * a1) * d2 - (b2 * a1 - b1 * a2) * d3) * r);
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

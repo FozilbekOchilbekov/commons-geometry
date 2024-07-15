@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SphereGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Enclosing</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.enclosing.euclidean.threed</a> &gt; <span class="el_source">SphereGenerator.java</span></div><h1>SphereGenerator.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.enclosing.euclidean.threed;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.geometry.enclosing.EnclosingBall;
+import org.apache.commons.geometry.enclosing.SupportBallGenerator;
+import org.apache.commons.geometry.enclosing.euclidean.twod.DiskGenerator;
+import org.apache.commons.geometry.euclidean.threed.EmbeddingPlane;
+import org.apache.commons.geometry.euclidean.threed.Planes;
+import org.apache.commons.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.numbers.core.Precision;
+import org.apache.commons.numbers.fraction.BigFraction;
+
+/** Class generating a sphere from its support points.
+ */
+public class SphereGenerator implements SupportBallGenerator&lt;Vector3D&gt; {
+
+    /** Precision context used to compare floating point numbers. */
+    private final Precision.DoubleEquivalence precision;
+
+    /** Construct a new instance with the given precision context.
+     * @param precision precision context used to compare floating point numbers
+     */
+<span class="fc" id="L43">    public SphereGenerator(final Precision.DoubleEquivalence precision) {</span>
+<span class="fc" id="L44">        this.precision = precision;</span>
+<span class="fc" id="L45">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public EnclosingBall&lt;Vector3D&gt; ballOnSupport(final List&lt;Vector3D&gt; support) {
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (support.isEmpty()) {</span>
+<span class="fc" id="L51">            return new EnclosingBall&lt;&gt;(Vector3D.ZERO, Double.NEGATIVE_INFINITY, Collections.emptyList());</span>
+        }
+<span class="fc" id="L53">        final Vector3D vA = support.get(0);</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (support.size() &lt; 2) {</span>
+<span class="fc" id="L55">            return new EnclosingBall&lt;&gt;(vA, 0, Collections.singletonList(vA));</span>
+        }
+<span class="fc" id="L57">        final Vector3D vB = support.get(1);</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        if (support.size() &lt; 3) {</span>
+<span class="fc" id="L59">            return new EnclosingBall&lt;&gt;(vA.lerp(vB, 0.5),</span>
+<span class="fc" id="L60">                                       0.5 * vA.distance(vB),</span>
+<span class="fc" id="L61">                                       Arrays.asList(vA, vB));</span>
+        }
+<span class="fc" id="L63">        final Vector3D vC = support.get(2);</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (support.size() &lt; 4) {</span>
+<span class="fc" id="L65">            final EmbeddingPlane p = Planes.fromPoints(vA, vB, vC, precision).getEmbedding();</span>
+<span class="fc" id="L66">            final EnclosingBall&lt;Vector2D&gt; disk =</span>
+<span class="fc" id="L67">                    new DiskGenerator().ballOnSupport(Arrays.asList(p.toSubspace(vA),</span>
+<span class="fc" id="L68">                                                                    p.toSubspace(vB),</span>
+<span class="fc" id="L69">                                                                    p.toSubspace(vC)));</span>
+
+            // convert back to 3D
+<span class="fc" id="L72">            return new EnclosingBall&lt;&gt;(p.toSpace(disk.getCenter()),</span>
+<span class="fc" id="L73">                                                            disk.getRadius(),</span>
+<span class="fc" id="L74">                                                            Arrays.asList(vA, vB, vC));</span>
+
+        }
+<span class="fc" id="L77">        final Vector3D vD = support.get(3);</span>
+        // a sphere is 3D can be defined as:
+        // (1)   (x - x_0)^2 + (y - y_0)^2 + (z - z_0)^2 = r^2
+        // which can be written:
+        // (2)   (x^2 + y^2 + z^2) - 2 x_0 x - 2 y_0 y - 2 z_0 z + (x_0^2 + y_0^2 + z_0^2 - r^2) = 0
+        // or simply:
+        // (3)   (x^2 + y^2 + z^2) + a x + b y + c z + d = 0
+        // with sphere center coordinates -a/2, -b/2, -c/2
+        // If the sphere exists, a b, c and d are a non zero solution to
+        // [ (x^2  + y^2  + z^2)    x    y   z    1 ]   [ 1 ]   [ 0 ]
+        // [ (xA^2 + yA^2 + zA^2)   xA   yA  zA   1 ]   [ a ]   [ 0 ]
+        // [ (xB^2 + yB^2 + zB^2)   xB   yB  zB   1 ] * [ b ] = [ 0 ]
+        // [ (xC^2 + yC^2 + zC^2)   xC   yC  zC   1 ]   [ c ]   [ 0 ]
+        // [ (xD^2 + yD^2 + zD^2)   xD   yD  zD   1 ]   [ d ]   [ 0 ]
+        // So the determinant of the matrix is zero. Computing this determinant
+        // by expanding it using the minors m_ij of first row leads to
+        // (4)   m_11 (x^2 + y^2 + z^2) - m_12 x + m_13 y - m_14 z + m_15 = 0
+        // So by identifying equations (2) and (4) we get the coordinates
+        // of center as:
+        //      x_0 = +m_12 / (2 m_11)
+        //      y_0 = -m_13 / (2 m_11)
+        //      z_0 = +m_14 / (2 m_11)
+        // Note that the minors m_11, m_12, m_13 and m_14 all have the last column
+        // filled with 1.0, hence simplifying the computation
+<span class="fc" id="L101">        final BigFraction[] c2 = {</span>
+<span class="fc" id="L102">            BigFraction.from(vA.getX()), BigFraction.from(vB.getX()),</span>
+<span class="fc" id="L103">            BigFraction.from(vC.getX()), BigFraction.from(vD.getX())</span>
+        };
+<span class="fc" id="L105">        final BigFraction[] c3 = {</span>
+<span class="fc" id="L106">            BigFraction.from(vA.getY()), BigFraction.from(vB.getY()),</span>
+<span class="fc" id="L107">            BigFraction.from(vC.getY()), BigFraction.from(vD.getY())</span>
+        };
+<span class="fc" id="L109">        final BigFraction[] c4 = {</span>
+<span class="fc" id="L110">            BigFraction.from(vA.getZ()), BigFraction.from(vB.getZ()),</span>
+<span class="fc" id="L111">            BigFraction.from(vC.getZ()), BigFraction.from(vD.getZ())</span>
+        };
+<span class="fc" id="L113">        final BigFraction[] c1 = {</span>
+<span class="fc" id="L114">            c2[0].multiply(c2[0]).add(c3[0].multiply(c3[0])).add(c4[0].multiply(c4[0])),</span>
+<span class="fc" id="L115">            c2[1].multiply(c2[1]).add(c3[1].multiply(c3[1])).add(c4[1].multiply(c4[1])),</span>
+<span class="fc" id="L116">            c2[2].multiply(c2[2]).add(c3[2].multiply(c3[2])).add(c4[2].multiply(c4[2])),</span>
+<span class="fc" id="L117">            c2[3].multiply(c2[3]).add(c3[3].multiply(c3[3])).add(c4[3].multiply(c4[3]))</span>
+        };
+<span class="fc" id="L119">        final BigFraction twoM11 = minor(c2, c3, c4).multiply(2);</span>
+<span class="fc" id="L120">        final BigFraction m12 = minor(c1, c3, c4);</span>
+<span class="fc" id="L121">        final BigFraction m13 = minor(c1, c2, c4);</span>
+<span class="fc" id="L122">        final BigFraction m14 = minor(c1, c2, c3);</span>
+<span class="fc" id="L123">        final BigFraction centerX = m12.divide(twoM11);</span>
+<span class="fc" id="L124">        final BigFraction centerY = m13.divide(twoM11).negate();</span>
+<span class="fc" id="L125">        final BigFraction centerZ = m14.divide(twoM11);</span>
+<span class="fc" id="L126">        final BigFraction dx = c2[0].subtract(centerX);</span>
+<span class="fc" id="L127">        final BigFraction dy = c3[0].subtract(centerY);</span>
+<span class="fc" id="L128">        final BigFraction dz = c4[0].subtract(centerZ);</span>
+<span class="fc" id="L129">        final BigFraction r2 = dx.multiply(dx).add(dy.multiply(dy)).add(dz.multiply(dz));</span>
+<span class="fc" id="L130">        return new EnclosingBall&lt;&gt;(Vector3D.of(centerX.doubleValue(),</span>
+<span class="fc" id="L131">                                               centerY.doubleValue(),</span>
+<span class="fc" id="L132">                                               centerZ.doubleValue()),</span>
+<span class="fc" id="L133">                                   Math.sqrt(r2.doubleValue()),</span>
+<span class="fc" id="L134">                                   Arrays.asList(vA, vB, vC, vD));</span>
+    }
+
+    /** Compute a dimension 4 minor, when 4&lt;sup&gt;th&lt;/sup&gt; column is known to be filled with 1.0.
+     * @param c1 first column
+     * @param c2 second column
+     * @param c3 third column
+     * @return value of the minor computed has an exact fraction
+     */
+    private BigFraction minor(final BigFraction[] c1, final BigFraction[] c2, final BigFraction[] c3) {
+<span class="fc" id="L144">        return c2[0].multiply(c3[1]).multiply(c1[2].subtract(c1[3])).</span>
+<span class="fc" id="L145">            add(c2[0].multiply(c3[2]).multiply(c1[3].subtract(c1[1]))).</span>
+<span class="fc" id="L146">            add(c2[0].multiply(c3[3]).multiply(c1[1].subtract(c1[2]))).</span>
+<span class="fc" id="L147">            add(c2[1].multiply(c3[0]).multiply(c1[3].subtract(c1[2]))).</span>
+<span class="fc" id="L148">            add(c2[1].multiply(c3[2]).multiply(c1[0].subtract(c1[3]))).</span>
+<span class="fc" id="L149">            add(c2[1].multiply(c3[3]).multiply(c1[2].subtract(c1[0]))).</span>
+<span class="fc" id="L150">            add(c2[2].multiply(c3[0]).multiply(c1[1].subtract(c1[3]))).</span>
+<span class="fc" id="L151">            add(c2[2].multiply(c3[1]).multiply(c1[3].subtract(c1[0]))).</span>
+<span class="fc" id="L152">            add(c2[2].multiply(c3[3]).multiply(c1[0].subtract(c1[1]))).</span>
+<span class="fc" id="L153">            add(c2[3].multiply(c3[0]).multiply(c1[2].subtract(c1[1]))).</span>
+<span class="fc" id="L154">            add(c2[3].multiply(c3[1]).multiply(c1[0].subtract(c1[2]))).</span>
+<span class="fc" id="L155">            add(c2[3].multiply(c3[2]).multiply(c1[1].subtract(c1[0])));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

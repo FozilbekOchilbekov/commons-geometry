@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bom version="1" xmlns="http://cyclonedx.org/schema/bom/1.4">
+  <metadata>
+    <tools>
+      <tool>
+        <vendor>OWASP Foundation</vendor>
+        <name>CycloneDX Maven plugin</name>
+        <version>2.7.9</version>
+        <hashes>
+          <hash alg="MD5">8e595cdb67f17e4b41e046456970591d</hash>
+          <hash alg="SHA-1">69e8ca804520d09ce4657e7235bae84d01cbffa6</hash>
+          <hash alg="SHA-256">aa09074fe5aa403c008cd4fc7ef8ce41cd244489337f16b3e91a3914158a4db8</hash>
+          <hash alg="SHA-512">1488a8112da8e675813d7585f57c5efb178aed32901118186ee12d0e4ae3d19c53774c7f860bf70d17d70f050119b69443a2637cf641675b4b5d9cdcdd69b89b</hash>
+          <hash alg="SHA-384">b097295dfbf10887abc6eec58d4d0822cde5a73d1f5c1cf183a57bf569016ad5ced9d34efae3e574d82bb62837540c6c</hash>
+          <hash alg="SHA3-384">289f9520bd73a2031276248a6ef8f0891c691062c2d1ea86a2bc9ea8db2c52377d92a53be9957179e71aee3deda26a8c</hash>
+          <hash alg="SHA3-256">32b50a7efe5d491a4039c0017eca3cf49d98b55fc66d06b3dd06209487323474</hash>
+          <hash alg="SHA3-512">1daf813da53e5d5cda4d0302ff3a5e388aa45d96ebe6dcbe240f35d33f14b1e6390f6bbe7f21f3ed8cf96ebd9f5516a08b18487b7339715109c81cebfc1563df</hash>
+        </hashes>
+      </tool>
+    </tools>
+    <component type="library" bom-ref="pkg:maven/org.apache.commons/commons-geometry-euclidean@1.1-SNAPSHOT?type=jar">
+      <publisher>The Apache Software Foundation</publisher>
+      <group>org.apache.commons</group>
+      <name>commons-geometry-euclidean</name>
+      <version>1.1-SNAPSHOT</version>
+      <description>Geometric primitives for euclidean space.</description>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+          <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.apache.commons/commons-geometry-euclidean@1.1-SNAPSHOT?type=jar</purl>
+      <externalReferences><reference type="website"><url>https://commons.apache.org/proper/commons-geometry/commons-geometry-euclidean/</url></reference><reference type="build-system"><url>https://github.com/apache/commons-geometry/actions</url></reference><reference type="distribution"><url>https://repository.apache.org/service/local/staging/deploy/maven2</url></reference><reference type="issue-tracker"><url>https://issues.apache.org/jira/browse/GEOMETRY</url></reference><reference type="mailing-list"><url>https://mail-archives.apache.org/mod_mbox/commons-user/</url></reference><reference type="vcs"><url>https://gitbox.apache.org/repos/asf/commons-geometry.git/commons-geometry-euclidean</url></reference></externalReferences>
+    </component>
+    <properties>
+      <property name="maven.goal">makeBom</property>
+      <property name="maven.scopes">compile,provided,runtime,system</property>
+      <property name="maven.reproducible">enabled</property>
+    </properties>
+  </metadata>
+  <components>
+    <component type="library" bom-ref="pkg:maven/org.apache.commons/commons-geometry-core@1.1-SNAPSHOT?type=jar">
+      <publisher>The Apache Software Foundation</publisher>
+      <group>org.apache.commons</group>
+      <name>commons-geometry-core</name>
+      <version>1.1-SNAPSHOT</version>
+      <description>Core interfaces and classes for Apache Commons Geometry.</description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">a0f346fda13e0837b3909a479133d06c</hash>
+        <hash alg="SHA-1">d4cacb886152c02455ef348a9d98cb61f2013b2a</hash>
+        <hash alg="SHA-256">b7189ab4a8aa984648fd893199d4cbaf4b83de4154fa3d45640b34982217961f</hash>
+        <hash alg="SHA-512">f2631c48c3f61f2ea0b334aed9e78524b498368003a400603b7f8645b26b8340633bcd8328686aaaa6731f302828282d0c6656391ace065accb68af81dff9e2e</hash>
+        <hash alg="SHA-384">6196f976c1dcb83739a8e6db71af07d5ffebc342ec11df0c8b1b7c8e4b372fe1ed935fd09aeea52b7af35ca0211df4e0</hash>
+        <hash alg="SHA3-384">43e0042357ce1910c2a7ef55e09b77162acb66953523795c1ed49afbf363a8d66546b1fd1158e5f50609c498c8a7ec79</hash>
+        <hash alg="SHA3-256">4c5d3f230e33085bfbf555565d0b05d0349428a029c75a7fd512fee2d79c7ba6</hash>
+        <hash alg="SHA3-512">3e1ba8e03d883dddb4ba5fa29b1632c85219d9e8bd579caacea9c7de1db9ff0edc487d63b80e849888152c5f4910f0d58173943872b0815ad354e3b82aa0e9f9</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+          <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.apache.commons/commons-geometry-core@1.1-SNAPSHOT?type=jar</purl>
+      <externalReferences><reference type="website"><url>https://commons.apache.org/proper/commons-geometry/commons-geometry-core/</url></reference><reference type="build-system"><url>https://github.com/apache/commons-geometry/actions</url></reference><reference type="distribution"><url>https://repository.apache.org/service/local/staging/deploy/maven2</url></reference><reference type="issue-tracker"><url>https://issues.apache.org/jira/browse/GEOMETRY</url></reference><reference type="mailing-list"><url>https://mail-archives.apache.org/mod_mbox/commons-user/</url></reference><reference type="vcs"><url>https://gitbox.apache.org/repos/asf/commons-geometry.git/commons-geometry-core</url></reference></externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.apache.commons/commons-numbers-core@1.1?type=jar">
+      <publisher>The Apache Software Foundation</publisher>
+      <group>org.apache.commons</group>
+      <name>commons-numbers-core</name>
+      <version>1.1</version>
+      <description>Basic utilities.</description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">2f654e6260f87f2dc27f613e4397ec2c</hash>
+        <hash alg="SHA-1">60315a72638ae4dee8b689905c42109b399bf9e8</hash>
+        <hash alg="SHA-256">966896d9bb1e77cdd13830738acbcda22daeba57b4b093f7f4167828add95b58</hash>
+        <hash alg="SHA-512">9279dd20fe98b15b61a9c0bd83858ba8c4f14fc843a8d0618f47a34f8b7d6d717db268eb22910fdd0bd211ccfff5178e37dc74ed170a0ca155b811d000e09aee</hash>
+        <hash alg="SHA-384">74f6157d051df068392615809482ab8101361f33f95bea1ea2fb4e34cc67c8c8b0f10761b7693e9bec9c33c19275d0aa</hash>
+        <hash alg="SHA3-384">799f000307c61e8781a7c50999cadd7351b28db690e30a38a21ff6ef660f870e55874872b58fdcca9d30766d4c004c2b</hash>
+        <hash alg="SHA3-256">b79d64664600e5761a7884500b54cef875c23fe8c7fd443ada14cfcda6138179</hash>
+        <hash alg="SHA3-512">ccfc32e093d72906b8d3797f7c936c4baf4b79d225c0195cf68e90c47d0fbdad14927bd5f45d8c40bbf0603d922712f3fbf765e6b093b29b47c0c76168d0ed27</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.apache.commons/commons-numbers-core@1.1?type=jar</purl>
+      <externalReferences><reference type="website"><url>http://commons.apache.org/proper/commons-numbers/commons-numbers-core/</url></reference><reference type="build-system"><url>https://github.com/apache/commons-numbers/actions</url></reference><reference type="distribution"><url>https://repository.apache.org/service/local/staging/deploy/maven2</url></reference><reference type="issue-tracker"><url>https://issues.apache.org/jira/browse/NUMBERS</url></reference><reference type="mailing-list"><url>https://mail-archives.apache.org/mod_mbox/commons-user/</url></reference><reference type="vcs"><url>https://gitbox.apache.org/repos/asf/commons-numbers.git/commons-numbers-core</url></reference></externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.apache.commons/commons-numbers-arrays@1.1?type=jar">
+      <publisher>The Apache Software Foundation</publisher>
+      <group>org.apache.commons</group>
+      <name>commons-numbers-arrays</name>
+      <version>1.1</version>
+      <description>Array utilities.</description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">2068de16bab2f1f4d53e489c957524eb</hash>
+        <hash alg="SHA-1">287f7008b799aed7990987314614d38f6627b591</hash>
+        <hash alg="SHA-256">f3f52385507fc68c3c12c6e66b83a836a172eaf3b4af689a38ab4fa958c92ab2</hash>
+        <hash alg="SHA-512">122d6ecb9bd8bf2931ac35e95b501f5f36b8da7157d14925e50f3c7ceee88a5387dd5f68775395f9daf55899a4bf711031d60812324a03befe549753d81a31d1</hash>
+        <hash alg="SHA-384">9fee137ad8204f4f3cb9759c4fd51c4667c23ecb7339021df109844d762705d9971d580f7483905f41d2460f5e7eb7e6</hash>
+        <hash alg="SHA3-384">041dbe64bcd65d2b4ddf5dcc3b5770d4ddf84e6520063ccabf9aa4f70dc4c95c64319cbf49537a72c000330e1a07ce45</hash>
+        <hash alg="SHA3-256">441360507e00570b1257196a786e0024f37511cf3000b37162bd1932ccea0380</hash>
+        <hash alg="SHA3-512">f57b9e04a0f1a2acdb8029145d8cbe23e0f77df285f56c13db89de014b636ef7654f45550eac42460fe19ac86606e751d7c4d4931e1c35e86b4a879bbf274e01</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.apache.commons/commons-numbers-arrays@1.1?type=jar</purl>
+      <externalReferences><reference type="website"><url>http://commons.apache.org/proper/commons-numbers/commons-numbers-arrays/</url></reference><reference type="build-system"><url>https://github.com/apache/commons-numbers/actions</url></reference><reference type="distribution"><url>https://repository.apache.org/service/local/staging/deploy/maven2</url></reference><reference type="issue-tracker"><url>https://issues.apache.org/jira/browse/NUMBERS</url></reference><reference type="mailing-list"><url>https://mail-archives.apache.org/mod_mbox/commons-user/</url></reference><reference type="vcs"><url>https://gitbox.apache.org/repos/asf/commons-numbers.git/commons-numbers-arrays</url></reference></externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.apache.commons/commons-numbers-angle@1.1?type=jar">
+      <publisher>The Apache Software Foundation</publisher>
+      <group>org.apache.commons</group>
+      <name>commons-numbers-angle</name>
+      <version>1.1</version>
+      <description>Utilities related to the concept of angle.</description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">d40e0487f4ab772e1253a5fc68313272</hash>
+        <hash alg="SHA-1">a5fb182fd42494e4bf05a1d767027fe09b4e7168</hash>
+        <hash alg="SHA-256">e1752390258ec88c6bd1207c0ab05d7a0d37600c744d1fed9166d3d64433dd4e</hash>
+        <hash alg="SHA-512">2e1613ad98745e6c6621d029df33f57868ae2a4671dcd65e84337d7277dc327c9d04f5a484eca6bf66b0aef4e02bbab152131f0402ce47c6b3cdbd34ced060b3</hash>
+        <hash alg="SHA-384">1733291befe1f0b8f1403f9c8f7d6650d662c94db321a9ce64d964e9398715c7349073a6b89d43b25f95f47f4f4b49df</hash>
+        <hash alg="SHA3-384">6f986902e75f264a5073527f0a82b2f9c974f73322e37c773b5f189457936052f97fd4d878e7a254ab1444a3c7f458d1</hash>
+        <hash alg="SHA3-256">6cb2bcf4dc185ddce25df3b1382a0f79fd8b4b65363139d4c44ce0d791781575</hash>
+        <hash alg="SHA3-512">dd86d25307032f4275b4db3ffaf4480e666a54358966847f6cc14b0a179b486a56a5f6e74661f52173c1ce7a4febfe83870f5d8f3a22b64b9b476f620fec8815</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.apache.commons/commons-numbers-angle@1.1?type=jar</purl>
+      <externalReferences><reference type="website"><url>http://commons.apache.org/proper/commons-numbers/commons-numbers-angle/</url></reference><reference type="build-system"><url>https://github.com/apache/commons-numbers/actions</url></reference><reference type="distribution"><url>https://repository.apache.org/service/local/staging/deploy/maven2</url></reference><reference type="issue-tracker"><url>https://issues.apache.org/jira/browse/NUMBERS</url></reference><reference type="mailing-list"><url>https://mail-archives.apache.org/mod_mbox/commons-user/</url></reference><reference type="vcs"><url>https://gitbox.apache.org/repos/asf/commons-numbers.git/commons-numbers-angle</url></reference></externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.apache.commons/commons-numbers-quaternion@1.1?type=jar">
+      <publisher>The Apache Software Foundation</publisher>
+      <group>org.apache.commons</group>
+      <name>commons-numbers-quaternion</name>
+      <version>1.1</version>
+      <description>Quaternion numbers.</description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">3340b7436f652a9eedf5b7ebe402aa6b</hash>
+        <hash alg="SHA-1">41bccae9794948f307cccf5d9596717ce288ac93</hash>
+        <hash alg="SHA-256">2cda7bc586e9bef40a72493a563bb3fa3d570fdaf9c1669517a92e2698aaf781</hash>
+        <hash alg="SHA-512">2bc5d0f7fbc7cc9d7e216942f07af20663c1966b4dfa0554340d0a81bf196e8d71275d6f8a33c0961419a96b9d8661e3cb71ee86f9abd71ec37b5de4102a6f54</hash>
+        <hash alg="SHA-384">3ea6aadbd750fa43c55424271c669f55aa61eab1f9fc9f98133dd65ece0adb57861f8de722ce2cf6d8fe644d69b03bd5</hash>
+        <hash alg="SHA3-384">3b971c078fde803e2d0c3e0a553979ee67e5fff60df69750f3e9fea9e7440bda4e5fce596f05211bcf03553429f5dc63</hash>
+        <hash alg="SHA3-256">5bd3bcf3ad3635e07f4e4f69085a007184a6af2c1a10527cef0861af86b96394</hash>
+        <hash alg="SHA3-512">f78fff0073b33a973fdd8d0bb5bd8ab08ce86e9f9488d60ee5a363f5ec7d085816dfc3e86c887af48af4347558863a0404b5119866b7a40f75c06d3412e758d5</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.apache.commons/commons-numbers-quaternion@1.1?type=jar</purl>
+      <externalReferences><reference type="website"><url>http://commons.apache.org/proper/commons-numbers/commons-numbers-quaternion/</url></reference><reference type="build-system"><url>https://github.com/apache/commons-numbers/actions</url></reference><reference type="distribution"><url>https://repository.apache.org/service/local/staging/deploy/maven2</url></reference><reference type="issue-tracker"><url>https://issues.apache.org/jira/browse/NUMBERS</url></reference><reference type="mailing-list"><url>https://mail-archives.apache.org/mod_mbox/commons-user/</url></reference><reference type="vcs"><url>https://gitbox.apache.org/repos/asf/commons-numbers.git/commons-numbers-quaternion</url></reference></externalReferences>
+    </component>
+  </components>
+  <dependencies>
+    <dependency ref="pkg:maven/org.apache.commons/commons-geometry-euclidean@1.1-SNAPSHOT?type=jar">
+      <dependency ref="pkg:maven/org.apache.commons/commons-geometry-core@1.1-SNAPSHOT?type=jar"/>
+      <dependency ref="pkg:maven/org.apache.commons/commons-numbers-core@1.1?type=jar"/>
+      <dependency ref="pkg:maven/org.apache.commons/commons-numbers-arrays@1.1?type=jar"/>
+      <dependency ref="pkg:maven/org.apache.commons/commons-numbers-angle@1.1?type=jar"/>
+      <dependency ref="pkg:maven/org.apache.commons/commons-numbers-quaternion@1.1?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.apache.commons/commons-geometry-core@1.1-SNAPSHOT?type=jar">
+      <dependency ref="pkg:maven/org.apache.commons/commons-numbers-core@1.1?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.apache.commons/commons-numbers-core@1.1?type=jar"/>
+    <dependency ref="pkg:maven/org.apache.commons/commons-numbers-arrays@1.1?type=jar"/>
+    <dependency ref="pkg:maven/org.apache.commons/commons-numbers-angle@1.1?type=jar">
+      <dependency ref="pkg:maven/org.apache.commons/commons-numbers-core@1.1?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.apache.commons/commons-numbers-quaternion@1.1?type=jar">
+      <dependency ref="pkg:maven/org.apache.commons/commons-numbers-core@1.1?type=jar"/>
+    </dependency>
+  </dependencies>
+</bom>

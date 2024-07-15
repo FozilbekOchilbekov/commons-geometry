@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AffineTransformMatrix1D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.oned</a> &gt; <span class="el_source">AffineTransformMatrix1D.java</span></div><h1>AffineTransformMatrix1D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.oned;
+
+import java.util.function.UnaryOperator;
+
+import org.apache.commons.geometry.euclidean.AbstractAffineTransformMatrix;
+import org.apache.commons.geometry.euclidean.internal.Matrices;
+import org.apache.commons.geometry.euclidean.internal.Vectors;
+
+/** Class using a matrix to represent affine transformations in 1 dimensional Euclidean space.
+*
+* &lt;p&gt;Instances of this class use a 2x2 matrix for all transform operations.
+* The last row of this matrix is always set to the values &lt;code&gt;[0 1]&lt;/code&gt; and so
+* is not stored. Hence, the methods in this class that accept or return arrays always
+* use arrays containing 2 elements, instead of 4.
+* &lt;/p&gt;
+*/
+public final class AffineTransformMatrix1D extends AbstractAffineTransformMatrix&lt;Vector1D, AffineTransformMatrix1D&gt; {
+    /** The number of internal matrix elements. */
+    private static final int NUM_ELEMENTS = 2;
+
+    /** String used to start the transform matrix string representation. */
+    private static final String MATRIX_START = &quot;[ &quot;;
+
+    /** String used to end the transform matrix string representation. */
+    private static final String MATRIX_END = &quot; ]&quot;;
+
+    /** String used to separate elements in the matrix string representation. */
+    private static final String ELEMENT_SEPARATOR = &quot;, &quot;;
+
+    /** Shared transform set to the identity matrix. */
+<span class="fc" id="L47">    private static final AffineTransformMatrix1D IDENTITY_INSTANCE = new AffineTransformMatrix1D(1, 0);</span>
+
+    /** Transform matrix entry &lt;code&gt;m&lt;sub&gt;0,0&lt;/sub&gt;&lt;/code&gt;. */
+    private final double m00;
+    /** Transform matrix entry &lt;code&gt;m&lt;sub&gt;0,1&lt;/sub&gt;&lt;/code&gt;. */
+    private final double m01;
+
+    /**
+     * Simple constructor; sets all internal matrix elements.
+     * @param m00 matrix entry &lt;code&gt;m&lt;sub&gt;0,0&lt;/sub&gt;&lt;/code&gt;
+     * @param m01 matrix entry &lt;code&gt;m&lt;sub&gt;0,1&lt;/sub&gt;&lt;/code&gt;
+     */
+<span class="fc" id="L59">    private AffineTransformMatrix1D(final double m00, final double m01) {</span>
+<span class="fc" id="L60">        this.m00 = m00;</span>
+<span class="fc" id="L61">        this.m01 = m01;</span>
+<span class="fc" id="L62">    }</span>
+
+    /** Return a 2 element array containing the variable elements from the
+     * internal transformation matrix. The elements are in row-major order.
+     * The array indices map to the internal matrix as follows:
+     * &lt;pre&gt;
+     *      [
+     *          arr[0],   arr[1],
+     *          0         1
+     *      ]
+     * &lt;/pre&gt;
+     * @return 2 element array containing the variable elements from the
+     *      internal transformation matrix
+     */
+    public double[] toArray() {
+<span class="fc" id="L77">        return new double[] {</span>
+            m00, m01
+        };
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector1D apply(final Vector1D vec) {
+<span class="fc" id="L85">        return Vector1D.of(applyX(vec.getX()));</span>
+    }
+
+    /** Apply this transform to the given point coordinate and return the transformed
+     * x value. The return value is equal to &lt;code&gt;(x * m&lt;sub&gt;00&lt;/sub&gt;) + m&lt;sub&gt;01&lt;/sub&gt;&lt;/code&gt;.
+     * @param x x coordinate value
+     * @return transformed x coordinate value
+     * @see #apply(Vector1D)
+     */
+    public double applyX(final double x) {
+<span class="fc" id="L95">        return applyVectorX(x) + m01;</span>
+    }
+
+    /** {@inheritDoc}
+     * @see #applyDirection(Vector1D)
+     */
+    @Override
+    public Vector1D applyVector(final Vector1D vec) {
+<span class="fc" id="L103">        return Vector1D.of(applyVectorX(vec.getX()));</span>
+    }
+
+    /** Apply this transform to the given vector coordinate, ignoring translations, and
+     * return the transformed x value. The return value is equal to &lt;code&gt;x * m&lt;sub&gt;00&lt;/sub&gt;&lt;/code&gt;.
+     * @param x x coordinate value
+     * @return transformed x coordinate value
+     * @see #applyVector(Vector1D)
+     */
+    public double applyVectorX(final double x) {
+<span class="fc" id="L113">        return x * m00;</span>
+    }
+
+    /** {@inheritDoc}
+     * @see #applyVector(Vector1D)
+     */
+    @Override
+    public Vector1D.Unit applyDirection(final Vector1D vec) {
+<span class="fc" id="L121">        return Vector1D.Unit.from(applyVectorX(vec.getX()));</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double determinant() {
+<span class="fc" id="L127">        return m00;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt;
+     * &lt;pre&gt;
+     *      [ a, b ]   [ a, 0 ]
+     *      [ 0, 1 ] &amp;rarr; [ 0, 1 ]
+     * &lt;/pre&gt;
+     */
+    @Override
+    public AffineTransformMatrix1D linear() {
+<span class="fc" id="L140">        return new AffineTransformMatrix1D(m00, 0.0);</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;In the one dimensional case, this is exactly the same as {@link #linear()}.&lt;/p&gt;
+     *
+     * &lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt;
+     * &lt;pre&gt;
+     *      [ a, b ]   [ a, 0 ]
+     *      [ 0, 1 ] &amp;rarr; [ 0, 1 ]
+     * &lt;/pre&gt;
+     */
+    @Override
+    public AffineTransformMatrix1D linearTranspose() {
+<span class="fc" id="L155">        return linear();</span>
+    }
+
+    /** Get a new transform containing the result of applying a translation logically after
+     * the transformation represented by the current instance. This is achieved by
+     * creating a new translation transform and pre-multiplying it with the current
+     * instance. In other words, the returned transform contains the matrix
+     * &lt;code&gt;B * A&lt;/code&gt;, where &lt;code&gt;A&lt;/code&gt; is the current matrix and &lt;code&gt;B&lt;/code&gt;
+     * is the matrix representing the given translation.
+     * @param translation vector containing the translation values for each axis
+     * @return a new transform containing the result of applying a translation to
+     *      the current instance
+     */
+    public AffineTransformMatrix1D translate(final Vector1D translation) {
+<span class="fc" id="L169">        return translate(translation.getX());</span>
+    }
+
+    /** Get a new transform containing the result of applying a translation logically after
+     * the transformation represented by the current instance. This is achieved by
+     * creating a new translation transform and pre-multiplying it with the current
+     * instance. In other words, the returned transform contains the matrix
+     * &lt;code&gt;B * A&lt;/code&gt;, where &lt;code&gt;A&lt;/code&gt; is the current matrix and &lt;code&gt;B&lt;/code&gt;
+     * is the matrix representing the given translation.
+     * @param x translation in the x direction
+     * @return a new transform containing the result of applying a translation to
+     *      the current instance
+     */
+    public AffineTransformMatrix1D translate(final double x) {
+<span class="fc" id="L183">        return new AffineTransformMatrix1D(m00, m01 + x);</span>
+    }
+
+    /** Get a new transform containing the result of applying a scale operation
+     * logically after the transformation represented by the current instance.
+     * This is achieved by creating a new scale transform and pre-multiplying it with the current
+     * instance. In other words, the returned transform contains the matrix
+     * &lt;code&gt;B * A&lt;/code&gt;, where &lt;code&gt;A&lt;/code&gt; is the current matrix and &lt;code&gt;B&lt;/code&gt;
+     * is the matrix representing the given scale operation.
+     * @param scaleFactor vector containing scale factors for each axis
+     * @return a new transform containing the result of applying a scale operation to
+     *      the current instance
+     */
+    public AffineTransformMatrix1D scale(final Vector1D scaleFactor) {
+<span class="fc" id="L197">        return scale(scaleFactor.getX());</span>
+    }
+
+    /** Get a new transform containing the result of applying a scale operation
+     * logically after the transformation represented by the current instance.
+     * This is achieved by creating a new scale transform and pre-multiplying it with the current
+     * instance. In other words, the returned transform contains the matrix
+     * &lt;code&gt;B * A&lt;/code&gt;, where &lt;code&gt;A&lt;/code&gt; is the current matrix and &lt;code&gt;B&lt;/code&gt;
+     * is the matrix representing the given scale operation.
+     * @param x scale factor
+     * @return a new transform containing the result of applying a scale operation to
+     *      the current instance
+     */
+    public AffineTransformMatrix1D scale(final double x) {
+<span class="fc" id="L211">        return new AffineTransformMatrix1D(m00 * x, m01 * x);</span>
+    }
+
+    /** Get a new transform created by multiplying this instance by the argument.
+     * This is equivalent to the expression {@code A * M} where {@code A} is the
+     * current transform matrix and {@code M} is the given transform matrix. In
+     * terms of transformations, applying the returned matrix is equivalent to
+     * applying {@code M} and &lt;em&gt;then&lt;/em&gt; applying {@code A}. In other words,
+     * the rightmost transform is applied first.
+     *
+     * @param m the transform to multiply with
+     * @return the result of multiplying the current instance by the given
+     *      transform matrix
+     */
+    public AffineTransformMatrix1D multiply(final AffineTransformMatrix1D m) {
+<span class="fc" id="L226">        return multiply(this, m);</span>
+    }
+
+    /** Get a new transform created by multiplying the argument by this instance.
+     * This is equivalent to the expression {@code M * A} where {@code A} is the
+     * current transform matrix and {@code M} is the given transform matrix. In
+     * terms of transformations, applying the returned matrix is equivalent to
+     * applying {@code A} and &lt;em&gt;then&lt;/em&gt; applying {@code M}. In other words,
+     * the rightmost transform is applied first.
+     *
+     * @param m the transform to multiply with
+     * @return the result of multiplying the given transform matrix by the current
+     *      instance
+     */
+    public AffineTransformMatrix1D premultiply(final AffineTransformMatrix1D m) {
+<span class="fc" id="L241">        return multiply(m, this);</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * @throws IllegalStateException if the matrix cannot be inverted
+     */
+    @Override
+    public AffineTransformMatrix1D inverse() {
+
+<span class="fc" id="L251">        final double det = Matrices.checkDeterminantForInverse(determinant());</span>
+
+<span class="fc" id="L253">        Matrices.checkElementForInverse(m01);</span>
+
+<span class="fc" id="L255">        final double invDet = 1.0 / det;</span>
+
+<span class="fc" id="L257">        final double c01 = -(this.m01 * invDet);</span>
+
+<span class="fc" id="L259">        return new AffineTransformMatrix1D(invDet, c01);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L265">        final int prime = 31;</span>
+<span class="fc" id="L266">        int result = 1;</span>
+
+<span class="fc" id="L268">        result = (result * prime) + Double.hashCode(m00);</span>
+<span class="fc" id="L269">        result = (result * prime) + Double.hashCode(m01);</span>
+
+<span class="fc" id="L271">        return result;</span>
+    }
+
+    /**
+     * Return true if the given object is an instance of {@link AffineTransformMatrix1D}
+     * and all matrix element values are exactly equal.
+     * @param obj object to test for equality with the current instance
+     * @return true if all transform matrix elements are exactly equal; otherwise false
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L282" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L283">            return true;</span>
+        }
+<span class="fc bfc" id="L285" title="All 2 branches covered.">        if (!(obj instanceof AffineTransformMatrix1D)) {</span>
+<span class="fc" id="L286">            return false;</span>
+        }
+<span class="fc" id="L288">        final AffineTransformMatrix1D other = (AffineTransformMatrix1D) obj;</span>
+
+<span class="fc bfc" id="L290" title="All 2 branches covered.">        return Double.compare(this.m00, other.m00) == 0 &amp;&amp;</span>
+<span class="fc bfc" id="L291" title="All 2 branches covered.">                Double.compare(this.m01, other.m01) == 0;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L297">        final StringBuilder sb = new StringBuilder();</span>
+
+<span class="fc" id="L299">        sb.append(MATRIX_START)</span>
+
+<span class="fc" id="L301">            .append(m00)</span>
+<span class="fc" id="L302">            .append(ELEMENT_SEPARATOR)</span>
+<span class="fc" id="L303">            .append(m01)</span>
+
+<span class="fc" id="L305">            .append(MATRIX_END);</span>
+
+<span class="fc" id="L307">        return sb.toString();</span>
+    }
+
+    /** Get a new transform with the given matrix elements. The array must contain 2 elements.
+     * The first element in the array represents the scale factor for the transform and the
+     * second represents the translation.
+     * @param arr 2-element array containing values for the variable entries in the
+     *      transform matrix
+     * @return a new transform initialized with the given matrix values
+     * @throws IllegalArgumentException if the array does not have 2 elements
+     */
+    public static AffineTransformMatrix1D of(final double... arr) {
+<span class="fc bfc" id="L319" title="All 2 branches covered.">        if (arr.length != NUM_ELEMENTS) {</span>
+<span class="fc" id="L320">            throw new IllegalArgumentException(&quot;Dimension mismatch: &quot; + arr.length + &quot; != &quot; + NUM_ELEMENTS);</span>
+        }
+
+<span class="fc" id="L323">        return new AffineTransformMatrix1D(arr[0], arr[1]);</span>
+    }
+
+    /** Construct a new transform representing the given function. The function is sampled at
+     * the points zero and one and a matrix is created to perform the transformation.
+     * @param fn function to create a transform matrix from
+     * @return a transform matrix representing the given function
+     * @throws IllegalArgumentException if the given function does not represent a valid
+     *      affine transform
+     */
+    public static AffineTransformMatrix1D from(final UnaryOperator&lt;Vector1D&gt; fn) {
+<span class="fc" id="L334">        final Vector1D tOne = fn.apply(Vector1D.Unit.PLUS);</span>
+<span class="fc" id="L335">        final Vector1D tZero = fn.apply(Vector1D.ZERO);</span>
+
+<span class="fc" id="L337">        final double scale = tOne.subtract(tZero).getX();</span>
+<span class="fc" id="L338">        final double translate = tZero.getX();</span>
+
+<span class="fc" id="L340">        final AffineTransformMatrix1D mat =  AffineTransformMatrix1D.of(scale, translate);</span>
+
+<span class="fc" id="L342">        final double det = mat.determinant();</span>
+<span class="fc bfc" id="L343" title="All 2 branches covered.">        if (!Vectors.isRealNonZero(det)) {</span>
+<span class="fc" id="L344">            throw new IllegalArgumentException(&quot;Transform function is invalid: matrix determinant is &quot; + det);</span>
+        }
+
+<span class="fc" id="L347">        return mat;</span>
+    }
+
+    /** Get the transform representing the identity matrix. This transform does not
+     * modify point or vector values when applied.
+     * @return transform representing the identity matrix
+     */
+    public static AffineTransformMatrix1D identity() {
+<span class="fc" id="L355">        return IDENTITY_INSTANCE;</span>
+    }
+
+    /** Get a transform representing the given translation.
+     * @param translation vector containing translation values for each axis
+     * @return a new transform representing the given translation
+     */
+    public static AffineTransformMatrix1D createTranslation(final Vector1D translation) {
+<span class="fc" id="L363">        return createTranslation(translation.getX());</span>
+    }
+
+    /** Get a transform representing the given translation.
+     * @param x translation in the x direction
+     * @return a new transform representing the given translation
+     */
+    public static AffineTransformMatrix1D createTranslation(final double x) {
+<span class="fc" id="L371">        return new AffineTransformMatrix1D(1, x);</span>
+    }
+
+    /** Get a transform representing a scale operation.
+     * @param factor vector containing the scale factor
+     * @return a new transform representing a scale operation
+     */
+    public static AffineTransformMatrix1D createScale(final Vector1D factor) {
+<span class="fc" id="L379">        return createScale(factor.getX());</span>
+    }
+
+    /** Get a transform representing a scale operation.
+     * @param factor scale factor
+     * @return a new transform representing a scale operation
+     */
+    public static AffineTransformMatrix1D createScale(final double factor) {
+<span class="fc" id="L387">        return new AffineTransformMatrix1D(factor, 0);</span>
+    }
+
+    /** Multiply two transform matrices together.
+     * @param a first transform
+     * @param b second transform
+     * @return the transform computed as {@code a x b}
+     */
+    private static AffineTransformMatrix1D multiply(final AffineTransformMatrix1D a,
+            final AffineTransformMatrix1D b) {
+
+        // calculate the matrix elements
+<span class="fc" id="L399">        final double c00 = a.m00 * b.m00;</span>
+<span class="fc" id="L400">        final double c01 = (a.m00 * b.m01) + a.m01;</span>
+
+<span class="fc" id="L402">        return new AffineTransformMatrix1D(c00, c01);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

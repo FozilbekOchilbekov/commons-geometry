@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GreatCircle.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Spherical</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.spherical.twod</a> &gt; <span class="el_source">GreatCircle.java</span></div><h1>GreatCircle.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.spherical.twod;
+
+import java.util.Objects;
+
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.AbstractHyperplane;
+import org.apache.commons.geometry.core.partitioning.EmbeddingHyperplane;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.geometry.spherical.oned.AngularInterval;
+import org.apache.commons.geometry.spherical.oned.Point1S;
+import org.apache.commons.numbers.angle.Angle;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing a great circle on the 2-sphere. A great circle is the
+ * intersection of a sphere with a plane that passes through its center. It is
+ * the largest diameter circle that can be drawn on the sphere and partitions the
+ * sphere into two hemispheres. The vectors {@code u} and {@code v} lie in the great
+ * circle plane, while the vector {@code w} (the pole) is perpendicular to it. The
+ * pole vector points toward the &lt;em&gt;minus&lt;/em&gt; side of the hyperplane.
+ *
+ * &lt;p&gt;Instances of this class are guaranteed to be immutable.&lt;/p&gt;
+ * @see GreatCircles
+ */
+public final class GreatCircle extends AbstractHyperplane&lt;Point2S&gt;
+    implements EmbeddingHyperplane&lt;Point2S, Point1S&gt; {
+    /** Pole or circle center. */
+    private final Vector3D.Unit pole;
+
+    /** First axis in the equator plane, origin of the azimuth angles. */
+    private final Vector3D.Unit u;
+
+    /** Second axis in the equator plane, in quadrature with respect to u. */
+    private final Vector3D.Unit v;
+
+    /** Simple constructor. Callers are responsible for ensuring the inputs are valid.
+     * @param pole pole vector of the great circle
+     * @param u u axis in the equator plane
+     * @param v v axis in the equator plane
+     * @param precision precision context used for floating point comparisons
+     */
+    GreatCircle(final Vector3D.Unit pole, final Vector3D.Unit u, final Vector3D.Unit v,
+            final Precision.DoubleEquivalence precision) {
+<span class="fc" id="L60">        super(precision);</span>
+
+<span class="fc" id="L62">        this.pole = pole;</span>
+<span class="fc" id="L63">        this.u = u;</span>
+<span class="fc" id="L64">        this.v = v;</span>
+<span class="fc" id="L65">    }</span>
+
+    /** Get the pole of the great circle. This vector is perpendicular to the
+     * equator plane of the instance.
+     * @return pole of the great circle
+     */
+    public Vector3D.Unit getPole() {
+<span class="fc" id="L72">        return pole;</span>
+    }
+
+    /** Get the spherical point located at the positive pole of the instance.
+     * @return the spherical point located at the positive pole of the instance
+     */
+    public Point2S getPolePoint() {
+<span class="fc" id="L79">        return Point2S.from(pole);</span>
+    }
+
+    /** Get the u axis of the great circle. This vector is located in the equator plane and defines
+     * the {@code 0pi} location of the embedded subspace.
+     * @return u axis of the great circle
+     */
+    public Vector3D.Unit getU() {
+<span class="fc" id="L87">        return u;</span>
+    }
+
+    /** Get the v axis of the great circle. This vector lies in the equator plane,
+     * perpendicular to the u-axis.
+     * @return v axis of the great circle
+     */
+    public Vector3D.Unit getV() {
+<span class="fc" id="L95">        return v;</span>
+    }
+
+    /** Get the w (pole) axis of the great circle. The method is equivalent to {@code #getPole()}.
+     * @return the w (pole) axis of the great circle.
+     * @see #getPole()
+     */
+    public Vector3D.Unit getW() {
+<span class="fc" id="L103">        return getPole();</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;The returned offset values are in the range {@code [-pi/2, +pi/2]},
+     * with a point directly on the circle's pole vector having an offset of
+     * {@code -pi/2} and its antipodal point having an offset of {@code +pi/2}.
+     * Thus, the circle's pole vector points toward the &lt;em&gt;minus&lt;/em&gt; side of
+     * the hyperplane.&lt;/p&gt;
+     *
+     * @see #offset(Vector3D)
+     */
+    @Override
+    public double offset(final Point2S point) {
+<span class="fc" id="L118">        return offset(point.getVector());</span>
+    }
+
+    /** Get the offset (oriented distance) of a direction.
+     *
+     * &lt;p&gt;The offset computed here is equal to the angle between the circle's
+     * pole and the given vector minus {@code pi/2}. Thus, the pole vector
+     * has an offset of {@code -pi/2}, a point on the circle itself has an
+     * offset of {@code 0}, and the negation of the pole vector has an offset
+     * of {@code +pi/2}.&lt;/p&gt;
+     * @param vec vector to compute the offset for
+     * @return the offset (oriented distance) of a direction
+     */
+    public double offset(final Vector3D vec) {
+<span class="fc" id="L132">        return pole.angle(vec) - Angle.PI_OVER_TWO;</span>
+    }
+
+    /** Get the azimuth angle of a point relative to this great circle instance,
+     *  in the range {@code [0, 2pi)}.
+     * @param pt point to compute the azimuth for
+     * @return azimuth angle of the point in the range {@code [0, 2pi)}
+     */
+    public double azimuth(final Point2S pt) {
+<span class="fc" id="L141">        return azimuth(pt.getVector());</span>
+    }
+
+    /** Get the azimuth angle of a vector in the range {@code [0, 2pi)}.
+     * The azimuth angle is the angle of the projection of the argument on the
+     * equator plane relative to the plane's u-axis. Since the vector is
+     * projected onto the equator plane, it does not need to belong to the circle.
+     * Vectors parallel to the great circle's pole do not have a defined azimuth angle.
+     * In these cases, the method follows the rules of the
+     * {@code Math#atan2(double, double)} method and returns {@code 0}.
+     * @param vector vector to compute the great circle azimuth of
+     * @return azimuth angle of the vector around the great circle in the range
+     *      {@code [0, 2pi)}
+     * @see #toSubspace(Point2S)
+     */
+    public double azimuth(final Vector3D vector) {
+<span class="fc" id="L157">        double az = Math.atan2(vector.dot(v), vector.dot(u));</span>
+
+        // adjust range
+<span class="fc bfc" id="L160" title="All 2 branches covered.">        if (az &lt; 0) {</span>
+<span class="fc" id="L161">            az += Angle.TWO_PI;</span>
+        }
+
+<span class="fc" id="L164">        return az;</span>
+    }
+
+    /** Get the vector on the great circle with the given azimuth angle.
+     * @param azimuth azimuth angle in radians
+     * @return the point on the great circle with the given phase angle
+     */
+    public Vector3D vectorAt(final double azimuth) {
+<span class="fc" id="L172">        return Vector3D.Sum.create()</span>
+<span class="fc" id="L173">                .addScaled(Math.cos(azimuth), u)</span>
+<span class="fc" id="L174">                .addScaled(Math.sin(azimuth), v).get();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Point2S project(final Point2S point) {
+<span class="fc" id="L180">        final double az = azimuth(point.getVector());</span>
+<span class="fc" id="L181">        return Point2S.from(vectorAt(az));</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;The returned instance has the same u-axis but opposite pole and v-axis
+     * as this instance.&lt;/p&gt;
+     */
+    @Override
+    public GreatCircle reverse() {
+<span class="fc" id="L191">        return new GreatCircle(pole.negate(), u, v.negate(), getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GreatCircle transform(final Transform&lt;Point2S&gt; transform) {
+<span class="fc" id="L197">        final Point2S tu = transform.apply(Point2S.from(u));</span>
+<span class="fc" id="L198">        final Point2S tv = transform.apply(Point2S.from(v));</span>
+
+<span class="fc" id="L200">        return GreatCircles.fromPoints(tu, tv, getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean similarOrientation(final Hyperplane&lt;Point2S&gt; other) {
+<span class="fc" id="L206">        final GreatCircle otherCircle = (GreatCircle) other;</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        return pole.dot(otherCircle.pole) &gt; 0.0;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GreatArc span() {
+<span class="fc" id="L213">        return GreatCircles.arcFromInterval(this, AngularInterval.full());</span>
+    }
+
+    /** Create an arc on this circle between the given points.
+     * @param start start point
+     * @param end end point
+     * @return an arc on this circle between the given points
+     * @throws IllegalArgumentException if the specified interval is not
+     *      convex (ie, the angle between the points is greater than {@code pi}
+     */
+    public GreatArc arc(final Point2S start, final Point2S end) {
+<span class="fc" id="L224">        return arc(toSubspace(start), toSubspace(end));</span>
+    }
+
+    /** Create an arc on this circle between the given subspace points.
+     * @param start start subspace point
+     * @param end end subspace point
+     * @return an arc on this circle between the given subspace points
+     * @throws IllegalArgumentException if the specified interval is not
+     *      convex (ie, the angle between the points is greater than {@code pi}
+     */
+    public GreatArc arc(final Point1S start, final Point1S end) {
+<span class="fc" id="L235">        return arc(start.getAzimuth(), end.getAzimuth());</span>
+    }
+
+    /** Create an arc on this circle between the given subspace azimuth values.
+     * @param start start subspace azimuth
+     * @param end end subspace azimuth
+     * @return an arc on this circle between the given subspace azimuths
+     * @throws IllegalArgumentException if the specified interval is not
+     *      convex (ie, the angle between the points is greater than {@code pi}
+     */
+    public GreatArc arc(final double start, final double end) {
+<span class="fc" id="L246">        return arc(AngularInterval.Convex.of(start, end, getPrecision()));</span>
+    }
+
+    /** Create an arc on this circle consisting of the given subspace interval.
+     * @param interval subspace interval
+     * @return an arc on this circle consisting of the given subspace interval
+     */
+    public GreatArc arc(final AngularInterval.Convex interval) {
+<span class="fc" id="L254">        return GreatCircles.arcFromInterval(this, interval);</span>
+    }
+
+    /** Return one of the two intersection points between this instance and the argument.
+     * If the circles occupy the same space (ie, their poles are parallel or anti-parallel),
+     * then null is returned. Otherwise, the intersection located at the cross product of
+     * the pole of this instance and that of the argument is returned (ie, {@code thisPole.cross(otherPole)}.
+     * The other intersection point of the pair is antipodal to this point.
+     * @param other circle to intersect with
+     * @return one of the two intersection points between this instance and the argument
+     */
+    public Point2S intersection(final GreatCircle other) {
+<span class="fc" id="L266">        final Vector3D cross = pole.cross(other.pole);</span>
+<span class="fc bfc" id="L267" title="All 2 branches covered.">        if (!cross.eq(Vector3D.ZERO, getPrecision())) {</span>
+<span class="fc" id="L268">            return Point2S.from(cross);</span>
+        }
+
+<span class="fc" id="L271">        return null;</span>
+    }
+
+    /** Compute the angle between this great circle and the argument.
+     * The return value is the angle between the poles of the two circles,
+     * in the range {@code [0, pi]}.
+     * @param other great circle to compute the angle with
+     * @return the angle between this great circle and the argument in the
+     *      range {@code [0, pi]}
+     * @see #angle(GreatCircle, Point2S)
+     */
+    public double angle(final GreatCircle other) {
+<span class="fc" id="L283">        return pole.angle(other.pole);</span>
+    }
+
+    /** Compute the angle between this great circle and the argument, measured
+     * at the intersection point closest to the given point. The value is computed
+     * as if a tangent line was drawn from each great circle at the intersection
+     * point closest to {@code pt}, and the angle required to rotate the tangent
+     * line representing the current instance to align with that of the given
+     * instance was measured. The return value lies in the range {@code [-pi, pi)} and
+     * has an absolute value equal to that returned by {@link #angle(GreatCircle)}, but
+     * possibly a different sign. If the given point is equidistant from both intersection
+     * points (as evaluated by this instance's precision context), then the point is assumed
+     * to be closest to the point opposite the cross product of the two poles.
+     * @param other great circle to compute the angle with
+     * @param pt point determining the circle intersection to compute the angle at
+     * @return the angle between this great circle and the argument as measured at the
+     *      intersection point closest to the given point; the value is in the range
+     *      {@code [-pi, pi)}
+     * @see #angle(GreatCircle)
+     */
+    public double angle(final GreatCircle other, final Point2S pt) {
+<span class="fc" id="L304">        final double theta = angle(other);</span>
+<span class="fc" id="L305">        final Vector3D cross = pole.cross(other.pole);</span>
+
+<span class="fc bfc" id="L307" title="All 2 branches covered.">        return getPrecision().gt(pt.getVector().dot(cross), 0) ?</span>
+<span class="fc" id="L308">                theta :</span>
+<span class="fc" id="L309">                -theta;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Point1S toSubspace(final Point2S point) {
+<span class="fc" id="L315">        return Point1S.of(azimuth(point.getVector()));</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Point2S toSpace(final Point1S point) {
+<span class="fc" id="L321">        return Point2S.from(vectorAt(point.getAzimuth()));</span>
+    }
+
+    /** Return true if this instance should be considered equivalent to the argument, using the
+     * given precision context for comparison. Instances are considered equivalent if have equivalent
+     * {@code pole}, {@code u}, and {@code v} vectors.
+     * @param other great circle to compare with
+     * @param precision precision context to use for the comparison
+     * @return true if this instance should be considered equivalent to the argument
+     * @see Vector3D#eq(Vector3D, Precision.DoubleEquivalence)
+     */
+    public boolean eq(final GreatCircle other, final Precision.DoubleEquivalence precision) {
+<span class="fc bfc" id="L333" title="All 2 branches covered.">        return pole.eq(other.pole, precision) &amp;&amp;</span>
+<span class="fc bfc" id="L334" title="All 2 branches covered.">                u.eq(other.u, precision) &amp;&amp;</span>
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">                v.eq(other.v, precision);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L341">        return Objects.hash(pole, u, v, getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L347" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L348">            return true;</span>
+<span class="fc bfc" id="L349" title="All 2 branches covered.">        } else if (!(obj instanceof GreatCircle)) {</span>
+<span class="fc" id="L350">            return false;</span>
+        }
+
+<span class="fc" id="L353">        final GreatCircle other = (GreatCircle) obj;</span>
+
+<span class="fc bfc" id="L355" title="All 2 branches covered.">        return Objects.equals(this.pole, other.pole) &amp;&amp;</span>
+<span class="fc bfc" id="L356" title="All 2 branches covered.">                Objects.equals(this.u, other.u) &amp;&amp;</span>
+<span class="pc bpc" id="L357" title="1 of 2 branches missed.">                Objects.equals(this.v, other.v) &amp;&amp;</span>
+<span class="fc bfc" id="L358" title="All 2 branches covered.">                Objects.equals(this.getPrecision(), other.getPrecision());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L364">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L365">        sb.append(getClass().getSimpleName())</span>
+<span class="fc" id="L366">            .append(&quot;[pole= &quot;)</span>
+<span class="fc" id="L367">            .append(pole)</span>
+<span class="fc" id="L368">            .append(&quot;, u= &quot;)</span>
+<span class="fc" id="L369">            .append(u)</span>
+<span class="fc" id="L370">            .append(&quot;, v= &quot;)</span>
+<span class="fc" id="L371">            .append(v)</span>
+<span class="fc" id="L372">            .append(']');</span>
+
+<span class="fc" id="L374">        return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

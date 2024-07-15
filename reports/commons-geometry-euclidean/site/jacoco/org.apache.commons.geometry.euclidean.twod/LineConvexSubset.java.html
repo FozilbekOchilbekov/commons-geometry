@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LineConvexSubset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.twod</a> &gt; <span class="el_source">LineConvexSubset.java</span></div><h1>LineConvexSubset.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.twod;
+
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.Hyperplane;
+import org.apache.commons.geometry.core.partitioning.HyperplaneConvexSubset;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.geometry.euclidean.oned.Interval;
+
+/** Class representing a convex subset of a line in 2D Euclidean space. Instances
+ * need not be finite, in which case the start or end point (or both) will be null.
+ * Line segments and rays are examples of convex line subsets.
+ * @see Lines
+ */
+public abstract class LineConvexSubset extends LineSubset implements HyperplaneConvexSubset&lt;Vector2D&gt; {
+
+    /** Construct a new instance for the given line.
+     * @param line line containing this line subset
+     */
+    LineConvexSubset(final Line line) {
+<span class="fc" id="L40">        super(line);</span>
+<span class="fc" id="L41">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;LineConvexSubset&gt; toConvex() {
+<span class="fc" id="L46">        return Collections.singletonList(this);</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;This method always returns {@code false}.&lt;/p&gt;
+     */
+    @Override
+    public boolean isEmpty() {
+<span class="fc" id="L55">        return false;</span>
+    }
+
+    /** Get the start point for the subset.
+     * @return the start point for the subset, or null if no start point exists
+     */
+    public abstract Vector2D getStartPoint();
+
+    /** Get the 1D start location of the subset or {@link Double#NEGATIVE_INFINITY} if
+     * no start location exists.
+     * @return the 1D start location of the subset or {@link Double#NEGATIVE_INFINITY} if
+     *      no start location exists.
+     */
+    public abstract double getSubspaceStart();
+
+    /** Get the end point for the subset.
+     * @return the end point for the subset, or null if no end point exists.
+     */
+    public abstract Vector2D getEndPoint();
+
+    /** Get the 1D end location of the subset or {@link Double#POSITIVE_INFINITY} if
+     * no end location exists.
+     * @return the 1D end location of the subset or {@link Double#POSITIVE_INFINITY} if
+     *      no end location exists
+     */
+    public abstract double getSubspaceEnd();
+
+    /** {@inheritDoc} */
+    @Override
+    public Interval getSubspaceRegion() {
+<span class="fc" id="L85">        final double start = getSubspaceStart();</span>
+<span class="fc" id="L86">        final double end = getSubspaceEnd();</span>
+
+<span class="fc" id="L88">        return Interval.of(start, end, getPrecision());</span>
+    }
+
+    /** Get the 1D interval for the region. This method is an alias for {@link #getSubspaceRegion()}.
+     * @return the 1D interval for the region.
+     */
+    public Interval getInterval() {
+<span class="fc" id="L95">        return getSubspaceRegion();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Split&lt;LineConvexSubset&gt; split(final Hyperplane&lt;Vector2D&gt; splitter) {
+<span class="fc" id="L101">        final Line thisLine = getLine();</span>
+<span class="fc" id="L102">        final Line splitterLine = (Line) splitter;</span>
+
+<span class="fc" id="L104">        final Vector2D intersection = splitterLine.intersection(thisLine);</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (intersection == null) {</span>
+<span class="fc" id="L106">            return getNonIntersectingSplitResult(splitterLine, this);</span>
+        }
+<span class="fc" id="L108">        return splitOnIntersection(splitterLine, intersection);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector2D closest(final Vector2D pt) {
+<span class="fc" id="L114">        final Line line = getLine();</span>
+<span class="fc" id="L115">        final double abscissa = line.abscissa(pt);</span>
+
+<span class="fc" id="L117">        return line.toSpace(closestAbscissa(abscissa));</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionLocation classifyAbscissa(final double abscissa) {
+<span class="fc" id="L123">        return RegionLocation.INSIDE;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public abstract LineConvexSubset transform(Transform&lt;Vector2D&gt; transform);
+
+    /** {@inheritDoc} */
+    @Override
+    public abstract LineConvexSubset reverse();
+
+    /** Get the closest value in the subspace region to the given abscissa.
+     * @param abscissa input abscissa
+     * @return the closest value in the subspace region to the given abscissa
+     */
+    abstract double closestAbscissa(double abscissa);
+
+    /** Split this instance using the given splitter line and intersection point.
+     * @param splitter splitter line
+     * @param intersection intersection point between the splitter line and the line
+     *      for this instance
+     * @return the result of splitting this instance with the given splitter line and intersection
+     *      point
+     */
+    abstract Split&lt;LineConvexSubset&gt; splitOnIntersection(Line splitter, Vector2D intersection);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

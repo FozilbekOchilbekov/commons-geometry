@@ -1,0 +1,11 @@
+org\apache\commons\geometry\enclosing\SupportBallGenerator.class
+org\apache\commons\geometry\enclosing\WelzlEncloser.class
+org\apache\commons\geometry\enclosing\euclidean\twod\DiskGenerator.class
+org\apache\commons\geometry\enclosing\EnclosingBall.class
+org\apache\commons\geometry\enclosing\euclidean\twod\package-info.class
+org\apache\commons\geometry\enclosing\euclidean\threed\package-info.class
+org\apache\commons\geometry\enclosing\euclidean\threed\SphereGenerator.class
+org\apache\commons\geometry\enclosing\euclidean\threed\WelzlEncloser3D.class
+org\apache\commons\geometry\enclosing\Encloser.class
+org\apache\commons\geometry\enclosing\package-info.class
+org\apache\commons\geometry\enclosing\euclidean\twod\WelzlEncloser2D.class

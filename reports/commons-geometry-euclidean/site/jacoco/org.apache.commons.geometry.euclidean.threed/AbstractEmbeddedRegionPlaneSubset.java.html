@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractEmbeddedRegionPlaneSubset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed</a> &gt; <span class="el_source">AbstractEmbeddedRegionPlaneSubset.java</span></div><h1>AbstractEmbeddedRegionPlaneSubset.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed;
+
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.core.internal.HyperplaneSubsets;
+import org.apache.commons.geometry.euclidean.twod.BoundarySource2D;
+import org.apache.commons.geometry.euclidean.twod.Bounds2D;
+import org.apache.commons.geometry.euclidean.twod.Vector2D;
+
+/** Base class for {@link PlaneSubset} implementations that use an embedded subspace region
+ * to define their plane subsets.
+ */
+abstract class AbstractEmbeddedRegionPlaneSubset extends AbstractPlaneSubset implements PlaneSubset.Embedded {
+
+    /** The plane containing the embedded region. */
+    private final EmbeddingPlane plane;
+
+    /** Construct a new instance in the given plane.
+     * @param plane plane containing the subset
+     */
+<span class="fc" id="L36">    AbstractEmbeddedRegionPlaneSubset(final EmbeddingPlane plane) {</span>
+<span class="fc" id="L37">        this.plane = plane;</span>
+<span class="fc" id="L38">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public EmbeddingPlane getPlane() {
+<span class="fc" id="L43">        return plane;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EmbeddingPlane getHyperplane() {
+<span class="fc" id="L49">        return getPlane();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isFull() {
+<span class="fc" id="L55">        return getSubspaceRegion().isFull();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isEmpty() {
+<span class="fc" id="L61">        return getSubspaceRegion().isEmpty();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getSize() {
+<span class="fc" id="L67">        return getSubspaceRegion().getSize();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D getCentroid() {
+<span class="fc" id="L73">        final Vector2D subspaceCentroid = getSubspaceRegion().getCentroid();</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (subspaceCentroid != null) {</span>
+<span class="fc" id="L75">            return getPlane().toSpace(subspaceCentroid);</span>
+        }
+<span class="fc" id="L77">        return null;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D toSpace(final Vector2D pt) {
+<span class="fc" id="L83">        return plane.toSpace(pt);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector2D toSubspace(final Vector3D pt) {
+<span class="fc" id="L89">        return plane.toSubspace(pt);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionLocation classify(final Vector3D pt) {
+<span class="fc" id="L95">        return HyperplaneSubsets.classifyAgainstEmbeddedRegion(pt, plane, getSubspaceRegion());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D closest(final Vector3D pt) {
+<span class="fc" id="L101">        return HyperplaneSubsets.closestToEmbeddedRegion(pt, plane, getSubspaceRegion());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L107">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L108">        sb.append(getClass().getSimpleName())</span>
+<span class="fc" id="L109">            .append(&quot;[plane= &quot;)</span>
+<span class="fc" id="L110">            .append(getPlane())</span>
+<span class="fc" id="L111">            .append(&quot;, subspaceRegion= &quot;)</span>
+<span class="fc" id="L112">            .append(getSubspaceRegion())</span>
+<span class="fc" id="L113">            .append(']');</span>
+
+<span class="fc" id="L115">        return sb.toString();</span>
+    }
+
+    /** Compute 3D bounds from a subspace boundary source.
+     * @param src subspace boundary source
+     * @return 3D bounds from the given embedded subspace boundary source or null
+     *      if no valid bounds could be determined
+     */
+    protected Bounds3D getBoundsFromSubspace(final BoundarySource2D src) {
+<span class="fc" id="L124">        final Bounds2D subspaceBounds = src.getBounds();</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        if (subspaceBounds != null) {</span>
+<span class="fc" id="L126">            final Vector3D min = plane.toSpace(subspaceBounds.getMin());</span>
+<span class="fc" id="L127">            final Vector3D max = plane.toSpace(subspaceBounds.getMax());</span>
+
+<span class="fc" id="L129">            return Bounds3D.builder()</span>
+<span class="fc" id="L130">                    .add(min)</span>
+<span class="fc" id="L131">                    .add(max)</span>
+<span class="fc" id="L132">                    .build();</span>
+        }
+
+<span class="fc" id="L135">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

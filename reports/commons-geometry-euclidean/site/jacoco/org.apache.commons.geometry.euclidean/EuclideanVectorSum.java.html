@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EuclideanVectorSum.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean</a> &gt; <span class="el_source">EuclideanVectorSum.java</span></div><h1>EuclideanVectorSum.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+/** Class representing a sum of Euclidean vectors.
+ * @param &lt;V&gt; Vector implementation type
+ */
+<span class="fc" id="L25">public abstract class EuclideanVectorSum&lt;V extends EuclideanVector&lt;V&gt;&gt;</span>
+    implements Supplier&lt;V&gt;, Consumer&lt;V&gt; {
+
+    /** Add a vector to this instance. This method is an alias for {@link #add(EuclideanVector)}.
+     * @param vec vector to add
+     */
+    @Override
+    public void accept(final V vec) {
+<span class="fc" id="L33">        add(vec);</span>
+<span class="fc" id="L34">    }</span>
+
+    /** Add a vector to this instance.
+     * @param vec vector to add
+     * @return this instance
+     */
+    public abstract EuclideanVectorSum&lt;V&gt; add(V vec);
+
+    /** Add a scaled vector to this instance. In general, the result produced by this method
+     * will be more accurate than if the vector was scaled first and then added directly. In other
+     * words, {@code sum.addScale(scale, vec)} will generally produce a better result than
+     * {@code sum.add(vec.multiply(scale))}.
+     * @param scale scale factor
+     * @param vec vector to scale and add
+     * @return this instance
+     */
+    public abstract EuclideanVectorSum&lt;V&gt; addScaled(double scale, V vec);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

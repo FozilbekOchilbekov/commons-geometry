@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WelzlEncloser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Enclosing</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.enclosing</a> &gt; <span class="el_source">WelzlEncloser.java</span></div><h1>WelzlEncloser.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.enclosing;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.geometry.core.Point;
+import org.apache.commons.geometry.core.internal.GeometryInternalError;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class implementing Emo Welzl's algorithm to find the smallest enclosing ball in linear time.
+ * &lt;p&gt;
+ * The class implements the algorithm described in paper &lt;a
+ * href=&quot;http://www.inf.ethz.ch/personal/emo/PublFiles/SmallEnclDisk_LNCS555_91.pdf&quot;&gt;Smallest
+ * Enclosing Disks (Balls and Ellipsoids)&lt;/a&gt; by Emo Welzl, Lecture Notes in Computer Science
+ * 555 (1991) 359-370. The pivoting improvement published in the paper &lt;a
+ * href=&quot;http://www.inf.ethz.ch/personal/gaertner/texts/own_work/esa99_final.pdf&quot;&gt;Fast and
+ * Robust Smallest Enclosing Balls&lt;/a&gt;, by Bernd Gärtner and further modified in
+ * paper &lt;a
+ * href=&quot;http://www.idt.mdh.se/kurser/ct3340/ht12/MINICONFERENCE/FinalPapers/ircse12_submission_30.pdf&quot;&gt;
+ * Efficient Computation of Smallest Enclosing Balls in Three Dimensions&lt;/a&gt; by Linus Källberg
+ * to avoid performing local copies of data have been included.
+ * &lt;/p&gt;
+ * @param &lt;P&gt; Point type.
+ */
+public class WelzlEncloser&lt;P extends Point&lt;P&gt;&gt; implements Encloser&lt;P&gt; {
+
+    /** Precision context used to compare floating point numbers. */
+    private final Precision.DoubleEquivalence precision;
+
+    /** Object used to generate balls from support points. */
+    private final SupportBallGenerator&lt;P&gt; generator;
+
+    /** Simple constructor.
+     * @param generator generator for balls on support
+     * @param precision precision context used to compare floating point values
+     */
+<span class="fc" id="L53">    public WelzlEncloser(final SupportBallGenerator&lt;P&gt; generator, final Precision.DoubleEquivalence precision) {</span>
+<span class="fc" id="L54">        this.generator = generator;</span>
+<span class="fc" id="L55">        this.precision = precision;</span>
+<span class="fc" id="L56">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public EnclosingBall&lt;P&gt; enclose(final Iterable&lt;P&gt; points) {
+
+<span class="fc bfc" id="L62" title="All 4 branches covered.">        if (points == null || !points.iterator().hasNext()) {</span>
+<span class="fc" id="L63">            throw new IllegalArgumentException(&quot;Unable to generate enclosing ball: no points given&quot;);</span>
+        }
+
+        // Emo Welzl algorithm with Bernd Gärtner and Linus Källberg improvements
+<span class="fc" id="L67">        return pivotingBall(points);</span>
+    }
+
+    /** Compute enclosing ball using Gärtner's pivoting heuristic.
+     * @param points points to be enclosed
+     * @return enclosing ball
+     */
+    private EnclosingBall&lt;P&gt; pivotingBall(final Iterable&lt;P&gt; points) {
+
+<span class="fc" id="L76">        final P first = points.iterator().next();</span>
+<span class="fc" id="L77">        final List&lt;P&gt; extreme = new ArrayList&lt;&gt;(first.getDimension() + 1);</span>
+<span class="fc" id="L78">        final List&lt;P&gt; support = new ArrayList&lt;&gt;(first.getDimension() + 1);</span>
+
+        // start with only first point selected as a candidate support
+<span class="fc" id="L81">        extreme.add(first);</span>
+<span class="fc" id="L82">        EnclosingBall&lt;P&gt; ball = moveToFrontBall(extreme, extreme.size(), support);</span>
+
+        while (true) {
+
+            // select the point farthest to current ball
+<span class="fc" id="L87">            final P farthest = selectFarthest(points, ball);</span>
+
+<span class="fc bfc" id="L89" title="All 2 branches covered.">            if (ball.contains(farthest, precision)) {</span>
+                // we have found a ball containing all points
+<span class="fc" id="L91">                return ball;</span>
+            }
+
+            // recurse search, restricted to the small subset containing support and farthest point
+<span class="fc" id="L95">            support.clear();</span>
+<span class="fc" id="L96">            support.add(farthest);</span>
+<span class="fc" id="L97">            final EnclosingBall&lt;P&gt; savedBall = ball;</span>
+<span class="fc" id="L98">            ball = moveToFrontBall(extreme, extreme.size(), support);</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">            if (precision.lt(ball.getRadius(), savedBall.getRadius())) {</span>
+                // this should never happen
+<span class="nc" id="L101">                throw new GeometryInternalError();</span>
+            }
+
+            // it was an interesting point, move it to the front
+            // according to Gärtner's heuristic
+<span class="fc" id="L106">            extreme.add(0, farthest);</span>
+
+            // prune the least interesting points
+<span class="fc" id="L109">            extreme.subList(ball.getSupportSize(), extreme.size()).clear();</span>
+<span class="fc" id="L110">        }</span>
+    }
+
+    /** Compute enclosing ball using Welzl's move to front heuristic.
+     * @param extreme subset of extreme points
+     * @param nbExtreme number of extreme points to consider
+     * @param support points that must belong to the ball support
+     * @return enclosing ball, for the extreme subset only
+     */
+    private EnclosingBall&lt;P&gt; moveToFrontBall(final List&lt;P&gt; extreme, final int nbExtreme,
+                                                final List&lt;P&gt; support) {
+        // create a new ball on the prescribed support
+<span class="fc" id="L122">        EnclosingBall&lt;P&gt; ball = generator.ballOnSupport(support);</span>
+
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if (ball.getSupportSize() &lt;= ball.getCenter().getDimension()) {</span>
+
+<span class="fc bfc" id="L126" title="All 2 branches covered.">            for (int i = 0; i &lt; nbExtreme; ++i) {</span>
+<span class="fc" id="L127">                final P pi = extreme.get(i);</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">                if (!ball.contains(pi, precision)) {</span>
+
+                    // we have found an outside point,
+                    // enlarge the ball by adding it to the support
+<span class="fc" id="L132">                    support.add(pi);</span>
+<span class="fc" id="L133">                    ball = moveToFrontBall(extreme, i, support);</span>
+<span class="fc" id="L134">                    support.remove(support.size() - 1);</span>
+
+                    // it was an interesting point, move it to the front
+                    // according to Welzl's heuristic
+<span class="fc bfc" id="L138" title="All 2 branches covered.">                    for (int j = i; j &gt; 0; --j) {</span>
+<span class="fc" id="L139">                        extreme.set(j, extreme.get(j - 1));</span>
+                    }
+<span class="fc" id="L141">                    extreme.set(0, pi);</span>
+                }
+            }
+        }
+
+<span class="fc" id="L146">        return ball;</span>
+    }
+
+    /** Select the point farthest to the current ball.
+     * @param points points to be enclosed
+     * @param ball current ball
+     * @return farthest point
+     */
+    private P selectFarthest(final Iterable&lt;P&gt; points, final EnclosingBall&lt;P&gt; ball) {
+
+<span class="fc" id="L156">        final P center = ball.getCenter();</span>
+<span class="fc" id="L157">        P farthest   = null;</span>
+<span class="fc" id="L158">        double dMax  = -1.0;</span>
+
+<span class="fc bfc" id="L160" title="All 2 branches covered.">        for (final P point : points) {</span>
+<span class="fc" id="L161">            final double d = point.distance(center);</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">            if (d &gt; dMax) {</span>
+<span class="fc" id="L163">                farthest = point;</span>
+<span class="fc" id="L164">                dMax     = d;</span>
+            }
+<span class="fc" id="L166">        }</span>
+
+<span class="fc" id="L168">        return farthest;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

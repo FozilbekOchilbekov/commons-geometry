@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimpleTriangle3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed</a> &gt; <span class="el_source">SimpleTriangle3D.java</span></div><h1>SimpleTriangle3D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.geometry.core.Transform;
+
+/** Simple implementation of {@link Triangle3D}.
+ *
+ * &lt;p&gt;Instances of this class are guaranteed to be immutable.&lt;/p&gt;
+ */
+final class SimpleTriangle3D extends AbstractConvexPolygon3D implements Triangle3D {
+
+    /** First point in the triangle. */
+    private final Vector3D p1;
+
+    /** Second point in the triangle. */
+    private final Vector3D p2;
+
+    /** Third point in the triangle. */
+    private final Vector3D p3;
+
+    /** Construct a new instance from a plane and 3 points. Callers are responsible for ensuring that
+     * the points lie on the plane and define a triangle. No validation is performed.
+     * @param plane the plane containing the triangle
+     * @param p1 first point in the triangle
+     * @param p2 second point in the triangle
+     * @param p3 third point in the triangle
+     */
+    SimpleTriangle3D(final Plane plane, final Vector3D p1, final Vector3D p2, final Vector3D p3) {
+<span class="fc" id="L47">        super(plane);</span>
+
+<span class="fc" id="L49">        this.p1 = p1;</span>
+<span class="fc" id="L50">        this.p2 = p2;</span>
+<span class="fc" id="L51">        this.p3 = p3;</span>
+<span class="fc" id="L52">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D getPoint1() {
+<span class="fc" id="L57">        return p1;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D getPoint2() {
+<span class="fc" id="L63">        return p2;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D getPoint3() {
+<span class="fc" id="L69">        return p3;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;Vector3D&gt; getVertices() {
+<span class="fc" id="L75">        return Arrays.asList(p1, p2, p3);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getSize() {
+<span class="fc" id="L81">        final Vector3D v1 = p1.vectorTo(p2);</span>
+<span class="fc" id="L82">        final Vector3D v2 = p1.vectorTo(p3);</span>
+<span class="fc" id="L83">        return 0.5 * v1.cross(v2).norm();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D getCentroid() {
+<span class="fc" id="L89">        return Vector3D.centroid(p1, p2, p3);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SimpleTriangle3D reverse() {
+<span class="fc" id="L95">        final Plane rPlane = getPlane().reverse();</span>
+
+<span class="fc" id="L97">        return new SimpleTriangle3D(rPlane, p1, p3, p2); // reverse point ordering</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SimpleTriangle3D transform(final Transform&lt;Vector3D&gt; transform) {
+<span class="fc" id="L103">        final Plane tPlane = getPlane().transform(transform);</span>
+<span class="fc" id="L104">        final Vector3D t1 = transform.apply(p1);</span>
+<span class="fc" id="L105">        final Vector3D t2 = transform.apply(p2);</span>
+<span class="fc" id="L106">        final Vector3D t3 = transform.apply(p3);</span>
+
+<span class="fc" id="L108">        return new SimpleTriangle3D(tPlane, t1, t2, t3);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

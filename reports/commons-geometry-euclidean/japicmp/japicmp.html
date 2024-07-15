@@ -1,0 +1,2559 @@
+<html>
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Comparing source compatibility of commons-geometry-euclidean-1.1-SNAPSHOT.jar against commons-geometry-euclidean-1.0.jar</title>
+        <style type="text/css">
+body {
+    font-family: Verdana;
+}
+.title {
+    font-weight: bold;
+}
+.new {
+    color: green;
+}
+.removed {
+    color: red;
+}
+.modified {
+    color: orange;
+}
+.unchanged {
+    color: black;
+}
+thead tr td {
+    font-weight: bold;
+}
+.toc {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border: 1px solid #dcdcdc;
+    padding: 5px;
+    background: #ededed;
+    display: inline-block;
+}
+table {
+    border-collapse: collapse;
+}
+table tr td {
+    border: 1px solid black;
+    padding: 5px;
+}
+table thead {
+    background-color: #dee3e9;
+}
+table tbody tr td.matrix_layout {
+    background-color: #dee3e9;
+    font-weight: bold;
+}
+.class {
+    margin-bottom: 2em;
+    border: 1px solid #dcdcdc;
+    padding: 5px;
+    background: #ededed;
+    display: inline-block;
+}
+.class_compatibilityChanges {
+	margin-top: 1em;
+}
+
+.class_fileFormatVersion {
+	margin-top: 1em;
+}
+.class_generictemplates {
+	margin-top: 1em;
+}
+.class_superclass {
+    margin-top: 1em;
+}
+.class_interfaces {
+    margin-top: 1em;
+}
+.class_fields {
+    margin-top: 1em;
+}
+.class_serialVersionUid {
+    margin-top: 1em;
+}
+.class_constructors {
+    margin-top: 1em;
+}
+.class_methods {
+    margin-top: 1em;
+}
+.class_annotations {
+    margin-top: 1em;
+}
+.label {
+    font-weight: bold;
+}
+.label_class_member {
+    background-color: #4d7a97;
+    display: inline-block;
+    padding: 5px;
+}
+.toc_link {
+    margin-left: 10px;
+    font-size: 0.5em;
+}
+.modifier {
+    font-style: italic;
+}
+.method_return_type {
+
+}
+.method_parameter {
+
+}
+ul {
+    list-style-type: none;
+    padding: 0px 0px;
+}
+.meta-information {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    background: #ededed;
+    display: inline-block;
+}
+.warnings {
+    margin-top: 1em;
+    font-size: 0.75em;
+}
+.explanations {
+	margin-bottom: 2em;
+}
+.table_head_td {
+	background-color: #dee3e9;
+	font-weight: bold;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+</style>
+    </head>
+    <body>
+        <span class="title">Comparing source compatibility of commons-geometry-euclidean-1.1-SNAPSHOT.jar against commons-geometry-euclidean-1.0.jar</span>
+        <br>
+        <div class="meta-information">
+            <table>
+                <tr>
+                    <td>Old:</td><td>commons-geometry-euclidean-1.0.jar</td>
+                </tr>
+                <tr>
+                    <td>New:</td><td>commons-geometry-euclidean-1.1-SNAPSHOT.jar</td>
+                </tr>
+                <tr>
+                    <td>Created:</td><td>2024-07-13T15:25:28.107+0200</td>
+                </tr>
+                <tr>
+                    <td>Access modifier filter:</td><td>PROTECTED</td>
+                </tr>
+                <tr>
+                    <td>Only modifications:</td><td>true</td>
+                </tr>
+                <tr>
+                    <td>Only binary incompatible modifications:</td><td>false</td>
+                </tr>
+                <tr>
+                    <td>Ignore missing classes:</td><td>false</td>
+                </tr>
+                <tr>
+                    <td>Includes:</td><td>all</td>
+                </tr>
+                <tr>
+                    <td>Excludes:</td><td>n.a.</td>
+                </tr>
+                <tr>
+                    <td id="semver-label">Semantic Versioning:</td><td id="semver-version">0.1.0</td>
+                </tr>
+            </table>
+        </div>
+        <ul>
+            <li>
+                <a href="#toc">Classes</a>
+            </li>
+        </ul>
+            
+        <div class="toc" id="toc">
+            <span class="label">Classes:</span>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Status</td><td>Fully Qualified Name</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="new">NEW</span></td><td><a href="#org.apache.commons.geometry.euclidean.AbstractBounds$BoundsLinecaster">org.apache.commons.geometry.euclidean.AbstractBounds$BoundsLinecaster</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="new">NEW&nbsp;(*)</span></td><td><a href="#org.apache.commons.geometry.euclidean.EuclideanCollections">org.apache.commons.geometry.euclidean.EuclideanCollections</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="modified">MODIFIED</span></td><td><a href="#org.apache.commons.geometry.euclidean.threed.Bounds3D">org.apache.commons.geometry.euclidean.threed.Bounds3D</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="modified">MODIFIED</span></td><td><a href="#org.apache.commons.geometry.euclidean.threed.line.EmbeddedTreeLineSubset3D">org.apache.commons.geometry.euclidean.threed.line.EmbeddedTreeLineSubset3D</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="unchanged">UNCHANGED&nbsp;(*)</span></td><td><a href="#org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D">org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="modified">MODIFIED&nbsp;(*)</span></td><td><a href="#org.apache.commons.geometry.euclidean.threed.line.LineSubset3D">org.apache.commons.geometry.euclidean.threed.line.LineSubset3D</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="modified">MODIFIED</span></td><td><a href="#org.apache.commons.geometry.euclidean.threed.line.Ray3D">org.apache.commons.geometry.euclidean.threed.line.Ray3D</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="modified">MODIFIED</span></td><td><a href="#org.apache.commons.geometry.euclidean.threed.line.ReverseRay3D">org.apache.commons.geometry.euclidean.threed.line.ReverseRay3D</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="modified">MODIFIED</span></td><td><a href="#org.apache.commons.geometry.euclidean.threed.line.Segment3D">org.apache.commons.geometry.euclidean.threed.line.Segment3D</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="modified">MODIFIED</span></td><td><a href="#org.apache.commons.geometry.euclidean.twod.Bounds2D">org.apache.commons.geometry.euclidean.twod.Bounds2D</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="modified">MODIFIED</span></td><td><a href="#org.apache.commons.geometry.euclidean.twod.EmbeddedTreeLineSubset">org.apache.commons.geometry.euclidean.twod.EmbeddedTreeLineSubset</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="new">NEW</span></td><td><a href="#org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D">org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="new">NEW</span></td><td><a href="#org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D$Builder">org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D$Builder</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="modified">MODIFIED</span></td><td><a href="#org.apache.commons.geometry.euclidean.twod.LineConvexSubset">org.apache.commons.geometry.euclidean.twod.LineConvexSubset</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="modified">MODIFIED</span></td><td><a href="#org.apache.commons.geometry.euclidean.twod.LineSubset">org.apache.commons.geometry.euclidean.twod.LineSubset</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="modified">MODIFIED</span></td><td><a href="#org.apache.commons.geometry.euclidean.twod.Ray">org.apache.commons.geometry.euclidean.twod.Ray</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="modified">MODIFIED</span></td><td><a href="#org.apache.commons.geometry.euclidean.twod.ReverseRay">org.apache.commons.geometry.euclidean.twod.ReverseRay</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="modified">MODIFIED</span></td><td><a href="#org.apache.commons.geometry.euclidean.twod.Segment">org.apache.commons.geometry.euclidean.twod.Segment</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="explanations">
+            <span>Binary incompatible changes are marked with (!) while source incompatible changes are marked with (*).</span>
+        </div>
+        <div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.AbstractBounds$BoundsLinecaster">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.AbstractBounds$BoundsLinecaster"></a><span class="new">NEW</span><span class="">&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">protected&nbsp;</span><span class="new modifier">abstract&nbsp;</span><span class="new modifier"></span><span class="new">class</span>&nbsp;org.apache.commons.geometry.euclidean.AbstractBounds$BoundsLinecaster</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates">
+                        <span class="label_class_member">Generic Templates:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Change Status</td><td>Name</td><td>Old Type</td><td>New Type</td><td>Generics</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td>I</td><td>n.a.</td><td>java.lang.Object</td><td></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td>S</td><td>n.a.</td><td>java.lang.Object</td><td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors">
+                        <span class="label_class_member">Constructors:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Constructor</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">protected&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td>AbstractBounds$BoundsLinecaster(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.AbstractBounds</span>,
+                                        <wbr></wbr>
+                                        <span class="unchanged method_parameter">org.apache.commons.numbers.core.Precision$DoubleEquivalence</span>)</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>189</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">protected&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">void</span></td><td>addBoundaryIntersectionIfPresent(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.EuclideanVector</span>,
+                                        <wbr></wbr>
+                                        <span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.EuclideanVector</span>,
+                                        <wbr></wbr>
+                                        <span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.EuclideanVector</span>,
+                                        <wbr></wbr>
+                                        <span class="unchanged method_parameter">java.util.function.ToDoubleFunction
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>P</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span>,
+                                        <wbr></wbr>
+                                        <span class="unchanged method_parameter">java.util.List
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>I</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span>)</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>272</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">protected&nbsp;</span><span class="new modifier">abstract&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">void</span></td><td>addBoundaryIntersections(<span class="unchanged method_parameter">double</span>,
+                                        <wbr></wbr>
+                                        <span class="unchanged method_parameter">java.util.List
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>I</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span>)</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>n.a.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">protected&nbsp;</span><span class="new modifier">abstract&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">boolean</span></td><td>computeNearFar()</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>n.a.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">protected&nbsp;</span><span class="new modifier">abstract&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">java.lang.Object</span></td><td>createBoundaryIntersection(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.EuclideanVector</span>,
+                                        <wbr></wbr>
+                                        <span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.EuclideanVector</span>)</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>n.a.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">protected&nbsp;</span><span class="new modifier">abstract&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">java.lang.Object</span></td><td>createSegment(<span class="unchanged method_parameter">double</span>,
+                                        <wbr></wbr>
+                                        <span class="unchanged method_parameter">double</span>)</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>n.a.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">protected&nbsp;</span><span class="new modifier">abstract&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">java.util.Comparator
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>I</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>getBoundaryIntersectionComparator()</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>n.a.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">java.util.List
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>I</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>getBoundaryIntersections()</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>225</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">java.lang.Object</span></td><td>getFirstBoundaryIntersection()</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>248</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">protected&nbsp;</span><span class="new modifier">abstract&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.euclidean.EuclideanVector</span></td><td>getLineDir()</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>n.a.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">protected&nbsp;</span><span class="new modifier">abstract&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.euclidean.EuclideanVector</span></td><td>getLineOrigin()</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>n.a.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">java.lang.Object</span></td><td>getRegionIntersection()</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>210</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">protected&nbsp;</span><span class="new modifier">abstract&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">double</span></td><td>getSubspaceEnd()</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>n.a.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">protected&nbsp;</span><span class="new modifier">abstract&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">double</span></td><td>getSubspaceStart()</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>n.a.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">boolean</span></td><td>intersectsRegion()</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>199</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">protected&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">boolean</span></td><td>updateNearFar(<span class="unchanged method_parameter">java.util.function.ToDoubleFunction
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>P</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span>)</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>296</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.EuclideanCollections">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.EuclideanCollections"></a><span class="new">NEW&nbsp;(*)</span><span class="">&nbsp;</span><span class="new modifier">final&nbsp;</span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new">class</span>&nbsp;org.apache.commons.geometry.euclidean.EuclideanCollections</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW&nbsp;(*)</span></td><td><span class="new modifier"></span><span class="new modifier">static&nbsp;</span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change Status</td><td>Name</td><td>Old Type</td><td>New Type</td><td>Generics</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="new">NEW</span></td><td>V</td><td>n.a.</td><td>java.lang.Object</td><td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td><span class="new method_return_type">org.apache.commons.geometry.core.collection.PointMap
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>org.apache.commons.geometry.euclidean.oned.Vector1D</td><td>V</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>pointMap1D(<span class="unchanged method_parameter">org.apache.commons.numbers.core.Precision$DoubleEquivalence</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>CLASS_GENERIC_TEMPLATE_CHANGED</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>54</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW&nbsp;(*)</span></td><td><span class="new modifier"></span><span class="new modifier">static&nbsp;</span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change Status</td><td>Name</td><td>Old Type</td><td>New Type</td><td>Generics</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="new">NEW</span></td><td>V</td><td>n.a.</td><td>java.lang.Object</td><td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td><span class="new method_return_type">org.apache.commons.geometry.core.collection.PointMap
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>org.apache.commons.geometry.euclidean.twod.Vector2D</td><td>V</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>pointMap2D(<span class="unchanged method_parameter">org.apache.commons.numbers.core.Precision$DoubleEquivalence</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>CLASS_GENERIC_TEMPLATE_CHANGED</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>77</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW&nbsp;(*)</span></td><td><span class="new modifier"></span><span class="new modifier">static&nbsp;</span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change Status</td><td>Name</td><td>Old Type</td><td>New Type</td><td>Generics</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="new">NEW</span></td><td>V</td><td>n.a.</td><td>java.lang.Object</td><td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td><span class="new method_return_type">org.apache.commons.geometry.core.collection.PointMap
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>org.apache.commons.geometry.euclidean.threed.Vector3D</td><td>V</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>pointMap3D(<span class="unchanged method_parameter">org.apache.commons.numbers.core.Precision$DoubleEquivalence</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>CLASS_GENERIC_TEMPLATE_CHANGED</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>100</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier">static&nbsp;</span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.core.collection.PointSet
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>org.apache.commons.geometry.euclidean.oned.Vector1D</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>pointSet1D(<span class="unchanged method_parameter">org.apache.commons.numbers.core.Precision$DoubleEquivalence</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>42</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier">static&nbsp;</span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.core.collection.PointSet
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>org.apache.commons.geometry.euclidean.twod.Vector2D</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>pointSet2D(<span class="unchanged method_parameter">org.apache.commons.numbers.core.Precision$DoubleEquivalence</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>65</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier">static&nbsp;</span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.core.collection.PointSet
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>org.apache.commons.geometry.euclidean.threed.Vector3D</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>pointSet3D(<span class="unchanged method_parameter">org.apache.commons.numbers.core.Precision$DoubleEquivalence</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>88</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.threed.Bounds3D">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.threed.Bounds3D"></a><span class="modified">MODIFIED</span><span class="">&nbsp;</span><span class="unchanged modifier">final&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.euclidean.threed.Bounds3D</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_compatibilityChanges">
+                        <span class="label_class_member">Compatibility Changes:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Change</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INTERFACE_ADDED</td>
+                                </tr>
+                                <tr>
+                                    <td>METHOD_DEFAULT_ADDED_IN_IMPLEMENTED_INTERFACE</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces">
+                        <span class="label_class_member">Interfaces:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Interface</td><td>Compatibility Changes</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td>org.apache.commons.geometry.euclidean.threed.line.Linecastable3D</td><td>n.a.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.euclidean.threed.line.Segment3D</span></td><td>intersection(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.threed.line.Line3D</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>164</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.euclidean.threed.line.Segment3D</span></td><td>intersection(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>177</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">boolean</span></td><td>intersects(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.threed.line.Line3D</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>140</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">boolean</span></td><td>intersects(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>151</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">java.util.List
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>org.apache.commons.geometry.euclidean.threed.line.LinecastPoint3D</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>linecast(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>183</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.euclidean.threed.line.LinecastPoint3D</span></td><td>linecastFirst(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>189</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.threed.line.EmbeddedTreeLineSubset3D">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.threed.line.EmbeddedTreeLineSubset3D"></a><span class="modified">MODIFIED</span><span class="">&nbsp;</span><span class="unchanged modifier">final&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.euclidean.threed.line.EmbeddedTreeLineSubset3D</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.core.RegionLocation</span></td><td>classifyAbscissa(<span class="unchanged method_parameter">double</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>111</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D"></a><span class="unchanged">UNCHANGED&nbsp;(*)</span><span class="">&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier">abstract&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.euclidean.threed.line.LineConvexSubset3D</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_compatibilityChanges">
+                        <span class="label_class_member">Compatibility Changes:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Change</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>METHOD_ABSTRACT_ADDED_IN_SUPERCLASS</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods"></div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.threed.line.LineSubset3D">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.threed.line.LineSubset3D"></a><span class="modified">MODIFIED&nbsp;(*)</span><span class="">&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier">abstract&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.euclidean.threed.line.LineSubset3D</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW&nbsp;(*)</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier">abstract&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.core.RegionLocation</span></td><td>classifyAbscissa(<span class="unchanged method_parameter">double</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>METHOD_ABSTRACT_ADDED_TO_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>n.a.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.threed.line.Ray3D">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.threed.line.Ray3D"></a><span class="modified">MODIFIED</span><span class="">&nbsp;</span><span class="unchanged modifier">final&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.euclidean.threed.line.Ray3D</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.core.RegionLocation</span></td><td>classifyAbscissa(<span class="unchanged method_parameter">double</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>140</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.threed.line.ReverseRay3D">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.threed.line.ReverseRay3D"></a><span class="modified">MODIFIED</span><span class="">&nbsp;</span><span class="unchanged modifier">final&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.euclidean.threed.line.ReverseRay3D</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.core.RegionLocation</span></td><td>classifyAbscissa(<span class="unchanged method_parameter">double</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>134</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.threed.line.Segment3D">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.threed.line.Segment3D"></a><span class="modified">MODIFIED</span><span class="">&nbsp;</span><span class="unchanged modifier">final&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.euclidean.threed.line.Segment3D</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.core.RegionLocation</span></td><td>classifyAbscissa(<span class="unchanged method_parameter">double</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>129</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.twod.Bounds2D">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.twod.Bounds2D"></a><span class="modified">MODIFIED</span><span class="">&nbsp;</span><span class="unchanged modifier">final&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.euclidean.twod.Bounds2D</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_compatibilityChanges">
+                        <span class="label_class_member">Compatibility Changes:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Change</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INTERFACE_ADDED</td>
+                                </tr>
+                                <tr>
+                                    <td>METHOD_DEFAULT_ADDED_IN_IMPLEMENTED_INTERFACE</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces">
+                        <span class="label_class_member">Interfaces:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Interface</td><td>Compatibility Changes</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td>org.apache.commons.geometry.euclidean.twod.Linecastable2D</td><td>n.a.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.euclidean.twod.Segment</span></td><td>intersection(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.twod.Line</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>151</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.euclidean.twod.Segment</span></td><td>intersection(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.twod.LineConvexSubset</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>164</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">boolean</span></td><td>intersects(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.twod.Line</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>127</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">boolean</span></td><td>intersects(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.twod.LineConvexSubset</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>138</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">java.util.List
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>org.apache.commons.geometry.euclidean.twod.LinecastPoint2D</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>linecast(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.twod.LineConvexSubset</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>170</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.euclidean.twod.LinecastPoint2D</span></td><td>linecastFirst(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.twod.LineConvexSubset</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>176</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.twod.EmbeddedTreeLineSubset">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.twod.EmbeddedTreeLineSubset"></a><span class="modified">MODIFIED</span><span class="">&nbsp;</span><span class="unchanged modifier">final&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.euclidean.twod.EmbeddedTreeLineSubset</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="modified">MODIFIED</span></td><td><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="modified modifier">public
+						&nbsp;(&lt;-&nbsp;
+						package_protected
+						)&nbsp;
+					</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged modifier"></span></td><td>
+			n.a.
+		</td><td><span class="unchanged method_return_type">org.apache.commons.geometry.core.RegionLocation</span></td><td>classifyAbscissa(<span class="unchanged method_parameter">double</span>)</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>250</td><td>162</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D"></a><span class="new">NEW</span><span class="">&nbsp;</span><span class="new modifier">final&nbsp;</span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new">class</span>&nbsp;org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_compatibilityChanges">
+                        <span class="label_class_member">Compatibility Changes:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Change</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INTERFACE_ADDED</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces">
+                        <span class="label_class_member">Interfaces:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Interface</td><td>Compatibility Changes</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td>org.apache.commons.geometry.core.ConvexHull</td><td>n.a.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.euclidean.twod.path.LinePath</span></td><td>getPath()</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>72</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.euclidean.twod.ConvexArea</span></td><td>getRegion()</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>78</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">java.util.List
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>org.apache.commons.geometry.euclidean.twod.Vector2D</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span></td><td>getVertices()</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>59</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">java.lang.String</span></td><td>toString()</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>86</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D$Builder">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D$Builder"></a><span class="new">NEW</span><span class="">&nbsp;</span><span class="new modifier">final&nbsp;</span><span class="new modifier">static&nbsp;</span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new">class</span>&nbsp;org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D$Builder</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors">
+                        <span class="label_class_member">Constructors:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Constructor</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td>ConvexHull2D$Builder(<span class="unchanged method_parameter">boolean</span>,
+                                        <wbr></wbr>
+                                        <span class="unchanged method_parameter">org.apache.commons.numbers.core.Precision$DoubleEquivalence</span>)</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>165</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D$Builder</span></td><td>append(<span class="unchanged method_parameter">org.apache.commons.geometry.euclidean.twod.Vector2D</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>181</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D$Builder</span></td><td>append(<span class="unchanged method_parameter">java.util.Collection
+                                            <div class="tooltip">
+                                                <span class="unchanged method_parameter">
+					&lt;..&gt;
+				</span>
+                                                <div class="tooltiptext">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="table_head_td">New: </td><td>org.apache.commons.geometry.euclidean.twod.Vector2D</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>212</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.euclidean.twod.hull.ConvexHull2D</span></td><td>build()</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>225</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.twod.LineConvexSubset">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.twod.LineConvexSubset"></a><span class="modified">MODIFIED</span><span class="">&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier">abstract&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.euclidean.twod.LineConvexSubset</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="new">NEW</span></td><td><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier">public&nbsp;</span><span class="new modifier"></span><span class="new modifier"></span><span class="new modifier"></span></td><td>
+			n.a.
+		</td><td><span class="new method_return_type">org.apache.commons.geometry.core.RegionLocation</span></td><td>classifyAbscissa(<span class="unchanged method_parameter">double</span>)</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Change</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>METHOD_ADDED_TO_PUBLIC_CLASS</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>123</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.twod.LineSubset">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.twod.LineSubset"></a><span class="modified">MODIFIED</span><span class="">&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier">abstract&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.euclidean.twod.LineSubset</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="modified">MODIFIED</span></td><td><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="modified modifier">public
+						&nbsp;(&lt;-&nbsp;
+						package_protected
+						)&nbsp;
+					</span><span class="unchanged modifier">abstract&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span></td><td>
+			n.a.
+		</td><td><span class="unchanged method_return_type">org.apache.commons.geometry.core.RegionLocation</span></td><td>classifyAbscissa(<span class="unchanged method_parameter">double</span>)</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>n.a.</td><td>n.a.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.twod.Ray">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.twod.Ray"></a><span class="modified">MODIFIED</span><span class="">&nbsp;</span><span class="unchanged modifier">final&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.euclidean.twod.Ray</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="modified">MODIFIED</span></td><td><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="modified modifier">public
+						&nbsp;(&lt;-&nbsp;
+						package_protected
+						)&nbsp;
+					</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged modifier"></span></td><td>
+			n.a.
+		</td><td><span class="unchanged method_return_type">org.apache.commons.geometry.core.RegionLocation</span></td><td>classifyAbscissa(<span class="unchanged method_parameter">double</span>)</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>169</td><td>155</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.twod.ReverseRay">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.twod.ReverseRay"></a><span class="modified">MODIFIED</span><span class="">&nbsp;</span><span class="unchanged modifier">final&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.euclidean.twod.ReverseRay</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="modified">MODIFIED</span></td><td><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="modified modifier">public
+						&nbsp;(&lt;-&nbsp;
+						package_protected
+						)&nbsp;
+					</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged modifier"></span></td><td>
+			n.a.
+		</td><td><span class="unchanged method_return_type">org.apache.commons.geometry.core.RegionLocation</span></td><td>classifyAbscissa(<span class="unchanged method_parameter">double</span>)</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>164</td><td>150</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="class" id="org.apache.commons.geometry.euclidean.twod.Segment">
+                    <div class="class_header">
+                        <span class="label"><a name="org.apache.commons.geometry.euclidean.twod.Segment"></a><span class="modified">MODIFIED</span><span class="">&nbsp;</span><span class="unchanged modifier">final&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier">public&nbsp;</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged">class</span>&nbsp;org.apache.commons.geometry.euclidean.twod.Segment</span><a href="#toc" class="toc_link">top</a>
+                    </div>
+                    <div class="class_generictemplates"></div>
+                    <div class="class_superclass"></div>
+                    <div class="class_interfaces"></div>
+                    <div class="class_fields"></div>
+                    <div class="class_constructors"></div>
+                    <div class="class_methods">
+                        <span class="label_class_member">Methods:</span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Status</td><td>Modifier</td><td>Generic Templates</td><td>Type</td><td>Method</td><td>Exceptions</td><td>Compatibility Changes:</td><td>Line Number</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="modified">MODIFIED</span></td><td><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="modified modifier">public
+						&nbsp;(&lt;-&nbsp;
+						package_protected
+						)&nbsp;
+					</span><span class="unchanged modifier"></span><span class="unchanged modifier"></span><span class="unchanged modifier"></span></td><td>
+			n.a.
+		</td><td><span class="unchanged method_return_type">org.apache.commons.geometry.core.RegionLocation</span></td><td>classifyAbscissa(<span class="unchanged method_parameter">double</span>)</td><td>n.a.</td><td>n.a.</td><td>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>Old file</td><td>New file</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>159</td><td>145</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>

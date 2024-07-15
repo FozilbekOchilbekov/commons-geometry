@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GreatCircleSubset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Spherical</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.spherical.twod</a> &gt; <span class="el_source">GreatCircleSubset.java</span></div><h1>GreatCircleSubset.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.spherical.twod;
+
+import java.util.List;
+
+import org.apache.commons.geometry.core.RegionEmbedding;
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.core.internal.HyperplaneSubsets;
+import org.apache.commons.geometry.core.partitioning.HyperplaneBoundedRegion;
+import org.apache.commons.geometry.core.partitioning.HyperplaneSubset;
+import org.apache.commons.geometry.spherical.oned.Point1S;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing a subset of the points in a great circle.
+ * @see GreatCircles
+ */
+public abstract class GreatCircleSubset implements HyperplaneSubset&lt;Point2S&gt;, RegionEmbedding&lt;Point2S, Point1S&gt; {
+    /** The great circle defining this instance. */
+    private final GreatCircle circle;
+
+    /** Simple constructor.
+     * @param circle great circle defining this instance
+     */
+<span class="fc" id="L39">    GreatCircleSubset(final GreatCircle circle) {</span>
+<span class="fc" id="L40">        this.circle = circle;</span>
+<span class="fc" id="L41">    }</span>
+
+    /** Get the great circle defining this instance.
+     * @return the great circle defining this instance
+     * @see #getHyperplane()
+     */
+    public GreatCircle getCircle() {
+<span class="fc" id="L48">        return circle;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GreatCircle getHyperplane() {
+<span class="fc" id="L54">        return getCircle();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Point1S toSubspace(final Point2S pt) {
+<span class="fc" id="L60">        return circle.toSubspace(pt);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Point2S toSpace(final Point1S pt) {
+<span class="fc" id="L66">        return circle.toSpace(pt);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isFull() {
+<span class="fc" id="L72">        return getSubspaceRegion().isFull();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isEmpty() {
+<span class="fc" id="L78">        return getSubspaceRegion().isEmpty();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getSize() {
+<span class="fc" id="L84">        return getSubspaceRegion().getSize();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Point2S getCentroid() {
+<span class="fc" id="L90">        final Point1S subspaceCentroid = getSubspaceRegion().getCentroid();</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (subspaceCentroid != null) {</span>
+<span class="fc" id="L92">            return getCircle().toSpace(subspaceCentroid);</span>
+        }
+<span class="fc" id="L94">        return null;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionLocation classify(final Point2S pt) {
+<span class="fc" id="L100">        return HyperplaneSubsets.classifyAgainstEmbeddedRegion(pt, circle, getSubspaceRegion());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Point2S closest(final Point2S pt) {
+<span class="fc" id="L106">        return HyperplaneSubsets.closestToEmbeddedRegion(pt, circle, getSubspaceRegion());</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public abstract List&lt;GreatArc&gt; toConvex();
+
+    /** {@inheritDoc} */
+    @Override
+    public abstract HyperplaneBoundedRegion&lt;Point1S&gt; getSubspaceRegion();
+
+    /** Return the object used to perform floating point comparisons, which is the
+     * same object used by the underlying {@link GreatCircle}.
+     * @return precision object used to perform floating point comparisons.
+     */
+    public Precision.DoubleEquivalence getPrecision() {
+<span class="fc" id="L122">        return circle.getPrecision();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

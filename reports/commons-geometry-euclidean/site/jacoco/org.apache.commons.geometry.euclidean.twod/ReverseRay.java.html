@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReverseRay.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.twod</a> &gt; <span class="el_source">ReverseRay.java</span></div><h1>ReverseRay.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.twod;
+
+import org.apache.commons.geometry.core.RegionLocation;
+import org.apache.commons.geometry.core.Transform;
+import org.apache.commons.geometry.core.partitioning.Split;
+import org.apache.commons.numbers.core.Precision;
+
+/** Class representing a portion of a line in 2D Euclidean space that starts at infinity and
+ * continues in the direction of the line up to a single end point. This is equivalent to taking a
+ * {@link Ray} and reversing the line direction.
+ *
+ * &lt;p&gt;Instances of this class are guaranteed to be immutable.&lt;/p&gt;
+ * @see Ray
+ * @see Lines
+ */
+public final class ReverseRay extends LineConvexSubset {
+
+    /** The end point of the reverse ray. */
+    private final Vector2D endPoint;
+
+    /** Construct a new instance from the given line and end point. Callers are responsible for ensuring that
+     * the given end point lies on the line. No validation is performed.
+     * @param line line for the instance
+     * @param endPoint end point for the instance
+     */
+    ReverseRay(final Line line, final Vector2D endPoint) {
+<span class="fc" id="L43">        super(line);</span>
+
+<span class="fc" id="L45">        this.endPoint = endPoint;</span>
+<span class="fc" id="L46">    }</span>
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;This method always returns {@code false}.&lt;/p&gt;
+     */
+    @Override
+    public boolean isFull() {
+<span class="fc" id="L54">        return false;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;This method always returns {@code true}.&lt;/p&gt;
+     */
+    @Override
+    public boolean isInfinite() {
+<span class="fc" id="L63">        return true;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;This method always returns {@code false}.&lt;/p&gt;
+     */
+    @Override
+    public boolean isFinite() {
+<span class="fc" id="L72">        return false;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;This method always returns {@link Double#POSITIVE_INFINITY}.&lt;/p&gt;
+     */
+    @Override
+    public double getSize() {
+<span class="fc" id="L81">        return Double.POSITIVE_INFINITY;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;This method always returns {@code null}.&lt;/p&gt;
+     */
+    @Override
+    public Vector2D getCentroid() {
+<span class="fc" id="L90">        return null;</span>
+    }
+
+    /** {@inheritDoc}
+     *
+     * &lt;p&gt;This method always returns {@code null}.&lt;/p&gt;
+     */
+    @Override
+    public Vector2D getStartPoint() {
+<span class="fc" id="L99">        return null;</span>
+    }
+
+    /** {@inheritDoc}
+    *
+    * &lt;p&gt;This method always returns {@link Double#NEGATIVE_INFINITY}.&lt;/p&gt;
+    */
+    @Override
+    public double getSubspaceStart() {
+<span class="fc" id="L108">        return Double.NEGATIVE_INFINITY;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector2D getEndPoint() {
+<span class="fc" id="L114">        return endPoint;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double getSubspaceEnd() {
+<span class="fc" id="L120">        return getLine().abscissa(endPoint);</span>
+    }
+
+    /** {@inheritDoc}
+    *
+    * &lt;p&gt;This method always returns {@code null}.&lt;/p&gt;
+    */
+    @Override
+    public Bounds2D getBounds() {
+<span class="fc" id="L129">        return null; // infinite; no bounds</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ReverseRay transform(final Transform&lt;Vector2D&gt; transform) {
+<span class="fc" id="L135">        final Line tLine = getLine().transform(transform);</span>
+<span class="fc" id="L136">        final Vector2D tEnd = transform.apply(getEndPoint());</span>
+
+<span class="fc" id="L138">        return new ReverseRay(tLine, tEnd);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Ray reverse() {
+<span class="fc" id="L144">        return new Ray(getLine().reverse(), endPoint);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegionLocation classifyAbscissa(final double abscissa) {
+<span class="fc" id="L150">        final int cmp = getPrecision().compare(abscissa, getSubspaceEnd());</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        if (cmp &lt; 0) {</span>
+<span class="fc" id="L152">            return RegionLocation.INSIDE;</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">        } else if (cmp == 0) {</span>
+<span class="fc" id="L154">            return RegionLocation.BOUNDARY;</span>
+        }
+
+<span class="fc" id="L157">        return RegionLocation.OUTSIDE;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L163">        final StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L164">        sb.append(getClass().getSimpleName())</span>
+<span class="fc" id="L165">            .append(&quot;[direction= &quot;)</span>
+<span class="fc" id="L166">            .append(getLine().getDirection())</span>
+<span class="fc" id="L167">            .append(&quot;, endPoint= &quot;)</span>
+<span class="fc" id="L168">            .append(getEndPoint())</span>
+<span class="fc" id="L169">            .append(']');</span>
+
+<span class="fc" id="L171">        return sb.toString();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    double closestAbscissa(final double abscissa) {
+<span class="fc" id="L177">        return Math.min(getSubspaceEnd(), abscissa);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected Split&lt;LineConvexSubset&gt; splitOnIntersection(final Line splitter, final Vector2D intersection) {
+<span class="fc" id="L183">        final Line line = getLine();</span>
+<span class="fc" id="L184">        final Precision.DoubleEquivalence splitterPrecision = splitter.getPrecision();</span>
+
+<span class="fc" id="L186">        final int endCmp = splitterPrecision.compare(splitter.offset(endPoint), 0.0);</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">        final boolean pointsTowardPlus = splitter.getOffsetDirection().dot(line.getDirection()) &gt;= 0.0;</span>
+
+<span class="fc bfc" id="L189" title="All 4 branches covered.">        if (pointsTowardPlus &amp;&amp; endCmp &lt; 1) {</span>
+            // entirely on minus side
+<span class="fc" id="L191">            return new Split&lt;&gt;(this, null);</span>
+<span class="fc bfc" id="L192" title="All 4 branches covered.">        } else if (!pointsTowardPlus &amp;&amp; endCmp &gt; -1) {</span>
+            // entirely on plus side
+<span class="fc" id="L194">            return new Split&lt;&gt;(null, this);</span>
+        }
+
+        // we're going to be split
+<span class="fc" id="L198">        final Segment splitSeg = new Segment(line, intersection, endPoint);</span>
+<span class="fc" id="L199">        final ReverseRay splitRevRay = new ReverseRay(line, intersection);</span>
+
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        final LineConvexSubset minus = (endCmp &gt; 0) ? splitRevRay : splitSeg;</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">        final LineConvexSubset plus = (endCmp &gt; 0) ? splitSeg : splitRevRay;</span>
+
+<span class="fc" id="L204">        return new Split&lt;&gt;(minus, plus);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

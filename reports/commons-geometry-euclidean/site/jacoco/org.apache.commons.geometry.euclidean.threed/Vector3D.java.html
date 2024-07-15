@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Vector3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.threed</a> &gt; <span class="el_source">Vector3D.java</span></div><h1>Vector3D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.threed;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.function.UnaryOperator;
+
+import org.apache.commons.geometry.core.internal.DoubleFunction3N;
+import org.apache.commons.geometry.core.internal.SimpleTupleFormat;
+import org.apache.commons.geometry.euclidean.EuclideanVectorSum;
+import org.apache.commons.geometry.euclidean.MultiDimensionalEuclideanVector;
+import org.apache.commons.geometry.euclidean.internal.Vectors;
+import org.apache.commons.numbers.core.Precision;
+
+/** This class represents vectors and points in three-dimensional Euclidean space.
+ * Instances of this class are guaranteed to be immutable.
+ */
+public class Vector3D extends MultiDimensionalEuclideanVector&lt;Vector3D&gt; {
+
+    /** Zero (null) vector (coordinates: 0, 0, 0). */
+<span class="fc" id="L37">    public static final Vector3D ZERO = new Vector3D(0, 0, 0);</span>
+
+    /** A vector with all coordinates set to NaN. */
+<span class="fc" id="L40">    public static final Vector3D NaN = new Vector3D(Double.NaN, Double.NaN, Double.NaN);</span>
+
+    /** A vector with all coordinates set to positive infinity. */
+<span class="fc" id="L43">    public static final Vector3D POSITIVE_INFINITY =</span>
+        new Vector3D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+
+    /** A vector with all coordinates set to negative infinity. */
+<span class="fc" id="L47">    public static final Vector3D NEGATIVE_INFINITY =</span>
+        new Vector3D(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+
+    /** Comparator that sorts vectors in component-wise ascending order.
+     * Vectors are only considered equal if their coordinates match exactly.
+     * Null arguments are evaluated as being greater than non-null arguments.
+     */
+<span class="fc" id="L54">    public static final Comparator&lt;Vector3D&gt; COORDINATE_ASCENDING_ORDER = (a, b) -&gt; {</span>
+<span class="fc" id="L55">        int cmp = 0;</span>
+
+<span class="fc bfc" id="L57" title="All 4 branches covered.">        if (a != null &amp;&amp; b != null) {</span>
+<span class="fc" id="L58">            cmp = Double.compare(a.getX(), b.getX());</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">            if (cmp == 0) {</span>
+<span class="fc" id="L60">                cmp = Double.compare(a.getY(), b.getY());</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">                if (cmp == 0) {</span>
+<span class="fc" id="L62">                    cmp = Double.compare(a.getZ(), b.getZ());</span>
+                }
+            }
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        } else if (a != null) {</span>
+<span class="fc" id="L66">            cmp = -1;</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        } else if (b != null) {</span>
+<span class="fc" id="L68">            cmp = 1;</span>
+        }
+
+<span class="fc" id="L71">        return cmp;</span>
+    };
+
+    /** X coordinate value (abscissa). */
+    private final double x;
+
+    /** Y coordinate value (ordinate). */
+    private final double y;
+
+    /** Z coordinate value (height). */
+    private final double z;
+
+    /** Simple constructor.
+     * Build a vector from its coordinates
+     * @param x x coordinate value
+     * @param y y coordinate value
+     * @param z z coordinate value
+     */
+<span class="fc" id="L89">    private Vector3D(final double x, final double y, final double z) {</span>
+<span class="fc" id="L90">        this.x = x;</span>
+<span class="fc" id="L91">        this.y = y;</span>
+<span class="fc" id="L92">        this.z = z;</span>
+<span class="fc" id="L93">    }</span>
+
+    /** Return the x coordinate value (abscissa) of the instance.
+     * @return the x coordinate value
+     */
+    public double getX() {
+<span class="fc" id="L99">        return x;</span>
+    }
+
+    /** Return the y coordinate value (ordinate) of the instance.
+     * @return the y coordinate value
+     */
+    public double getY() {
+<span class="fc" id="L106">        return y;</span>
+    }
+
+    /** Returns the z coordinate value (height) of the instance.
+     * @return the z coordinate value
+     */
+    public double getZ() {
+<span class="fc" id="L113">        return z;</span>
+    }
+
+    /** Get the coordinates for this instance as a dimension 3 array.
+     * @return the coordinates for this instance
+     */
+    public double[] toArray() {
+<span class="fc" id="L120">        return new double[]{x, y, z};</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getDimension() {
+<span class="fc" id="L126">        return 3;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isNaN() {
+<span class="fc bfc" id="L132" title="All 6 branches covered.">        return Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isInfinite() {
+<span class="fc bfc" id="L138" title="All 8 branches covered.">        return !isNaN() &amp;&amp; (Double.isInfinite(x) || Double.isInfinite(y) || Double.isInfinite(z));</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isFinite() {
+<span class="fc bfc" id="L144" title="All 6 branches covered.">        return Double.isFinite(x) &amp;&amp; Double.isFinite(y) &amp;&amp; Double.isFinite(z);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D getZero() {
+<span class="fc" id="L150">        return ZERO;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D vectorTo(final Vector3D v) {
+<span class="fc" id="L156">        return v.subtract(this);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Unit directionTo(final Vector3D v) {
+<span class="fc" id="L162">        return vectorTo(v).normalize();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D lerp(final Vector3D p, final double t) {
+<span class="fc" id="L168">        return Sum.create()</span>
+<span class="fc" id="L169">                .addScaled(1.0 - t, this)</span>
+<span class="fc" id="L170">                .addScaled(t, p).get();</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double norm() {
+<span class="fc" id="L176">        return Vectors.norm(x, y, z);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double normSq() {
+<span class="fc" id="L182">        return Vectors.normSq(x, y, z);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D withNorm(final double magnitude) {
+<span class="fc" id="L188">        final double m = magnitude / getCheckedNorm();</span>
+
+<span class="fc" id="L190">        return new Vector3D(</span>
+                    m * x,
+                    m * y,
+                    m * z
+                );
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D add(final Vector3D v) {
+<span class="fc" id="L200">        return new Vector3D(</span>
+                    x + v.x,
+                    y + v.y,
+                    z + v.z
+                );
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D add(final double factor, final Vector3D v) {
+<span class="fc" id="L210">        return new Vector3D(</span>
+                    x + (factor * v.x),
+                    y + (factor * v.y),
+                    z + (factor * v.z)
+                );
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D subtract(final Vector3D v) {
+<span class="fc" id="L220">        return new Vector3D(</span>
+                    x - v.x,
+                    y - v.y,
+                    z - v.z
+                );
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D subtract(final double factor, final Vector3D v) {
+<span class="fc" id="L230">        return new Vector3D(</span>
+                    x - (factor * v.x),
+                    y - (factor * v.y),
+                    z - (factor * v.z)
+                );
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D negate() {
+<span class="fc" id="L240">        return new Vector3D(-x, -y, -z);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Unit normalize() {
+<span class="fc" id="L246">        return Unit.from(x, y, z);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Unit normalizeOrNull() {
+<span class="fc" id="L252">        return Unit.tryCreateNormalized(x, y, z, false);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D multiply(final double a) {
+<span class="fc" id="L258">        return new Vector3D(a * x, a * y, a * z);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double distance(final Vector3D v) {
+<span class="fc" id="L264">        return Vectors.norm(</span>
+                x - v.x,
+                y - v.y,
+                z - v.z
+            );
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double distanceSq(final Vector3D v) {
+<span class="fc" id="L274">        return Vectors.normSq(</span>
+                x - v.x,
+                y - v.y,
+                z - v.z
+            );
+    }
+
+    /** {@inheritDoc}
+     * &lt;p&gt;
+     * The implementation uses specific multiplication and addition
+     * algorithms to preserve accuracy and reduce cancellation effects.
+     * It should be very accurate even for nearly orthogonal vectors.
+     * &lt;/p&gt;
+     * @see org.apache.commons.numbers.core.Sum
+     */
+    @Override
+    public double dot(final Vector3D v) {
+<span class="fc" id="L291">        return Vectors.linearCombination(</span>
+                x, v.x,
+                y, v.y,
+                z, v.z);
+    }
+
+    /** {@inheritDoc}
+     * &lt;p&gt;This method computes the angular separation between two
+     * vectors using the dot product for well separated vectors and the
+     * cross product for almost aligned vectors. This allows to have a
+     * good accuracy in all cases, even for vectors very close to each
+     * other.&lt;/p&gt;
+     */
+    @Override
+    public double angle(final Vector3D v) {
+<span class="fc" id="L306">        final double normProduct = getCheckedNorm() * v.getCheckedNorm();</span>
+
+<span class="fc" id="L308">        final double dot = dot(v);</span>
+<span class="fc" id="L309">        final double threshold = normProduct * 0.99;</span>
+<span class="fc bfc" id="L310" title="All 4 branches covered.">        if ((dot &lt; -threshold) || (dot &gt; threshold)) {</span>
+            // the vectors are almost aligned, compute using the sine
+<span class="fc" id="L312">            final Vector3D cross = cross(v);</span>
+<span class="fc bfc" id="L313" title="All 2 branches covered.">            if (dot &gt;= 0) {</span>
+<span class="fc" id="L314">                return Math.asin(cross.norm() / normProduct);</span>
+            }
+<span class="fc" id="L316">            return Math.PI - Math.asin(cross.norm() / normProduct);</span>
+        }
+
+        // the vectors are sufficiently separated to use the cosine
+<span class="fc" id="L320">        return Math.acos(dot / normProduct);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D project(final Vector3D base) {
+<span class="fc" id="L326">        return getComponent(base, false, Vector3D::new);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D reject(final Vector3D base) {
+<span class="fc" id="L332">        return getComponent(base, true, Vector3D::new);</span>
+    }
+
+    /** {@inheritDoc}
+     * &lt;p&gt;There are an infinite number of normalized vectors orthogonal
+     * to the instance. This method picks up one of them almost
+     * arbitrarily. It is useful when one needs to compute a reference
+     * frame with one of the axes in a predefined direction. The
+     * following example shows how to build a frame having the k axis
+     * aligned with the known vector u :
+     * &lt;pre&gt;&lt;code&gt;
+     *   Vector3D k = u.normalize();
+     *   Vector3D i = k.orthogonal();
+     *   Vector3D j = k.cross(i);
+     * &lt;/code&gt;&lt;/pre&gt;
+     * @return a unit vector orthogonal to the instance
+     * @throws IllegalArgumentException if the norm of the instance
+     *      is zero, NaN, or infinite
+     */
+    @Override
+    public Vector3D.Unit orthogonal() {
+<span class="fc" id="L353">        final double threshold = 0.6 * getCheckedNorm();</span>
+
+        final double inverse;
+<span class="fc bfc" id="L356" title="All 2 branches covered.">        if (Math.abs(x) &lt;= threshold) {</span>
+<span class="fc" id="L357">            inverse  = 1 / Vectors.norm(y, z);</span>
+<span class="fc" id="L358">            return new Unit(0, inverse * z, -inverse * y);</span>
+<span class="fc bfc" id="L359" title="All 2 branches covered.">        } else if (Math.abs(y) &lt;= threshold) {</span>
+<span class="fc" id="L360">            inverse  = 1 / Vectors.norm(x, z);</span>
+<span class="fc" id="L361">            return new Unit(-inverse * z, 0, inverse * x);</span>
+        }
+<span class="fc" id="L363">        inverse  = 1 / Vectors.norm(x, y);</span>
+<span class="fc" id="L364">        return new Unit(inverse * y, -inverse * x, 0);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Vector3D.Unit orthogonal(final Vector3D dir) {
+<span class="fc" id="L370">        return dir.getComponent(this, true, Vector3D.Unit::from);</span>
+    }
+
+    /** Compute the cross-product of the instance with another vector.
+     * @param v other vector
+     * @return the cross product this ^ v as a new Vector3D
+     */
+    public Vector3D cross(final Vector3D v) {
+<span class="fc" id="L378">        return new Vector3D(Vectors.linearCombination(y, v.z, -z, v.y),</span>
+<span class="fc" id="L379">                            Vectors.linearCombination(z, v.x, -x, v.z),</span>
+<span class="fc" id="L380">                            Vectors.linearCombination(x, v.y, -y, v.x));</span>
+    }
+
+    /** Convenience method to apply a function to this vector. This
+     * can be used to transform the vector inline with other methods.
+     * @param fn the function to apply
+     * @return the transformed vector
+     */
+    public Vector3D transform(final UnaryOperator&lt;Vector3D&gt; fn) {
+<span class="fc" id="L389">        return fn.apply(this);</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean eq(final Vector3D vec, final Precision.DoubleEquivalence precision) {
+<span class="fc bfc" id="L395" title="All 2 branches covered.">        return precision.eq(x, vec.x) &amp;&amp;</span>
+<span class="fc bfc" id="L396" title="All 2 branches covered.">                precision.eq(y, vec.y) &amp;&amp;</span>
+<span class="fc bfc" id="L397" title="All 2 branches covered.">                precision.eq(z, vec.z);</span>
+    }
+
+    /**
+     * Get a hashCode for the vector.
+     * &lt;p&gt;All NaN values have the same hash code.&lt;/p&gt;
+     *
+     * @return a hash code value for this object
+     */
+    @Override
+    public int hashCode() {
+<span class="fc bfc" id="L408" title="All 2 branches covered.">        if (isNaN()) {</span>
+<span class="fc" id="L409">            return 642;</span>
+        }
+<span class="fc" id="L411">        return 643 * (164 * Double.hashCode(x) + 3 * Double.hashCode(y) + Double.hashCode(z));</span>
+    }
+
+    /**
+     * Test for the equality of two vector instances.
+     * &lt;p&gt;
+     * If all coordinates of two vectors are exactly the same, and none are
+     * &lt;code&gt;Double.NaN&lt;/code&gt;, the two instances are considered to be equal.
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * &lt;code&gt;NaN&lt;/code&gt; coordinates are considered to globally affect the vector
+     * and be equal to each other - i.e, if either (or all) coordinates of the
+     * vector are equal to &lt;code&gt;Double.NaN&lt;/code&gt;, the vector is equal to
+     * {@link #NaN}.
+     * &lt;/p&gt;
+     *
+     * @param other Object to test for equality to this
+     * @return true if two Vector3D objects are equal, false if
+     *         object is null, not an instance of Vector3D, or
+     *         not equal to this Vector3D instance
+     *
+     */
+    @Override
+    public boolean equals(final Object other) {
+<span class="fc bfc" id="L435" title="All 2 branches covered.">        if (this == other) {</span>
+<span class="fc" id="L436">            return true;</span>
+        }
+<span class="fc bfc" id="L438" title="All 2 branches covered.">        if (other instanceof Vector3D) {</span>
+<span class="fc" id="L439">            final Vector3D rhs = (Vector3D) other;</span>
+<span class="fc bfc" id="L440" title="All 2 branches covered.">            if (rhs.isNaN()) {</span>
+<span class="fc" id="L441">                return this.isNaN();</span>
+            }
+
+<span class="fc bfc" id="L444" title="All 2 branches covered.">            return Double.compare(x, rhs.x) == 0 &amp;&amp;</span>
+<span class="fc bfc" id="L445" title="All 2 branches covered.">                    Double.compare(y, rhs.y) == 0 &amp;&amp;</span>
+<span class="fc bfc" id="L446" title="All 2 branches covered.">                    Double.compare(z, rhs.z) == 0;</span>
+        }
+<span class="fc" id="L448">        return false;</span>
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+<span class="fc" id="L454">        return SimpleTupleFormat.getDefault().format(x, y, z);</span>
+    }
+
+    /** Returns a component of the current instance relative to the given base
+     * vector. If {@code reject} is true, the vector rejection is returned; otherwise,
+     * the projection is returned.
+     * @param base The base vector
+     * @param reject If true, the rejection of this instance from {@code base} is
+     *      returned. If false, the projection of this instance onto {@code base}
+     *      is returned.
+     * @param factory factory function used to build the final vector
+     * @param &lt;V&gt; Vector implementation type
+     * @return The projection or rejection of this instance relative to {@code base},
+     *      depending on the value of {@code reject}.
+     * @throws IllegalArgumentException if {@code base} has a zero, NaN,
+     *      or infinite norm
+     */
+    private &lt;V extends Vector3D&gt; V getComponent(final Vector3D base, final boolean reject,
+                                                final DoubleFunction3N&lt;V&gt; factory) {
+<span class="fc" id="L473">        final double aDotB = dot(base);</span>
+
+        // We need to check the norm value here to ensure that it's legal. However, we don't
+        // want to incur the cost or floating point error of getting the actual norm and then
+        // multiplying it again to get the square norm. So, we'll just check the squared norm
+        // directly. This will produce the same error result as checking the actual norm since
+        // Math.sqrt(0.0) == 0.0, Math.sqrt(Double.NaN) == Double.NaN and
+        // Math.sqrt(Double.POSITIVE_INFINITY) == Double.POSITIVE_INFINITY.
+<span class="fc" id="L481">        final double baseMagSq = Vectors.checkedNorm(base.normSq());</span>
+
+<span class="fc" id="L483">        final double scale = aDotB / baseMagSq;</span>
+
+<span class="fc" id="L485">        final double projX = scale * base.x;</span>
+<span class="fc" id="L486">        final double projY = scale * base.y;</span>
+<span class="fc" id="L487">        final double projZ = scale * base.z;</span>
+
+<span class="fc bfc" id="L489" title="All 2 branches covered.">        if (reject) {</span>
+<span class="fc" id="L490">            return factory.apply(x - projX, y - projY, z - projZ);</span>
+        }
+
+<span class="fc" id="L493">        return factory.apply(projX, projY, projZ);</span>
+    }
+
+    /** Returns a vector with the given coordinate values.
+     * @param x x coordinate value
+     * @param y y coordinate value
+     * @param z z coordinate value
+     * @return vector instance
+     */
+    public static Vector3D of(final double x, final double y, final double z) {
+<span class="fc" id="L503">        return new Vector3D(x, y, z);</span>
+    }
+
+    /** Creates a vector from the coordinates in the given 3-element array.
+     * @param v coordinates array
+     * @return new vector
+     * @exception IllegalArgumentException if the array does not have 3 elements
+     */
+    public static Vector3D of(final double[] v) {
+<span class="fc bfc" id="L512" title="All 2 branches covered.">        if (v.length != 3) {</span>
+<span class="fc" id="L513">            throw new IllegalArgumentException(&quot;Dimension mismatch: &quot; + v.length + &quot; != 3&quot;);</span>
+        }
+<span class="fc" id="L515">        return new Vector3D(v[0], v[1], v[2]);</span>
+    }
+
+    /** Parses the given string and returns a new vector instance. The expected string
+     * format is the same as that returned by {@link #toString()}.
+     * @param str the string to parse
+     * @return vector instance represented by the string
+     * @throws IllegalArgumentException if the given string has an invalid format
+     */
+    public static Vector3D parse(final String str) {
+<span class="fc" id="L525">        return SimpleTupleFormat.getDefault().parse(str, Vector3D::new);</span>
+    }
+
+    /** Return a vector containing the maximum component values from all input vectors.
+     * @param first first vector
+     * @param more additional vectors
+     * @return a vector containing the maximum component values from all input vectors
+     */
+    public static Vector3D max(final Vector3D first, final Vector3D... more) {
+<span class="fc" id="L534">        return computeMax(first, Arrays.asList(more).iterator());</span>
+    }
+
+    /** Return a vector containing the maximum component values from all input vectors.
+     * @param vecs input vectors
+     * @return a vector containing the maximum component values from all input vectors
+     * @throws IllegalArgumentException if the argument does not contain any vectors
+     */
+    public static Vector3D max(final Iterable&lt;Vector3D&gt; vecs) {
+<span class="fc" id="L543">        final Iterator&lt;Vector3D&gt; it = vecs.iterator();</span>
+<span class="fc bfc" id="L544" title="All 2 branches covered.">        if (!it.hasNext()) {</span>
+<span class="fc" id="L545">            throw new IllegalArgumentException(&quot;Cannot compute vector max: no vectors given&quot;);</span>
+        }
+
+<span class="fc" id="L548">        return computeMax(it.next(), it);</span>
+    }
+
+    /** Internal method for computing a max vector.
+     * @param first first vector
+     * @param more iterator with additional vectors
+     * @return vector containing the maximum component values of all input vectors
+     */
+    private static Vector3D computeMax(final Vector3D first, final Iterator&lt;? extends Vector3D&gt; more) {
+<span class="fc" id="L557">        double x = first.getX();</span>
+<span class="fc" id="L558">        double y = first.getY();</span>
+<span class="fc" id="L559">        double z = first.getZ();</span>
+
+        Vector3D vec;
+<span class="fc bfc" id="L562" title="All 2 branches covered.">        while (more.hasNext()) {</span>
+<span class="fc" id="L563">            vec = more.next();</span>
+
+<span class="fc" id="L565">            x = Math.max(x, vec.getX());</span>
+<span class="fc" id="L566">            y = Math.max(y, vec.getY());</span>
+<span class="fc" id="L567">            z = Math.max(z, vec.getZ());</span>
+        }
+
+<span class="fc" id="L570">        return Vector3D.of(x, y, z);</span>
+    }
+
+    /** Return a vector containing the minimum component values from all input vectors.
+     * @param first first vector
+     * @param more additional vectors
+     * @return a vector containing the minimum component values from all input vectors
+     */
+    public static Vector3D min(final Vector3D first, final Vector3D... more) {
+<span class="fc" id="L579">        return computeMin(first, Arrays.asList(more).iterator());</span>
+    }
+
+    /** Return a vector containing the minimum component values from all input vectors.
+     * @param vecs input vectors
+     * @return a vector containing the minimum component values from all input vectors
+     * @throws IllegalArgumentException if the argument does not contain any vectors
+     */
+    public static Vector3D min(final Iterable&lt;Vector3D&gt; vecs) {
+<span class="fc" id="L588">        final Iterator&lt;Vector3D&gt; it = vecs.iterator();</span>
+<span class="fc bfc" id="L589" title="All 2 branches covered.">        if (!it.hasNext()) {</span>
+<span class="fc" id="L590">            throw new IllegalArgumentException(&quot;Cannot compute vector min: no vectors given&quot;);</span>
+        }
+
+<span class="fc" id="L593">        return computeMin(it.next(), it);</span>
+    }
+
+    /** Internal method for computing a min vector.
+     * @param first first vector
+     * @param more iterator with additional vectors
+     * @return vector containing the minimum component values of all input vectors
+     */
+    private static Vector3D computeMin(final Vector3D first, final Iterator&lt;? extends Vector3D&gt; more) {
+<span class="fc" id="L602">        double x = first.getX();</span>
+<span class="fc" id="L603">        double y = first.getY();</span>
+<span class="fc" id="L604">        double z = first.getZ();</span>
+
+        Vector3D vec;
+<span class="fc bfc" id="L607" title="All 2 branches covered.">        while (more.hasNext()) {</span>
+<span class="fc" id="L608">            vec = more.next();</span>
+
+<span class="fc" id="L610">            x = Math.min(x, vec.getX());</span>
+<span class="fc" id="L611">            y = Math.min(y, vec.getY());</span>
+<span class="fc" id="L612">            z = Math.min(z, vec.getZ());</span>
+        }
+
+<span class="fc" id="L615">        return Vector3D.of(x, y, z);</span>
+    }
+
+    /** Compute the centroid of the given points. The centroid is the arithmetic mean position of a set
+     * of points.
+     * @param first first point
+     * @param more additional points
+     * @return the centroid of the given points
+     */
+    public static Vector3D centroid(final Vector3D first, final Vector3D... more) {
+<span class="fc" id="L625">        return computeCentroid(first, Arrays.asList(more).iterator());</span>
+    }
+
+    /** Compute the centroid of the given points. The centroid is the arithmetic mean position of a set
+     * of points.
+     * @param pts the points to compute the centroid of
+     * @return the centroid of the given points
+     * @throws IllegalArgumentException if the argument contains no points
+     */
+    public static Vector3D centroid(final Iterable&lt;Vector3D&gt; pts) {
+<span class="fc" id="L635">        final Iterator&lt;Vector3D&gt; it = pts.iterator();</span>
+<span class="fc bfc" id="L636" title="All 2 branches covered.">        if (!it.hasNext()) {</span>
+<span class="fc" id="L637">            throw new IllegalArgumentException(&quot;Cannot compute centroid: no points given&quot;);</span>
+        }
+
+<span class="fc" id="L640">        return computeCentroid(it.next(), it);</span>
+    }
+
+    /** Internal method for computing the centroid of a set of points.
+     * @param first first point
+     * @param more iterator with additional points
+     * @return the centroid of the point set
+     */
+    private static Vector3D computeCentroid(final Vector3D first, final Iterator&lt;? extends Vector3D&gt; more) {
+<span class="fc" id="L649">        final Sum sum = Sum.of(first);</span>
+<span class="fc" id="L650">        int count = 1;</span>
+
+<span class="fc bfc" id="L652" title="All 2 branches covered.">        while (more.hasNext()) {</span>
+<span class="fc" id="L653">            sum.add(more.next());</span>
+<span class="fc" id="L654">            ++count;</span>
+        }
+
+<span class="fc" id="L657">        return sum.get().multiply(1.0 / count);</span>
+    }
+
+    /**
+     * Represents unit vectors.
+     * This allows optimizations for certain operations.
+     */
+    public static final class Unit extends Vector3D {
+        /** Unit vector (coordinates: 1, 0, 0). */
+<span class="fc" id="L666">        public static final Unit PLUS_X  = new Unit(1d, 0d, 0d);</span>
+        /** Negation of unit vector (coordinates: -1, 0, 0). */
+<span class="fc" id="L668">        public static final Unit MINUS_X = new Unit(-1d, 0d, 0d);</span>
+        /** Unit vector (coordinates: 0, 1, 0). */
+<span class="fc" id="L670">        public static final Unit PLUS_Y  = new Unit(0d, 1d, 0d);</span>
+        /** Negation of unit vector (coordinates: 0, -1, 0). */
+<span class="fc" id="L672">        public static final Unit MINUS_Y = new Unit(0d, -1d, 0d);</span>
+        /** Unit vector (coordinates: 0, 0, 1). */
+<span class="fc" id="L674">        public static final Unit PLUS_Z  = new Unit(0d, 0d, 1d);</span>
+        /** Negation of unit vector (coordinates: 0, 0, -1). */
+<span class="fc" id="L676">        public static final Unit MINUS_Z = new Unit(0d, 0d, -1d);</span>
+
+        /** Maximum coordinate value for computing normalized vectors
+         * with raw, unscaled values.
+         */
+        private static final double UNSCALED_MAX = 0x1.0p+500;
+
+        /** Factor used to scale up coordinate values in order to produce
+         * normalized coordinates without overflow or underflow.
+         */
+        private static final double SCALE_UP_FACTOR = 0x1.0p+600;
+
+        /** Factor used to scale down coordinate values in order to produce
+         * normalized coordinates without overflow or underflow.
+         */
+        private static final double SCALE_DOWN_FACTOR = 0x1.0p-600;
+
+        /** Simple constructor. Callers are responsible for ensuring that the given
+         * values represent a normalized vector.
+         * @param x x coordinate value
+         * @param y x coordinate value
+         * @param z x coordinate value
+         */
+        private Unit(final double x, final double y, final double z) {
+<span class="fc" id="L700">            super(x, y, z);</span>
+<span class="fc" id="L701">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        public double norm() {
+<span class="fc" id="L706">            return 1;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public double normSq() {
+<span class="fc" id="L712">            return 1;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Unit normalize() {
+<span class="fc" id="L718">            return this;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Unit normalizeOrNull() {
+<span class="fc" id="L724">            return this;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Vector3D withNorm(final double mag) {
+<span class="fc" id="L730">            return multiply(mag);</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Unit negate() {
+<span class="fc" id="L736">            return new Unit(-getX(), -getY(), -getZ());</span>
+        }
+
+        /** Create a normalized vector.
+         * @param x Vector coordinate.
+         * @param y Vector coordinate.
+         * @param z Vector coordinate.
+         * @return a vector whose norm is 1.
+         * @throws IllegalArgumentException if the norm of the given value is zero, NaN,
+         *      or infinite
+         */
+        public static Unit from(final double x, final double y, final double z) {
+<span class="fc" id="L748">            return tryCreateNormalized(x, y, z, true);</span>
+        }
+
+        /** Create a normalized vector.
+         * @param v Vector.
+         * @return a vector whose norm is 1.
+         * @throws IllegalArgumentException if the norm of the given value is zero, NaN,
+         *      or infinite
+         */
+        public static Unit from(final Vector3D v) {
+<span class="fc bfc" id="L758" title="All 2 branches covered.">            return v instanceof Unit ?</span>
+<span class="fc" id="L759">                (Unit) v :</span>
+<span class="fc" id="L760">                from(v.getX(), v.getY(), v.getZ());</span>
+        }
+
+        /** Attempt to create a normalized vector from the given coordinate values. If {@code throwOnFailure}
+         * is true, an exception is thrown if a normalized vector cannot be created. Otherwise, null
+         * is returned.
+         * @param x x coordinate
+         * @param y y coordinate
+         * @param z z coordinate
+         * @param throwOnFailure if true, an exception will be thrown if a normalized vector cannot be created
+         * @return normalized vector or null if one cannot be created and {@code throwOnFailure}
+         *      is false
+         * @throws IllegalArgumentException if the computed norm is zero, NaN, or infinite
+         */
+        private static Unit tryCreateNormalized(final double x, final double y, final double z,
+                final boolean throwOnFailure) {
+
+            // Compute the inverse norm directly. If the result is a non-zero real number,
+            // then we can go ahead and construct the unit vector immediately. If not,
+            // we'll do some extra work for edge cases.
+<span class="fc" id="L780">            final double norm = Math.sqrt((x * x) + (y * y) + (z * z));</span>
+<span class="fc" id="L781">            final double normInv = 1.0 / norm;</span>
+<span class="fc bfc" id="L782" title="All 2 branches covered.">            if (Vectors.isRealNonZero(normInv)) {</span>
+<span class="fc" id="L783">                return new Unit(</span>
+                        x * normInv,
+                        y * normInv,
+                        z * normInv);
+            }
+
+            // Direct computation did not work. Try scaled versions of the coordinates
+            // to handle overflow and underflow.
+            final double scaledX;
+            final double scaledY;
+            final double scaledZ;
+
+<span class="fc" id="L795">            final double maxCoord = Math.max(Math.max(Math.abs(x), Math.abs(y)), Math.abs(z));</span>
+<span class="fc bfc" id="L796" title="All 2 branches covered.">            if (maxCoord &gt; UNSCALED_MAX) {</span>
+<span class="fc" id="L797">                scaledX = x * SCALE_DOWN_FACTOR;</span>
+<span class="fc" id="L798">                scaledY = y * SCALE_DOWN_FACTOR;</span>
+<span class="fc" id="L799">                scaledZ = z * SCALE_DOWN_FACTOR;</span>
+            } else {
+<span class="fc" id="L801">                scaledX = x * SCALE_UP_FACTOR;</span>
+<span class="fc" id="L802">                scaledY = y * SCALE_UP_FACTOR;</span>
+<span class="fc" id="L803">                scaledZ = z * SCALE_UP_FACTOR;</span>
+            }
+
+<span class="fc" id="L806">            final double scaledNormInv = 1.0 / Math.sqrt(</span>
+                    (scaledX * scaledX) +
+                    (scaledY * scaledY) +
+                    (scaledZ * scaledZ));
+
+<span class="fc bfc" id="L811" title="All 2 branches covered.">            if (Vectors.isRealNonZero(scaledNormInv)) {</span>
+<span class="fc" id="L812">                return new Unit(</span>
+                        scaledX * scaledNormInv,
+                        scaledY * scaledNormInv,
+                        scaledZ * scaledNormInv);
+<span class="fc bfc" id="L816" title="All 2 branches covered.">            } else if (throwOnFailure) {</span>
+<span class="fc" id="L817">                throw Vectors.illegalNorm(norm);</span>
+            }
+<span class="fc" id="L819">            return null;</span>
+        }
+    }
+
+    /** Class used to create high-accuracy sums of vectors. Each vector component is
+     * summed using an instance of {@link org.apache.commons.numbers.core.Sum}.
+     *
+     * &lt;p&gt;This class is mutable and not thread-safe.
+     * @see org.apache.commons.numbers.core.Sum
+     */
+    public static final class Sum extends EuclideanVectorSum&lt;Vector3D&gt; {
+        /** X component sum. */
+        private final org.apache.commons.numbers.core.Sum xsum;
+        /** Y component sum. */
+        private final org.apache.commons.numbers.core.Sum ysum;
+        /** Z component sum. */
+        private final org.apache.commons.numbers.core.Sum zsum;
+
+        /** Construct a new instance with the given initial value.
+         * @param initial initial value
+         */
+<span class="fc" id="L840">        Sum(final Vector3D initial) {</span>
+<span class="fc" id="L841">            this.xsum = org.apache.commons.numbers.core.Sum.of(initial.x);</span>
+<span class="fc" id="L842">            this.ysum = org.apache.commons.numbers.core.Sum.of(initial.y);</span>
+<span class="fc" id="L843">            this.zsum = org.apache.commons.numbers.core.Sum.of(initial.z);</span>
+<span class="fc" id="L844">        }</span>
+
+        /** {@inheritDoc} */
+        @Override
+        public Sum add(final Vector3D vec) {
+<span class="fc" id="L849">            xsum.add(vec.x);</span>
+<span class="fc" id="L850">            ysum.add(vec.y);</span>
+<span class="fc" id="L851">            zsum.add(vec.z);</span>
+<span class="fc" id="L852">            return this;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Sum addScaled(final double scale, final Vector3D vec) {
+<span class="fc" id="L858">            xsum.addProduct(scale, vec.x);</span>
+<span class="fc" id="L859">            ysum.addProduct(scale, vec.y);</span>
+<span class="fc" id="L860">            zsum.addProduct(scale, vec.z);</span>
+<span class="fc" id="L861">            return this;</span>
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Vector3D get() {
+<span class="fc" id="L867">            return Vector3D.of(</span>
+<span class="fc" id="L868">                    xsum.getAsDouble(),</span>
+<span class="fc" id="L869">                    ysum.getAsDouble(),</span>
+<span class="fc" id="L870">                    zsum.getAsDouble());</span>
+        }
+
+        /** Create a new instance with an initial value set to the {@link Vector3D#ZERO zero vector}.
+         * @return new instance set to zero
+         */
+        public static Sum create() {
+<span class="fc" id="L877">            return new Sum(Vector3D.ZERO);</span>
+        }
+
+        /** Construct a new instance with an initial value set to the argument.
+         * @param initial initial sum value
+         * @return new instance
+         */
+        public static Sum of(final Vector3D initial) {
+<span class="fc" id="L885">            return new Sum(initial);</span>
+        }
+
+        /** Construct a new instance from multiple values.
+         * @param first first vector
+         * @param more additional vectors
+         * @return new instance
+         */
+        public static Sum of(final Vector3D first, final Vector3D... more) {
+<span class="fc" id="L894">            final Sum s = new Sum(first);</span>
+<span class="fc bfc" id="L895" title="All 2 branches covered.">            for (final Vector3D v : more) {</span>
+<span class="fc" id="L896">                s.add(v);</span>
+            }
+<span class="fc" id="L898">            return s;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

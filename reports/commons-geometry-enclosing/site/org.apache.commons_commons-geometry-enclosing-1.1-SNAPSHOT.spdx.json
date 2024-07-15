@@ -1,0 +1,794 @@
+{
+  "SPDXID" : "SPDXRef-DOCUMENT",
+  "spdxVersion" : "SPDX-2.3",
+  "creationInfo" : {
+    "created" : "2024-07-13T15:25:46Z",
+    "creators" : [ "Tool: spdx-maven-plugin" ],
+    "licenseListVersion" : "3.24.0"
+  },
+  "name" : "Apache Commons Geometry Enclosing",
+  "dataLicense" : "CC0-1.0",
+  "documentNamespace" : "http://spdx.org/spdxpackages/org.apache.commons_commons-geometry-enclosing-1.1-SNAPSHOT",
+  "packages" : [ {
+    "SPDXID" : "SPDXRef-gnrtd8",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Geometric primitives for euclidean space.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-geometry/commons-geometry-euclidean/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Geometry Euclidean",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Geometric primitives for euclidean space.",
+    "versionInfo" : "1.1-SNAPSHOT"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd9",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "API for client code that uses random numbers generators.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-rng/commons-rng-client-api/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons RNG Client API",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "API for client code that uses random numbers generators.",
+    "versionInfo" : "1.5"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd0",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Core interfaces and classes for Apache Commons Geometry.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-geometry/commons-geometry-core/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Geometry Core",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Core interfaces and classes for Apache Commons Geometry.",
+    "versionInfo" : "1.1-SNAPSHOT"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd1",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Basic utilities.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "http://commons.apache.org/proper/commons-numbers/commons-numbers-core/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Numbers Core",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Basic utilities.",
+    "versionInfo" : "1.1"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd2",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Geometric primitives for euclidean space.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-geometry/commons-geometry-euclidean/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Geometry Euclidean",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Geometric primitives for euclidean space.",
+    "versionInfo" : "1.1-SNAPSHOT"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd3",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Array utilities.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "http://commons.apache.org/proper/commons-numbers/commons-numbers-arrays/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Numbers Arrays",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Array utilities.",
+    "versionInfo" : "1.1"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd4",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Utilities related to the concept of angle.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "http://commons.apache.org/proper/commons-numbers/commons-numbers-angle/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Numbers Angle",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Utilities related to the concept of angle.",
+    "versionInfo" : "1.1"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd5",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Quaternion numbers.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "http://commons.apache.org/proper/commons-numbers/commons-numbers-quaternion/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Numbers Quaternion",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Quaternion numbers.",
+    "versionInfo" : "1.1"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd6",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Fraction utilities.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "http://commons.apache.org/proper/commons-numbers/commons-numbers-fraction/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Numbers Fraction",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Fraction utilities.",
+    "versionInfo" : "1.1"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd7",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Core interfaces and classes for Apache Commons Geometry.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-geometry/commons-geometry-core/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Geometry Core",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Core interfaces and classes for Apache Commons Geometry.",
+    "versionInfo" : "1.1-SNAPSHOT"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd10",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Simple API for instantiating random numbers generators.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-rng/commons-rng-simple/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons RNG Simple",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Simple API for instantiating random numbers generators.",
+    "versionInfo" : "1.5"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd19",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-jupiter-engine\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Jupiter Engine",
+    "summary" : "Module \"junit-jupiter-engine\" of JUnit 5.",
+    "versionInfo" : "5.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd13",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-jupiter\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Jupiter (Aggregator)",
+    "summary" : "Module \"junit-jupiter\" of JUnit 5.",
+    "versionInfo" : "5.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd14",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-jupiter-api\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Jupiter API",
+    "summary" : "Module \"junit-jupiter-api\" of JUnit 5.",
+    "versionInfo" : "5.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd11",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Pure Java implementations of random numbers generator algorithms.\n  Code in this module should not be used directly by applications; please use\n  the client interface defined in module \"commons-rng-client-api\" and the factory\n  methods defined in module \"commons-rng-simple\". In a future release, modularization\n  may be enforced through JPMS access restrictions.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-rng/commons-rng-core/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons RNG Core",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Pure Java implementations of random numbers generator algorithms.\n  Code in this module should not be used directly by applications; please use\n  the client interface defined in module \"commons-rng-client-api\" and the factory\n  methods defined in module \"commons-rng-simple\". In a future release, modularization\n  may be enforced through JPMS access restrictions.",
+    "versionInfo" : "1.5"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd12",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "The Apache Commons RNG Sampling module provides samplers\n    for various distributions.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-rng/commons-rng-sampling/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons RNG Sampling",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "The Apache Commons RNG Sampling module provides samplers\n    for various distributions.",
+    "versionInfo" : "1.5"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd17",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "@API Guardian",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://github.com/apiguardian-team/apiguardian",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "org.apiguardian:apiguardian-api",
+    "summary" : "@API Guardian",
+    "versionInfo" : "1.1.2"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd18",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-jupiter-params\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Jupiter Params",
+    "summary" : "Module \"junit-jupiter-params\" of JUnit 5.",
+    "versionInfo" : "5.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd15",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Open Test Alliance for the JVM",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://github.com/ota4j-team/opentest4j",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "org.opentest4j:opentest4j",
+    "summary" : "Open Test Alliance for the JVM",
+    "versionInfo" : "1.2.0"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd16",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-platform-commons\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Platform Commons",
+    "summary" : "Module \"junit-platform-commons\" of JUnit 5.",
+    "versionInfo" : "1.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd20",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-platform-engine\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Platform Engine API",
+    "summary" : "Module \"junit-platform-engine\" of JUnit 5.",
+    "versionInfo" : "1.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd21",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "209348b1d9d63dd73f1eb5fc93d30c830da31201"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "description" : "Algorithms for computing enclosing balls.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : true,
+    "homepage" : "https://commons.apache.org/proper/commons-geometry/commons-geometry-enclosing/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "licenseInfoFromFiles" : [ "NOASSERTION" ],
+    "name" : "Apache Commons Geometry Enclosing",
+    "originator" : "Organization:The Apache Software Foundation",
+    "packageFileName" : "commons-geometry-enclosing-1.1-SNAPSHOT.jar",
+    "packageVerificationCode" : {
+      "packageVerificationCodeValue" : "e7ba04c16c5391bc5abc26b8c6a036859d5d8799"
+    },
+    "primaryPackagePurpose" : "LIBRARY",
+    "summary" : "Algorithms for computing enclosing balls.",
+    "supplier" : "Organization: The Apache Software Foundation",
+    "versionInfo" : "1.1-SNAPSHOT"
+  } ],
+  "files" : [ {
+    "SPDXID" : "SPDXRef-gnrtd24",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "c451885177cbf2822a08e65a731fe32dd9384939"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/enclosing/euclidean/threed/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd25",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "2ebfbc378e49e592b493aee7429bee1ce699f47c"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/enclosing/euclidean/threed/SphereGenerator.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd22",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "5bc52ec6db754cda7108f92c5dbc2e546305fbd0"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/enclosing/Encloser.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd23",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "cae1284bfb3f76344d4d5b065505e0cddea26c2b"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/enclosing/EnclosingBall.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd28",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "12b0b6026cbd5852a6f61cca028157642992f887"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/enclosing/euclidean/twod/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd29",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "4d5482a90b9e8a8359ce2db6153294f9c9451c15"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/enclosing/euclidean/twod/WelzlEncloser2D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd26",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "c2f889ae756382e78527d4c4ce8052173deea9a2"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/enclosing/euclidean/threed/WelzlEncloser3D.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd27",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "3acd457f15b12ca77fa1160ed0a9ba817300ce10"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/enclosing/euclidean/twod/DiskGenerator.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd31",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "8934d684e18b17305cdf631d904d52b06fd8fb7a"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/enclosing/SupportBallGenerator.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd32",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "e13042b73cf9324410acb43d5f1665eafe634ac2"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/enclosing/WelzlEncloser.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd30",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "e7818f87497a4164646f307cc393067078c2981f"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/enclosing/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd35",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "5adb82644eec3457867c44f19036e230e58d0a7f"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/enclosing/euclidean/threed/SphereGeneratorTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd36",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "550081e5a4a61a6cf3ddc04bb4faa5b1dc14e6e0"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/enclosing/euclidean/threed/WelzlEncloser3DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd33",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "1417e990555f3ec70b90dcd775a80e97eca8662d"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/enclosing/DocumentationExamplesTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd34",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "a87181bc0b78ea414835d9eb257ea871b94ca5c5"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/enclosing/EnclosingBallTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd39",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "b314c7ebb7d599944981908b7f3ed33a30e78f3a"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./LICENSE",
+    "fileTypes" : [ "OTHER" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd37",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "122509530c18be931c7ec951680c3fd108c44a98"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/enclosing/euclidean/twod/DiskGeneratorTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd38",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "8f90b4e7b458158cf890948a4f6bee1ae6ed0192"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/enclosing/euclidean/twod/WelzlEncloser2DTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd40",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "f6d5a62a83b8410c7b9d9886cc0588498cbe2aa9"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./NOTICE",
+    "fileTypes" : [ "OTHER" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  } ],
+  "relationships" : [ {
+    "spdxElementId" : "SPDXRef-DOCUMENT",
+    "relationshipType" : "DESCRIBES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd8",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd9",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd7",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd10",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd19",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd13",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd14",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd11",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd12",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd17",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd15",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd16",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd20",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd1",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd0",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd29"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd23"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd32"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd31"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd4",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd3",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd2",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd40"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd36"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd6",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd35"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd5",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd27"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd22"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd38"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd25"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd37"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd28"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd34"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd33"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd39"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd24"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd26"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd30"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd24",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd25",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd22",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd23",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd28",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd29",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd26",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd27",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd31",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd32",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd30",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd35",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd36",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd33",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd34",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd39",
+    "relationshipType" : "CONTAINED_BY",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd37",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd38",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd40",
+    "relationshipType" : "CONTAINED_BY",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  } ]
+}

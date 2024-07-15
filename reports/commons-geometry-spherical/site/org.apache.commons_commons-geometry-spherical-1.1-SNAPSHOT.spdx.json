@@ -1,0 +1,1434 @@
+{
+  "SPDXID" : "SPDXRef-DOCUMENT",
+  "spdxVersion" : "SPDX-2.3",
+  "creationInfo" : {
+    "created" : "2024-07-13T15:28:12Z",
+    "creators" : [ "Tool: spdx-maven-plugin" ],
+    "licenseListVersion" : "3.24.0"
+  },
+  "name" : "Apache Commons Geometry Spherical",
+  "dataLicense" : "CC0-1.0",
+  "documentNamespace" : "http://spdx.org/spdxpackages/org.apache.commons_commons-geometry-spherical-1.1-SNAPSHOT",
+  "packages" : [ {
+    "SPDXID" : "SPDXRef-gnrtd8",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Core interfaces and classes for Apache Commons Geometry.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-geometry/commons-geometry-core/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Geometry Core",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Core interfaces and classes for Apache Commons Geometry.",
+    "versionInfo" : "1.1-SNAPSHOT"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd9",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "API for client code that uses random numbers generators.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-rng/commons-rng-client-api/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons RNG Client API",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "API for client code that uses random numbers generators.",
+    "versionInfo" : "1.5"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd0",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Core interfaces and classes for Apache Commons Geometry.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-geometry/commons-geometry-core/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Geometry Core",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Core interfaces and classes for Apache Commons Geometry.",
+    "versionInfo" : "1.1-SNAPSHOT"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd1",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Basic utilities.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "http://commons.apache.org/proper/commons-numbers/commons-numbers-core/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Numbers Core",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Basic utilities.",
+    "versionInfo" : "1.1"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd2",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Geometric primitives for euclidean space.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-geometry/commons-geometry-euclidean/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Geometry Euclidean",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Geometric primitives for euclidean space.",
+    "versionInfo" : "1.1-SNAPSHOT"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd3",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Array utilities.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "http://commons.apache.org/proper/commons-numbers/commons-numbers-arrays/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Numbers Arrays",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Array utilities.",
+    "versionInfo" : "1.1"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd4",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Utilities related to the concept of angle.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "http://commons.apache.org/proper/commons-numbers/commons-numbers-angle/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Numbers Angle",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Utilities related to the concept of angle.",
+    "versionInfo" : "1.1"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd5",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Quaternion numbers.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "http://commons.apache.org/proper/commons-numbers/commons-numbers-quaternion/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Numbers Quaternion",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Quaternion numbers.",
+    "versionInfo" : "1.1"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd6",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Algorithms for computing enclosing balls.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-geometry/commons-geometry-enclosing/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Geometry Enclosing",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Algorithms for computing enclosing balls.",
+    "versionInfo" : "1.1-SNAPSHOT"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd7",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Fraction utilities.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "http://commons.apache.org/proper/commons-numbers/commons-numbers-fraction/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons Numbers Fraction",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Fraction utilities.",
+    "versionInfo" : "1.1"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd20",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-platform-engine\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Platform Engine API",
+    "summary" : "Module \"junit-platform-engine\" of JUnit 5.",
+    "versionInfo" : "1.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd21",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "af653eab6c012d1feefa9631cf63830ce67aa3e8"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "description" : "Geometric primitives for spherical space.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : true,
+    "homepage" : "https://commons.apache.org/proper/commons-geometry/commons-geometry-spherical/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "licenseInfoFromFiles" : [ "NOASSERTION" ],
+    "name" : "Apache Commons Geometry Spherical",
+    "originator" : "Organization:The Apache Software Foundation",
+    "packageFileName" : "commons-geometry-spherical-1.1-SNAPSHOT.jar",
+    "packageVerificationCode" : {
+      "packageVerificationCodeValue" : "9c13ae0427d5c8274a83eff4bafe7ece34e9f279"
+    },
+    "primaryPackagePurpose" : "LIBRARY",
+    "summary" : "Geometric primitives for spherical space.",
+    "supplier" : "Organization: The Apache Software Foundation",
+    "versionInfo" : "1.1-SNAPSHOT"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd10",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Simple API for instantiating random numbers generators.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-rng/commons-rng-simple/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons RNG Simple",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Simple API for instantiating random numbers generators.",
+    "versionInfo" : "1.5"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd19",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-jupiter-engine\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Jupiter Engine",
+    "summary" : "Module \"junit-jupiter-engine\" of JUnit 5.",
+    "versionInfo" : "5.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd13",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-jupiter\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Jupiter (Aggregator)",
+    "summary" : "Module \"junit-jupiter\" of JUnit 5.",
+    "versionInfo" : "5.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd14",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-jupiter-api\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Jupiter API",
+    "summary" : "Module \"junit-jupiter-api\" of JUnit 5.",
+    "versionInfo" : "5.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd11",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Pure Java implementations of random numbers generator algorithms.\n  Code in this module should not be used directly by applications; please use\n  the client interface defined in module \"commons-rng-client-api\" and the factory\n  methods defined in module \"commons-rng-simple\". In a future release, modularization\n  may be enforced through JPMS access restrictions.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-rng/commons-rng-core/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons RNG Core",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "Pure Java implementations of random numbers generator algorithms.\n  Code in this module should not be used directly by applications; please use\n  the client interface defined in module \"commons-rng-client-api\" and the factory\n  methods defined in module \"commons-rng-simple\". In a future release, modularization\n  may be enforced through JPMS access restrictions.",
+    "versionInfo" : "1.5"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd12",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "The Apache Commons RNG Sampling module provides samplers\n    for various distributions.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://commons.apache.org/proper/commons-rng/commons-rng-sampling/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "Apache Commons RNG Sampling",
+    "originator" : "Organization:The Apache Software Foundation",
+    "summary" : "The Apache Commons RNG Sampling module provides samplers\n    for various distributions.",
+    "versionInfo" : "1.5"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd17",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "@API Guardian",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://github.com/apiguardian-team/apiguardian",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "org.apiguardian:apiguardian-api",
+    "summary" : "@API Guardian",
+    "versionInfo" : "1.1.2"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd18",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-jupiter-params\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Jupiter Params",
+    "summary" : "Module \"junit-jupiter-params\" of JUnit 5.",
+    "versionInfo" : "5.9.3"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd15",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Open Test Alliance for the JVM",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://github.com/ota4j-team/opentest4j",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "Apache-2.0",
+    "name" : "org.opentest4j:opentest4j",
+    "summary" : "Open Test Alliance for the JVM",
+    "versionInfo" : "1.2.0"
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd16",
+    "copyrightText" : "UNSPECIFIED",
+    "description" : "Module \"junit-platform-commons\" of JUnit 5.",
+    "downloadLocation" : "NOASSERTION",
+    "filesAnalyzed" : false,
+    "homepage" : "https://junit.org/junit5/",
+    "licenseConcluded" : "NOASSERTION",
+    "licenseDeclared" : "NOASSERTION",
+    "name" : "JUnit Platform Commons",
+    "summary" : "Module \"junit-platform-commons\" of JUnit 5.",
+    "versionInfo" : "1.9.3"
+  } ],
+  "files" : [ {
+    "SPDXID" : "SPDXRef-gnrtd60",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "f87a049b856e41f4ddc9e3e5444f6214d095743f"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/twod/ConvexArea2STest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd61",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "8914ab0b0834fc6a82c838db32718dd86a4129f7"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/twod/EmbeddedTreeSubGreatCircleTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd64",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "f537a9e135ec95db21246bd38e88e96a6b814566"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/twod/GreatCircleTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd65",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "0ab10493ec58db6ced91d4c4d9026d26827d9795"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/twod/InteriorAngleGreatArcConnectorTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd62",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "8b2f8d4ace079cab4ecbb71ef5f88ca38dbb177b"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/twod/GreatArcPathTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd63",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "62bbd4cd19f35d684e7322c37823fec9ddcd4e41"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/twod/GreatArcTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd68",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "2338c443d5b7123db09a4d25b06a0112faa26fa5"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/twod/PointSet2STest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd69",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "33855366989f902d576224ae64d8868f9f5b5e91"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/twod/RegionBSPTree2STest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd66",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "bbb245d0e33ce7649bae26c040bad45e6ac9a97b"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/twod/Point2STest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd67",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "69db1529302da8d7ada84b517ba53a50ff52c924"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/twod/PointMap2STest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd71",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "b314c7ebb7d599944981908b7f3ed33a30e78f3a"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./LICENSE",
+    "fileTypes" : [ "OTHER" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd72",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "f6d5a62a83b8410c7b9d9886cc0588498cbe2aa9"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./NOTICE",
+    "fileTypes" : [ "OTHER" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd70",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "6860a2f8622b96b10790b453668481136ed034e0"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/twod/Transform2STest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd24",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "bb2feb976de5065d412dcb202b671bfa8e12fa28"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/oned/CutAngles.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd25",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "3962676cbedfee15b46ca67f036365047b69af12"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/oned/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd22",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "afe72eef47d594729bd6eb0b405b096e53a1912d"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/oned/AngularInterval.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd23",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "9d1bec72447f1e150fa111b113a67220ec1c754c"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/oned/CutAngle.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd28",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "41547312666ea873c25cd6d167a7ea67e6dece52"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/oned/Transform1S.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd29",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "352cd9291cf3022bf53d4c4dad219c5f53066053"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd26",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "47450de60229a3b8919e278a013dd660a126a4b3"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/oned/Point1S.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd27",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "65239eb582813441a6a7d7a7ab109ea1d4c4ba8f"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/oned/RegionBSPTree1S.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd31",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "ce68d91fcecd713772993facec13e52a6a7354b5"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/PointMap2SImpl.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd32",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "a805a6b9d7b7b025f3dec1b657ddb6b6bda4581f"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/SphericalCollections.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd30",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "ddb49e7b9ab9d71111c81a02451e4c4e0ca1c697"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/PointMap1SImpl.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd35",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "494e7a927101b39a41ddae55859eafbe6683b10a"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/BoundarySource2S.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd36",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "8cbddf6e774f046528cf41051486e1fa6dffc247"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/ConvexArea2S.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd33",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "cf9f69d8b513bd45962d0c1e0baab2fd4c020551"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/AbstractGreatArcConnector.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd34",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "6affd3683b3712a676b5b01ffd443ff4de1c77cc"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/BoundaryList2S.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd39",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "a84871e9f1d95260781fa33032f6e63548200ec3"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/GreatArcPath.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd37",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "308082d20ba5efb0bf9311db7301a280d0109a7f"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/EmbeddedTreeGreatCircleSubset.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd38",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "d37f605d2d6e535fc9c0816ff74fd49cdb4b13b6"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/GreatArc.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd42",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "86904b46ace6f56cab7c5cb4fd0a7fdd95802b68"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/GreatCircleSubset.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd43",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "a4155182c0e9964661dafcf7fad6adbf5b6cfe1c"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/InteriorAngleGreatArcConnector.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd40",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "69df1b21616e2da8e03569be3a9fb515d0a47c8d"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/GreatCircle.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd41",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "71d1adbde073c18d79ae9dd60c396d6286c5cdc7"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/GreatCircles.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd46",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "ca98198fcfd8dd811106ecb5f005ba1b36b2bc01"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/RegionBSPTree2S.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd47",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "5fe9e6303ca34fab6c34057ea29ec1f5f6631a8b"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/Transform2S.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd44",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "e5f4ad86613e7e8c1440bd71b7e668d9c55ed270"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/package-info.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd45",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "7c1dd10d9495fe8766e00df0b4ecebc2c8616674"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/main/java/org/apache/commons/geometry/spherical/twod/Point2S.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd48",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "faef90af404cb269c9a0af190f82568a4f011023"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/DocumentationExamplesTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd49",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "bc12b6031bbebe7a69c6db5a30993cff787badc6"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/oned/AngularIntervalTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd50",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "a2ed8118f952d3a54e28f87799aee0494adbd822"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/oned/CutAngleTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd53",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "b30ad947e076f9f8c576522ed7ed509c6e9351d1"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/oned/PointSet1STest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd54",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "d17acb48b2cec0b4724bd433300f7d6f25eb0473"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/oned/RegionBSPTree1STest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd51",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "fd96dbdf7bee2c31bb3a5d18dcdbc6c84404f29a"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/oned/Point1STest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd52",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "490ff77fd40b11c9fdc16ac96befaca1a10ea45e"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/oned/PointMap1STest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd57",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "8c4e21c0d2cf4449e7b2a228745057af59d6bac6"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/twod/AbstractGreatArcPathConnectorTest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd58",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "9c92334b368c5379fc4ff17b1eb27585a3549ab5"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/twod/BoundaryList2STest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd55",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "a10c29bd7cc4adc4549d768d0ef8f2262f7e8b29"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/oned/Transform1STest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd56",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "7f572dbea488f79fca31699d450279fcf838978b"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/SphericalTestUtils.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  }, {
+    "SPDXID" : "SPDXRef-gnrtd59",
+    "checksums" : [ {
+      "algorithm" : "SHA1",
+      "checksumValue" : "a49f4bd6e1d7bae60b43d49a097430b758b00ed9"
+    } ],
+    "copyrightText" : "NOASSERTION",
+    "fileName" : "./src/test/java/org/apache/commons/geometry/spherical/twod/BoundarySource2STest.java",
+    "fileTypes" : [ "SOURCE" ],
+    "licenseConcluded" : "NOASSERTION",
+    "licenseInfoInFiles" : [ "NOASSERTION" ]
+  } ],
+  "relationships" : [ {
+    "spdxElementId" : "SPDXRef-DOCUMENT",
+    "relationshipType" : "DESCRIBES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd8",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd9",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd20",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd35"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd63"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd56"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd44"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd57"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd59"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd40"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd22"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd66"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd65"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd71"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd30"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd43"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd31"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd48"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd61"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd51"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd72"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd55"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd49"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd41"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd53"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd26"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd47"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd34"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd29"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd24"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd1",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd0",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd7",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd33"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd60"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd36"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd32"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd4",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd3",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd2",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd28"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd38"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd69"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd67"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd52"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd45"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd70"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd6",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "DYNAMIC_LINK",
+    "relatedSpdxElement" : "SPDXRef-gnrtd5",
+    "comment" : "Relationship based on Maven POM file dependency information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd27"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd62"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd54"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd42"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd58"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd46"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd68"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd64"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd25"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd37"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd23"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd50"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd21",
+    "relationshipType" : "CONTAINS",
+    "relatedSpdxElement" : "SPDXRef-gnrtd39"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd10",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd19",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd13",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd14",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd11",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd12",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd17",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd18",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd15",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd16",
+    "relationshipType" : "TEST_DEPENDENCY_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : "Relationship created based on Maven POM information"
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd60",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd61",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd64",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd65",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd62",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd63",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd68",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd69",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd66",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd67",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd71",
+    "relationshipType" : "CONTAINED_BY",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd72",
+    "relationshipType" : "CONTAINED_BY",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd70",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd24",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd25",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd22",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd23",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd28",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd29",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd26",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd27",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd31",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd32",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd30",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd35",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd36",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd33",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd34",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd39",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd37",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd38",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd42",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd43",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd40",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd41",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd46",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd47",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd44",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd45",
+    "relationshipType" : "GENERATES",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd48",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd49",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd50",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd53",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd54",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd51",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd52",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd57",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd58",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd55",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd56",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  }, {
+    "spdxElementId" : "SPDXRef-gnrtd59",
+    "relationshipType" : "TEST_CASE_OF",
+    "relatedSpdxElement" : "SPDXRef-gnrtd21",
+    "comment" : ""
+  } ]
+}

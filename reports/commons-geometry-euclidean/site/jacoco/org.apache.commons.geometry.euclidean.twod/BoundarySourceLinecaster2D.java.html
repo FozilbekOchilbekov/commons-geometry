@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BoundarySourceLinecaster2D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Commons Geometry Euclidean</a> &gt; <a href="index.source.html" class="el_package">org.apache.commons.geometry.euclidean.twod</a> &gt; <span class="el_source">BoundarySourceLinecaster2D.java</span></div><h1>BoundarySourceLinecaster2D.java</h1><pre class="source lang-java linenums">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.commons.geometry.euclidean.twod;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+/** Class that performs linecast operations against arbitrary {@link BoundarySource2D}
+ * instances. This class performs a brute-force computation of the intersections of the
+ * line or line subset against all boundaries. Some data structures may support more
+ * efficient algorithms and should therefore prefer those instead.
+ */
+final class BoundarySourceLinecaster2D implements Linecastable2D {
+
+    /** The boundary source instance providing boundaries for the linecast operation. */
+    private final BoundarySource2D boundarySrc;
+
+    /** Construct a new instance for linecasting against the given boundary source.
+     * @param boundarySrc boundary source to linecast against.
+     */
+<span class="fc" id="L38">    BoundarySourceLinecaster2D(final BoundarySource2D boundarySrc) {</span>
+<span class="fc" id="L39">        this.boundarySrc = boundarySrc;</span>
+<span class="fc" id="L40">    }</span>
+
+    /** {@inheritDoc} */
+    @Override
+    public List&lt;LinecastPoint2D&gt; linecast(final LineConvexSubset subset) {
+<span class="fc" id="L45">        try (Stream&lt;LinecastPoint2D&gt; stream = getIntersectionStream(subset)) {</span>
+
+<span class="fc" id="L47">            final List&lt;LinecastPoint2D&gt; results = stream.collect(Collectors.toCollection(ArrayList::new));</span>
+<span class="fc" id="L48">            LinecastPoint2D.sortAndFilter(results);</span>
+
+<span class="fc" id="L50">            return results;</span>
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinecastPoint2D linecastFirst(final LineConvexSubset subset) {
+<span class="fc" id="L57">        try (Stream&lt;LinecastPoint2D&gt; stream = getIntersectionStream(subset)) {</span>
+<span class="fc" id="L58">            return stream.min(LinecastPoint2D.ABSCISSA_ORDER)</span>
+<span class="fc" id="L59">                    .orElse(null);</span>
+        }
+    }
+
+    /** Return a stream containing intersections between the boundary source and the
+     * given line subset.
+     * @param subset line subset to intersect
+     * @return a stream containing linecast intersections
+     */
+    private Stream&lt;LinecastPoint2D&gt; getIntersectionStream(final LineConvexSubset subset) {
+<span class="fc" id="L69">        return boundarySrc.boundaryStream()</span>
+<span class="fc" id="L70">                .map(boundary -&gt; computeIntersection(boundary, subset))</span>
+<span class="fc" id="L71">                .filter(Objects::nonNull);</span>
+    }
+
+    /** Compute the intersection between a boundary line subset and linecast intersecting line subset. Null is
+     * returned if no intersection is discovered.
+     * @param boundary boundary from the boundary source
+     * @param subset line subset to intersect with
+     * @return the linecast intersection between the two arguments or null if there is no such
+     *      intersection
+     */
+    private LinecastPoint2D computeIntersection(final LineConvexSubset boundary, final LineConvexSubset subset) {
+<span class="fc" id="L82">        final Vector2D intersectionPt = boundary.intersection(subset);</span>
+
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (intersectionPt != null) {</span>
+<span class="fc" id="L85">            final Vector2D normal = boundary.getLine().getOffsetDirection();</span>
+
+<span class="fc" id="L87">            return new LinecastPoint2D(intersectionPt, normal, subset.getLine());</span>
+        }
+
+<span class="fc" id="L90">        return null; // no intersection</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
