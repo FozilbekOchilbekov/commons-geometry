@@ -332,7 +332,7 @@
             <exclude>tools/</exclude>
             <exclude>evosuite-report/</exclude>
             <exclude>evosuite-tests/</exclude>
-            <exclude>reports</exclude>
+            <exclude>reports/</exclude>
             <exclude>.ekstazi/**</exclude>
             <exclude>**/site-content/**</exclude>
             <exclude>**/site-content.README</exclude>
