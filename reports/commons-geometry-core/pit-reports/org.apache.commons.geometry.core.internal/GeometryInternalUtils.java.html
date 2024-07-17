@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>GeometryInternalUtils.java</h1>
+
+<table class="src">
+
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/*</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Licensed to the Apache Software Foundation (ASF) under one or more</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * contributor license agreements.  See the NOTICE file distributed with</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * this work for additional information regarding copyright ownership.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * The ASF licenses this file to You under the Apache License, Version 2.0</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * (the &#34;License&#34;); you may not use this file except in compliance with</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * the License.  You may obtain a copy of the License at</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *      http://www.apache.org/licenses/LICENSE-2.0</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Unless required by applicable law or agreed to in writing, software</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * distributed under the License is distributed on an &#34;AS IS&#34; BASIS,</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * See the License for the specific language governing permissions and</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * limitations under the License.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package org.apache.commons.geometry.core.internal;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Objects;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.apache.commons.geometry.core.Point;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_23'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/** Internal utility methods for &#60;em&#62;commons-geometry&#60;/em&#62;.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public final class GeometryInternalUtils {</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /** Utility class; no instantiation. */</span></pre></td></tr>
+
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_28'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>    private GeometryInternalUtils() {}</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /** Return {@code true} if {@code a} is the same instance as {@code b}, as</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * determined by the {@code ==} operator. This method exists primarily to</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * document the fact that reference equality was intended and is not a</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_33'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * programming error.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param a first instance</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param b second instance</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return {@code true} if the arguments are the exact same instance</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_38'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public static boolean sameInstance(final Object a, final Object b) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_39'/>
+39
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_39'>2</a>
+<span>
+
+1. sameInstance : negated conditional &rarr; KILLED<br/>
+
+2. sameInstance : replaced boolean return with true for org/apache/commons/geometry/core/internal/GeometryInternalUtils::sameInstance &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return a == b;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_40'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_41'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_42'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /** Throw an exception if the given point is not finite.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_43'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param &#60;P&#62; Point type</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_44'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param pt point to check</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_45'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return point given as the argument</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_46'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws NullPointerException if the point is null</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws IllegalArgumentException if the point is not finite</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_48'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_49'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public static &#60;P extends Point&#60;P&#62;&#62; P requireFinite(final P pt) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_50'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        Objects.requireNonNull(pt);</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_51'/>
+51
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_51'>1</a>
+<span>
+
+1. requireFinite : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (!pt.isFinite()) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_52'/>
+52
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_52'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            throw new IllegalArgumentException(&#34;Non-finite point: &#34; + pt);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_53'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_54'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_55'/>
+55
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_55'>1</a>
+<span>
+
+1. requireFinite : replaced return value with null for org/apache/commons/geometry/core/internal/GeometryInternalUtils::requireFinite &rarr; SURVIVED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>        return pt;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_56'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_57'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_39'>39</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_39'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>sameInstance<br/><b>Killed by : </b>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testNodeStateGetters()]</span></span> negated conditional &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>sameInstance<br/><b>Killed by : </b>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testNodeStateGetters()]</span></span> replaced boolean return with true for org/apache/commons/geometry/core/internal/GeometryInternalUtils::sameInstance &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_51'>51</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_51'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>requireFinite<br/><b>Killed by : </b>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntriesFarToNear_invalidArgs()]</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4fd8aefe_55'>55</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4fd8aefe_55'/> 
+
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>requireFinite<br/><b>Killed by : </b>none</span></span> replaced return value with null for org/apache/commons/geometry/core/internal/GeometryInternalUtils::requireFinite &rarr; SURVIVED</p> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+
+<li class='mutator'>CONDITIONALS_BOUNDARY</li>
+
+<li class='mutator'>EMPTY_RETURNS</li>
+
+<li class='mutator'>FALSE_RETURNS</li>
+
+<li class='mutator'>INCREMENTS</li>
+
+<li class='mutator'>INVERT_NEGS</li>
+
+<li class='mutator'>MATH</li>
+
+<li class='mutator'>NEGATE_CONDITIONALS</li>
+
+<li class='mutator'>NULL_RETURNS</li>
+
+<li class='mutator'>PRIMITIVE_RETURNS</li>
+
+<li class='mutator'>TRUE_RETURNS</li>
+
+<li class='mutator'>VOID_METHOD_CALLS</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testCopy_rootOnly()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.AbstractConvexHyperplaneBoundedRegionTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.AbstractConvexHyperplaneBoundedRegionTest]/[method:testConvexRegionBoundaryBuilder_singleLine()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testNodeStateGetters()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testExtract_singleNodeTree()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testDepth_detachedNodes()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testDepth()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testClearCut_cutExists()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testInsertCut_doesNotPassThroughCell_parallel()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testClearCut_cutDoesNotExist()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testCopy_instancePassedAsArgument()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testSubtreeNodesIterable_singleNodeSubtree()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.AbstractConvexHyperplaneBoundedRegionTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.AbstractConvexHyperplaneBoundedRegionTest]/[method:testConvexRegionBoundaryBuilder_duplicateLines()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testInsertCut_doesNotPassThroughCell_intersects()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testClearCut_root_fullTree()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testVisit_defaultOrder()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testVisit_visitNode()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testInsertCut_doesNotPassThroughCell_removesExistingChildren()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testSubtreeNodesIterable_multipleNodeSubtree()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testCopy_changesToOneTreeDoNotAffectCopy()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.BSPTreeVisitorTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.BSPTreeVisitorTest]/[method:testClosestFirst()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testInsertCut_cutExistsInTree_oppositeOrientation()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.AbstractConvexHyperplaneBoundedRegionTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.AbstractConvexHyperplaneBoundedRegionTest]/[method:testConvexRegionBoundaryBuilder_multipleLines()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testVisit_visitorReturnsNull_terminatesEarly()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testVisit_noneVisitOrderSkipsSubtree()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.BSPTreeVisitorTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.BSPTreeVisitorTest]/[method:testFarthestFirst()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testNodesIterable_multipleNodes()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testVisit_visitorReturnsTerminate_terminatesEarly()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testInsertCut_fitsCutterToCell()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest]/[method:testMerge_singleNodeTreeWithSingleNodeTree()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testExtract_clearsExistingNodesInCallingTree()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testRemove()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest]/[method:testSplit_empty()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testInsertCut_cutExistsInTree_sameOrientation()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.AbstractConvexHyperplaneBoundedRegionTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.AbstractConvexHyperplaneBoundedRegionTest]/[method:testConvexRegionBoundaryBuilder()] (6 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testTreeString_negativeMaxDepth()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testCopy_withCuts()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testFarToNear_concurrentModification()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testFindNode_plusCutBehavior()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testFindNode_minusCutBehavior()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testFindNode_singleArg()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest]/[method:testCut_nodeMethod()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testNearToFar_concurrentModification()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testCount()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testFindNode_nodeCutBehavior()] (2 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testVisit_nullVisitOrderSkipsSubtree()] (3 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testVisit_earlyTerminationPermutations()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testVisit_specifiedOrder()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest]/[method:testGetBoundarySize_infinite()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testHeight()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testIntersection_singleNodeTrees()] (3 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testXor_singleNodeTrees()] (2 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testUnion_singleNodeTrees()] (4 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testTreeString()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest]/[method:testSplit_full()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testInsert_convex_split()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testNodeTrim()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testInsert_convex_noSplit()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testDifference_singleNodeTrees()] (3 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest]/[method:testComplementOf_rootOnly()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testTreeString_zeroMaxDepth()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest]/[method:testCopy()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest]/[method:testMerge_multiNodeTreeWithSingleNodeTree()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testTreeString_reachesMaxDepth()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest]/[method:testMerge_singleNodeTreeWithMultiNodeTree()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest]/[method:testExtract_complementedTree()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest]/[method:testExtract()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest]/[method:testSplit_halfSpace()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest]/[method:testComplementOf_skewedBowtie()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest]/[method:testMerge_cutsParallel()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest]/[method:testMerge_outputIsFirstInput()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest]/[method:testMerge_outputIsSecondInput()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest]/[method:testMerge_cutsIntersect()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest]/[method:testMerge_cutsAntiParallel()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest]/[method:testMerge_cutOnMinusSide_antiParallel()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest]/[method:testMerge_cutOnPlusSide_parallel()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest]/[method:testMerge_cutOnPlusSide_antiParallel()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testSplitIntoTree_plusOnly()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testExtract_internalNode()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testExtract_extractFromSameTree()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testSplitIntoTree_minusOnly()] (2 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testSplitIntoTree()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeMergeOperatorTest]/[method:testMerge_cutOnMinusSide_parallel()] (5 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractBSPTreeTest]/[method:testExtract_leafNode()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest]/[method:testSplit_box()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest]/[method:testSplit_box_onMinusOnly()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeTest]/[method:testSplit_box_onPlusOnly()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testRemoveAll()] (4 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testIntersection_treeWithComplement()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testXor_treeWithComplement()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testUnion_treeWithComplement()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testDifference_treeWithCopy()] (2 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractPartitionedRegionBuilderTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractPartitionedRegionBuilderTest]/[method:testBuildRegion_boundariesOnPartitionPropagateInsideCorrectly()] (0 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testUnion_boxTreeWithSingleCutTree()] (1 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testIntersection_simpleCrossingCuts()] (4 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testUnion_simpleCrossingCuts()] (6 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testUnion_mixedCutRules()] (4 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testDifference_boxTreeWithSingleCutTree()] (2 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractPartitionedRegionBuilderTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractPartitionedRegionBuilderTest]/[method:testBuildRegion_grid_halfSpace_boundaryOnPartition()] (8 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testIntersection_boxTreeWithSingleCutTree()] (3 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testDifference_simpleCrossingCuts()] (5 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testXor_boxTreeWithSingleCutTree()] (5 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractRegionBSPTreeBooleanTest]/[method:testXor_simpleCrossingCuts()] (6 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractPartitionedRegionBuilderTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractPartitionedRegionBuilderTest]/[method:testBuildRegion_grid_cube()] (14 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractPartitionedRegionBuilderTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractPartitionedRegionBuilderTest]/[method:testBuildRegion_grid_diamond()] (18 ms)</li><li>org.apache.commons.geometry.core.partitioning.bsp.AbstractPartitionedRegionBuilderTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.partitioning.bsp.AbstractPartitionedRegionBuilderTest]/[method:testBuildRegion_grid_horseshoe()] (47 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testRepeatedUse()] (74 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testRemove_largeEntryCount()] (183 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testKeySet_contains()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testNearestEntry_empty()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testFarthest_empty()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testGet_invalidArgs()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testFarthestEntry_empty()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testValues_contains()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testKeySet_containsAll()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testNearest_empty()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testValues_toArray()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testGet()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testValues_toString()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testNearestEntry_empty()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testKeySet_toString()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testToString()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testFarthestEntry_empty()] (2 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testKeySet_toArray()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntriesFarToNear_empty()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testValues_containsAll()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEquals()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntrySet_contains()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testGet_nanAndInf()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testHashCode()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntriesNearToFar_empty()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntrySet_toString()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntrySet_toArray()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntriesFarToNear_concurrentModification()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testPut_equivalentValues_multipleEntries()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testGetEntry_setCalledAfterEntryRemoved_updatesLocalEntryOnly()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testGetEntry_canSetValue()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntrySet_containsAll()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntriesNearToFar_concurrentModification()] (2 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntriesNearToFar_empty()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testKeySet_equalsAndHashCode()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntrySet_equalsAndHashCode()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testKeySet_contains()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testValues_contains()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testNearToFar_empty()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntriesFarToNear_empty()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testGet()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testContainsGet_invalidArgs()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testFarToNear_empty()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testKeySet_containsAll()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntriesNearToFar_iteratorBehavior()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntrySet_contains()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testGet_invalidArgs()] (4 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testNearestEntry_small()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntriesFarToNear_iteratorBehavior()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testValues_clear()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testValues_containsAll()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntrySet_clear()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testGet_equivalentPoints_singleEntry()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testKeySet_clear()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntrySet_containsAll()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testContainsGet_equivalentPoints_singleEntry()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testClear_populated()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntriesNearToFar_small()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testToString()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testKeySet_toString()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testSingleEntry()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testToArray()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testHashCode()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testFarthestEntry_small()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testToString()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testEquals()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntrySet_toArray()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testNearestEntry_small()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testValues_toArray()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testHashCode()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntriesFarToNear_small()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testKeySet_toArray()] (2 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testRemove_equivalentPoints()] (2 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testNearest_small()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testNearestEntry_large()] (7 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testFarthest_small()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEquals()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testRemove()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntriesNearToFar_iteratorBehavior()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testFarthestEntry_small()] (2 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntriesNearToFar_pointsAtEqualDistances()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testFarToNear_iteratorBehavior()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntriesFarToNear_iteratorBehavior()] (2 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testNearToFar_iteratorBehavior()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntriesFarToNear_pointsAtEqualDistances()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testValues_clear()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testGet_equivalentPoints_singleEntry()] (2 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntriesNearToFar_concurrentModification()] (2 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntrySet_equalsAndHashCode()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testKeySet_clear()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntriesFarToNear_concurrentModification()] (4 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testSingleEntry()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntriesFarToNear_small()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testKeySet_remove()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntriesNearToFar_small()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testValues_retainAll()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testKeySetIterator()] (2 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testFarToNear_small()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testValuesIterator()] (2 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testKeySet_retainAll()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testKeySet_removeAll()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testNearToFar_small()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testPut_replaceValue()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testPutAll_otherPointMap()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntrySet_retainAll()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testValues_remove()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testPutAll_nonPointMap()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testValues_removeAll()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testKeySet_equalsAndHashCode()] (6 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntrySet_clear()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntrySet_removeAll()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testPut_pointsCloseToSplit()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntrySet_setValue()] (5 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testGet_equivalentPoints_multipleEntries()] (16 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testRemove()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntrySetIterator()] (6 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testGetEntry_canSetValue()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testGet_nanAndInf()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testValues_toString()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testContainsGet_nanAndInf()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testContainsAll()] (3 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntrySet_toString()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testClear_populated()] (3 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testSingleEntry()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testPutAll_otherPointMap()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testPut_replaceValue()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testPutAll_nonPointMap()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testKeySet_retainAll()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testIterator()] (3 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testValues_remove()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testKeySet_remove()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testValues_retainAll()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testKeySet_removeAll()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntrySet_retainAll()] (2 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testPut_equivalentValues_multipleEntries()] (9 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testFarthestEntry_large()] (28 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntrySet_removeAll()] (3 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testValues_removeAll()] (4 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testGetEntry_setCalledAfterEntryRemoved_updatesLocalEntryOnly()] (11 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testMultipleEntries()] (8 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testClear_populated()] (4 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testIterator_remove()] (5 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testAdd()] (8 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testIterator_remove_multiplePasses()] (4 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testRetainAll()] (5 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntrySet_remove()] (9 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testNearest_large()] (12 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testContainsGet_equivalentPoints_multipleEntries()] (21 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testRemove_equivalentPoints()] (11 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testValuesIterator()] (12 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testNearestEntry_large()] (29 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testFarthest_large()] (28 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testKeySetIterator()] (17 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testGet_equivalentPoints_multipleEntries()] (37 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntrySet_setValue()] (23 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntrySet_remove()] (58 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testMultipleEntries()] (67 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntrySetIterator()] (36 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testRepeatedUse()] (185 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testMultipleEntries()] (169 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testFarthestEntry_large()] (293 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testRepeatedUse()] (344 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntriesNearToFar_large()] (833 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntriesFarToNear_large()] (869 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testNearToFar_large()] (1159 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntriesNearToFar_large()] (1466 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntriesFarToNear_large()] (1551 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testFarToNear_large()] (1701 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testRemove_largeEntryCount()] (7462 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testRemove_largeEntryCount()] (19654 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntriesFarToNear_invalidArgs()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testNearestEntry_invalidArgs()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testEntriesNearToFar_invalidArgs()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testFarthestEntry_invalidArgs()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testNearest_invalidArgs()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testFarthest_invalidArgs()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntriesNearToFar_invalidArgs()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testNearToFar_invalidArgs()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testPut_nanAndInf()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testFarthestEntry_invalidArgs()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testEntriesFarToNear_invalidArgs()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.PointMapAsSetAdapterTest]/[method:testFarToNear_invalidArgs()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testNearestEntry_invalidArgs()] (2 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractPointMap1DTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractPointMap1DTest]/[method:testPutAll_nanAndInf()] (0 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testPutAll_nanAndInf()] (1 ms)</li><li>org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest.[engine:junit-jupiter]/[class:org.apache.commons.geometry.core.internal.AbstractBucketPointMapTest]/[method:testPut_nanAndInf()] (4 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='https://pitest.org'>PIT</a> 1.15.3
+
+</body>
+</html>
