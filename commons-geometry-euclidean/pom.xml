@@ -107,13 +107,6 @@
       <artifactId>jmh-generator-annprocess</artifactId>
       <version>1.35</version>
     </dependency>
-
-    <!-- Geometry core dependencies -->
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-geometry-core</artifactId>
-      <version>1.0</version>
-    </dependency>
   </dependencies>
 
   <build>
